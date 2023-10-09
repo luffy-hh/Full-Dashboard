@@ -136,7 +136,8 @@ const dataSlice = createSlice({
       .addCase(fetchGetMainUnitHistory.fulfilled, (state, action) => {
         state.mainUnitHistoryStatus = "succeeded";
         state.mainUnitHistory = action.payload;
-        console.log(state.mainUnitHistory);
+
+        // console.log(state.mainUnitHistory);
       })
       .addCase(fetchGetMainUnitHistory.rejected, (state, action) => {
         state.mainUnitHistoryStatus = "failed";

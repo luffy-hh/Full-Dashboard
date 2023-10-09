@@ -42,7 +42,7 @@ function HotNumberList({ noAndProgess }) {
         <Container className={styles.hotNumber_box}>
           <ul>{noandProgessList}</ul>
         </Container>
-        <HotNoFooter
+        {/* <HotNoFooter
           forCss={cssCode}
           clickedNos={clickedNos}
           amounts={amounts}
@@ -51,7 +51,7 @@ function HotNumberList({ noAndProgess }) {
           lists={lists}
           clickListHistory={clickListHistory}
           lottery=""
-        />
+        /> */}
         <Cancel hideFun={backRecentRightBtn} />
       </section>
       <List
