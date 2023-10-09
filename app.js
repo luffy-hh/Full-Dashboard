@@ -58,4 +58,7 @@ app.use("/api/v1/mainUnitHistory", mainUnitHistory);
 // Lottery Setting
 app.use("/api/v1/lotterysetting", lotterySetting);
 
+// app.get('*',(req,res)=>{
+//   res.sendFile(path.join(__dirname,'static/index.html'));
+// })
 module.exports = app;
