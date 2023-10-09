@@ -1,0 +1,13 @@
+.cancle_icon {
+  position: absolute;
+  top: 1.3rem;
+  right: 10rem;
+  cursor: pointer;
+}
+.cancle_icon span {
+  width: 3rem;
+  padding: 3px 1rem;
+  color: var(--primary);
+  border: 2px solid var(--red);
+  background-color: var(--text);
+}

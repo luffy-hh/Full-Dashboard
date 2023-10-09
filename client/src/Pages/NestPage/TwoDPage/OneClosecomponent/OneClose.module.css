@@ -1,0 +1,53 @@
+/* for oneClose component */
+.one_close_container {
+  padding: 4.8rem 2.4rem;
+}
+
+.one_close_head {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.6rem;
+  line-height: 2;
+}
+
+.one_head_left {
+  display: block;
+  width: 30rem;
+}
+
+.disable_enable_box {
+  margin-top: 2.4rem;
+}
+
+.enabel_box {
+  padding: 1rem;
+  background-color: var(--blue-light);
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: var(--text-white);
+}
+
+.enable_no_box {
+  list-style: none;
+  margin-top: 1.2rem;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+}
+.enable_no_box li {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin-bottom: 1.2rem;
+  border-bottom: 1px solid var(--blue-white);
+}
+
+.enable_no_box li div {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 1.6rem;
+}
+
+.no_count {
+  font-size: 1.2rem;
+}

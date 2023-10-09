@@ -1,0 +1,22 @@
+.aside_contianer {
+  background-color: var(--text);
+  border-right: 1px solid var(--text-white);
+  height: 100vh;
+}
+
+.aside_list {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+  list-style: none;
+
+  padding: 2.4rem 1.2rem 0 4.8rem;
+}
+.aside_btn {
+  width: 18rem;
+  transition: all 0.3s;
+}
+
+.aside_btn:hover {
+  opacity: 0.5;
+}

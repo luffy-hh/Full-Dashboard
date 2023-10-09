@@ -1,0 +1,58 @@
+nav {
+  width: 100%;
+  height: 7rem;
+  display: flex;
+  gap: 4.8rem;
+  align-items: center;
+}
+.menu_container {
+  display: flex;
+  list-style: none;
+}
+
+.menu_btn {
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.menu_btn img {
+  width: 5.5rem;
+}
+
+.level_photo {
+  width: 7rem;
+}
+
+.menu_box_container {
+  display: flex;
+  gap: 3.2rem;
+  margin-top: 1.2rem;
+  margin-left: 10rem;
+}
+
+.menu_box {
+  display: flex;
+  gap: 1.2rem;
+  align-items: center;
+  background-color: var(--text);
+  color: var(--primary);
+  padding: 3px 3.2rem 3px 5px;
+  border-radius: 2rem;
+}
+
+.menu_box img {
+  width: 3rem;
+}
+
+.menu_box span {
+  font-size: 1.6rem;
+}
+
+.logo_main {
+  width: 14rem;
+  margin-left: auto;
+  height: 7rem;
+}

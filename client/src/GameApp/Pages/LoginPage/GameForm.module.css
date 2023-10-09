@@ -1,0 +1,62 @@
+.game_form_page {
+  width: 100vw;
+  height: 100vh;
+}
+
+.game_form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.game_form label {
+  color: var(--text-white);
+  font-size: 1.8rem;
+  user-select: none;
+}
+
+.game_form input {
+  width: 30rem;
+  padding: 5px 1rem;
+  font-size: 1.8rem;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  color: var(--darkprimary);
+  background-color: var(--text-white);
+}
+
+.game_form input:focus {
+  outline: 3px solid var(--darkprimary);
+}
+
+.game_login_btn {
+  width: 30rem;
+  padding: 1rem 2rem;
+  font-size: 1.8rem;
+  background-color: var(--primary);
+  color: var(--text-white);
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.game_login_btn:hover {
+  background-color: var(--darkprimary);
+}
+
+.alreaytext {
+  color: var(--primary);
+}
+
+.logintext {
+  color: var(--blue);
+  cursor: pointer;
+}
+
+.logintext:hover {
+  border-bottom: 1px solid var(--blue);
+}
+
+.create:hover {
+  border-bottom: 1px solid var(--darkprimary);
+  cursor: pointer;
+}

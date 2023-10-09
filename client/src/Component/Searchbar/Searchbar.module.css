@@ -1,0 +1,24 @@
+.serach_form {
+  width: 50rem;
+  display: flex;
+  align-items: center;
+  outline: 1px solid var(--blue-light);
+}
+
+.serach_form span {
+  padding: 0 1.2rem;
+}
+.serach_form input {
+  width: 73%;
+  font-size: 1.6rem;
+  padding: 8px 1.2rem;
+  outline: none;
+  border: none;
+}
+.serach_btn {
+  padding: 8px 2.4rem;
+  border-radius: 0 !important;
+  font-size: 1.6rem;
+  background-color: var(--blue-light);
+  color: var(--text-white);
+}

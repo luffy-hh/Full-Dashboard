@@ -1,0 +1,103 @@
+.give_two_section {
+  margin-top: 4.8rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  padding-bottom: 4.8rem;
+}
+
+.give_two_section h3 {
+  padding: 2.4rem 3.2rem;
+}
+
+.give_two_container {
+  display: flex;
+  justify-content: center;
+  margin-top: 4.8rem;
+}
+
+.give_two_box {
+  display: flex;
+  align-items: center;
+  gap: 2.4rem;
+}
+.give_two_box p {
+  font-size: 1.6rem;
+}
+
+.give_two_box select,
+.give_two_box input {
+  width: 20rem;
+  padding: 8px 1.2rem;
+  border: 1px solid rgba(3, 7, 18, 0.5);
+  outline: none;
+  font-size: 1.8rem;
+  border-radius: 8px;
+}
+
+.give_two_btn {
+  padding: 8px 1.6rem;
+
+  font-size: 1.8rem;
+  color: var(--text-white);
+  background-color: var(--blue-light);
+  transition: all 0.3s;
+}
+
+.give_two_btn:hover {
+  background-color: var(--blue);
+}
+
+.give_two_box select:focus,
+.give_two_box input:focus {
+  outline: 1px solid var(--blue);
+}
+
+.giveTwo_table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 9.6rem;
+}
+
+.giveTwo_table tbody tr td,
+.giveTwo_table thead tr th {
+  text-align: center;
+  padding: 8px;
+  font-size: 1.6rem;
+}
+.giveTwo_table thead tr {
+  background-color: var(--blue);
+  color: var(--text-white);
+}
+
+.give_table_style {
+  padding: 1rem 0;
+}
+
+.give_table_style:nth-child(even) {
+  background-color: #dddddd;
+}
+
+.give_two_footer {
+  display: flex;
+  flex-direction: column;
+  gap: 3.2rem;
+  padding: 3.2rem;
+  margin-top: 4.8rem;
+}
+
+.give_two_footer div {
+  display: flex;
+  gap: 2.4rem;
+  align-items: center;
+}
+.min_max_bet {
+  width: 25rem;
+}
+
+.give_two_footer_btn {
+  width: 30rem;
+  padding: 5px 1.2rem;
+  font-size: 1.8rem;
+}
+.give_two_footer_btn:focus {
+  outline: 1px solid var(--blue);
+}

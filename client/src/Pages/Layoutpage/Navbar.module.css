@@ -1,0 +1,43 @@
+.navHead {
+  width: 100vw;
+  height: 7rem;
+  background-color: #1f2937;
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+.navHead {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.2rem;
+  height: 7rem;
+  padding-right: 3.2rem;
+}
+.myadmin {
+  width: 18rem;
+  background-color: #4b5563;
+  height: 7rem;
+  display: flex;
+  align-items: center;
+}
+.myadmin h3 {
+  padding-left: 3.2rem;
+}
+/* 
+main Unit btn  */
+
+.main_unit_btn {
+  border: none;
+  outline: none;
+  padding: 1.2rem 2.4rem;
+  background-color: var(--blue-light);
+  font-size: 1.6rem;
+  color: var(--text-white);
+  transition: all 0.3s;
+}
+.main_unit_btn:hover {
+  background-color: var(--blue);
+}

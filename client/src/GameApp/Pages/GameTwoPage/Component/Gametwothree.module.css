@@ -1,0 +1,30 @@
+.two_three_btn_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15rem;
+  height: 50rem;
+}
+.burmes {
+  color: var(--primary);
+  padding: 5px 1.2rem;
+  border: 1px solid var(--primary);
+  border-radius: 10rem;
+  position: absolute;
+  top: 5rem;
+  left: 5rem;
+}
+
+.two_d_photo {
+  width: 25rem;
+  height: 26rem;
+}
+.two_three_btn {
+  background: none;
+  transition: all 0.3s;
+}
+
+.two_three_btn:hover {
+  opacity: 0.6;
+  background-color: var(--text);
+}

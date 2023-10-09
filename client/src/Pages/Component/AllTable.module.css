@@ -1,0 +1,19 @@
+.table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 3.8rem 0;
+  border-radius: 8px;
+}
+
+.thead,
+.tdata {
+  padding: 8px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  transition: all 0.3s;
+  font-size: 1.6rem;
+}
+
+.tdata:hover {
+  background-color: #f59e0b;
+}

@@ -1,0 +1,57 @@
+.comm_section {
+  margin: 4.8rem 0;
+}
+.comm_section h3 {
+  font-size: 1.8rem;
+  font-weight: 400;
+  margin-bottom: 1.2rem;
+}
+.commision_box {
+  display: flex;
+  align-items: center;
+  gap: 3.2rem;
+}
+.select_comm {
+  width: 20rem;
+  padding: 0.5rem 1rem;
+  font-size: 1.8rem;
+  border-radius: 5px;
+  outline: none;
+  color: #222;
+}
+
+.select_comm option {
+  font-size: 1.6rem;
+}
+
+.commision_box input {
+  font-size: 1.8rem;
+  padding: 5px 1rem;
+  outline: none;
+  border-radius: 5px;
+  border: none;
+  background-color: var(--blue-white);
+}
+
+.commision_box input:focus {
+  outline: 2px solid var(--blue);
+}
+
+.commision_box input::placeholder {
+  font-size: 1.6rem;
+}
+
+.commision_btn {
+  padding: 5px 2rem;
+  border: none;
+  outline: none;
+  border-radius: 8px;
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: #fff;
+  background-color: var(--blue-light);
+  transition: all 0.3s;
+}
+.commision_btn:hover {
+  background-color: var(--blue);
+}

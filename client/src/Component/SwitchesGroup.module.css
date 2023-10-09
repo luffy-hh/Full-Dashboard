@@ -1,0 +1,29 @@
+.switch_btn_container {
+  display: flex;
+  flex-direction: row;
+  gap: 2.4rem;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.switch_lable {
+  display: block;
+  font-size: 1.4rem;
+  width: 6rem;
+}
+
+.game_section {
+  margin: 3.2rem 0;
+}
+
+.game_section h3 {
+  font-size: 1.8rem;
+  font-weight: 400;
+  margin-bottom: 2.4rem;
+}
+.game_permision {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  row-gap: 2.4rem;
+  column-gap: 2.4rem;
+}

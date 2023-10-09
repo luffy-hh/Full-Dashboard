@@ -1,0 +1,5 @@
+.layout {
+  display: flex;
+  color: #ffff;
+  user-select: none;
+}

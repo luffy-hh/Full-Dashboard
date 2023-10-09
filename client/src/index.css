@@ -1,0 +1,123 @@
+:root {
+  --primary: #f59e0b;
+  --darkprimary: #b45309;
+  --text-white: #fafaf9;
+  --text: #030712;
+  --blue: #1d4ed8;
+  --blue-light: #3b82f6;
+  --red: #dc2626;
+  --blue-white: #dbeafe;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  font-size: 62.5%;
+  height: 100%;
+}
+
+body {
+  width: 100vw;
+  height: 100%;
+  font-size: 1.8rem;
+  color: #333;
+  line-height: 1;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 120rem;
+  margin: 0 auto;
+}
+.btn {
+  outline: none;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+}
+
+.btn_opacity {
+  transition: all 0.3s;
+}
+
+.btn_opacity:hover {
+  opacity: 0.5;
+}
+
+.bg_photo {
+  background-position: center;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.input {
+  outline: none;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.8rem;
+  padding: 1rem 1.2rem;
+}
+
+.input:hover {
+  outline: 1px solid var(--text);
+}
+
+.hide_scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide_scroll {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* For table */
+.table_d_container {
+  margin-top: 2.4rem;
+  height: 80vh;
+  overflow: auto;
+  padding-bottom: 7rem;
+}
+.table_d {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 2.4rem;
+  background-color: var(--text-white);
+  color: var(--text);
+}
+
+.table_d tbody tr td,
+.table_d thead tr th {
+  text-align: center;
+  padding: 8px;
+  font-size: 1.6rem;
+}
+.table_d thead tr {
+  background-color: var(--blue-light);
+  color: var(--text-white);
+}
+
+.table_d_tbody_tr {
+  padding: 1rem 0;
+}
+.table_d_lastTime {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 1.5rem !important;
+}
+
+.table_d_tbody_tr:nth-child(even) {
+  background-color: #dddddd;
+}

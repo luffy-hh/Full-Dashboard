@@ -1,0 +1,65 @@
+.createUnitPage {
+  color: var(--text);
+  width: 100vw;
+  background-color: var(--blue-white);
+  padding: 2.4rem 3.2rem;
+  width: 100vw;
+}
+
+.create_uint_page_container {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  background-color: var(--text-white);
+  border-radius: 8px;
+  padding: 2.4rem;
+  height: 100vh;
+}
+
+.form_container {
+  width: 40rem;
+  margin-top: 4.8rem;
+}
+.form_container form {
+  display: flex;
+  align-items: center;
+  gap: 3.2rem;
+  /* background-color: #fff; */
+  /* padding: 4.8rem;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
+}
+
+.form_container form div label {
+  display: block;
+  margin-bottom: 1rem;
+  font-size: 1.6rem;
+  font-weight: 500;
+}
+.form_container form div input {
+  padding: 1rem 1.2rem;
+  width: 25rem;
+  font-size: 1.6rem;
+  border-radius: 9px;
+  outline: none;
+  border: none;
+  background-color: var(--blue-white);
+}
+
+.form_container form div input::placeholder {
+  font-size: 1.6rem;
+}
+.form_container form div input:focus {
+  outline: 2px solid var(--blue);
+}
+.btn_create_unit {
+  font-size: 1.8rem;
+  padding: 8px 1.6rem;
+  font-weight: 700;
+  color: var(--text-white);
+  background-color: var(--blue-light);
+  transition: all 0.3s;
+  margin-top: 2.1rem;
+}
+
+.btn_create_unit:hover {
+  background-color: var(--blue);
+}

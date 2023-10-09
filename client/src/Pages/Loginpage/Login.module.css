@@ -1,0 +1,90 @@
+.loginPage {
+  background-color: #3b82f6;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.loginDesign {
+  background-color: #fff;
+  width: 75rem;
+  height: 50rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-radius: 1rem;
+  overflow: hidden;
+  /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.loginLogo {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  align-items: center;
+  justify-content: center;
+}
+.loginLogo p {
+  margin: 2.4rem 0;
+  font-size: 1.8rem;
+  color: #1343b3;
+}
+.loginFrom {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+.loginFrom input {
+  display: block;
+  padding: 1rem;
+  width: 25rem;
+  outline: none;
+}
+.loginFrom input:focus {
+  border: 2px solid #1343b3;
+  border-radius: 1rem;
+  background-color: #e0e7ff;
+}
+.loginFrom input::placeholder {
+  font-size: 1.5rem;
+  color: #333;
+}
+.loginBack {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.btnLogin {
+  padding: 1rem 0;
+  text-transform: uppercase;
+  color: #fff;
+  font-size: 1.6rem;
+  background-color: #2563eb;
+  font-weight: 700;
+}
+.btnLogin:hover {
+  background-color: #1d4ed8;
+}
+
+.horizontal_line {
+  width: 80%;
+  border-top: 1px dotted #000; /* Adjust border properties as needed */
+  text-align: center;
+  line-height: 0.1em; /* Adjust to control the height of the line */
+  margin: 20px 0; /* Adjust margin as needed */
+}
+.or_text {
+  background-color: #fff; /* Background color to cover the line */
+  padding: 0 10px; /* Adjust padding as needed */
+}
+
+.text {
+  color: #333 !important;
+}
+
+.login {
+  color: #1343b3;
+  cursor: pointer;
+  border-bottom: 1px solid #1343b3;
+  margin-left: 5px;
+}
