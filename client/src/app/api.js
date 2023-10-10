@@ -32,7 +32,7 @@ export const patchDatas = async (api, patchData, accessToken) => {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`, // Include your bearer token
+        Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify(patchData), // The data you want to update
     });

@@ -8,8 +8,8 @@ import {
 
 export const fetGetAllTwoDNo = createAsyncThunk(
   "data/fetGetAllTwoDNo",
-  async (api) => {
-    const data = await fetchData(api);
+  async ({ api, accessToken }) => {
+    const data = await fetchDataWithToken(api, accessToken);
     return data;
   }
 );
@@ -18,7 +18,6 @@ export const fetchPatchTwoDsetting = createAsyncThunk(
   "data/fetchPatchTwoDsetting",
   async ({ api, patchData, accessToken }) => {
     const data = await patchDatas(api, patchData, accessToken);
-    console.log(data);
     return data;
   }
 );
@@ -62,6 +61,7 @@ const twoDapiSlice = createSlice({
       .addCase(fetchPatchTwoDsetting.rejected, (state, action) => {
         state.twoDsettingStatus = "failed";
         state.twoDsettingError = action.error.message;
+        console.log(state.twoDsettingError);
       });
   },
 });

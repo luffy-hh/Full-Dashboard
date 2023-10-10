@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import styles from "./OpenandClose.module.css";
-import TimePickerViewRenderers from "./TimePickerViewRenderers";
+import OpenandClosePicker from "./OpenandClosePicker";
 import Container from "../../../../Component/Container";
 import {
   fetchPatchTwoDsetting,
@@ -13,15 +13,13 @@ import NormalButton from "../../../../Component/NormalButton";
 import { useSelector, useDispatch } from "react-redux";
 
 function OpenandCloseTime() {
-  const [openTime, setOpenTime] = useState(null);
-  const [closeTime, setCloseTime] = useState(null);
+  const [openTime, setOpenTime] = useState(new Date());
+  const [closeTime, setCloseTime] = useState(new Date());
   const [limitAmount, setLimitAmount] = useState(0);
 
-  const startDate = openTime && openTime.$d.toString();
-  const endDate = closeTime && closeTime.$d.toString();
-  const postData = {
-    startDate,
-    endDate,
+  const patchData = {
+    startDate: openTime.toString(),
+    endDate: closeTime.toString(),
     limitAmount: Number(limitAmount),
   };
 
@@ -35,7 +33,7 @@ function OpenandCloseTime() {
     dispatch(
       fetchPatchTwoDsetting({
         api: "lotterysetting/thai2dmorningsetting/updatetime",
-        postData,
+        patchData,
         accessToken,
       })
     );
@@ -46,19 +44,11 @@ function OpenandCloseTime() {
       <Container className={styles.time_input_box}>
         <div className={styles.time_input}>
           <p>ပွင့်ချိန်</p>
-          <TimePickerViewRenderers
-            value={openTime}
-            setValue={setOpenTime}
-            time="Open Time"
-          />
+          <OpenandClosePicker value={openTime} setValue={setOpenTime} />
         </div>
         <div className={styles.time_input}>
           <p>ပိတ်ချိန်</p>
-          <TimePickerViewRenderers
-            value={closeTime}
-            setValue={setCloseTime}
-            time="Close Time"
-          />
+          <OpenandClosePicker value={closeTime} setValue={setCloseTime} />
         </div>
         <div className={styles.time_input}>
           <p>လက်ခံမည့်ပမာဏ</p>

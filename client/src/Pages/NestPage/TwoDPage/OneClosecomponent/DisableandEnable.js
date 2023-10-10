@@ -4,7 +4,7 @@ import {
   selectAllTwoDNo,
   selectAllTwoDNoStatue,
 } from "../../../../Feactures/twoDapiSlice";
-
+import { selectlogInData } from "../../../../Feactures/apiSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 import styles from "./OneClose.module.css";
@@ -30,11 +30,14 @@ function DisableandEnable() {
   const dispatch = useDispatch();
   const allTwoDNo = useSelector(selectAllTwoDNo);
   const allTwoDNoStatus = useSelector(selectAllTwoDNoStatue);
+  const logInData = useSelector(selectlogInData);
+
+  const accessToken = logInData.token;
 
   const succeed = allTwoDNoStatus === "succeeded";
 
   useEffect(() => {
-    dispatch(fetGetAllTwoDNo("thai2dmorning12am"));
+    dispatch(fetGetAllTwoDNo({ api: "thai2dmorning12am", accessToken }));
   }, []);
 
   const number_list = succeed ? (
