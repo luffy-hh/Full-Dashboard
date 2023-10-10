@@ -5,7 +5,7 @@ const User = require("../../models/userModel");
 exports.mainUnitTransfer = async (req, res) => {
   try {
     const bodyObj = req.body;
-    const mainUnitId = "651d8b3f47f942df9635b963";
+    const mainUnitId = "651eefdead90117815bf57fd";
     const mainUnitObj = await MainUnit.findById(mainUnitId);
     const initialMainUnit = mainUnitObj.amount;
     const userObj = await User.findById(bodyObj.userId);
@@ -75,7 +75,7 @@ exports.getMainUnitValue = async (req, res) => {
 
 exports.mainUnitUpdate = async (req, res) => {
   try {
-    const unitId = "651d8b3f47f942df9635b963";
+    const unitId = "651eefdead90117815bf57fd";
     const mainUnitObj = await MainUnit.findById(unitId);
     console.log(intialMainValue);
     const bodyObj = req.body;

@@ -1,3 +1,8 @@
 need date and time all admin (last login Time) ==>getalladmin api
 need time (last login Time) ==> get all user api
-no response  thai2dmorning getAll Numer
+no response  thai2dmorning getAll 
+
+ငွေသွင်း/ထုတ်အမျိုးအစား    typesOfDeposite
+ငွေသွင်း/ထုတ်အမျိုးကွဲ       differentOfDeposite
+ငွေသွင်း/ထုတ် အကောင့်     depositeAcc
+ငွေသွင်း/ ထုတ်စည်းမျဥ်း     depositeRule

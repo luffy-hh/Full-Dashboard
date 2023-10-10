@@ -7,6 +7,8 @@
   --blue-light: #3b82f6;
   --red: #dc2626;
   --blue-white: #dbeafe;
+  --green-dark: #15803d;
+  --green-light: #22c55e;
 }
 
 * {
@@ -37,8 +39,13 @@ body {
 .btn {
   outline: none;
   border: none;
-  border-radius: 9px;
+  border-radius: 8px;
   cursor: pointer;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s;
+}
+.btn:hover {
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
 }
 
 a {
@@ -120,4 +127,16 @@ a {
 
 .table_d_tbody_tr:nth-child(even) {
   background-color: #dddddd;
+}
+
+.box_shadow {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border-radius: 8px;
+}
+
+.page_style {
+  background-color: var(--blue-white);
+  color: var(--text);
+  width: 100vw;
+  padding: 2.4rem 3.2rem;
 }

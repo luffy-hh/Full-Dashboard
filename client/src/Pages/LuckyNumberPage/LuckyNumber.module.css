@@ -1,0 +1,40 @@
+.lucky_number_page {
+  width: 100vw;
+  background-color: var(--blue-white);
+  color: var(--text);
+  padding: 2.4rem 3.2rem;
+  overflow: hidden;
+}
+.lucky_number_container {
+  padding: 2.4rem 3.2rem;
+  background-color: var(--text-white);
+}
+
+.lucky_number_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.lucky_number_header p {
+  color: #222;
+  font-weight: 500;
+}
+.lucky_no_btn {
+  padding: 8px 1.6rem;
+  background-color: var(--blue-light);
+  color: var(--text-white);
+  font-size: 1.6rem;
+}
+
+.lucky_no_btn:hover {
+  background-color: var(--blue);
+}
+
+.luck_tr_style:nth-child(even) {
+  background-color: #dddddd;
+}
+
+.luck_tr_style td {
+  padding: 1.8rem 0 !important;
+}

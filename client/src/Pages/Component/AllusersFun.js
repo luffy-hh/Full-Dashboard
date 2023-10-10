@@ -8,7 +8,7 @@ import { BsPersonCircle } from "react-icons/bs";
 import { BsGraphUpArrow } from "react-icons/bs";
 import { MdStorage } from "react-icons/md";
 import { FiKey } from "react-icons/fi";
-import { MdAddToHomeScreen } from "react-icons/md";
+
 import { BsLockFill } from "react-icons/bs";
 import { BiSolidMessageDetail } from "react-icons/bi";
 
@@ -31,7 +31,6 @@ const adminData = [
 ];
 
 function AllusersFun({ data }) {
-  console.log(data);
   const datas = data === "admin" ? adminData : userFunBtn;
 
   const btnData = datas.map((d) => (

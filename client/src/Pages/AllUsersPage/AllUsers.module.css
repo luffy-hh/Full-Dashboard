@@ -5,10 +5,8 @@
   padding: 2.4rem 3.2rem;
 }
 .allusers_container {
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   background-color: var(--text-white);
   padding: 2.4rem 3.2rem;
-  border-radius: 8px;
 }
 
 .allusers_heading {
@@ -24,8 +22,6 @@
   font-weight: 600;
   background-color: #f59e0b;
   font-size: 1.6rem;
-  transition: all 0.3s;
-  border-radius: 5px;
 }
 
 .add_new_btn:hover {

@@ -15,6 +15,9 @@ import { BsFillDpadFill } from "react-icons/bs";
 import { CgGames } from "react-icons/cg";
 import { BsCardImage } from "react-icons/bs";
 import { AiFillSetting } from "react-icons/ai";
+import { PiNumberSquareSevenBold } from "react-icons/pi";
+import { RiBankCardFill } from "react-icons/ri";
+import { BiDollarCircle } from "react-icons/bi";
 import NestSidebar from "./NestSidebar";
 import { NavLink } from "react-router-dom";
 
@@ -158,6 +161,41 @@ const sData = [
       },
     ],
   },
+  {
+    title: "Lucky Number",
+    route: "luckynumber",
+    icon: <PiNumberSquareSevenBold />,
+    show: false,
+  },
+  {
+    title: "Bank Account",
+    route: null,
+    icon: <RiBankCardFill />,
+    iconRight: <BsChevronRight />,
+    show: false,
+    subNav: [
+      {
+        title: "ငွေသွင်း/ထုတ်အမျိုးအစား ",
+        route: "typesOfDeposite",
+        icon: <BiDollarCircle />,
+      },
+      {
+        title: "ငွေသွင်း/ထုတ်အမျိုးကွဲ ",
+        route: "differentOfDeposite",
+        icon: <BiDollarCircle />,
+      },
+      {
+        title: "ငွေသွင်း/ထုတ် အကောင့်  ",
+        route: "depositeAcc",
+        icon: <BiDollarCircle />,
+      },
+      {
+        title: "ငွေသွင်း/ ထုတ်စည်းမျဥ်း ",
+        route: "depositeRule",
+        icon: <BiDollarCircle />,
+      },
+    ],
+  },
 ];
 
 function Sidebar() {
@@ -178,7 +216,7 @@ function Sidebar() {
             <div className={styles.sidebarItem}>
               <span>{d.icon}</span>
               <span className={styles.sidebarTitle}>
-                <NavLink to={d.route}>{d.title}</NavLink>
+                {d.route ? <NavLink to={d.route}>{d.title}</NavLink> : d.title}
               </span>
               {d.iconRight ? (
                 <span

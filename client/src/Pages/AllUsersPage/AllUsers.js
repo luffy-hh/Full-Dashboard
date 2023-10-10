@@ -16,7 +16,12 @@ import {
   fetchGetAlluser,
   selectlogInData,
 } from "../../Feactures/apiSlice";
+import {
+  selectAllUserQuery,
+  setAllUserQuery,
+} from "../../Feactures/ShowHideSlice";
 import styles from "./AllUsers.module.css";
+import Searchbar from "../../Component/Searchbar/Searchbar";
 function AllUsers() {
   const showForm = useSelector(userBool);
   const dispatch = useDispatch();
@@ -25,6 +30,7 @@ function AllUsers() {
   const allUser = useSelector(selectAllUser);
   const logInData = useSelector(selectlogInData);
   const allUserStatus = useSelector(selectAllUserStatus);
+  const allUserQuery = useSelector(selectAllUserQuery);
   const accessToken = logInData.token;
 
   useEffect(() => {
@@ -36,9 +42,10 @@ function AllUsers() {
   return (
     <div className={styles.allusesPage}>
       {showForm ? (
-        <div className={styles.allusers_container}>
+        <div className={`box_shadow ${styles.allusers_container}`}>
           <Container className={styles.allusers_heading}>
             <p>Member</p>
+            <Searchbar query={allUserQuery} setQuery={setAllUserQuery} />
             <NormalButton
               className={styles.add_new_btn}
               onClick={() => dispatch(userFun())}
@@ -47,7 +54,11 @@ function AllUsers() {
             </NormalButton>
           </Container>
           {allUserStatus === "succeeded" && (
-            <AllusersTable data="user" dataArr={allUserArr} />
+            <AllusersTable
+              data="user"
+              dataArr={allUserArr}
+              query={allUserQuery}
+            />
           )}
         </div>
       ) : (

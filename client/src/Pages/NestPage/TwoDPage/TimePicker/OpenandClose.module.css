@@ -28,12 +28,12 @@
 }
 
 .open_btn {
-  width: 8rem;
   font-size: 1.8rem;
   color: var(--text-white);
   background-color: var(--blue-light);
-
-  padding: 1rem 0;
+  width: 15rem;
+  padding: 1.2rem;
+  font-weight: 500;
   transition: all 0.3s;
 }
 

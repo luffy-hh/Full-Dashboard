@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "../Pages/Homepage/Home";
 import Layout from "../Pages/Layoutpage/Layout";
@@ -13,6 +13,8 @@ import TwoDPage from "../Pages/NestPage/TwoDPage/TwoDPage";
 import Login from "../Pages/Loginpage/Login";
 import { selectSetShowForm } from "../Feactures/apiSlice";
 import { useSelector } from "react-redux";
+import LuckyNumber from "../Pages/LuckyNumberPage/LuckyNumber";
+import DepositeType from "../Pages/DepositeType/DepositeType";
 function Admin() {
   const formshow = useSelector(selectSetShowForm);
   return (
@@ -27,6 +29,8 @@ function Admin() {
         <Route path="allmaster" element={<AllMaster />} />
         <Route path="alladmins" element={<AllAdmin />} />
         <Route path="lottery2d" element={<TwoDPage />} />
+        <Route path="luckynumber" element={<LuckyNumber />} />
+        <Route path="typesOfDeposite" element={<DepositeType />} />
       </Route>
     </Routes>
   );

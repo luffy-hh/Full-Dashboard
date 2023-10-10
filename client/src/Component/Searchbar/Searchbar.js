@@ -1,10 +1,11 @@
 import React from "react";
 import Button from "../Button";
 import styles from "./Searchbar.module.css";
-
+import { useDispatch } from "react-redux";
 import { BsSearch } from "react-icons/bs";
 
 function Searchbar({ query, setQuery }) {
+  const dispatch = useDispatch();
   const handleSearch = (e) => {
     e.preventDefault();
   };
@@ -17,7 +18,7 @@ function Searchbar({ query, setQuery }) {
       <input
         type="text"
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={(e) => dispatch(setQuery(e.target.value))}
       />
       <Button className={styles.serach_btn}>Search</Button>
     </form>

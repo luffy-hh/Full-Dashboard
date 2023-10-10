@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Table from "./Table";
 import Searchbar from "../../Component/Searchbar/Searchbar";
 import {
@@ -8,12 +8,17 @@ import {
   selectlogInData,
 } from "../../Feactures/apiSlice";
 
+import {
+  selectUnitHistoryQuery,
+  setUnitHistoryQuery,
+} from "../../Feactures/ShowHideSlice";
+
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./UnitHistory.module.css";
 
 function UnitHistory() {
   const dispatch = useDispatch();
-  const [searchQuery, setSearchQuery] = useState("");
+  const unitHistoryQuery = useSelector(selectUnitHistoryQuery);
 
   const mainUnitHistory = useSelector(selectMainUnitHistory);
   const mainUnitHistoryStatus = useSelector(selectMainUnitHistoryStatus);
@@ -33,11 +38,11 @@ function UnitHistory() {
       <div className={styles.unitHistory_container}>
         <div className={styles.unit_history_header}>
           <h3>UnitHistory</h3>
-          <Searchbar query={searchQuery} setQuery={setSearchQuery} />
+          <Searchbar query={unitHistoryQuery} setQuery={setUnitHistoryQuery} />
         </div>
 
         <div className={`hide_scroll ${styles.table_container_unit}`}>
-          <Table data={data} />
+          <Table data={data} query={unitHistoryQuery} />
         </div>
       </div>
     </div>

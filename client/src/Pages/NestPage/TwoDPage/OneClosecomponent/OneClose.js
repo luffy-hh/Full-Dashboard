@@ -1,8 +1,15 @@
 import React from "react";
+import Searchbar from "../../../../Component/Searchbar/Searchbar";
 import DisableandEnable from "./DisableandEnable";
+import {
+  selectTwoDQuery,
+  setTwoDQuery,
+} from "../../../../Feactures/ShowHideSlice";
+import { useSelector } from "react-redux";
 import styles from "./OneClose.module.css";
 
 function OneClose() {
+  const twoDQuery = useSelector(selectTwoDQuery);
   return (
     <section className={styles.one_close_container}>
       <div className={styles.one_close_head}>
@@ -12,7 +19,10 @@ function OneClose() {
           ဥပမာမနက်ပိုင်းပိတ်ထားသည့်ဂဏန်းသည်ညနေအတွက်အကြုံးမဝင်ပါ
         </span>
       </div>
-      <DisableandEnable />
+      <div className={styles.serach_bar_container}>
+        <Searchbar query={twoDQuery} setQuery={setTwoDQuery} />
+      </div>
+      <DisableandEnable query={twoDQuery} />
     </section>
   );
 }

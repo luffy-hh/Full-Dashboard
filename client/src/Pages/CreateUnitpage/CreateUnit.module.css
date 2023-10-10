@@ -53,10 +53,9 @@
 .btn_create_unit {
   font-size: 1.8rem;
   padding: 8px 1.6rem;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text-white);
   background-color: var(--blue-light);
-  transition: all 0.3s;
   margin-top: 2.1rem;
 }
 

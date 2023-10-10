@@ -26,7 +26,7 @@ import styles from "./OneClose.module.css";
 //   diableAndEnableNo.push(`${i}`);
 // }
 
-function DisableandEnable() {
+function DisableandEnable({ query }) {
   const dispatch = useDispatch();
   const allTwoDNo = useSelector(selectAllTwoDNo);
   const allTwoDNoStatus = useSelector(selectAllTwoDNoStatue);
@@ -41,17 +41,28 @@ function DisableandEnable() {
   }, []);
 
   const number_list = succeed ? (
-    allTwoDNo.data.all2DNumber.map((d, i) => (
-      <li key={`box_${i}`}>
-        <input type="checkbox" id="box_1" />
-        <div>
-          <span>{d.number}</span>{" "}
-          <span className={styles.no_count}>{d.limitAmount}</span>
-        </div>
-      </li>
-    ))
+    allTwoDNo.data.all2DNumber
+      .filter((val) => {
+        if (query === "") {
+          return val;
+        } else if (val.number.includes(query)) {
+          return val;
+        }
+      })
+      .map((d, i) => (
+        <li key={d._id}>
+          <label htmlFor={`box_${i}`} className={styles.container}>
+            <input type="checkbox" id={`box_${i}`} />
+            <span className={styles.checkmark}></span>
+            <div>
+              <span className={styles.disable_no}>{d.number}</span>
+              <span className={styles.no_count}>{d.limitAmount}</span>
+            </div>
+          </label>
+        </li>
+      ))
   ) : (
-    <h1>loading</h1>
+    <p>loading</p>
   );
 
   return (

@@ -34,6 +34,7 @@ function AllAdmin() {
         <div className={styles.all_admin_container}>
           <Container className={styles.allusers_heading}>
             <p>Member</p>
+
             <NormalButton
               onClick={() => dispatch(adminFun())}
               className={styles.add_new_btn}
@@ -42,7 +43,11 @@ function AllAdmin() {
             </NormalButton>
           </Container>
           {succeeded && (
-            <AllusersTable data="admin" dataArr={allAdmin.data.allAdmins} />
+            <AllusersTable
+              data="admin"
+              dataArr={allAdmin.data.allAdmins}
+              query=""
+            />
           )}
         </div>
       ) : (

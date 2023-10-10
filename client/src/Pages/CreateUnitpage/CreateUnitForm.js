@@ -5,6 +5,7 @@ import {
   fetchPatchMainUnit,
   selectlogInData,
   selectpatchMainUnitStatus,
+  selectpatchMainUnitData,
   fetchMainUnit,
 } from "../../Feactures/apiSlice";
 import { useSelector, useDispatch } from "react-redux";
@@ -13,6 +14,7 @@ function CreateUnitForm() {
   const [newMainUnit, setNewMainUnit] = useState("");
   const dispatch = useDispatch();
   const logInData = useSelector(selectlogInData);
+  const patchMainUnitData = useSelector(selectpatchMainUnitData);
   const accessToken = logInData.token;
   const patchMainUnitStatus = useSelector(selectpatchMainUnitStatus);
 
@@ -22,11 +24,12 @@ function CreateUnitForm() {
   const addUnitHandle = (e) => {
     e.preventDefault();
     dispatch(fetchPatchMainUnit({ api: "mainUnit", patchData, accessToken }));
+    setNewMainUnit("");
   };
 
   useEffect(() => {
     dispatch(fetchMainUnit("mainUnit"));
-  }, []);
+  }, [patchMainUnitData]);
 
   return (
     <div className={styles.create_uint_page_container}>

@@ -59,10 +59,10 @@ function OpenandCloseTime() {
             value={limitAmount}
             onChange={(e) => setLimitAmount(e.target.value)}
           />
-          <NormalButton onClick={handlePost} className={styles.open_btn}>
-            {twoDsettingStatus === "loading" ? "Saving" : "Save"}
-          </NormalButton>
         </div>
+        <NormalButton onClick={handlePost} className={styles.open_btn}>
+          {twoDsettingStatus === "loading" ? "Saving" : "Save"}
+        </NormalButton>
       </Container>
     </section>
   );
