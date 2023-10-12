@@ -26,6 +26,7 @@ router
     userController.getUsersAll
   );
 
-// router.route("/:role").get(adminController.updateAdminAcc);
+// Profile
+router.route("/profile").get(userController.protect, userController.getProfile);
 
 module.exports = router;
