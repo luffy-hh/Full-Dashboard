@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { act } from "react-dom/test-utils";
 
 const data = [
   {
@@ -189,8 +188,8 @@ const StaticDataSlice = createSlice({
     },
 
     clickListHistory: (state) => {
-      state.forTwoD.user2DClicked.listHistory = !state.forTwoD.user2DClicked
-        .listHistory;
+      state.forTwoD.user2DClicked.listHistory =
+        !state.forTwoD.user2DClicked.listHistory;
     },
 
     //for lottery button
@@ -214,8 +213,8 @@ const StaticDataSlice = createSlice({
     },
 
     clickLotteryListHistory: (state) => {
-      state.forTwoD.userLotteryClick.listHistory = !state.forTwoD
-        .userLotteryClick.listHistory;
+      state.forTwoD.userLotteryClick.listHistory =
+        !state.forTwoD.userLotteryClick.listHistory;
     },
 
     setFilterUnitHistory: (state, action) => {

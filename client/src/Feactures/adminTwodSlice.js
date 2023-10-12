@@ -4,7 +4,6 @@ const twodHead = [
   { text: "ထိပ်စီးနံပါတ်ဂဏန်း", active: false, id: 1 },
   { text: "တစ်လုံးချင်းပိတ်", active: false, id: 2 },
   { text: "အချိန်", active: false, id: 3 },
-  { text: "နစ်လုံးထီ အလျော် (ဇ)", active: false, id: 4 },
 ];
 
 const allTwodData = { twodHead };

@@ -1,0 +1,77 @@
+.deposite_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2.4rem 3.2rem;
+  background-color: var(--text-white);
+}
+.deposite_container p {
+  font-weight: 500;
+}
+.deposite_page {
+  overflow: hidden;
+}
+
+.depositeAcc_table_container {
+  margin-top: 2.4rem;
+  height: 30vh;
+  overflow-y: auto;
+  padding-bottom: 7rem;
+  overflow-x: scroll;
+  max-width: 110rem;
+}
+
+.table_d_acc {
+  border-collapse: collapse;
+  margin-top: 2.4rem;
+  background-color: var(--text-white);
+  color: var(--text);
+}
+
+.table_d_acc tbody tr td,
+.table_d_acc thead tr th {
+  text-align: center;
+  padding: 8px;
+  font-size: 1.6rem;
+}
+.table_d_acc thead tr {
+  background-color: var(--blue-light);
+  color: var(--text-white);
+}
+.deposite_create_btn {
+  padding: 8px 1.6rem;
+}
+.deposite_edit_btn {
+  padding: 8px 3rem;
+  font-weight: 500;
+}
+.deposite_create_btn,
+.deposite_edit_btn {
+  background-color: var(--blue-light);
+  color: var(--text-white);
+  font-size: 1.6rem;
+}
+
+.deposite_create_btn:hover,
+.deposite_edit_btn:hover {
+  background-color: var(--blue);
+}
+.deposite_delete_btn {
+  color: var(--text-white);
+  font-size: 1.6rem;
+  background-color: var(--red-light);
+  padding: 8px 2rem;
+  font-weight: 500;
+}
+
+.deposite_delete_btn:hover {
+  background-color: var(--red-dark);
+}
+
+.deposite_tr_style:nth-child(even) {
+  background-color: #dddddd;
+}
+
+.deposite_tr_style td {
+  padding: 1.8rem 0 !important;
+}

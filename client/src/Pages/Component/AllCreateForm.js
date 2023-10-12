@@ -2,8 +2,8 @@ import React from "react";
 import Container from "../../Component/Container";
 import Button from "../../Component/Button";
 import styles from "./AllCreateForm.module.css";
-import SwitchesGroup from "../../Component/SwitchesGroup";
-import Commision from "./Commision";
+// import SwitchesGroup from "../../Component/SwitchesGroup";
+// import Commision from "./Commision";
 import CancelHot from "../../GameApp/Comoponent/HotNumber/CancelHot";
 
 function AllCreateForm({ hideFun, data, dataArr, addComm, state = true }) {
@@ -17,8 +17,8 @@ function AllCreateForm({ hideFun, data, dataArr, addComm, state = true }) {
     <Container className={styles.master_form_container}>
       <form className={styles.master_form}>
         <Container className={styles.master_form_grid}>{dataList}</Container>
-        <SwitchesGroup />
-        <Commision dataArr={dataArr} addfun={addComm} />
+        {/* <SwitchesGroup />
+        <Commision dataArr={dataArr} addfun={addComm} /> */}
         <Container className={styles.master_btn_container}>
           <Button className={styles.master_submit_btn}>Submit</Button>
         </Container>

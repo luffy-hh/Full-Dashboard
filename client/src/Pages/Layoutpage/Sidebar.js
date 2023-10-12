@@ -134,7 +134,7 @@ const sData = [
       },
       {
         title: "Lottery",
-        route: "lottery2d",
+        route: "lotterysetting",
         icon: <BsFillDpadFill />,
         iconRight: <BsChevronRight />,
         show: false,
@@ -175,26 +175,32 @@ const sData = [
     show: false,
     subNav: [
       {
-        title: "ငွေသွင်း/ထုတ်အမျိုးအစား ",
+        title: "TypesOfDeposite",
         route: "typesOfDeposite",
         icon: <BiDollarCircle />,
       },
       {
-        title: "ငွေသွင်း/ထုတ်အမျိုးကွဲ ",
+        title: "DifferentOfDeposite",
         route: "differentOfDeposite",
         icon: <BiDollarCircle />,
       },
       {
-        title: "ငွေသွင်း/ထုတ် အကောင့်  ",
+        title: "DepositeAccount",
         route: "depositeAcc",
         icon: <BiDollarCircle />,
       },
       {
-        title: "ငွေသွင်း/ ထုတ်စည်းမျဥ်း ",
+        title: "DepositeRule",
         route: "depositeRule",
         icon: <BiDollarCircle />,
       },
     ],
+  },
+  {
+    title: "Deposite/Withdraw Limit",
+    route: "deposite-withdraw-limit",
+    icon: <BsFillGridFill />,
+    show: false,
   },
 ];
 

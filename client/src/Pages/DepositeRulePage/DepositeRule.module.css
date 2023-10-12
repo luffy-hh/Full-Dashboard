@@ -1,0 +1,37 @@
+.doposite_container {
+  display: flex;
+  flex-direction: column;
+  gap: 3.2rem;
+  margin-bottom: 4.8rem;
+}
+
+.deop_rule_box {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+  padding: 2.4rem;
+  background-color: var(--text-white);
+  line-height: 1.7;
+}
+.deop_rule_box textarea {
+  height: 10rem;
+  font-size: 1.6rem;
+  outline: none;
+  font-family: inherit;
+}
+.deop_rule_box textarea:focus {
+  outline: 1px solid var(--blue);
+}
+
+.deop_edit_btn {
+  align-self: flex-end;
+  width: 8rem;
+  padding: 8px 0;
+  font-size: 1.8rem;
+  color: var(--text-white);
+  background-color: var(--blue-light);
+}
+
+.deop_edit_btn:hover {
+  background-color: var(--blue);
+}

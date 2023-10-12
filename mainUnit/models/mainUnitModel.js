@@ -1,12 +1,10 @@
 const mongoose = require("mongoose");
-
 const mainUnitSchema = new mongoose.Schema({
-  amount: {
-    type: Number,
-    default: 0,
+  mainUnit: {
+    type: String,
+    required: [true, "Product name must be add"],
+    unique: true,
   },
 });
-
 const MainUnit = mongoose.model("MainUnit", mainUnitSchema);
-
 module.exports = MainUnit;

@@ -11,6 +11,7 @@ import { selectlogInData } from "../../../../Feactures/apiSlice";
 
 import NormalButton from "../../../../Component/NormalButton";
 import { useSelector, useDispatch } from "react-redux";
+import GivetwoDZa from "../GivetwoDZa/GivetwoDZa";
 
 function OpenandCloseTime() {
   const [openTime, setOpenTime] = useState(new Date());
@@ -41,7 +42,7 @@ function OpenandCloseTime() {
 
   return (
     <section className={styles.open_close_time}>
-      <Container className={styles.time_input_box}>
+      <Container className={`${styles.time_input_box} box_shadow`}>
         <div className={styles.time_input}>
           <p>ပွင့်ချိန်</p>
           <OpenandClosePicker value={openTime} setValue={setOpenTime} />
@@ -64,6 +65,7 @@ function OpenandCloseTime() {
           {twoDsettingStatus === "loading" ? "Saving" : "Save"}
         </NormalButton>
       </Container>
+      <GivetwoDZa />
     </section>
   );
 }

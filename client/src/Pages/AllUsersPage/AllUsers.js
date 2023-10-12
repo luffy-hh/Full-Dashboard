@@ -22,6 +22,7 @@ import {
 } from "../../Feactures/ShowHideSlice";
 import styles from "./AllUsers.module.css";
 import Searchbar from "../../Component/Searchbar/Searchbar";
+import CustomBox from "../../Component/CustomBox/CustomBox";
 function AllUsers() {
   const showForm = useSelector(userBool);
   const dispatch = useDispatch();
@@ -41,6 +42,7 @@ function AllUsers() {
 
   return (
     <div className={styles.allusesPage}>
+      <CustomBox />
       {showForm ? (
         <div className={`box_shadow ${styles.allusers_container}`}>
           <Container className={styles.allusers_heading}>

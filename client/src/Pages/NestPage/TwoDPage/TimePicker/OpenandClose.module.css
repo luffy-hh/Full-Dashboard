@@ -3,10 +3,13 @@
 }
 
 .time_input_box {
+  padding: 3.2rem 0;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 3.2rem;
   margin-top: 4.8rem;
+  margin-bottom: 9.6rem;
 }
 
 .time_input {
@@ -20,8 +23,10 @@
 }
 
 .open_input {
-  border: 1px solid rgba(3, 7, 18, 0.4);
-  width: 20rem;
+  border: 1px solid #888;
+  width: 25rem;
+  font-size: 1.6rem;
+  padding: 8px 1.6rem;
 }
 .open_input:focus {
   outline: 1px solid var(--blue);
@@ -32,9 +37,11 @@
   color: var(--text-white);
   background-color: var(--blue-light);
   width: 15rem;
-  padding: 1.2rem;
+  padding: 1.2rem 2.4rem;
   font-weight: 500;
   transition: all 0.3s;
+  margin-top: 1.2rem;
+  justify-self: flex-start;
 }
 
 .open_btn:hover {

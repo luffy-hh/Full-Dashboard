@@ -1,0 +1,25 @@
+.deposite_acc {
+  padding: 2.4rem 3.2rem;
+  background-color: var(--text-white);
+}
+
+.depo_acc_head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.depo_acc_head p {
+  font-weight: 500;
+}
+
+.depo_create_btn {
+  font-size: 1.6rem;
+  padding: 8px 1.6rem;
+  color: var(--text-white);
+  background-color: var(--blue-light);
+}
+
+.depo_create_btn:hover {
+  background-color: var(--blue);
+}

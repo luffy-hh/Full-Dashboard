@@ -9,6 +9,8 @@
   --blue-white: #dbeafe;
   --green-dark: #15803d;
   --green-light: #22c55e;
+  --red-light: #ef4444;
+  --red-dark: #b91c1c;
 }
 
 * {
@@ -74,10 +76,6 @@ a {
   padding: 1rem 1.2rem;
 }
 
-.input:hover {
-  outline: 1px solid var(--text);
-}
-
 .hide_scroll::-webkit-scrollbar {
   display: none;
 }
@@ -139,4 +137,19 @@ a {
   color: var(--text);
   width: 100vw;
   padding: 2.4rem 3.2rem;
+}
+
+.modalStyle {
+  background-color: var(--text-white);
+  font-family: "Roboto";
+  color: var(--text);
+  border-radius: 10px;
+}
+
+.modalStyle .ant-modal-title {
+  font-size: 2rem;
+}
+
+.react-datetime-picker__clear-button {
+  display: none;
 }

@@ -10,7 +10,7 @@ function GivetwoDZa() {
     setSelectedOption(e.target.value);
   };
   return (
-    <section className={styles.give_two_section}>
+    <div className={styles.give_two_section}>
       <h3>General Setting</h3>
 
       <div className={styles.give_two_container}>
@@ -21,8 +21,8 @@ function GivetwoDZa() {
             value={selectedOption}
             onChange={handleOptionChange}
           >
-            <option value="AM">AM</option>
-            <option value="PM">PM</option>
+            <option value="Thai2Dmorning">Thai2Dmorning</option>
+            <option value="Thai2Devening">Thai2Devening</option>
           </select>
           <input type="text" className={`input ${styles.give_two_amount}`} />
           <NormalButton className={styles.give_two_btn}>Save</NormalButton>
@@ -41,7 +41,7 @@ function GivetwoDZa() {
           <NormalButton className={styles.give_two_btn}>Save</NormalButton>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 

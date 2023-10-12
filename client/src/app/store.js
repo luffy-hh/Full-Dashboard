@@ -5,6 +5,7 @@ import twoDapiReducer from "../Feactures/twoDapiSlice";
 import StaticDataReducer from "../Feactures/StaticDataSlice";
 import dataReducer from "../Feactures/apiSlice";
 import adminTwodReducer from "../Feactures/adminTwodSlice";
+import modalReducer from "../Feactures/modalSlice";
 export const store = configureStore({
   reducer: {
     shows: ShowHideReducer,
@@ -13,5 +14,6 @@ export const store = configureStore({
     data: dataReducer,
     adminTwoD: adminTwodReducer,
     twoDapi: twoDapiReducer,
+    modal: modalReducer,
   },
 });

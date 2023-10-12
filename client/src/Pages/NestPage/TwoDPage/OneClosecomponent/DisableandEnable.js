@@ -6,7 +6,7 @@ import {
 } from "../../../../Feactures/twoDapiSlice";
 import { selectlogInData } from "../../../../Feactures/apiSlice";
 import { useDispatch, useSelector } from "react-redux";
-
+import Spinner from "../../../../Component/Spinner/Spinner";
 import styles from "./OneClose.module.css";
 
 // const diableAndEnableNo = [
@@ -62,7 +62,7 @@ function DisableandEnable({ query }) {
         </li>
       ))
   ) : (
-    <p>loading</p>
+    <Spinner />
   );
 
   return (

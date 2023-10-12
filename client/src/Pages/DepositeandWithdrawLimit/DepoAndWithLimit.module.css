@@ -1,0 +1,45 @@
+.depo_with_limit_container {
+  padding: 2.4rem 3.2rem;
+  background-color: var(--text-white);
+}
+
+.depo_limit_input {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 3.2rem;
+  margin-left: 4.8rem;
+  padding: 4.8rem 0;
+}
+
+.depo_limit_input li {
+  display: flex;
+  gap: 2.4rem;
+  align-items: center;
+}
+.depo_limit_input li label {
+  width: 30rem;
+  font-weight: 500;
+  color: #555;
+}
+.depo_limit_input li input {
+  width: 30rem;
+  padding: 8px 1.6rem;
+  font-size: 1.6rem;
+  outline: none;
+  border: 1px solid #888;
+  border-radius: 5px;
+}
+.depo_limit_input li input:focus {
+  outline: 1px solid var(--blue);
+}
+
+.depo_with_limit_btn {
+  padding: 8px 1.6rem;
+  background-color: var(--blue-light);
+  color: var(--text-white);
+  font-size: 1.6rem;
+}
+.depo_with_limit_btn:hover {
+  background-color: var(--blue);
+}

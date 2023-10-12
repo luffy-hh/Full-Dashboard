@@ -15,22 +15,39 @@ import { selectSetShowForm } from "../Feactures/apiSlice";
 import { useSelector } from "react-redux";
 import LuckyNumber from "../Pages/LuckyNumberPage/LuckyNumber";
 import DepositeType from "../Pages/DepositeType/DepositeType";
+import DepositeDiff from "../Pages/DepositeDifferent/DepositeDiff";
+import DepositeRule from "../Pages/DepositeRulePage/DepositeRule";
+import LotterySetting from "../Pages/NestPage/LotterySetting/LotterySetting";
+import DepositeAcc from "../Pages/DepositeAccount/DepositeAcc";
+import DepoAndWithLimit from "../Pages/DepositeandWithdrawLimit/DepoAndWithLimit";
+
+const route = [
+  { id: 1, path: "createunit", route: <CreateUnit /> },
+  { id: 2, path: "unithistory", route: <UnitHistory /> },
+  { id: 3, path: "allusers", route: <AllUsers /> },
+  { id: 4, path: "allagents", route: <AllAgentsPage /> },
+  { id: 5, path: "allaffiliateagents", route: <AllAffiliateAgents /> },
+  { id: 6, path: "allmaster", route: <AllMaster /> },
+  { id: 7, path: "alladmins", route: <AllAdmin /> },
+  { id: 8, path: "lottery2d", route: <TwoDPage /> },
+  { id: 9, path: "luckynumber", route: <LuckyNumber /> },
+  { id: 10, path: "typesOfDeposite", route: <DepositeType /> },
+  { id: 11, path: "differentOfDeposite", route: <DepositeDiff /> },
+  { id: 12, path: "depositeRule", route: <DepositeRule /> },
+  { id: 13, path: "lotterysetting", route: <LotterySetting /> },
+  { id: 14, path: "depositeAcc", route: <DepositeAcc /> },
+  { id: 15, path: "deposite-withdraw-limit", route: <DepoAndWithLimit /> },
+];
 function Admin() {
   const formshow = useSelector(selectSetShowForm);
   return (
     <Routes>
-      <Route path="/admin" element={formshow ? <Layout /> : <Login />}>
+      <Route path="/admin" element={true ? <Layout /> : <Login />}>
         <Route index element={<Home />} />
-        <Route path="createunit" element={<CreateUnit />} />
-        <Route path="unithistory" element={<UnitHistory />} />
-        <Route path="allusers" element={<AllUsers />} />
-        <Route path="allagents" element={<AllAgentsPage />} />
-        <Route path="allaffiliateagents" element={<AllAffiliateAgents />} />
-        <Route path="allmaster" element={<AllMaster />} />
-        <Route path="alladmins" element={<AllAdmin />} />
-        <Route path="lottery2d" element={<TwoDPage />} />
-        <Route path="luckynumber" element={<LuckyNumber />} />
-        <Route path="typesOfDeposite" element={<DepositeType />} />
+
+        {route.map((d) => (
+          <Route key={d.id} path={d.path} element={d.route} />
+        ))}
       </Route>
     </Routes>
   );

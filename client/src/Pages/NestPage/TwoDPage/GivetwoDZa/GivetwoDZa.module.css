@@ -2,6 +2,7 @@
   margin-top: 4.8rem;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   padding-bottom: 4.8rem;
+  border-radius: 8px;
 }
 
 .give_two_section h3 {
@@ -26,13 +27,15 @@
 .give_two_box select,
 .give_two_box input {
   width: 20rem;
-  padding: 8px 1.2rem;
+  padding: 8px 1.6rem;
   border: 1px solid rgba(3, 7, 18, 0.5);
   outline: none;
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   border-radius: 8px;
 }
-
+.give_two_box select option {
+  padding: 5px 0;
+}
 .give_two_btn {
   padding: 8px 1.6rem;
 
@@ -91,6 +94,11 @@
 }
 .min_max_bet {
   width: 25rem;
+}
+
+.give_two_footer div input {
+  border: 1px solid #888;
+  border-radius: 5px;
 }
 
 .give_two_footer_btn {

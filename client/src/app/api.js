@@ -1,4 +1,4 @@
-const BASE_URL = "https://gamevegas.online/api/v1/";
+const BASE_URL = "https://admin-backend-udjq.onrender.com/api/v1/";
 
 export const fetchData = async (api) => {
   try {

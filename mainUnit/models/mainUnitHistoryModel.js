@@ -1,22 +1,31 @@
 const mongoose = require("mongoose");
-
 const mainUnitHistorySchema = new mongoose.Schema({
-  amount: {
-    type: Number,
-    default: 0,
-  },
-  unit_status: {
+  userId: {
     type: String,
-    required: [true, "Must Be in or out status value"],
+    required: [true, "UserId must be add"],
   },
-  userId: String,
-  date: Date,
-  time: String,
+  userName: {
+    type: String,
+    required: [true, "UserName must be add"],
+  },
+  createDate: {
+    type: Date,
+    required: [true, "Product name must be add"],
+  },
+  actionAmount: {
+    type: Number,
+    required: [true, "Product name must be add"],
+  },
+  newAmount: {
+    type: Number,
+    required: [true, "Product name must be add"],
+  },
+  status: {
+    type: String,
+  },
 });
-
 const MainUnitHistory = mongoose.model(
   "MainUnitHistory",
   mainUnitHistorySchema
 );
-
 module.exports = MainUnitHistory;

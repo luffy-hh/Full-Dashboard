@@ -1,24 +1,14 @@
+const fs = require("fs");
 const express = require("express");
-const app = express();
-const cors = require("cors");
 const morgan = require("morgan");
 
-const userRoleRouter = require("./routes/userRoleRoute");
-const mainUnitRouter = require("./mainUnit/route/mainUnitRoute");
-const adminRouter = require("./routes/adminRoute");
-const userRouter = require("./routes/userRoute");
-const userProfile = require("./profile/routes/userProfileRoute");
+const app = express();
 
-const gamesCategoryAdmin = require("./gameCategory/routes/gameCategoryRoute");
-const gameSubCategoryAdmin = require("./gameCategory/routes/gameSubCategoryRoute");
-
-const adminUnitTransfer = require("./mainUnit/route/unitTransferRoute");
-const mainUnitHistory = require("./mainUnit/route/mainUnitHistoryRoute");
-
-const thai2dMorning12 = require("./2D/routes/thai2dmorning12Route");
-const lotterySetting = require("./lotterySetting/routes/lotterySettingRoute");
-
-const luckynumber = require("./luckyNumber/routes/luckyNumberRoute");
+const lottery2dRoutes = require("./2DAll/routes/lottery2dRoutes");
+const userRoleRouter = require("./userRoles/userRolesRoute");
+const userRouter = require("./users/userRoutes");
+const mainUnitRouter = require("./mainUnit/routes/mainUnitRoute");
+const mainUnitHistories = require("./mainUnit/routes/mainUnitHistoryRoute");
 
 // Middleware
 if (process.env.NODE_ENV === "development") {
@@ -26,41 +16,31 @@ if (process.env.NODE_ENV === "development") {
 }
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(express.static(`${__dirname}/public`));
-app.use(cors());
+
 app.use((req, res, next) => {
-  console.log("Hello This is Testing Middleware");
+  console.log("This is Test Middleware");
   next();
 });
 
+app.use((req, res, next) => {
+  req.requestTime = new Date().toISOString();
+  console.log(req.header);
+  next();
+});
+
+//Lottery
+app.use("/api/v1/lottery2dthai12", lottery2dRoutes);
+
+// User Role
 app.use("/api/v1/userRole", userRoleRouter);
-app.use("/api/v1/mainUnit", mainUnitRouter);
-app.use("/api/v1/adminAcc", adminRouter);
 
-// Users Routes
+// User Register
 app.use("/api/v1/user", userRouter);
-app.use("/api/v1/userprofile", userProfile);
 
-// Games Category
-app.use("/api/v1/gamesCategoryAdmin", gamesCategoryAdmin);
-app.use("/api/v1/gamesCategoryOther", gamesCategoryAdmin);
+// Main Unit
+app.use("/api/v1/mainunit", mainUnitRouter);
 
-// Games Sub Category
-app.use("/api/v1/gamesSubCat", gameSubCategoryAdmin);
-app.use("/api/v1/gamesSubCatOther", gameSubCategoryAdmin);
-
-// Thai 2D Moringin 12AM
-app.use("/api/v1/thai2dmorning12am", thai2dMorning12);
-
-// Unit
-app.use("/api/v1/adminUnitTransfer", adminUnitTransfer);
-app.use("/api/v1/mainUnitHistory", mainUnitHistory);
-
-// Lottery Setting
-app.use("/api/v1/lotterysetting", lotterySetting);
-
-// Lucky Number
-app.use("/api/v1/luckynumber", luckynumber);
+// Main History
+app.use("/api/v1/mainunithistories", mainUnitHistories);
 
 module.exports = app;
