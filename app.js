@@ -1,8 +1,10 @@
 const fs = require("fs");
 const express = require("express");
 const morgan = require("morgan");
+const cors = require("cors");
 
 const app = express();
+app.use(cors());
 
 const lottery2dRoutes = require("./2DAll/routes/lottery2dRoutes");
 const userRoleRouter = require("./userRoles/userRolesRoute");
@@ -16,6 +18,9 @@ if (process.env.NODE_ENV === "development") {
 }
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
+app.use(express.static("static"));
 
 app.use((req, res, next) => {
   console.log("This is Test Middleware");
@@ -43,4 +48,7 @@ app.use("/api/v1/mainunit", mainUnitRouter);
 // Main History
 app.use("/api/v1/mainunithistories", mainUnitHistories);
 
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "static/index.html"));
+});
 module.exports = app;
