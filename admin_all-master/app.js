@@ -1,11 +1,8 @@
 const fs = require("fs");
 const express = require("express");
 const morgan = require("morgan");
-const path = require("path");
-const cors = require("cors");
 
 const app = express();
-app.use(cors());
 
 const lottery2dRoutes = require("./2DAll/routes/lottery2dRoutes");
 const userRoleRouter = require("./userRoles/userRolesRoute");
@@ -17,7 +14,7 @@ const mainUnitHistories = require("./mainUnit/routes/mainUnitHistoryRoute");
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
-app.use(express.static("static"));
+
 app.use(express.json());
 
 app.use((req, res, next) => {
@@ -46,7 +43,4 @@ app.use("/api/v1/mainunit", mainUnitRouter);
 // Main History
 app.use("/api/v1/mainunithistories", mainUnitHistories);
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "static/index.html"));
-});
 module.exports = app;
