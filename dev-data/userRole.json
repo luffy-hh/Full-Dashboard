@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Admin"
+  },
+  {
+    "name": "Sub Admin"
+  },
+  {
+    "name": "Stuff"
+  },
+  {
+    "name": "Master"
+  },
+  {
+    "name": "Agent"
+  },
+  {
+    "name": "Affilate Agent"
+  },
+  {
+    "name": "User"
+  }
+]
