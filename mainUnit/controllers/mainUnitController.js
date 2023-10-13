@@ -1,6 +1,8 @@
 const MainUnit = require("../models/mainUnitModel");
 const MainUnitHistory = require("../models/mainUnitHistoryModel");
 const User = require("../../users/userModels");
+const moment = require("moment-timezone");
+moment.tz.setDefault("Asia/Yangon");
 
 // Create Main Unit
 exports.createMainUnit = async (req, res) => {
@@ -52,6 +54,7 @@ exports.updateMainUnit = async (req, res) => {
     const status = req.body.status;
 
     let newMainUnit;
+
     if (status === "in") {
       newMainUnit = orgMainUnitValue + addUnitValue;
     } else if (status === "out") {
@@ -60,7 +63,7 @@ exports.updateMainUnit = async (req, res) => {
       return;
     }
 
-    const currentDate = new Date();
+    const currentMyanmarTime = moment().format("YYYY-MM-DD HH:mm:ss");
 
     const mainUnitValue = await MainUnit.findByIdAndUpdate(
       unitId,
@@ -78,11 +81,15 @@ exports.updateMainUnit = async (req, res) => {
     const mainUnitHistoryObj = {
       userId: userId,
       userName: userName,
-      createDate: currentDate,
+      createDate: moment(currentMyanmarTime).tz("Asia/Yangon").format(),
       actionAmount: addUnitValue,
       newAmount: newMainUnit,
       status: status,
     };
+
+    const formattedUnitCreateTime = moment(mainUnitHistoryObj.createDate)
+      .tz("Asia/Yangon")
+      .format();
 
     const mainUnitHistory = await MainUnitHistory.create(mainUnitHistoryObj);
     res.status(200).json({
@@ -90,6 +97,10 @@ exports.updateMainUnit = async (req, res) => {
       data: {
         mainUnitValue,
         mainUnitHistory,
+        mainUnitHistory: {
+          ...mainUnitHistory.toObject(),
+          createDate: formattedUnitCreateTime,
+        },
       },
     });
   } catch (err) {

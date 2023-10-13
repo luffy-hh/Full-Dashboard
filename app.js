@@ -1,23 +1,22 @@
 const fs = require("fs");
 const express = require("express");
 const morgan = require("morgan");
-const path = require("path");
-const cors = require("cors");
 
 const app = express();
-app.use(cors());
 
 const lottery2dRoutes = require("./2DAll/routes/lottery2dRoutes");
 const userRoleRouter = require("./userRoles/userRolesRoute");
 const userRouter = require("./users/userRoutes");
+const userProfileRouter = require("./users/userProfileRoute");
 const mainUnitRouter = require("./mainUnit/routes/mainUnitRoute");
 const mainUnitHistories = require("./mainUnit/routes/mainUnitHistoryRoute");
+const mainUnitTransfer = require("./mainUnit/routes/transferMainUnitRoute");
 
 // Middleware
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
-app.use(express.static("static"));
+
 app.use(express.json());
 
 app.use((req, res, next) => {
@@ -27,7 +26,7 @@ app.use((req, res, next) => {
 
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
-  console.log(req.header);
+
   next();
 });
 
@@ -44,10 +43,10 @@ app.use("/api/v1/userProfile", userProfileRouter);
 // Main Unit
 app.use("/api/v1/mainunit", mainUnitRouter);
 
-// Main History
+// Main  Unit History
 app.use("/api/v1/mainunithistories", mainUnitHistories);
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "static/index.html"));
-});
+//Main Unit Transfer
+app.use("/api/v1/mainunitstransfer", mainUnitTransfer);
+
 module.exports = app;

@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
+const moment = require("moment-timezone");
+moment.tz.setDefault("Asia/Yangon");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -80,8 +82,9 @@ const userSchema = new mongoose.Schema({
   },
   loginTime: {
     type: Date,
-    default: new Date(),
+    default: () => moment().tz("Asia/Yangon").format(),
   },
+
   passwordChangedAt: Date,
 });
 

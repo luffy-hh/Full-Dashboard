@@ -16,7 +16,10 @@ router
     userController.restrictTo("Admin"),
     userController.getUsersAll
   );
-
+// Profile
+router
+  .route("/User/profile")
+  .get(userController.protect, userController.getProfile);
 //Filter User Roles
 router
   .route("/:role")

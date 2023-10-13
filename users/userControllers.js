@@ -1,6 +1,8 @@
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
 const User = require("./userModels");
+const moment = require("moment-timezone");
+moment.tz.setDefault("Asia/Yangon");
 
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
@@ -52,7 +54,7 @@ exports.signup = catchAsync(async (req, res, next) => {
 exports.login = catchAsync(async (req, res, next) => {
   try {
     const { userId, password } = req.body;
-    const reqTime = new Date();
+    const currentMyanmarTime = moment().format("YYYY-MM-DD HH:mm:ss");
 
     // ၁. request body ထဲမှာ UserId / Password နဲ့ User ရှိ/မရှိ စစ်
     if (!userId || !password) {
@@ -63,7 +65,7 @@ exports.login = catchAsync(async (req, res, next) => {
 
     const user = await User.findOneAndUpdate(
       { userId },
-      { loginTime: reqTime }
+      { loginTime: moment(currentMyanmarTime).tz("Asia/Yangon").format() }
     ).select("-__v +password -email");
     if (!user || !(await user.correctPassword(password, user.password))) {
       return next(new AppError("Incorrect userId or Password", 400));
@@ -71,10 +73,16 @@ exports.login = catchAsync(async (req, res, next) => {
 
     // ၃. အပေါ်နှစ်ခုမှန်ရင် JWT ကို Client ဘက်ကိုပို့
     const token = signToken(user._id);
+    const formattedLoginTime = moment(user.loginTime)
+      .tz("Asia/Yangon")
+      .format();
     res.status(200).json({
       stauts: "Success",
       token,
-      user,
+      user: {
+        ...user.toObject(),
+        loginTime: formattedLoginTime,
+      },
     });
   } catch (err) {
     res.status(404).json({
@@ -93,7 +101,6 @@ exports.protect = catchAsync(async (req, res, next) => {
   ) {
     token = req.headers.authorization.split(" ")[1];
   }
-  console.log(token);
 
   if (!token) {
     return next(new AppError("You are not login , Please Login!", 401));
@@ -119,6 +126,7 @@ exports.protect = catchAsync(async (req, res, next) => {
       new AppError("User Recently Change Password ! Please Login Again", 401)
     );
   }
+
   req.user = curentUser;
   next();
 });
@@ -195,8 +203,8 @@ exports.getFilterUser = async (req, res) => {
 
 // Profile
 exports.getProfile = async (req, res) => {
+  const token = req.headers.authorization.split(" ")[1];
   try {
-    const token = req.headers.authorization.split(" ")[1];
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
     const currentUser = await User.findById(decoded.id);
@@ -204,6 +212,31 @@ exports.getProfile = async (req, res) => {
       status: "Success",
       data: {
         currentUser,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "failed",
+      message: err,
+    });
+  }
+};
+
+// Profile
+exports.updateProfile = async (req, res) => {
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+    const updateObj = req.body;
+
+    const updateUser = await User.findByIdAndUpdate(decoded.id, updateObj, {
+      new: true,
+    });
+    console.log(updateUser);
+    res.status(200).json({
+      status: "Success",
+      data: {
+        updateUser,
       },
     });
   } catch (err) {

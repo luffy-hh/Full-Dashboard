@@ -6,23 +6,23 @@ const router = express.Router();
 // Create Main Unit
 router
   .route("/")
-  //   .get(
-  //     userController.protect,
-  //     userController.restrictTo("Admin"),
-  //     mainUnitController.getMainUnitValue
-  //   )
+  .get(
+    userController.protect,
+    userController.restrictTo("Admin"),
+    mainUnitController.readMainUnitTransferHistory
+  )
   .post(
     userController.protect,
     userController.restrictTo("Admin"),
-    transferMainUnitController.transferMainUnit
+    transferMainUnitController.transferMainUnitfun
   );
 
-router
-  .route("/")
-  .patch(
-    userController.protect,
-    userController.restrictTo("Admin"),
-    mainUnitController.updateMainUnit
-  );
+// router
+//   .route("/")
+//   .patch(
+//     userController.protect,
+//     userController.restrictTo("Admin"),
+//     mainUnitController.updateMainUnit
+//   );
 
 module.exports = router;

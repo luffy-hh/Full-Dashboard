@@ -1,4 +1,7 @@
 const mongoose = require("mongoose");
+const moment = require("moment-timezone");
+moment.tz.setDefault("Asia/Yangon");
+
 const mainUnitHistorySchema = new mongoose.Schema({
   userId: {
     type: String,
@@ -10,7 +13,7 @@ const mainUnitHistorySchema = new mongoose.Schema({
   },
   createDate: {
     type: Date,
-    required: [true, "Product name must be add"],
+    default: () => moment().tz("Asia/Yangon").format(),
   },
   actionAmount: {
     type: Number,

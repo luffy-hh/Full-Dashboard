@@ -1,63 +1,110 @@
 const TransferMainUnit = require("../models/transferMainUnitModel");
 const User = require("../../users/userModels");
 const MainUnit = require("../../mainUnit/models/mainUnitModel");
+const moment = require("moment-timezone");
+moment.tz.setDefault("Asia/Yangon");
 
 // Transfer Main Unit Admin And Other
-exports.transferMainUnit = async (req, res) => {
+exports.transferMainUnitfun = async (req, res) => {
   try {
-    const adminId = "6527cb9f8d49230db6027fbb";
+    const currentMyanmarTime = moment().format("YYYY-MM-DD HH:mm:ss");
+    // Admin Data
+    const adminId = "652828b555d62366ddb1bc4c";
     const adminObj = await User.findById(adminId);
     const adminName = adminObj.name;
-    const reqBodyObj = req.body;
-    const unitObj = await MainUnit.find();
+
+    // Admin Unit Data
+    const mainUnitId = "6527d1074eb2bfc53e025c9d";
+    const mainUnitObj = await MainUnit.findById(mainUnitId);
+    const mainUnit = mainUnitObj.mainUnit;
+
+    // User Data
     const userId = reqBodyObj.toId;
     const userObj = await User.findById(userId);
     const userName = userObj.name;
     const userUnit = userObj.unit;
+
+    // Request Data
+    const reqBodyObj = req.body;
     const transferUnit = reqBodyObj.transferUnit;
-    const beforeUnitAmt = unitObj.mainUnit;
     const status = reqBodyObj.status;
-    const currentDate = new Date();
+    const transferDate = moment(currentMyanmarTime).tz("Asia/Yangon").format();
     let afterUnitAmt = 0;
 
     if (status === "out") {
-      afterUnitAmt = beforeUnitAmt - transferUnit;
-      const returnObj = {
+      afterUnitAmt = mainUnit - transferUnit;
+      const mainUnitUpdate = await MainUnit.findById(
+        mainUnitId,
+        {
+          mainUnit: afterUnitAmt,
+        },
+        { new: true }
+      );
+      const returnObjHistory = {
         transferUnit: transferUnit,
-        beforeUnitAmt: beforeUnitAmt,
+        beforeUnitAmt: mainUnit,
         afterUnitAmt: afterUnitAmt,
         fromId: adminId,
         fromName: adminName,
         toId: userId,
         toName: userName,
-        currentDate: currentDate,
+        transferDate: transferDate,
         status: status,
       };
+      const transferHistory = await TransferMainUnit.create(returnObjHistory);
+      const userUnitUpdateVal = userUnit + transferUnit;
+      const userUnitUpdate = await User.findByIdAndUpdate(
+        userId,
+        {
+          unit: userUnitUpdateVal,
+        },
+        { new: true }
+      );
       res.status(201).json({
         status: "success",
         data: {
-          returnObj,
+          mainUnitUpdate,
+          transferHistory,
+          userUnitUpdate,
         },
       });
     }
 
     if (status === "in") {
-      afterUnitAmt = beforeUnitAmt + transferUnit;
-      const returnObj = {
+      afterUnitAmt = mainUnit + transferUnit;
+      const mainUnitUpdate = await MainUnit.findById(
+        mainUnitId,
+        {
+          mainUnit: afterUnitAmt,
+        },
+        { new: true }
+      );
+      const returnObjHistory = {
         transferUnit: transferUnit,
-        beforeUnitAmt: beforeUnitAmt,
+        beforeUnitAmt: mainUnit,
         afterUnitAmt: afterUnitAmt,
-        toId: adminId,
-        toName: adminName,
-        fromId: userId,
-        fromName: userName,
-        currentDate: currentDate,
+        fromId: adminId,
+        fromName: adminName,
+        toId: userId,
+        toName: userName,
+        transferDate: transferDate,
         status: status,
       };
+      const transferHistory = await TransferMainUnit.create(returnObjHistory);
+      const userUnitUpdateVal = userUnit - transferUnit;
+      const userUnitUpdate = await User.findByIdAndUpdate(
+        userId,
+        {
+          unit: userUnitUpdateVal,
+        },
+        { new: true }
+      );
       res.status(201).json({
         status: "success",
         data: {
-          returnObj,
+          mainUnitUpdate,
+          transferHistory,
+          userUnitUpdate,
         },
       });
     }
@@ -69,30 +116,30 @@ exports.transferMainUnit = async (req, res) => {
   }
 };
 
-// exports.readMainUnitHistoryAll = async (req, res) => {
-//   try {
-//     const queryObj = { ...req.query };
-//     const excludeFields = ["page", "sort", "limit", "fields"];
-//     excludeFields.forEach((el) => delete queryObj[el]);
+exports.readMainUnitTransferHistory = async (req, res) => {
+  try {
+    const queryObj = { ...req.query };
+    const excludeFields = ["page", "sort", "limit", "fields"];
+    excludeFields.forEach((el) => delete queryObj[el]);
 
-//     let queryStr = JSON.stringify(queryObj);
-//     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-//     console.log(JSON.parse(queryStr));
+    let queryStr = JSON.stringify(queryObj);
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+    console.log(JSON.parse(queryStr));
 
-//     const query = MainUnitHistory.find(JSON.parse(queryStr));
-//     const mainUnitHistories = await query;
+    const query = TransferMainUnit.find(JSON.parse(queryStr));
+    const mainUnitTransferHistory = await query;
 
-//     res.status(200).json({
-//       status: "success",
-//       length: mainUnitHistories.length,
-//       data: {
-//         mainUnitHistories,
-//       },
-//     });
-//   } catch (err) {
-//     res.status(400).json({
-//       status: "failed",
-//       message: err,
-//     });
-//   }
-// };
+    res.status(200).json({
+      status: "success",
+      length: mainUnitTransferHistory.length,
+      data: {
+        mainUnitTransferHistory,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "failed",
+      message: err,
+    });
+  }
+};

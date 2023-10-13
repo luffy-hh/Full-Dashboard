@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const transferMainUnitSchema = new mongoose.Schema({
-  transferUnit: {
+  transferAmt: {
     type: Number,
     required: [true, "Main Unit Transfer Value Must Be Add"],
   },
@@ -28,9 +28,9 @@ const transferMainUnitSchema = new mongoose.Schema({
     type: String,
     required: [true, "Recieve Person Name Must Be Add"],
   },
-  currentDate: {
+  transferDate: {
     type: Date,
-    default: Date.now(),
+    default: () => moment().tz("Asia/Yangon").format(),
   },
   status: String,
 });
