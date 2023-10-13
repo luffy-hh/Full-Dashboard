@@ -39,6 +39,7 @@ app.use("/api/v1/userRole", userRoleRouter);
 
 // User Register
 app.use("/api/v1/user", userRouter);
+app.use("/api/v1/userProfile", userProfileRouter);
 
 // Main Unit
 app.use("/api/v1/mainunit", mainUnitRouter);

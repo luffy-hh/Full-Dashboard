@@ -26,7 +26,4 @@ router
     userController.getUsersAll
   );
 
-// Profile
-router.route("/profile").get(userController.protect, userController.getProfile);
-
 module.exports = router;
