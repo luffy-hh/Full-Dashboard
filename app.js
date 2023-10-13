@@ -1,7 +1,7 @@
 const fs = require("fs");
 const express = require("express");
 const morgan = require("morgan");
-
+const path = require("path");
 const app = express();
 
 const lottery2dRoutes = require("./2DAll/routes/lottery2dRoutes");
@@ -18,7 +18,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 app.use(express.json());
-
+app.use(express.static("static"));
 app.use((req, res, next) => {
   console.log("This is Test Middleware");
   next();
@@ -48,5 +48,7 @@ app.use("/api/v1/mainunithistories", mainUnitHistories);
 
 //Main Unit Transfer
 app.use("/api/v1/mainunitstransfer", mainUnitTransfer);
-
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "static/index.html"));
+});
 module.exports = app;

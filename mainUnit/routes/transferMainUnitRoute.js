@@ -9,7 +9,7 @@ router
   .get(
     userController.protect,
     userController.restrictTo("Admin"),
-    mainUnitController.readMainUnitTransferHistory
+    transferMainUnitController.readMainUnitTransferHistory
   )
   .post(
     userController.protect,
