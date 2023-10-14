@@ -1,5 +1,6 @@
 const LotterySetting = require("../models/lotterySettingModels");
 const GameSubCategories = require("../../gameCategories/models/gameSubCatModels");
+const Thai2DMorning12 = require("../../2DAll/models/thai2DLotteryMorning12Models");
 const moment = require("moment-timezone");
 moment.tz.setDefault("Asia/Yangon");
 
@@ -53,36 +54,25 @@ exports.getAllLotterySetting = async (req, res) => {
 // Update Single Lottery Game Setting Start Time , End Time and limitAmount
 exports.updateLotterySettingById = async (req, res) => {
   try {
-    const id = req.params;
+    const id = req.params.id;
+    const updateData = req.body;
+
+    const originalLotterySetting = await LotterySetting.findById(id);
+    const originalLimitAmount = originalLotterySetting.limitAmount;
+
     const updateLotterySetting = await LotterySetting.findByIdAndUpdate(
       id,
-      req.body,
+      updateData, // Corrected variable name
       {
         new: true,
         runValidators: true,
       }
     );
 
-    // const batchArr = await batch.find();
-    // const batchNum = batchArr.length;
-    // const currentDate = new Date();
-    // const gameSubId = "65191e5394d5823f2a6e2031";
-    // const gameSubObj = await gamesubcats.findById(gameSubId);
-    // const gameSubName = gameSubObj.subcat_name;
-
-    // const newBatchObj = {
-    //   batchNumber: batchNum,
-    //   gameName: gameSubName,
-    //   subCategoryId: gameSubId,
-    //   date: currentDate,
-    // };
-
-    // const newBatch = await batch.create(newBatchObj);
-    // const updateStatus = await lotterySetting.findByIdAndUpdate(
-    //   "65242bfd81844c97fb089e66",
-    //   { status: true }
-    // );
-    // console.log();
+    await Thai2DMorning12.updateMany(
+      { limitAmount: originalLimitAmount },
+      { limitAmount: updateData.limitAmount } // Corrected variable name
+    );
 
     res.status(200).json({
       status: "Success",
@@ -97,3 +87,24 @@ exports.updateLotterySettingById = async (req, res) => {
     });
   }
 };
+
+// const batchArr = await batch.find();
+// const batchNum = batchArr.length;
+// const currentDate = new Date();
+// const gameSubId = "65191e5394d5823f2a6e2031";
+// const gameSubObj = await gamesubcats.findById(gameSubId);
+// const gameSubName = gameSubObj.subcat_name;
+
+// const newBatchObj = {
+//   batchNumber: batchNum,
+//   gameName: gameSubName,
+//   subCategoryId: gameSubId,
+//   date: currentDate,
+// };
+
+// const newBatch = await batch.create(newBatchObj);
+// const updateStatus = await lotterySetting.findByIdAndUpdate(
+//   "65242bfd81844c97fb089e66",
+//   { status: true }
+// );
+// console.log();

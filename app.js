@@ -15,6 +15,7 @@ const mainUnitTransfer = require("./mainUnit/routes/transferMainUnitRoute");
 const gameCategoriesRouter = require("./gameCategories/routes/gameCategoryRoutes");
 const gameSubCatRouter = require("./gameCategories/routes/gameSubCatRouters");
 const lotterySettingRouter = require("./lotterySetting/routes/lotterySettingRoutes");
+const container2DMorning12Router = require("./2dGames/routes/thai2DMorning12Routes");
 
 // Middleware
 if (process.env.NODE_ENV === "development") {
@@ -62,6 +63,9 @@ app.use("/api/v1/gamesubcat", gameSubCatRouter);
 
 //Lottery Setting
 app.use("/api/v1/lotterysetting", lotterySettingRouter);
+
+//Lottery Container
+app.use("/api/v1/thai2dmorning12", container2DMorning12Router);
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "static/index.html"));

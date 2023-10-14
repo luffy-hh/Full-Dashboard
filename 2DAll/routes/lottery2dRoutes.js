@@ -1,5 +1,5 @@
 const express = require("express");
-const lottery2dController = require("../controllers/lottery2dControllers");
+const lottery2dController = require("../controllers/thai2DLotteryMorning12Controllers");
 const userController = require("../../users/userControllers");
 
 const router = express.Router();
