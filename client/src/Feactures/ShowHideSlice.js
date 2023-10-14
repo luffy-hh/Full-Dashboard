@@ -1,6 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const searchQuery = { unitHistoryQuery: "", allUserQuery: "", twoDQuery: "" };
+const searchQuery = {
+  unitHistoryQuery: "",
+  allUserQuery: "",
+  twoDQuery: "",
+  masterQuery: "",
+  agentQuery: "",
+};
 
 const depositeRule = {
   textOne: false,
@@ -16,6 +22,7 @@ const initialState = {
   master: true,
   user: true,
   admin: true,
+  agent: true,
   searchQuery,
   depositeRule,
 };
@@ -48,6 +55,11 @@ const ShowHideSlice = createSlice({
       state.admin = !state.admin;
     },
 
+    //for create agent form show
+    agentFun: (state) => {
+      state.agent = !state.agent;
+    },
+
     //search Bar state
     setUnitHistoryQuery: (state, action) => {
       state.searchQuery.unitHistoryQuery = action.payload;
@@ -55,6 +67,12 @@ const ShowHideSlice = createSlice({
 
     setAllUserQuery: (state, action) => {
       state.searchQuery.allUserQuery = action.payload;
+    },
+    setMasterQuery: (state, action) => {
+      state.searchQuery.masterQuery = action.payload;
+    },
+    setAgentQuery: (state, action) => {
+      state.searchQuery.agentQuery = action.payload;
     },
 
     setTwoDQuery: (state, action) => {
@@ -86,11 +104,14 @@ export const {
   adminFun,
   setAllUserQuery,
   setUnitHistoryQuery,
+  setAgentQuery,
+  setMasterQuery,
   setTwoDQuery,
   setTextOne,
   setText,
   setTextTwoShow,
   setTextTwo,
+  agentFun,
 } = ShowHideSlice.actions;
 
 export const nestBool = (state) => state.shows.show;
@@ -98,6 +119,7 @@ export const reportBool = (state) => state.shows.report;
 export const masterBool = (state) => state.shows.master;
 export const userBool = (state) => state.shows.user;
 export const adminBool = (state) => state.shows.admin;
+export const selectAgent = (state) => state.shows.agent;
 
 //serachbar state
 export const selectAllUserQuery = (state) =>
@@ -105,6 +127,10 @@ export const selectAllUserQuery = (state) =>
 
 export const selectUnitHistoryQuery = (state) =>
   state.shows.searchQuery.unitHistoryQuery;
+
+export const selectMasterQuery = (state) => state.shows.searchQuery.masterQuery;
+
+export const selectAgentQuery = (state) => state.shows.searchQuery.agentQuery;
 
 export const selectTwoDQuery = (state) => state.shows.searchQuery.twoDQuery;
 

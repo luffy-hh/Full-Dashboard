@@ -10,6 +10,7 @@ import {
   selectAllAdmin,
   selectAllAdminStatus,
   fetchGetAlladmin,
+  selectlogInData,
 } from "../../Feactures/apiSlice";
 
 import styles from "./AllAdmin.module.css";
@@ -19,14 +20,17 @@ function AllAdmin() {
   const dispatch = useDispatch();
   const allAdmin = useSelector(selectAllAdmin);
   const allAdminStatus = useSelector(selectAllAdminStatus);
-
+  const logInData = useSelector(selectlogInData);
   const data = useSelector(adminDatas);
+  const accessToken = logInData.token;
 
   const succeeded = allAdminStatus === "succeeded";
 
   useEffect(() => {
-    dispatch(fetchGetAlladmin("adminAcc"));
+    dispatch(fetchGetAlladmin({ api: "user/Admin", accessToken }));
   }, []);
+
+  const adminArr = allAdmin && allAdmin.data.userAll;
 
   return (
     <div className={styles.all_admin_page}>
@@ -43,11 +47,7 @@ function AllAdmin() {
             </NormalButton>
           </Container>
           {succeeded && (
-            <AllusersTable
-              data="admin"
-              dataArr={allAdmin.data.allAdmins}
-              query=""
-            />
+            <AllusersTable data="admin" dataArr={adminArr} query="" />
           )}
         </div>
       ) : (

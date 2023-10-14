@@ -153,3 +153,12 @@ a {
 .react-datetime-picker__clear-button {
   display: none;
 }
+
+.ant-modal-footer button{
+  
+  font-size: 1.8rem;
+  height: 4rem;
+  width: 10rem;
+  font-family: "Roboto";
+  
+}

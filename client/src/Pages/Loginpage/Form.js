@@ -10,11 +10,11 @@ function Form() {
   const dispatch = useDispatch();
   const logInStatus = useSelector(selectlogInStatus);
 
-  const postData = { email, password };
+  const postData = { userId: email, password };
 
   const loginHandle = async (e) => {
     e.preventDefault();
-    dispatch(fetchPostLogin({ api: "adminAcc/admin/login", postData }));
+    dispatch(fetchPostLogin({ api: "user/login", postData }));
   };
 
   return (
@@ -23,7 +23,7 @@ function Form() {
       <p>Welcome Back!</p>
       <form className={classes.loginFrom} onSubmit={(e) => loginHandle(e)}>
         <input
-          type="email"
+          type="text"
           placeholder="Email address"
           value={email}
           onChange={(e) => setEmail(e.target.value)}

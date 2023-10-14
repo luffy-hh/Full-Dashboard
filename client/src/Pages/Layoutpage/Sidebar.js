@@ -45,6 +45,11 @@ const sData = [
         route: "unithistory",
         icon: <BsFillPersonFill />,
       },
+      {title: "Unit History Transfer",
+       route: "unithistoryTransfer",
+      icon: <BsFillPersonFill />,
+    
+    }
     ],
   },
   {
@@ -123,15 +128,16 @@ const sData = [
     show: false,
     subNav: [
       {
-        title: "Slot",
-        route: "gcsslot",
-        icon: <BsFillDiscFill />,
+        title : "Game Categories",
+        route : "game-categories",
+        icon : <AiFillSetting />
       },
       {
-        title: "Casino",
-        route: "gcscasino",
-        icon: <BsFillDice5Fill />,
-      },
+        title : "Sub Categories",
+        route : "sub-game-categories",
+        icon : <AiFillSetting />
+      },  
+     
       {
         title: "Lottery",
         route: "lotterysetting",
@@ -149,16 +155,7 @@ const sData = [
           },
         ],
       },
-      {
-        title: "Sport",
-        route: "gcssport",
-        icon: <BsLifePreserver />,
-      },
-      {
-        title: "Card",
-        route: "gcscard",
-        icon: <BsCardImage />,
-      },
+      
     ],
   },
   {

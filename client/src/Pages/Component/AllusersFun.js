@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./UserBtn.module.css";
 import UserBtn from "./UserBtn";
-import { setModalShow } from "../../Feactures/modalSlice";
+import { setModalShow,setUserId,setCondition } from "../../Feactures/modalSlice";
 import { useDispatch } from "react-redux";
 import { MdAdd } from "react-icons/md";
 import { AiOutlineMinus } from "react-icons/ai";
@@ -20,13 +20,22 @@ const adminData = [
   { icon: <BiSolidMessageDetail />, text: "Detail" },
 ];
 
-function AllusersFun({ data }) {
-  const handleDepo = () => {
+function AllusersFun({ data,toId }) {
+  const handleDepo = (text) => {
+
     dispatch(setModalShow(true));
+    dispatch(setUserId(toId));
+    dispatch(setCondition(text))
   };
+
+  const handleWithdraw = (text) =>{
+    dispatch(setModalShow(true));
+    dispatch(setUserId(toId));
+    dispatch(setCondition(text))
+  }
   const userFunBtn = [
     { icon: <MdAdd />, text: "DEP", fun: handleDepo }, //addd
-    { icon: <AiOutlineMinus />, text: "WDL" }, //withdraw out
+    { icon: <AiOutlineMinus />, text: "WDL", fun: handleWithdraw }, //withdraw out
     { icon: <BsPersonCircle />, text: "Player" },
     { icon: <BsGraphUpArrow />, text: "Report" },
     { icon: <MdStorage />, text: "Log" },
@@ -38,7 +47,7 @@ function AllusersFun({ data }) {
   const datas = data === "admin" ? adminData : userFunBtn;
   const dispatch = useDispatch();
   const btnData = datas.map((d) => (
-    <UserBtn onClick={() => d.fun()} key={d.text}>
+    <UserBtn onClick={() => d.fun(d.text)} key={d.text}>
       <span className={styles.user_fun_icon}>{d.icon}</span>
       <span className={styles.user_fun_btn_dirc}>{d.text}</span>
     </UserBtn>

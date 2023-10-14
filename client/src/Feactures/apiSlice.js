@@ -4,12 +4,13 @@ import {
   postDatas,
   patchDatas,
   fetchDataWithToken,
+  postDataWithToken
 } from "../app/api";
 
 export const fetchMainUnit = createAsyncThunk(
   "data/fetchMainUnit",
-  async (api) => {
-    const data = await fetchData(api);
+  async ({ api, accessToken }) => {
+    const data = await fetchDataWithToken(api, accessToken);
     return data;
   }
 );
@@ -40,8 +41,8 @@ export const fetchGetMainUnitHistory = createAsyncThunk(
 
 export const fetchGetAlladmin = createAsyncThunk(
   "data/fetchGetAlladmin",
-  async (api) => {
-    const data = await fetchData(api);
+  async ({ api, accessToken }) => {
+    const data = await fetchDataWithToken(api, accessToken);
     return data;
   }
 );
@@ -53,6 +54,69 @@ export const fetchGetAlluser = createAsyncThunk(
     return data;
   }
 );
+
+export const fetchGetAllMaster = createAsyncThunk(
+  "data/fetchGetAllMaster",
+  async ({ api, accessToken }) => {
+    const data = await fetchDataWithToken(api, accessToken);
+    return data;
+  }
+);
+
+export const fetchGetAllAgent = createAsyncThunk(
+  "data/fetchGetAllAgent",
+  async ({ api, accessToken }) => {
+    const data = await fetchDataWithToken(api, accessToken);
+    return data;
+  }
+);
+
+export const postAlluser = createAsyncThunk(
+  "data/postAlluser",
+  async ({ api, postData }) => {
+    const data = await postDatas(api, postData);
+
+    return data;
+  }
+);
+
+export const fetchPostAllAgent = createAsyncThunk(
+  "data/fetchPostAllAgent",
+  async ({ api, postData }) => {
+    const data = await postDatas(api, postData);
+
+    return data;
+  }
+);
+
+export const fetchPostAllMaster = createAsyncThunk(
+  "data/fetchPostAllMaster",
+  async ({ api, postData }) => {
+    const data = await postDatas(api, postData);
+
+    return data;
+  }
+);
+
+export const postTransferUnit = createAsyncThunk(
+  "data/postTransferUnit",
+  async ({ api, postData,accessToken }) => {
+    const data = await postDataWithToken(api, postData,accessToken);
+    return data;
+  }
+);
+
+
+export const fetchGetAllUnitTransfer = createAsyncThunk(
+  "data/fetchGetAllUnitTransfer",
+  async ({ api, accessToken }) => {
+    const data = await fetchDataWithToken(api, accessToken);
+    return data;
+  }
+);
+
+
+
 const initialState = {
   logInData: {},
   token: "",
@@ -75,6 +139,27 @@ const initialState = {
   allAdmin: null,
   allAdminStatus: "idle",
   allAdminError: null,
+  postUser: {},
+  postUserStatus: "idle",
+  postUserError: null,
+  master: null,
+  masterStatus: "idle",
+  masterError: null,
+  agent: null,
+  agentStatus: "idle",
+  agentError: null,
+  postAgent: {},
+  postAgentStatus: "idle",
+  postAgentError: null,
+  postMaster: {},
+  postMasterStatus: "idle",
+  postMasterError: null,
+  postTransfer : {},
+  postTransferStatus : 'idle',
+  postTransferError : null,
+  getUnitTransfer: null,
+  getUnitTransferStatus : "idle",
+  getUnitTransferError : null,
 };
 
 const dataSlice = createSlice({
@@ -108,7 +193,8 @@ const dataSlice = createSlice({
       .addCase(fetchMainUnit.fulfilled, (state, action) => {
         state.mainUnitStatus = "succeeded";
         state.mainUnitData = action.payload;
-        state.allMainUnitAmount = state.mainUnitData.data.mainUnit[0].amount;
+        state.allMainUnitAmount =
+          state.mainUnitData.data.mainUnitValue.mainUnit;
       })
       .addCase(fetchMainUnit.rejected, (state, action) => {
         state.mainUnitStatus = "failed";
@@ -157,6 +243,33 @@ const dataSlice = createSlice({
         state.allUserError = action.error.message;
       })
 
+      //for allmaster get method store mainUnit arr
+      .addCase(fetchGetAllMaster.pending, (state) => {
+        state.masterStatus = "loading";
+      })
+      .addCase(fetchGetAllMaster.fulfilled, (state, action) => {
+        state.masterStatus = "succeeded";
+        state.master = action.payload;
+      })
+      .addCase(fetchGetAllMaster.rejected, (state, action) => {
+        state.masterStatus = "failed";
+        state.masterError = action.error.message;
+      })
+
+      //for all agent get method store mainUnit arr
+      .addCase(fetchGetAllAgent.pending, (state) => {
+        state.agentStatus = "loading";
+      })
+      .addCase(fetchGetAllAgent.fulfilled, (state, action) => {
+        state.agentStatus = "succeeded";
+        state.agent = action.payload;
+        console.log(state.agent);
+      })
+      .addCase(fetchGetAllAgent.rejected, (state, action) => {
+        state.agentStatus = "failed";
+        state.agentError = action.error.message;
+      })
+
       //for alladmin get method store mainUnit arr
       .addCase(fetchGetAlladmin.pending, (state) => {
         state.allAdminStatus = "loading";
@@ -168,6 +281,73 @@ const dataSlice = createSlice({
       .addCase(fetchGetAlladmin.rejected, (state, action) => {
         state.allAdminStatus = "failed";
         state.allAdminError = action.error.message;
+      })
+
+      //for post all user method store mainUnit arr
+      .addCase(postAlluser.pending, (state) => {
+        state.postUserStatus = "loading";
+      })
+      .addCase(postAlluser.fulfilled, (state, action) => {
+        state.postUserStatus = "succeeded";
+        state.postUser = action.payload;
+      })
+      .addCase(postAlluser.rejected, (state, action) => {
+        state.postUserStatus = "failed";
+        state.postUserError = action.error.message;
+      })
+
+      //for post all agent method store mainUnit arr
+      .addCase(fetchPostAllAgent.pending, (state) => {
+        state.postAgentStatus = "loading";
+      })
+      .addCase(fetchPostAllAgent.fulfilled, (state, action) => {
+        state.postAgentStatus = "succeeded";
+        state.postAgent = action.payload;
+      })
+      .addCase(fetchPostAllAgent.rejected, (state, action) => {
+        state.postAgentStatus = "failed";
+        state.postAgentError = action.error.message;
+      })
+
+      //for post all master method store mainUnit arr
+      .addCase(fetchPostAllMaster.pending, (state) => {
+        state.postMasterStatus = "loading";
+      })
+      .addCase(fetchPostAllMaster.fulfilled, (state, action) => {
+        state.postMasterStatus = "succeeded";
+        state.postMaster = action.payload;
+      })
+      .addCase(fetchPostAllMaster.rejected, (state, action) => {
+        state.postMasterStatus = "failed";
+        state.postMasterError = action.error.message;
+      })
+
+       //for post unit transfer admin to user method store mainUnit arr
+       .addCase(postTransferUnit.pending, (state) => {
+        state.postTransferStatus = "loading";
+      })
+      .addCase(postTransferUnit.fulfilled, (state, action) => {
+        state.postTransferStatus = "succeeded";
+        state.postTransfer = action.payload;
+      })
+      .addCase(postTransferUnit.rejected, (state, action) => {
+        state.postTransferStatus = "failed";
+        state.postTransferError = action.error.message;
+        console.log(state.postTransferError)
+      })
+       //for get unit transfer admin to user method store mainUnit arr
+       .addCase(fetchGetAllUnitTransfer.pending, (state) => {
+        state.getUnitTransferStatus = "loading";
+      })
+      .addCase(fetchGetAllUnitTransfer.fulfilled, (state, action) => {
+        state.getUnitTransferStatus = "succeeded";
+        state.getUnitTransfer = action.payload;
+        console.log(state.getUnitTransfer)
+      })
+      .addCase(fetchGetAllUnitTransfer.rejected, (state, action) => {
+        state.getUnitTransferStatus = "failed";
+        state.getUnitTransferError = action.error.message;
+        
       });
   },
 });
@@ -193,6 +373,31 @@ export const selectMainUnitHistoryStatus = (state) =>
 export const selectAllUser = (state) => state.data.allUser;
 export const selectAllUserStatus = (state) => state.data.allUserStatus;
 
+export const selectMaster = (state) => state.data.master;
+export const selectMasterStatus = (state) => state.data.masterStatus;
+
+export const selectAgents = (state) => state.data.agent;
+export const selectAgentStatus = (state) => state.data.agentStatus;
+
 export const selectAllAdmin = (state) => state.data.allAdmin;
 export const selectAllAdminStatus = (state) => state.data.allAdminStatus;
+
+//post user
+
+export const selectPostUser = (state) => state.data.postUser;
+export const selectPostUserStatus = (state) => state.data.postUserStatus;
+
+export const selectPostAgent = (state) => state.data.postAgent;
+export const selectPostAgentStatus = (state) => state.data.postAgentStatus;
+
+export const selectPostMaster = (state) => state.data.postMaster;
+export const selectPostMasterStatus = (state) => state.data.postMasterStatus;
+
+export const selectPostTransfer = (state) => state.data.postTransfer;
+export const selectPostTransferStatus = (state) => state.data.postTransferStatus;
+
+export const selectGetUnitTransfer = (state) => state.data.getUnitTransfer;
+export const selectGetUnitTransferStatus = (state) => state.data.getUnitTransferStatus;
+
+
 export default dataSlice.reducer;

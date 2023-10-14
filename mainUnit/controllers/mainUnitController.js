@@ -25,7 +25,7 @@ exports.createMainUnit = async (req, res) => {
 // Read Main Unit
 exports.getMainUnitValue = async (req, res) => {
   try {
-    const unitId = "652828b555d62366ddb1bc4c";
+    const unitId = "6527d1074eb2bfc53e025c9d";
 
     const query = MainUnit.findById(unitId);
     const mainUnitValue = await query;

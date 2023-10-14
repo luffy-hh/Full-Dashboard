@@ -1,0 +1,32 @@
+.game_cat_container{
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3.2rem;
+    align-items: center;
+    background-color: var(--text-white);
+    color: var(--text-white);
+    padding: 2.4rem 3.2rem;
+
+}
+
+.game_title{
+    display: block;
+    font-weight: 500;
+    margin-bottom: 2.4rem;
+}
+.game_cat_container li{
+    display: flex;
+    gap: 2.4rem;
+    align-items: center;
+    padding: 1.2rem 2.4rem;
+   
+    
+}
+
+.color_green{
+    background-color: var(--green-light);
+}
+.color_red{
+    background-color: var(--red-light);
+}

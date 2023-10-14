@@ -20,6 +20,9 @@ import DepositeRule from "../Pages/DepositeRulePage/DepositeRule";
 import LotterySetting from "../Pages/NestPage/LotterySetting/LotterySetting";
 import DepositeAcc from "../Pages/DepositeAccount/DepositeAcc";
 import DepoAndWithLimit from "../Pages/DepositeandWithdrawLimit/DepoAndWithLimit";
+import UnitHistoryTransfer from "../Pages/UnitHistoryTransfer/UnitHistoryTransfer";
+import GameCategories from "../Pages/Game Categories/GameCategories";
+import SupGameCategory from "../Pages/SupGameCategories/SupGameCategory";
 
 const route = [
   { id: 1, path: "createunit", route: <CreateUnit /> },
@@ -37,12 +40,15 @@ const route = [
   { id: 13, path: "lotterysetting", route: <LotterySetting /> },
   { id: 14, path: "depositeAcc", route: <DepositeAcc /> },
   { id: 15, path: "deposite-withdraw-limit", route: <DepoAndWithLimit /> },
+  {id:16,path: "unithistoryTransfer",route : <UnitHistoryTransfer />},
+  {id: 17, path : "game-categories",route : <GameCategories />},
+  {id:18, path: "sub-game-categories", route : <SupGameCategory />}
 ];
 function Admin() {
   const formshow = useSelector(selectSetShowForm);
   return (
     <Routes>
-      <Route path="/admin" element={true ? <Layout /> : <Login />}>
+      <Route path="/admin" element={formshow ? <Layout /> : <Login />}>
         <Route index element={<Home />} />
 
         {route.map((d) => (

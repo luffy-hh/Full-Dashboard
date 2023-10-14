@@ -10,19 +10,26 @@ import {
 import { selectlogInData } from "../../../../Feactures/apiSlice";
 
 import NormalButton from "../../../../Component/NormalButton";
+import moment from "moment-timezone";
+
 import { useSelector, useDispatch } from "react-redux";
+
 import GivetwoDZa from "../GivetwoDZa/GivetwoDZa";
 
 function OpenandCloseTime() {
   const [openTime, setOpenTime] = useState(new Date());
   const [closeTime, setCloseTime] = useState(new Date());
   const [limitAmount, setLimitAmount] = useState(0);
+  const [giveZa,setGiveZa] = useState(0);
 
   const patchData = {
-    startDate: openTime.toString(),
-    endDate: closeTime.toString(),
+    startDate: moment(openTime.toString()).tz("Asia/Yangon").format(),
+    endDate: moment(closeTime.toString()).tz("Asia/Yangon").format(),
     limitAmount: Number(limitAmount),
+    
   };
+
+  console.log(patchData)
 
   const dispatch = useDispatch();
   const logInData = useSelector(selectlogInData);
@@ -61,6 +68,17 @@ function OpenandCloseTime() {
             onChange={(e) => setLimitAmount(e.target.value)}
           />
         </div>
+        <div className={styles.time_input}>
+          <p>နစ်လုံးထီအလျော်</p>
+          <input
+            type="number"
+            className={`input ${styles.open_input}`}
+            placeholder="ယူနစ်"
+            value={giveZa}
+            onChange={(e) => setGiveZa(e.target.value)}
+          />
+        </div>
+        
         <NormalButton onClick={handlePost} className={styles.open_btn}>
           {twoDsettingStatus === "loading" ? "Saving" : "Save"}
         </NormalButton>

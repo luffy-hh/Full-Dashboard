@@ -3,7 +3,9 @@ import {
   selectMainUnitData,
   selectMainUnitStatus,
   fetchMainUnit,
+  selectlogInData,
 } from "../../Feactures/apiSlice";
+import { selectPostTransfer } from "../../Feactures/apiSlice";
 import styles from "./Navbar.module.css";
 import NormalButton from "../../Component/NormalButton";
 import { useSelector, useDispatch } from "react-redux";
@@ -11,14 +13,17 @@ import { useSelector, useDispatch } from "react-redux";
 function Navbar() {
   const mainUnitData = useSelector(selectMainUnitData);
   const mainUnitStatus = useSelector(selectMainUnitStatus);
+  const logInData = useSelector(selectlogInData);
+  const accessToken = logInData.token;
+  const postTransfer = useSelector(selectPostTransfer)
   // fetching main unit
   const dispatch = useDispatch();
   const amount =
-    mainUnitStatus === "succeeded" && mainUnitData.data.mainUnit[0].amount;
+    mainUnitStatus === "succeeded" && mainUnitData.data.mainUnitValue.mainUnit;
 
   useEffect(() => {
-    dispatch(fetchMainUnit("mainUnit"));
-  }, []);
+    dispatch(fetchMainUnit({ api: "mainunit", accessToken }));
+  }, [postTransfer]);
   return (
     <nav className={styles.navHead}>
       <div className={styles.myadmin}>

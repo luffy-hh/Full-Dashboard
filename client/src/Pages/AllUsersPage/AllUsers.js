@@ -8,18 +8,22 @@ import { userFun } from "../../Feactures/ShowHideSlice";
 import AllCreateForm from "../Component/AllCreateForm";
 import { userDatas } from "../../Feactures/AllUserPageSlice";
 import { useSelector, useDispatch } from "react-redux";
-import { userTabledata } from "../../Feactures/AllUserPageSlice";
-import { addUser } from "../../Feactures/AllUserPageSlice";
+
 import {
   selectAllUser,
   selectAllUserStatus,
   fetchGetAlluser,
   selectlogInData,
+  postAlluser,
+  selectPostUser,
+  selectPostUserStatus, selectPostTransfer
 } from "../../Feactures/apiSlice";
 import {
   selectAllUserQuery,
   setAllUserQuery,
 } from "../../Feactures/ShowHideSlice";
+
+import { selectDepositeAmount, setAmount,selectWithDrawAmount,setWithDrawAmount, selectCondition } from "../../Feactures/modalSlice";
 import styles from "./AllUsers.module.css";
 import Searchbar from "../../Component/Searchbar/Searchbar";
 import CustomBox from "../../Component/CustomBox/CustomBox";
@@ -27,22 +31,32 @@ function AllUsers() {
   const showForm = useSelector(userBool);
   const dispatch = useDispatch();
   const userData = useSelector(userDatas);
-  const useraddArr = useSelector(userTabledata);
+  const postUser = useSelector(selectPostUser);
+  const postTransfer = useSelector(selectPostTransfer)
+
   const allUser = useSelector(selectAllUser);
   const logInData = useSelector(selectlogInData);
   const allUserStatus = useSelector(selectAllUserStatus);
   const allUserQuery = useSelector(selectAllUserQuery);
+  const condition = useSelector(selectCondition)
+  const depositeAmount = useSelector(selectDepositeAmount);
+  const withDrawAmount = useSelector(selectWithDrawAmount);
   const accessToken = logInData.token;
 
   useEffect(() => {
-    dispatch(fetchGetAlluser({ api: "user", accessToken }));
-  }, []);
+    dispatch(fetchGetAlluser({ api: "user/User", accessToken }));
+  }, [postUser,postTransfer]);
 
-  const allUserArr = allUser && allUser.data.allUsers;
+  const allUserArr = allUser && allUser.data.userAll;
+
+  const modalComponent = condition === "DEP" ? <CustomBox title="Deposite Unit" amount = {depositeAmount} setAmount = {setAmount} /> : <CustomBox title= "Withdraw Unit" amount = {withDrawAmount} setAmount={setWithDrawAmount}/>
+
+  console.log(withDrawAmount)
+  console.log(depositeAmount)
 
   return (
     <div className={styles.allusesPage}>
-      <CustomBox />
+     
       {showForm ? (
         <div className={`box_shadow ${styles.allusers_container}`}>
           <Container className={styles.allusers_heading}>
@@ -62,13 +76,16 @@ function AllUsers() {
               query={allUserQuery}
             />
           )}
+
+           {modalComponent}
         </div>
       ) : (
         <AllCreateForm
           hideFun={userFun}
           data={userData}
-          dataArr={useraddArr}
-          addComm={addUser}
+          role="User"
+          postFun={postAlluser}
+          status={selectPostUserStatus}
         />
       )}
     </div>

@@ -1,0 +1,48 @@
+.unit_transfer_page{
+    overflow: hidden;
+}
+
+.transfer_title{
+    background-color: var(--text-white);
+    padding: 2.4rem 3.2rem;
+    font-weight: 500;
+}
+
+.transfer_container{
+    margin-top: 2.4rem;
+    height: 80vh;
+    overflow-y: auto;
+    padding-bottom: 7rem;
+    overflow-x: scroll;
+    min-width: 100rem;
+    
+
+}
+
+.table_transfer {
+    border-collapse: collapse;
+    background-color: var(--text-white);
+    color: var(--text);
+    min-width: 110rem;
+    border-radius: 8px;
+  }
+  
+  .table_transfer tbody tr td,
+  .table_transfer thead tr th {
+    text-align: center;
+    padding: 8px;
+    font-size: 1.6rem;
+  }
+  .table_transfer thead tr {
+    background-color: var(--blue-light);
+    color: var(--text-white);
+  }
+
+  .transfer_tr_style:nth-child(even) {
+    background-color: #dddddd;
+  }
+  
+  .transfer_tr_style td {
+    padding: 1.8rem 0 !important;
+  }
+  

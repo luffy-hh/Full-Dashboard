@@ -18,17 +18,17 @@ function CreateUnitForm() {
   const accessToken = logInData.token;
   const patchMainUnitStatus = useSelector(selectpatchMainUnitStatus);
 
-  const patchData = { amount: Number(newMainUnit), unit_status: "in" };
+  const patchData = { mainUnit: Number(newMainUnit), status: "in" };
 
   //  //patch main Unit update new Unit
   const addUnitHandle = (e) => {
     e.preventDefault();
-    dispatch(fetchPatchMainUnit({ api: "mainUnit", patchData, accessToken }));
+    dispatch(fetchPatchMainUnit({ api: "mainunit", patchData, accessToken }));
     setNewMainUnit("");
   };
 
   useEffect(() => {
-    dispatch(fetchMainUnit("mainUnit"));
+    dispatch(fetchMainUnit({ api: "mainunit", accessToken }));
   }, [patchMainUnitData]);
 
   return (

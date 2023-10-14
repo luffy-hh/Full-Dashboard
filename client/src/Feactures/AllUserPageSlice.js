@@ -1,32 +1,37 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const masterData = [
-  { id: "mastername", label: "Master Name" },
-  { id: "agentId", label: "Agent ID" },
-  { id: "password", label: "Password" },
-  { id: "comfirmpassword", label: "Comfrim Password" },
-  { id: "email", label: "Email" },
-  { id: "phoneno", label: "Phone No" },
-  { id: "unit", label: "Score (Unit)" },
-  { id: "currency", label: "Country" },
+  { id: "mastername", label: "Master Name", state: 1 },
+  { id: "email", label: "Email", state: 5 },
+  { id: "Master", label: "Role", state: 2 },
+  { id: "password", label: "Password", state: 3 },
+  { id: "comfirmpassword", label: "Comfrim Password", state: 4 },
+  
+];
+
+const agentData = [
+  { id: "agentname", label: "Agent Name", state: 1 },
+  { id: "email", label: "Email", state: 5 },
+  { id: "Agent", label: "Role", state: 2 },
+  { id: "password", label: "Password", state: 3 },
+  { id: "comfirmpassword", label: "Comfrim Password", state: 4 },
+ 
 ];
 
 const userData = [
-  { id: "username", label: "User Name" },
-  { id: "userId", label: "User ID" },
-  { id: "password", label: "Password" },
-  { id: "comfirmpassword", label: "Comfrim Password" },
-  { id: "email", label: "Email" },
-  { id: "phoneno", label: "Phone No" },
-  { id: "unit", label: "Score (Unit)" },
-  { id: "currency", label: "Country" },
+  { id: "username", label: "User Name", state: 1 },
+  { id: "email", label: "Email", state: 5 },
+  { id: "User", label: "Role", state: 2 },
+  { id: "password", label: "Password", state: 3 },
+  { id: "comfirmpassword", label: "Comfrim Password", state: 4 },
+  
 ];
 
 const adminData = [
   { id: "name", label: "Name", type: "text" },
   { id: "email", label: "Email", type: "email" },
   { id: "password", label: "Password", type: "password" },
-  { id: "role", label: "Role", type: "text" },
+  { id: "Admin", label: "Role", type: "text" },
 ];
 
 const commisionData = [
@@ -50,6 +55,7 @@ const initialState = {
   commisionListData: commisionList,
   user: userData,
   admin: adminData,
+  agent: agentData,
 };
 
 const AllUserPageSlice = createSlice({
@@ -78,6 +84,7 @@ export const { showInputFun, addCommision, addUser } = AllUserPageSlice.actions;
 
 export const masterDatas = (state) => state.userPageData.master;
 export const userDatas = (state) => state.userPageData.user;
+export const selectAgentData = (state) => state.userPageData.agent;
 export const adminDatas = (state) => state.userPageData.admin;
 export const commisionDatas = (state) => state.userPageData.commision;
 export const commisionListDatas = (state) =>

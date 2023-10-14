@@ -1,17 +1,10 @@
 import React from "react";
 import styles from "./UnitHistory.module.css";
 
-function Table({ data, query }) {
+function Table({ data }) {
   const unitListData =
     data &&
-    data
-      .filter((val) => {
-        if (val === "") {
-          return val;
-        } else if (val.userName.toLowerCase().includes(query.toLowerCase()))
-          return val;
-      })
-      .map((d, i) => (
+    data.map((d, i) => (
         <tr key={d._id} className={styles.unit_history_table_style}>
           <td>{i + 1}</td>
           <td>{d.amount}</td>

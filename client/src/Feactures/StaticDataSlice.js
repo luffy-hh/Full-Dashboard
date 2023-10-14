@@ -95,6 +95,11 @@ const lotteryRight = {
   clickNoList: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
 };
 
+const gameCategories = [{id:1,text:'slot',active:true},{id:2,text:'Finishing',active:true},{id:3,text:'LiveCasino',active:true},]
+
+const subCategories =[{id:1,text:'Thai 2D',active:true},{id:2,text:'Thai 3D',active:true},{id:3,text:'Dubai 2D',active:true},]
+
+
 const changetwoDpage = {
   showRecent: true,
   recentTwoDNo: twoDrecentData,
@@ -129,6 +134,8 @@ const initialState = {
   forTwoD: changetwoDpage,
   burmesGamePage,
   searchQuery,
+  gameCategories,
+  subCategories,
 };
 
 const StaticDataSlice = createSlice({
@@ -220,6 +227,14 @@ const StaticDataSlice = createSlice({
     setFilterUnitHistory: (state, action) => {
       state.searchQuery.filterUnitHistory.push(...action.payload);
     },
+
+    closeGameCategories : (state,action) =>{
+      state.gameCategories = state.gameCategories.map(d => d.id === action.payload ? {...d,active : !d.active} : d)
+    },
+
+    closeSupGameCategories : (state,action) =>{
+      state.subCategories = state.subCategories.map(d => d.id === action.payload ? {...d,active : !d.active} : d)
+    }
   },
 });
 
@@ -239,6 +254,8 @@ export const {
   setAddLotteryList,
   clickLotteryListHistory,
   setFilterUnitHistory,
+  closeGameCategories,
+  closeSupGameCategories
 } = StaticDataSlice.actions;
 
 //serach query
@@ -296,5 +313,10 @@ export const selectLotteryClickHistory = (state) =>
 //for burmese page ===========================================
 export const selectBurmesData = (state) =>
   state.staticData.burmesGamePage.burmesGame;
+
+//game Categories
+
+export const selectGameCategorie = (state) => state.staticData.gameCategories;
+export const selectSupGameCategorie = (state) => state.staticData.subCategories;
 
 export default StaticDataSlice.reducer;
