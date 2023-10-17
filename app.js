@@ -1,8 +1,12 @@
 const fs = require("fs");
 const express = require("express");
 const morgan = require("morgan");
-const cors = require("cors");
+const rateLimit = require("express-rate-limit");
+const helmet = require("helmet");
 const path = require("path");
+const cors = require("cors");
+const mongoSanitize = require("express-mongo-sanitize");
+const xss = require("xss-clean");
 
 const app = express();
 app.use(cors());
@@ -17,13 +21,29 @@ const gameCategoriesRouter = require("./gameCategories/routes/gameCategoryRoutes
 const gameSubCatRouter = require("./gameCategories/routes/gameSubCatRouters");
 const lotterySettingRouter = require("./lotterySetting/routes/lotterySettingRoutes");
 const container2DMorning12Router = require("./2dGames/routes/thai2DMorning12Routes");
+const lottery2dsale = require("./sales/routes/2dsaleroutes");
 
 // Middleware
+app.use(helmet());
+
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-app.use(express.json());
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000,
+  message: "Too many request from this IP, please try again in an hour!",
+});
+
+app.use("/api", limiter);
+
+app.use(express.json({ limit: "10kb" }));
+
+app.use(mongoSanitize());
+
+app.use(xss());
+
 app.use(express.static("static"));
 
 app.use((req, res, next) => {
@@ -67,6 +87,9 @@ app.use("/api/v1/lotterysetting", lotterySettingRouter);
 
 //Lottery Container
 app.use("/api/v1/thai2dmorning12", container2DMorning12Router);
+
+//Lottery Sale
+app.use("/api/v1/thai2dmorning12sale", lottery2dsale);
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "static/index.html"));

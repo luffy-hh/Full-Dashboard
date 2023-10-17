@@ -10,9 +10,12 @@ router
     userController.protect,
     userController.restrictTo("Admin", "User"),
     lottery2dController.read2dAllNum
-  );
-
-router.route("/:id").patch(lottery2dController.updateSingle2DNum);
-// .delete(lottery2dController.deleteSingle2DNum);
+  )
+  .patch(
+    userController.protect,
+    userController.restrictTo("Admin"),
+    lottery2dController.update2DNum
+  )
+  .post(lottery2dController.create2D);
 
 module.exports = router;

@@ -1,7 +1,7 @@
 const fs = require("fs");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
-const lottery2dNumber = require("../2DAll/models/thai2DLotteryMorning12Models");
+const gameCategoires = require("../gameCategories/models/gameCategoryModels");
 dotenv.config({ path: "./../config.env" });
 
 mongoose
@@ -14,12 +14,16 @@ mongoose
 
     const app = require("./../app");
 
-    const number2DAll = JSON.parse(fs.readFileSync("./2d.json", "utf-8"));
+    const gameCatAll = JSON.parse(
+      fs.readFileSync("./gameCategories.json", "utf-8")
+    );
+
+    console.log(gameCatAll);
 
     const importData = async () => {
       try {
-        for (const singleNum of number2DAll) {
-          const single2DNum = await lottery2dNumber.create(singleNum);
+        for (const gameCat of gameCatAll) {
+          const gameCatName = await gameCategoires.create(gameCat);
         }
         return "Successful Import Data"; // Return a success message
       } catch (err) {
@@ -30,7 +34,7 @@ mongoose
     // Delete All Data
     const deleteData = async () => {
       try {
-        await lottery2dNumber.deleteMany();
+        await gameCategoires.deleteMany();
         console.log("Data All Deleted");
       } catch (err) {
         return err.message; // Return the error message
@@ -55,5 +59,5 @@ mongoose
     })();
   });
 
-//Insert Data Command node import_2d.js --import
-//Delete Data Command node import_2d.js --delete
+//Insert Data Command node import_gameCategoires.js --import
+//Delete Data Command node import_gameCategoires.js --delete

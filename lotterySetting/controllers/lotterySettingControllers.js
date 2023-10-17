@@ -13,7 +13,7 @@ exports.createLotterySetting = async (req, res) => {
     const subCatName = subCatObj.subCatName;
 
     const currentTime = moment().tz("Asia/Yangon").format();
-    console.log(reqBody, subCatId, subCatName, "This is Line 11");
+
     const newLotteryRule = {
       subCategoryId: subCatId,
       subCategoryName: subCatName,
@@ -62,17 +62,31 @@ exports.updateLotterySettingById = async (req, res) => {
 
     const updateLotterySetting = await LotterySetting.findByIdAndUpdate(
       id,
-      updateData, // Corrected variable name
+      { $set: { ...updateData } }, // Corrected variable name
       {
         new: true,
         runValidators: true,
       }
     );
 
-    await Thai2DMorning12.updateMany(
-      { limitAmount: originalLimitAmount },
-      { limitAmount: updateData.limitAmount } // Corrected variable name
+    console.log(
+      "Original Limit Amount:",
+      originalLimitAmount,
+      originalLotterySetting
     );
+    console.log("Update Limit Amount:", updateData.limitAmount);
+    const morning = await Thai2DMorning12.find({});
+    const updatedMorning = await Thai2DMorning12.updateMany(
+      {},
+      {
+        $set: {
+          limitAmount: updateData.limitAmount,
+          lastAmount: updateData.limitAmount,
+        },
+      },
+      { new: true }
+    );
+    console.log(updatedMorning, morning, 86);
 
     res.status(200).json({
       status: "Success",
@@ -87,24 +101,3 @@ exports.updateLotterySettingById = async (req, res) => {
     });
   }
 };
-
-// const batchArr = await batch.find();
-// const batchNum = batchArr.length;
-// const currentDate = new Date();
-// const gameSubId = "65191e5394d5823f2a6e2031";
-// const gameSubObj = await gamesubcats.findById(gameSubId);
-// const gameSubName = gameSubObj.subcat_name;
-
-// const newBatchObj = {
-//   batchNumber: batchNum,
-//   gameName: gameSubName,
-//   subCategoryId: gameSubId,
-//   date: currentDate,
-// };
-
-// const newBatch = await batch.create(newBatchObj);
-// const updateStatus = await lotterySetting.findByIdAndUpdate(
-//   "65242bfd81844c97fb089e66",
-//   { status: true }
-// );
-// console.log();
