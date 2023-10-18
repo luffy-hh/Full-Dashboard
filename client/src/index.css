@@ -41,13 +41,17 @@ body {
 .btn {
   outline: none;
   border: none;
-  border-radius: 8px;
+  border-radius: 5px;
   cursor: pointer;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
   transition: all 0.3s;
 }
 .btn:hover {
   box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+.btn_hover:hover {
+  background-color: var(--blue);
 }
 
 a {
@@ -74,6 +78,20 @@ a {
   border-radius: 8px;
   font-size: 1.8rem;
   padding: 1rem 1.2rem;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 100px;
+  /* Width of the entire scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--blue-light); /* Color of the draggable part */
+  border-radius: 10px; /* Rounded corners */
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* Color of the track */
 }
 
 .hide_scroll::-webkit-scrollbar {
@@ -115,6 +133,11 @@ a {
 .table_d_tbody_tr {
   padding: 1rem 0;
 }
+
+.table_d_tbody_tr td {
+  padding: 1.8rem 0 !important;
+}
+
 .table_d_lastTime {
   display: flex;
   justify-content: center;
@@ -137,6 +160,8 @@ a {
   color: var(--text);
   width: 100vw;
   padding: 2.4rem 3.2rem;
+  margin-left: 28rem;
+  min-height: 100vh;
 }
 
 .modalStyle {
@@ -154,11 +179,9 @@ a {
   display: none;
 }
 
-.ant-modal-footer button{
-  
+.ant-modal-footer button {
   font-size: 1.8rem;
   height: 4rem;
   width: 10rem;
   font-family: "Roboto";
-  
 }

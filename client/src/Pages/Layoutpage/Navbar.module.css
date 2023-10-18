@@ -6,6 +6,7 @@
   position: sticky;
   top: 0;
   z-index: 999;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
 .navHead {
   list-style: none;
@@ -18,10 +19,11 @@
 }
 .myadmin {
   width: 18rem;
-  background-color: #4b5563;
+  background-color: #1f2937;
   height: 7rem;
   display: flex;
   align-items: center;
+  color: var(--text-white);
 }
 .myadmin h3 {
   padding-left: 3.2rem;

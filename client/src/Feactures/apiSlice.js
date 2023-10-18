@@ -4,7 +4,7 @@ import {
   postDatas,
   patchDatas,
   fetchDataWithToken,
-  postDataWithToken
+  postDataWithToken,
 } from "../app/api";
 
 export const fetchMainUnit = createAsyncThunk(
@@ -100,12 +100,11 @@ export const fetchPostAllMaster = createAsyncThunk(
 
 export const postTransferUnit = createAsyncThunk(
   "data/postTransferUnit",
-  async ({ api, postData,accessToken }) => {
-    const data = await postDataWithToken(api, postData,accessToken);
+  async ({ api, postData, accessToken }) => {
+    const data = await postDataWithToken(api, postData, accessToken);
     return data;
   }
 );
-
 
 export const fetchGetAllUnitTransfer = createAsyncThunk(
   "data/fetchGetAllUnitTransfer",
@@ -115,10 +114,9 @@ export const fetchGetAllUnitTransfer = createAsyncThunk(
   }
 );
 
-
-
 const initialState = {
   logInData: {},
+  currentLoginUser: "",
   token: "",
   logInStatus: "idle",
   logInError: null,
@@ -154,12 +152,12 @@ const initialState = {
   postMaster: {},
   postMasterStatus: "idle",
   postMasterError: null,
-  postTransfer : {},
-  postTransferStatus : 'idle',
-  postTransferError : null,
+  postTransfer: {},
+  postTransferStatus: "idle",
+  postTransferError: null,
   getUnitTransfer: null,
-  getUnitTransferStatus : "idle",
-  getUnitTransferError : null,
+  getUnitTransferStatus: "idle",
+  getUnitTransferError: null,
 };
 
 const dataSlice = createSlice({
@@ -180,6 +178,7 @@ const dataSlice = createSlice({
         state.status = "succeeded";
         state.logInData = action.payload;
         state.formshow = true;
+        state.currentLoginUser = state.logInData.user.role;
       })
       .addCase(fetchPostLogin.rejected, (state, action) => {
         state.logInStatus = "failed";
@@ -263,7 +262,6 @@ const dataSlice = createSlice({
       .addCase(fetchGetAllAgent.fulfilled, (state, action) => {
         state.agentStatus = "succeeded";
         state.agent = action.payload;
-        console.log(state.agent);
       })
       .addCase(fetchGetAllAgent.rejected, (state, action) => {
         state.agentStatus = "failed";
@@ -316,14 +314,15 @@ const dataSlice = createSlice({
       .addCase(fetchPostAllMaster.fulfilled, (state, action) => {
         state.postMasterStatus = "succeeded";
         state.postMaster = action.payload;
+        console.log(state.postMaster);
       })
       .addCase(fetchPostAllMaster.rejected, (state, action) => {
         state.postMasterStatus = "failed";
         state.postMasterError = action.error.message;
       })
 
-       //for post unit transfer admin to user method store mainUnit arr
-       .addCase(postTransferUnit.pending, (state) => {
+      //for post unit transfer admin to user method store mainUnit arr
+      .addCase(postTransferUnit.pending, (state) => {
         state.postTransferStatus = "loading";
       })
       .addCase(postTransferUnit.fulfilled, (state, action) => {
@@ -333,26 +332,29 @@ const dataSlice = createSlice({
       .addCase(postTransferUnit.rejected, (state, action) => {
         state.postTransferStatus = "failed";
         state.postTransferError = action.error.message;
-        console.log(state.postTransferError)
+        console.log(state.postTransferError);
       })
-       //for get unit transfer admin to user method store mainUnit arr
-       .addCase(fetchGetAllUnitTransfer.pending, (state) => {
+      //for get unit transfer admin to user method store mainUnit arr
+      .addCase(fetchGetAllUnitTransfer.pending, (state) => {
         state.getUnitTransferStatus = "loading";
       })
       .addCase(fetchGetAllUnitTransfer.fulfilled, (state, action) => {
         state.getUnitTransferStatus = "succeeded";
         state.getUnitTransfer = action.payload;
-        console.log(state.getUnitTransfer)
+        console.log(state.getUnitTransfer);
       })
       .addCase(fetchGetAllUnitTransfer.rejected, (state, action) => {
         state.getUnitTransferStatus = "failed";
         state.getUnitTransferError = action.error.message;
-        
       });
   },
 });
 
 export const { alreadyLogin } = dataSlice.actions;
+
+//logINDATA
+
+export const selectcurrentLoginUser = (state) => state.data.currentLoginUser;
 
 export const selectlogInData = (state) => state.data.logInData;
 export const selectlogInStatus = (state) => state.data.logInStatus;
@@ -394,10 +396,11 @@ export const selectPostMaster = (state) => state.data.postMaster;
 export const selectPostMasterStatus = (state) => state.data.postMasterStatus;
 
 export const selectPostTransfer = (state) => state.data.postTransfer;
-export const selectPostTransferStatus = (state) => state.data.postTransferStatus;
+export const selectPostTransferStatus = (state) =>
+  state.data.postTransferStatus;
 
 export const selectGetUnitTransfer = (state) => state.data.getUnitTransfer;
-export const selectGetUnitTransferStatus = (state) => state.data.getUnitTransferStatus;
-
+export const selectGetUnitTransferStatus = (state) =>
+  state.data.getUnitTransferStatus;
 
 export default dataSlice.reducer;

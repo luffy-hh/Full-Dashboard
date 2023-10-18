@@ -2,6 +2,7 @@
   color: var(--text);
   background-color: var(--blue-white);
   width: 100vw;
+  margin-left: 28rem;
   padding: 2.4rem 3.2rem;
 }
 .allusers_container {

@@ -1,10 +1,14 @@
 aside {
   width: 28rem;
   background-color: #1f2937;
-  min-height: 95vh;
+  height: 95vh;
+  position: fixed;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 3.2rem;
 }
 .sidebar_main {
-  padding: 2.4rem 0 2.4rem 2.4rem;
+  padding: 2.4rem 0 2.4rem 3.2rem;
 }
 .sidebar_main,
 .sidebar_main li ul {
@@ -56,6 +60,11 @@ aside ul li .sidebarItem:hover .sidebarTitle a {
   display: flex;
   align-items: center;
   gap: 1.6rem;
+  padding-left: 1.2rem;
+ 
+}
+.dropDownItem span{
+  font-size: 1.5rem !important;
 }
 
 .doubleNav {

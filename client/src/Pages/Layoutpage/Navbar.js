@@ -15,7 +15,7 @@ function Navbar() {
   const mainUnitStatus = useSelector(selectMainUnitStatus);
   const logInData = useSelector(selectlogInData);
   const accessToken = logInData.token;
-  const postTransfer = useSelector(selectPostTransfer)
+  const postTransfer = useSelector(selectPostTransfer);
   // fetching main unit
   const dispatch = useDispatch();
   const amount =
@@ -24,8 +24,9 @@ function Navbar() {
   useEffect(() => {
     dispatch(fetchMainUnit({ api: "mainunit", accessToken }));
   }, [postTransfer]);
+
   return (
-    <nav className={styles.navHead}>
+    <nav className={`${styles.navHead}`}>
       <div className={styles.myadmin}>
         <h3>MyAdmin</h3>
       </div>

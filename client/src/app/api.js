@@ -1,4 +1,4 @@
-const BASE_URL = "https://gamevegas.online/api/v1/";
+const BASE_URL = "https://gamevegas.online/api/v1/"; //
 
 export const fetchData = async (api) => {
   try {
@@ -20,7 +20,6 @@ export const postDatas = async (api, postData) => {
       body: JSON.stringify(postData),
     });
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
     throw new Error("Error posting data");

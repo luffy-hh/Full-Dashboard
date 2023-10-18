@@ -4,6 +4,7 @@
   color: var(--text);
   padding: 2.4rem 3.2rem;
   overflow: hidden;
+  margin-left: 28rem;
 }
 .lucky_number_container {
   padding: 2.4rem 3.2rem;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Sidebar.module.css";
 import { BsFillGridFill } from "react-icons/bs";
 import { BsPersonCircle } from "react-icons/bs";
@@ -18,8 +18,11 @@ import { AiFillSetting } from "react-icons/ai";
 import { PiNumberSquareSevenBold } from "react-icons/pi";
 import { RiBankCardFill } from "react-icons/ri";
 import { BiDollarCircle } from "react-icons/bi";
+import { BiSolidReport } from "react-icons/bi";
 import NestSidebar from "./NestSidebar";
 import { NavLink } from "react-router-dom";
+import { selectcurrentLoginUser } from "../../Feactures/apiSlice";
+import { useSelector } from "react-redux";
 
 const sData = [
   {
@@ -45,11 +48,11 @@ const sData = [
         route: "unithistory",
         icon: <BsFillPersonFill />,
       },
-      {title: "Unit History Transfer",
-       route: "unithistoryTransfer",
-      icon: <BsFillPersonFill />,
-    
-    }
+      {
+        title: "Unit History Transfer",
+        route: "unithistoryTransfer",
+        icon: <BsFillPersonFill />,
+      },
     ],
   },
   {
@@ -121,23 +124,18 @@ const sData = [
     ],
   },
   {
-    title: "GCS",
+    title: "Game Setting",
     route: null,
     icon: <AiFillSetting />,
     iconRight: <BsChevronRight />,
     show: false,
     subNav: [
       {
-        title : "Game Categories",
-        route : "game-categories",
-        icon : <AiFillSetting />
+        title: "Game Categories",
+        route: "game-categories",
+        icon: <AiFillSetting />,
       },
-      {
-        title : "Sub Categories",
-        route : "sub-game-categories",
-        icon : <AiFillSetting />
-      },  
-     
+
       {
         title: "Lottery",
         route: "lotterysetting",
@@ -155,7 +153,6 @@ const sData = [
           },
         ],
       },
-      
     ],
   },
   {
@@ -199,10 +196,93 @@ const sData = [
     icon: <BsFillGridFill />,
     show: false,
   },
+  {
+    title: "2D Report",
+    route: null,
+    icon: <BiSolidReport />,
+    iconRight: <BsChevronRight />,
+    show: false,
+    subNav: [
+      {
+        title: "Thai 2D 12am",
+        route: "thai2D-12am",
+        icon: <BsPeople />,
+      },
+    ],
+  },
+  {
+    title: "Win/Lose Report",
+    route: null,
+    icon: <BiSolidReport />,
+    iconRight: <BsChevronRight />,
+    show: false,
+    subNav: [
+      {
+        title: "Master Report",
+        route: "master-report",
+        icon: <BiSolidReport />,
+      },
+      {
+        title: "User Report",
+        route: "user-report",
+        icon: <BiSolidReport />,
+      },
+    ],
+  },
+];
+
+const masterData = [
+  {
+    title: "Master Dashboard",
+    route: "/master",
+    icon: <BsFillGridFill />,
+    show: false,
+  },
+  {
+    title: "Users",
+    route: null,
+    icon: <BsPersonCircle />,
+    iconRight: <BsChevronRight />,
+    show: false,
+    subNav: [
+      {
+        title: "All Users",
+        route: "allusers",
+        icon: <BsPeople />,
+      },
+      {
+        title: "All Agents",
+        route: "allagents",
+        icon: <BsPeople />,
+      },
+      {
+        title: "All Affiliate Agents",
+        route: "allaffiliateagents",
+        icon: <BsPeople />,
+      },
+      {
+        title: "All Master",
+        route: "allmaster",
+        icon: <BsPeople />,
+      },
+      {
+        title: "All Admins",
+        route: "alladmins",
+        icon: <BsPeople />,
+      },
+    ],
+  },
 ];
 
 function Sidebar() {
-  const [data, setData] = useState(sData);
+  const currentLoginUser = useSelector(selectcurrentLoginUser);
+
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    currentLoginUser !== "" &&
+      ((currentLoginUser === "Admin" && setData(sData)) ||
+        (currentLoginUser === "Master" && setData(masterData)));
+  }, [currentLoginUser]);
 
   const dropDown = (item) => {
     const perfect = data.map((d) =>

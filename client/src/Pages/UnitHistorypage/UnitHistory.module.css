@@ -3,6 +3,7 @@
   width: 100%;
   padding: 2.4rem 3.2rem 9.6rem;
   color: var(--text);
+  margin-left: 28rem;
 }
 
 .unitHistory_container {
@@ -54,4 +55,11 @@
 
 .unit_history_table_style:nth-child(even) {
   background-color: #dddddd;
+}
+.color_green{
+  color: var(--green-light);
+}
+
+.color_red{
+  color: var(--red-light);
 }
