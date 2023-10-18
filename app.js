@@ -24,7 +24,7 @@ const container2DMorning12Router = require("./2dGames/routes/thai2DMorning12Rout
 const lottery2dsale = require("./sales/routes/2dsaleroutes");
 
 // Middleware
-app.use(helmet());
+// app.use(helmet());
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
@@ -62,9 +62,9 @@ app.use("/api", limiter);
 
 app.use(express.json({ limit: "10kb" }));
 
-app.use(mongoSanitize());
+// app.use(mongoSanitize());
 
-app.use(xss());
+// app.use(xss());
 
 app.use(express.static("static"));
 
