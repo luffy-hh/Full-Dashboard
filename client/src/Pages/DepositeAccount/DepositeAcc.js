@@ -6,7 +6,7 @@ function DepositeAcc() {
   return (
     <div className={`page_style ${styles.deposite_page}`}>
       <div className={`box_shadow ${styles.deposite_container}`}>
-        <p>Deposite Account</p>
+        <p>Deposit Account</p>
         <NormalButton className={styles.deposite_create_btn}>
           Create
         </NormalButton>
