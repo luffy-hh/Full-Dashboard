@@ -20,6 +20,7 @@ export const postDatas = async (api, postData) => {
       body: JSON.stringify(postData),
     });
     const data = await response.json();
+    console.log(data);
     return data;
   } catch (error) {
     throw new Error("Error posting data");
