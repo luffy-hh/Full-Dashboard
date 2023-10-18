@@ -22,9 +22,15 @@ import DepositeAcc from "../Pages/DepositeAccount/DepositeAcc";
 import DepoAndWithLimit from "../Pages/DepositeandWithdrawLimit/DepoAndWithLimit";
 import UnitHistoryTransfer from "../Pages/UnitHistoryTransfer/UnitHistoryTransfer";
 import GameCategories from "../Pages/Game Categories/GameCategories";
-import SupGameCategory from "../Pages/SupGameCategories/SupGameCategory";
+import ThaiTwoD12am from "../Pages/TwoDReport/ThaiTwoD12am";
 
-const route = [
+import { selectcurrentLoginUser } from "../Feactures/apiSlice";
+import MasterReport from "../Pages/WinLoseReport/MasterReport";
+import UserReport from "../Pages/WinLoseReport/UserReport";
+import UserReportTable from "../Pages/WinLoseReport/Component/UserReportTable";
+
+const admin = [
+  { id: 0, path: "admin", route: <Home /> },
   { id: 1, path: "createunit", route: <CreateUnit /> },
   { id: 2, path: "unithistory", route: <UnitHistory /> },
   { id: 3, path: "allusers", route: <AllUsers /> },
@@ -40,18 +46,37 @@ const route = [
   { id: 13, path: "lotterysetting", route: <LotterySetting /> },
   { id: 14, path: "depositeAcc", route: <DepositeAcc /> },
   { id: 15, path: "deposite-withdraw-limit", route: <DepoAndWithLimit /> },
-  {id:16,path: "unithistoryTransfer",route : <UnitHistoryTransfer />},
-  {id: 17, path : "game-categories",route : <GameCategories />},
-  {id:18, path: "sub-game-categories", route : <SupGameCategory />}
+  { id: 16, path: "unithistoryTransfer", route: <UnitHistoryTransfer /> },
+  { id: 17, path: "game-categories", route: <GameCategories /> },
+  { id: 18, path: "thai2D-12am", route: <ThaiTwoD12am /> },
+  { id: 19, path: "master-report", route: <MasterReport /> },
+  { id: 20, path: "user-report", route: <UserReport /> },
+  { id: 21, path: "user-report/:userId", route: <UserReportTable /> },
+];
+
+const master = [
+  { id: 0, path: "master", route: <Home /> },
+  { id: 3, path: "allusers", route: <AllUsers /> }, //new componetn
+  { id: 9, path: "luckynumber", route: <LuckyNumber /> }, //disable create btn
+  { id: 10, path: "typesOfDeposite", route: <DepositeType /> },
+  { id: 11, path: "differentOfDeposite", route: <DepositeDiff /> },
+  { id: 12, path: "depositeRule", route: <DepositeRule /> },
+  { id: 14, path: "depositeAcc", route: <DepositeAcc /> },
+  { id: 15, path: "deposite-withdraw-limit", route: <DepoAndWithLimit /> },
+  { id: 16, path: "unithistoryTransfer", route: <UnitHistoryTransfer /> },
 ];
 function Admin() {
   const formshow = useSelector(selectSetShowForm);
+  const currentLoginUser = useSelector(selectcurrentLoginUser);
+
+  const currentLogin =
+    (currentLoginUser === "Admin" && admin) ||
+    (currentLoginUser === "Master" && master) ||
+    [];
   return (
     <Routes>
       <Route path="/admin" element={formshow ? <Layout /> : <Login />}>
-        <Route index element={<Home />} />
-
-        {route.map((d) => (
+        {currentLogin?.map((d) => (
           <Route key={d.id} path={d.path} element={d.route} />
         ))}
       </Route>

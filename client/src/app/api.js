@@ -1,4 +1,4 @@
-const BASE_URL = "https://gamevegas.online/api/v1/";
+const BASE_URL = "https://gamevegas.online/api/v1/"; //
 
 export const fetchData = async (api) => {
   try {
@@ -10,37 +10,14 @@ export const fetchData = async (api) => {
   }
 };
 
-// export const postDatas = async (api, postData) => {
-//   try {
-//     const response = await fetch(`${BASE_URL}${api}`, {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify(postData),
-//     });
-//     const data = await response.json();
-//     return data;
-//   } catch (error) {
-//     throw new Error("Error posting data");
-//   }
-// };
 export const postDatas = async (api, postData) => {
   try {
-    const response = await fetch("/api/v1/proxy", {
+    const response = await fetch(`${BASE_URL}${api}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        url: api, // The external API URL
-        method: "POST", // Or "GET" or any other method
-        body: postData, // Your data to send to the external API
-        headers: {
-          "Content-Type": "application/json",
-          // Add any additional headers if needed
-        },
-      }),
+      body: JSON.stringify(postData),
     });
     const data = await response.json();
     return data;

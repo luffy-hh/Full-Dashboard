@@ -1,0 +1,33 @@
+.lucky_no_cate {
+  margin-bottom: 3.2rem;
+}
+
+.lucky_no_cate ul {
+  list-style: none;
+  display: flex;
+  gap: 3.2rem;
+}
+
+.icons {
+  font-size: 5rem;
+  color: var(--text-white);
+}
+
+.lucky_no_cate ul li {
+  width: 25rem;
+  padding: 3.2rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2.4rem;
+  cursor: pointer;
+  border-radius: 8px;
+  color: var(--text-white);
+  background-color: var(--blue-light);
+  transition: all 0.3s;
+}
+
+.lucky_no_cate ul li:hover {
+  background-color: var(--blue);
+}

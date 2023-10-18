@@ -6,6 +6,7 @@ import StaticDataReducer from "../Feactures/StaticDataSlice";
 import dataReducer from "../Feactures/apiSlice";
 import adminTwodReducer from "../Feactures/adminTwodSlice";
 import modalReducer from "../Feactures/modalSlice";
+import winOrLoseReducer from "../Feactures/winOrLoseSlice";
 export const store = configureStore({
   reducer: {
     shows: ShowHideReducer,
@@ -15,5 +16,6 @@ export const store = configureStore({
     adminTwoD: adminTwodReducer,
     twoDapi: twoDapiReducer,
     modal: modalReducer,
+    winOrLose : winOrLoseReducer,
   },
 });

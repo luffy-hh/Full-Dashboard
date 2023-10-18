@@ -1,26 +1,38 @@
 .open_close_time {
   padding-top: 2.4rem;
 }
+.open_close_flex{
+  display: flex;
+   gap: 2.4rem;
+}
+.show_data{
+  display: flex;
+  flex-direction: column;
+  gap: 4.8rem;
+  margin-top: 4.8rem;
+  padding: 2.4rem 3.2rem;
+  width: 40rem;
+  height: 30rem;
+}
 
 .time_input_box {
   padding: 3.2rem 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 3.2rem;
+  gap: 1rem;
   margin-top: 4.8rem;
   margin-bottom: 9.6rem;
+  width: 55rem;
 }
 
 .time_input {
   display: flex;
   gap: 1.2rem;
-
   align-items: center;
+  justify-content: space-between;
+  padding: 2.4rem 3.2rem; 
 }
-.time_input p {
-  width: 25rem;
-}
+
 
 .open_input {
   border: 1px solid #888;
@@ -41,7 +53,7 @@
   font-weight: 500;
   transition: all 0.3s;
   margin-top: 1.2rem;
-  justify-self: flex-start;
+  align-self: center;
 }
 
 .open_btn:hover {

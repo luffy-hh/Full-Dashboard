@@ -27,3 +27,49 @@
 .form input:focus {
   outline: 1px solid var(--blue);
 }
+
+.sup_game_cat {
+  font-size: 1.8rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.4rem;
+  padding: 2.4rem 0 4.8rem;
+}
+.sup_game {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2.4rem 3.2rem;
+  gap: 4.8rem;
+  color: var(--text-white);
+}
+
+.lucky_no {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4.8rem;
+  flex-direction: column;
+  padding: 3.2rem 0;
+  color: var(--text);
+}
+
+.lucky_no select,
+.lucky_no input {
+  font-size: 1.6rem;
+  padding: 8px 1.6rem;
+  outline: none;
+  border: 1px solid #999;
+  width: 60%;
+}
+.lucky_no select:focus,
+.lucky_no input:focus {
+  outline: 2px solid var(--blue);
+}
+
+.color_green {
+  background-color: var(--green-light);
+}
+.color_red {
+  background-color: var(--red-light);
+}

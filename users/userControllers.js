@@ -127,11 +127,22 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
 
   //2. ရှိတယ်ဆိုတဲ့ Token ကရော တစ်ကယ် မှန်/မမှန် စစ်ပါတယ်။
-  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+  const decoded = await jwt.verify(
+    token,
+    process.env.JWT_SECRET,
+    (err, decoded) => {
+      if (err) {
+        console.error("Jwt verify error", err);
+      } else {
+        console.log("decoded Jwt", decoded);
+      }
+    }
+  );
 
   //3. Token မှန်တယ်ဆိုရင်တောင် Token ပိုင်ရှင် User က ရှိနေသေးတာ ဟုတ်/မဟုတ် ကိုစစ်ပါတယ်။
-  const curentUser = await User.findById(decoded.id);
-  if (!curentUser) {
+  const currentUser = await User.findById(decoded.id);
+  console.log(currentUser);
+  if (!currentUser) {
     return next(
       new AppError(
         "The user belonging to this token does no longer exist.",

@@ -3,6 +3,7 @@
   color: var(--text);
   width: 100vw;
   padding: 2.4rem 3.2rem;
+  margin-left: 28rem;
 }
 .all_admin_container {
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;

@@ -6,6 +6,7 @@ import {
   selectMainUnitHistory,
   selectMainUnitHistoryStatus,
   selectlogInData,
+  selectpatchMainUnitData
 } from "../../Feactures/apiSlice";
 
 
@@ -18,25 +19,27 @@ function UnitHistory() {
  
 
   const mainUnitHistory = useSelector(selectMainUnitHistory);
-  const mainUnitHistoryStatus = useSelector(selectMainUnitHistoryStatus);
+  const mainUnitHistoryStatus = useSelector(selectMainUnitHistoryStatus); 
+
+  const patchMainUnitData = useSelector(selectpatchMainUnitData);
   const logInData = useSelector(selectlogInData);
   const data =
     mainUnitHistoryStatus === "succeeded" &&
     mainUnitHistory.data.mainUnitHistories;
 
   const accessToken = logInData.token;
-  console.log(mainUnitHistoryStatus === "loading");
+ 
 
   useEffect(() => {
     dispatch(
       fetchGetMainUnitHistory({ api: "mainunithistories", accessToken })
     );
-  }, []);
+  }, [patchMainUnitData]);
   return (
     <div className={styles.unitHistoryPage}>
       <div className={styles.unitHistory_container}>
         <div className={styles.unit_history_header}>
-          <h3>UnitHistory</h3>
+          <h3>Create UnitHistory</h3>
          
         </div>
 

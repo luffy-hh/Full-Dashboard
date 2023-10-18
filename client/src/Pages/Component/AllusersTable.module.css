@@ -1,7 +1,7 @@
 .allusers_table_container {
   height: 80vh;
   overflow: auto;
-  padding-bottom: 7rem;
+  padding-bottom: 3.2rem;
 }
 .allusers_heading {
   display: flex;
