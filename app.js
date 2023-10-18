@@ -29,7 +29,29 @@ app.use(helmet());
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
+// Add this route before your existing routes
+// app.use("/api/v1/proxy", async (req, res) => {
+//   const { url, method, body, headers } = req.body;
 
+//   try {
+//     const response = await fetch(url, {
+//       method,
+//       headers,
+//       body: JSON.stringify(body),
+//     });
+//     const data = await response.json();
+//     res.json(data);
+//   } catch (error) {
+//     res.status(500).json({ error: "Error proxying the request" });
+//   }
+// });
+app.use((req, res, next) => {
+  res.setHeader(
+    "Content-Security-Policy",
+    "connect-src 'self' https://gamevegas.online"
+  );
+  next();
+});
 const limiter = rateLimit({
   max: 100,
   windowMs: 60 * 60 * 1000,
@@ -43,22 +65,7 @@ app.use(express.json({ limit: "10kb" }));
 app.use(mongoSanitize());
 
 app.use(xss());
-// Add this route before your existing routes
-app.use("/api/v1/proxy", async (req, res) => {
-  const { url, method, body, headers } = req.body;
 
-  try {
-    const response = await fetch(url, {
-      method,
-      headers,
-      body: JSON.stringify(body),
-    });
-    const data = await response.json();
-    res.json(data);
-  } catch (error) {
-    res.status(500).json({ error: "Error proxying the request" });
-  }
-});
 app.use(express.static("static"));
 
 app.use((req, res, next) => {
