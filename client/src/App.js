@@ -6,7 +6,7 @@ import Game from "./RouteComponent/Game";
 
 function App() {
   return (
-    <BrowserRouter basename="/myadmin">
+    <BrowserRouter>
       <Admin />
       <Game />
     </BrowserRouter>
