@@ -18,7 +18,7 @@ function AllReportMainTable({ selectReport, selectUser, page }) {
 
   const tableData = selectUser.map((d, i) => (
     <>
-      <tr className={styles.win_lose_color} key={i}>
+      <tr className={styles.win_lose_color} key={d.id}>
         {page === "master" ? (
           <td
             className={styles.agent_name_dorpdown}
@@ -58,7 +58,7 @@ function AllReportMainTable({ selectReport, selectUser, page }) {
       </tr>
       {d?.action &&
         d.gameCat.map((d, i) => (
-          <tr key={`nesttr_${i}`} className={styles.win_lose_color}>
+          <tr key={i} className={styles.win_lose_color}>
             <td>{d.name}</td>
             <td>{d.bet}</td>
             <td>{d.totalWin}</td>

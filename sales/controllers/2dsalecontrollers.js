@@ -8,7 +8,9 @@ exports.create2DsaleDoc = async (req, res) => {
   try {
     console.log(req.body);
     const mainUnitId = "6527d1074eb2bfc53e025c9d";
-    const selectedSetting = await lotterySetting.findById(req.body.subCatId);
+    const selectedSetting = await lotterySetting.findOne({
+      subCategoryId: req.body.subCatId,
+    });
     const mainUnit = await MainUnit.findById(mainUnitId);
     const All2D12AM = await Thai2DNum12AM.find({});
     const currentTime = new Date();

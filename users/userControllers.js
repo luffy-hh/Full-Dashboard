@@ -127,20 +127,22 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
 
   //2. ရှိတယ်ဆိုတဲ့ Token ကရော တစ်ကယ် မှန်/မမှန် စစ်ပါတယ်။
-  const decoded = await jwt.verify(
+  const decodedFromToken = await jwt.verify(
     token,
     process.env.JWT_SECRET,
     (err, decoded) => {
       if (err) {
-        console.error("Jwt verify error", err);
+        throw new Error("Token is invalid");
       } else {
-        console.log("decoded Jwt", decoded);
+        console.log("decoded Jwt", decoded.id);
+        return decoded;
       }
     }
   );
+  console.log(decodedFromToken);
 
   //3. Token မှန်တယ်ဆိုရင်တောင် Token ပိုင်ရှင် User က ရှိနေသေးတာ ဟုတ်/မဟုတ် ကိုစစ်ပါတယ်။
-  const currentUser = await User.findById(decoded.id);
+  const currentUser = await User.findById(decodedFromToken.id);
   console.log(currentUser);
   if (!currentUser) {
     return next(
@@ -152,13 +154,13 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
 
   //4. Token ယူပြီးမှ User က Password ချိန်းလိုက်တဲ့အခြေအနေကိုလဲ စစ်ထားဖို့လိုပါတယ်။
-  if (curentUser.changedPasswordAfter(decoded.iat)) {
+  if (currentUser.changedPasswordAfter(decodedFromToken.iat)) {
     return next(
       new AppError("User Recently Change Password ! Please Login Again", 401)
     );
   }
 
-  req.user = curentUser;
+  req.user = currentUser;
   next();
 });
 

@@ -30,7 +30,7 @@ import UserReport from "../Pages/WinLoseReport/UserReport";
 import UserReportTable from "../Pages/WinLoseReport/Component/UserReportTable";
 
 const admin = [
-  { id: 0, path: "admin", route: <Home /> },
+  { id: 0, path: "/admin", route: <Home /> },
   { id: 1, path: "createunit", route: <CreateUnit /> },
   { id: 2, path: "unithistory", route: <UnitHistory /> },
   { id: 3, path: "allusers", route: <AllUsers /> },

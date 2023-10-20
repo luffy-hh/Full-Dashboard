@@ -46,6 +46,15 @@ export const fetGetSubGameCat = createAsyncThunk(
   }
 );
 
+export const fetchFilterPatchLotterySetting = createAsyncThunk(
+  "data/fetchFilterPatchLotterySetting",
+  async ({ api, patchData, accessToken }) => {
+    const data = await patchDatas(api, patchData, accessToken);
+    console.log(data);
+    return data;
+  }
+);
+
 const initialState = {
   allTwoDNo: {},
   allTwoDNoStatus: "idle",
@@ -64,6 +73,9 @@ const initialState = {
   getSupGameCatError: null,
   clickSubName: "",
   fliterSupGameArr: [],
+  filterEditGame: {},
+  filterEditGameStatus: "idle",
+  filterEditGameError: null,
 };
 const twoDapiSlice = createSlice({
   name: "twoDapi",
@@ -109,7 +121,7 @@ const twoDapiSlice = createSlice({
         state.allTwoDNoError = action.error.message;
       })
 
-      //patch  slottery setting no uisng get mehtod
+      //patch lottery setting start time end time called by game setting 2d general component
       .addCase(fetchPatchLotterySetting.pending, (state) => {
         state.patchLotterySettingStatus = "loading";
       })
@@ -160,6 +172,20 @@ const twoDapiSlice = createSlice({
       .addCase(fetGetSubGameCat.rejected, (state, action) => {
         state.getSupGameCatStatus = "failed";
         state.getSupGameCatError = action.error.message;
+      })
+
+      //fetchFilterPatchLotterySetting Edit subgamecategory filter
+      .addCase(fetchFilterPatchLotterySetting.pending, (state) => {
+        state.filterEditGameStatus = "loading";
+      })
+      .addCase(fetchFilterPatchLotterySetting.fulfilled, (state, action) => {
+        state.filterEditGameStatus = "succeeded";
+        state.filterEditGame = action.payload;
+        console.log(state.filterEditGame);
+      })
+      .addCase(fetchFilterPatchLotterySetting.rejected, (state, action) => {
+        state.filterEditGameStatus = "failed";
+        state.filterEditGameError = action.error.message;
       });
   },
 });

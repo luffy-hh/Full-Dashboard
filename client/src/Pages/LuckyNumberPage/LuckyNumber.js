@@ -12,7 +12,7 @@ function LuckyNumber() {
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
   return (
-    <div className={styles.lucky_number_page}>
+    <div className="page_style">
       <LuckyNoBox />
       {!show && <LuckyNoCategory show={show} setShow={setShow} />}
       {show && (

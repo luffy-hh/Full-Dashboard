@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { act } from "react-dom/test-utils";
+
 
 const twodHead = [
   { text: "ထိပ်စီးနံပါတ်ဂဏန်း", active: false, id: 1 },
