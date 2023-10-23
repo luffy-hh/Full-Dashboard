@@ -1,5 +1,6 @@
 const fs = require("fs");
 const express = require("express");
+const dotenv = require("dotenv").config();
 const morgan = require("morgan");
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
@@ -21,7 +22,9 @@ const gameCategoriesRouter = require("./gameCategories/routes/gameCategoryRoutes
 const gameSubCatRouter = require("./gameCategories/routes/gameSubCatRouters");
 const lotterySettingRouter = require("./lotterySetting/routes/lotterySettingRoutes");
 const container2DMorning12Router = require("./2dGames/routes/thai2DMorning12Routes");
+const luckyNumbers2dRouter = require("./2DLuckyNumber/routes/2DLuckyNumberRoutes");
 const lottery2dsale = require("./sales/routes/2dsaleroutes");
+const thai2DBettingHistoriesRouter = require("./2DBettingHistories/routes/2DBettingHistoriesRoute");
 
 // Middleware
 // app.use(helmet());
@@ -92,6 +95,9 @@ app.use("/api/v1/userProfile", userProfileRouter);
 // Main Unit
 app.use("/api/v1/mainunit", mainUnitRouter);
 
+//Lucky Numbers
+app.use("/api/v1/luckyNumbers", luckyNumbers2dRouter);
+
 // Main  Unit History
 app.use("/api/v1/mainunithistories", mainUnitHistories);
 
@@ -113,7 +119,11 @@ app.use("/api/v1/thai2dmorning12", container2DMorning12Router);
 //Lottery Sale
 app.use("/api/v1/thai2dmorning12sale", lottery2dsale);
 
+//2D Betting Histories
+app.use("/api/v1/thai2dhistories", thai2DBettingHistoriesRouter);
+
+const root = path.join(__dirname, "client");
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "static/index.html"));
+  res.sendFile("index.html", { root });
 });
 module.exports = app;

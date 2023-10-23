@@ -139,7 +139,7 @@ exports.protect = catchAsync(async (req, res, next) => {
       }
     }
   );
-  console.log(decodedFromToken);
+  console.log(token, decodedFromToken);
 
   //3. Token မှန်တယ်ဆိုရင်တောင် Token ပိုင်ရှင် User က ရှိနေသေးတာ ဟုတ်/မဟုတ် ကိုစစ်ပါတယ်။
   const currentUser = await User.findById(decodedFromToken.id);

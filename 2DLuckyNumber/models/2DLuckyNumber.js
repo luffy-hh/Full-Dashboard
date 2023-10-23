@@ -7,7 +7,6 @@ const TwoDLuckySchema = mongoose.Schema(
       ref: "gameSubCats",
       require: true,
     },
-    name: { type: String, require: true },
     date: { type: Date, require: true },
   },
   { timestamps: true }

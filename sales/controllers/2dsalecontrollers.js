@@ -1,9 +1,13 @@
 const Thai2DSale = require("../models/2dsalemodels");
+const BettingHistories = require("../../2DBettingHistories/models/2DBettingHistoriesModel");
 const Thai2DNum12AM = require("../../2DAll/models/thai2DLotteryMorning12Models");
 const lotterySetting = require("../../lotterySetting/models/lotterySettingModels");
 const User = require("../../users/userModels");
 const MainUnit = require("../../mainUnit/models/mainUnitModel");
 const moment = require("moment-timezone");
+const {
+  createHistories,
+} = require("../../2DBettingHistories/controllers/2DBettingHistoriesControllers");
 exports.create2DsaleDoc = async (req, res) => {
   try {
     console.log(req.body);
@@ -26,7 +30,7 @@ exports.create2DsaleDoc = async (req, res) => {
       currentTime.getTime() < endDate.getTime()
     );
 
-    const user = await User.findById(req.body.userId);
+    const user = await User.findById(req.user.id);
 
     if (
       startDate.getTime() <= currentTime.getTime() &&
@@ -47,7 +51,7 @@ exports.create2DsaleDoc = async (req, res) => {
 
       const totalSaleAmount = playedNumbers
         .map((num) => num.amount)
-        .reduce((acr, cur) => acr + cur, 0);
+        .reduce((acr, cur) => Number(acr) + Number(cur), 0);
       console.log(
         user,
         user.unit,
@@ -59,19 +63,22 @@ exports.create2DsaleDoc = async (req, res) => {
         const updatedMainUnit = await MainUnit.findByIdAndUpdate(mainUnitId, {
           mainUnit: mainUnit.mainUnit + totalSaleAmount,
         });
-        const updatedUser = await User.findByIdAndUpdate(reqBody.userId, {
+        const updatedUser = await User.findByIdAndUpdate(user._id, {
           unit: user.unit - totalSaleAmount,
         });
         // Loop through the saleNumberArr and create Thai2DSale documents
         for (const sale of playedNumbers) {
           let number = sale.number;
           const updatedDocument = await Thai2DNum12AM.findOne({ number });
-          const newThai2DSale = new Thai2DSale({
+          const obj = {
             subCatId: reqBody.subCatId,
-            userId: reqBody.userId,
+            userId: user.id,
             number: number,
             amount: sale.amount,
-          });
+          };
+          const newThai2DSale = new Thai2DSale({ ...obj });
+          const createBettingHistory = await createHistories(obj);
+          console.log(createBettingHistory);
 
           // Save the new Thai2DSale document to the database
           await newThai2DSale.save();

@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:3000/api/v1/";
+const BASE_URL = "http://165.22.58.206/api/v1/";
 
 export const fetchData = async (api) => {
   try {
