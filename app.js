@@ -56,7 +56,7 @@ app.use((req, res, next) => {
   next();
 });
 const limiter = rateLimit({
-  max: 100,
+  max: 100000,
   windowMs: 60 * 60 * 1000,
   message: "Too many request from this IP, please try again in an hour!",
 });
@@ -122,8 +122,8 @@ app.use("/api/v1/thai2dmorning12sale", lottery2dsale);
 //2D Betting Histories
 app.use("/api/v1/thai2dhistories", thai2DBettingHistoriesRouter);
 
-const root = path.join(__dirname, "client");
-app.get("*", (req, res) => {
-  res.sendFile("index.html", { root });
-});
+//const root = path.join(__dirname, "client");
+//app.get("*", (req, res) => {
+//res.sendFile("index.html", { root });
+//});
 module.exports = app;
