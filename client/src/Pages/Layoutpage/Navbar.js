@@ -18,8 +18,7 @@ function Navbar() {
   const postTransfer = useSelector(selectPostTransfer);
   // fetching main unit
   const dispatch = useDispatch();
-  const amount =
-    mainUnitStatus === "succeeded" && mainUnitData.data.mainUnitValue.mainUnit;
+  const amount = mainUnitData?.data.mainUnitValue.mainUnit;
 
   useEffect(() => {
     dispatch(fetchMainUnit({ api: "mainunit", accessToken }));

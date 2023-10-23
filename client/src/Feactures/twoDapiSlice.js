@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   fetchData,
-  postDatas,
+  postDataWithToken,
   patchDatas,
   fetchDataWithToken,
 } from "../app/api";
@@ -50,7 +50,23 @@ export const fetchFilterPatchLotterySetting = createAsyncThunk(
   "data/fetchFilterPatchLotterySetting",
   async ({ api, patchData, accessToken }) => {
     const data = await patchDatas(api, patchData, accessToken);
+    return data;
+  }
+);
+
+export const fetGetLuckyNoHistory = createAsyncThunk(
+  "data/fetGetLuckyNoHistory",
+  async ({ api, accessToken }) => {
+    const data = await fetchDataWithToken(api, accessToken);
     console.log(data);
+    return data;
+  }
+);
+
+export const postLuckyNo = createAsyncThunk(
+  "data/postLuckyNo",
+  async ({ api, postData, accessToken }) => {
+    const data = await postDataWithToken(api, postData, accessToken);
     return data;
   }
 );
@@ -76,6 +92,14 @@ const initialState = {
   filterEditGame: {},
   filterEditGameStatus: "idle",
   filterEditGameError: null,
+  allTwoDArr: [],
+  filterTwoDArr: [], //this is dymanic this array will be 3d or 2d depending on ID
+  luckyNo: null,
+  luckyNoStatus: "idle",
+  luckyNoError: null,
+  postLuckyNoData: {},
+  postLuckyNoDataStatus: "idle",
+  postLuckyNoDataError: null,
 };
 const twoDapiSlice = createSlice({
   name: "twoDapi",
@@ -98,12 +122,18 @@ const twoDapiSlice = createSlice({
       );
     },
 
+    setFilterTwoDArr: (state, action) => {
+      state.filterTwoDArr = state.getSupGameCat.data.allSubGameCat.filter(
+        (d) => d.catName_id === action.payload.id
+      );
+
+      console.log("filter", state.filterTwoDArr);
+    },
+
     closeSupGameCat: (state, action) => {
       state.fliterSupGameArr = state.fliterSupGameArr.map((d) =>
         d._id === action.payload ? { ...d, status: !d.status } : d
       );
-
-      console.log(state.fliterSupGameArr);
     },
   },
   extraReducers: (builder) => {
@@ -156,6 +186,10 @@ const twoDapiSlice = createSlice({
       .addCase(fetGetGameCat.fulfilled, (state, action) => {
         state.getGameCatStatus = "succeeded";
         state.getGameCat = action.payload;
+        console.log(state.getGameCat);
+        state.allTwoDArr = state.getGameCat.data.allGameCategory.filter(
+          (d) => d.cat_name === "2D Lottries" || d.cat_name === "3D Lottires"
+        );
       })
       .addCase(fetGetGameCat.rejected, (state, action) => {
         state.getGameCatStatus = "failed";
@@ -168,6 +202,7 @@ const twoDapiSlice = createSlice({
       .addCase(fetGetSubGameCat.fulfilled, (state, action) => {
         state.getSupGameCatStatus = "succeeded";
         state.getSupGameCat = action.payload;
+        console.log(state.getSupGameCat);
       })
       .addCase(fetGetSubGameCat.rejected, (state, action) => {
         state.getSupGameCatStatus = "failed";
@@ -186,6 +221,34 @@ const twoDapiSlice = createSlice({
       .addCase(fetchFilterPatchLotterySetting.rejected, (state, action) => {
         state.filterEditGameStatus = "failed";
         state.filterEditGameError = action.error.message;
+      })
+
+      //get luckyy NO history category  this will be go 2D report page table3
+      .addCase(fetGetLuckyNoHistory.pending, (state) => {
+        state.luckyNoStatus = "loading";
+      })
+      .addCase(fetGetLuckyNoHistory.fulfilled, (state, action) => {
+        state.luckyNoStatus = "succeeded";
+        state.luckyNo = action.payload;
+        console.log(state.getSupGameCat);
+      })
+      .addCase(fetGetLuckyNoHistory.rejected, (state, action) => {
+        state.luckyNoStatus = "failed";
+        state.luckyNoError = action.error.message;
+      })
+
+      //post lucky No for lucky number  page
+      .addCase(postLuckyNo.pending, (state) => {
+        state.postLuckyNoDataStatus = "loading";
+      })
+      .addCase(postLuckyNo.fulfilled, (state, action) => {
+        state.postLuckyNoDataStatus = "succeeded";
+        state.postLuckyNoData = action.payload;
+        console.log(state.postLuckyNoData);
+      })
+      .addCase(postLuckyNo.rejected, (state, action) => {
+        state.postLuckyNoDataStatus = "failed";
+        state.postLuckyNoDataError = action.error.message;
       });
   },
 });
@@ -195,6 +258,7 @@ export const {
   closeSupGameCat,
   setClickSubName,
   setFilterSupGameArr,
+  setFilterTwoDArr,
 } = twoDapiSlice.actions;
 
 export const selectAllTwoDNo = (state) => state.twoDapi.allTwoDNo;
@@ -218,5 +282,10 @@ export const selectSubGameStatus = (state) => state.twoDapi.getSupGameCatStatus;
 export const selectClickSubName = (state) => state.twoDapi.clickSubName;
 
 export const selectFilterSubGameArr = (state) => state.twoDapi.fliterSupGameArr;
+export const selectAllTwoDArr = (state) => state.twoDapi.allTwoDArr;
+export const selectfilterTwoDArr = (state) => state.twoDapi.filterTwoDArr;
+
+export const selectLuckyNo = (state) => state.twoDapi.luckyNo;
+// export const selectPostLuckyNo = (state) => state.twoDapi.postLuckyNoData;
 
 export default twoDapiSlice.reducer;

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Sidebar.module.css";
+import { useDispatch } from "react-redux";
 import { BsFillGridFill } from "react-icons/bs";
 import { BsPersonCircle } from "react-icons/bs";
 import { BsFillPersonLinesFill } from "react-icons/bs";
@@ -21,8 +22,9 @@ import { BiDollarCircle } from "react-icons/bi";
 import { BiSolidReport } from "react-icons/bi";
 import NestSidebar from "./NestSidebar";
 import { NavLink } from "react-router-dom";
-import { selectcurrentLoginUser } from "../../Feactures/apiSlice";
+import { selectcurrentLoginUser, setFormShow } from "../../Feactures/apiSlice";
 import { useSelector } from "react-redux";
+import NormalButton from "../../Component/NormalButton";
 
 const sData = [
   {
@@ -276,6 +278,11 @@ const masterData = [
 
 function Sidebar() {
   const currentLoginUser = useSelector(selectcurrentLoginUser);
+  const dispatch = useDispatch();
+
+  const logOut = () => {
+    dispatch(setFormShow(false));
+  };
 
   const [data, setData] = useState([]);
   useEffect(() => {
@@ -319,6 +326,15 @@ function Sidebar() {
             ) : null}
           </li>
         ))}
+
+        <li>
+          <NormalButton
+            onClick={logOut}
+            className={`btn ${styles.log_out_btn}`}
+          >
+            Log Out
+          </NormalButton>
+        </li>
       </ul>
     </aside>
   );

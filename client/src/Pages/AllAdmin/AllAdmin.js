@@ -30,7 +30,7 @@ function AllAdmin() {
     dispatch(fetchGetAlladmin({ api: "user/Admin", accessToken }));
   }, []);
 
-  const adminArr = allAdmin && allAdmin.data.userAll;
+  const adminArr = allAdmin?.data.userAll;
 
   return (
     <div className={styles.all_admin_page}>

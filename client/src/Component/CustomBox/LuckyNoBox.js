@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "antd";
-import { selectOptionLucky } from "../../Feactures/adminTwodSlice";
+
 import { selectModalLucky, setModalLucky } from "../../Feactures/modalSlice";
 import {
   selectLuckyCate,
@@ -12,20 +12,26 @@ import {
 
 import styles from "./CustomBox.module.css";
 
-function LuckyNoBox() {
-  const optionLucky = useSelector(selectOptionLucky);
+function LuckyNoBox({ category, postFun, accessToken }) {
   const modalLucky = useSelector(selectModalLucky);
   const lukyCate = useSelector(selectLuckyCate);
   const luckyNo = useSelector(selectLuckyNo);
 
   const dispatch = useDispatch();
 
-  const options = optionLucky.map((d, i) => (
-    <option key={i} value={d}>
-      {d}
+  const options = category?.map((d, i) => (
+    <option key={i} value={d._id}>
+      {d.subCatName}
     </option>
   ));
+
+  const postData = { luckyNumber: luckyNo, subCatId: lukyCate };
+  console.log(postData);
+
   const clickHandle = () => {
+    dispatch(
+      postFun({ api: "luckyNumbers", postData, accessToken: accessToken })
+    );
     dispatch(setModalLucky(false));
   };
 
@@ -47,6 +53,8 @@ function LuckyNoBox() {
             value={lukyCate}
             onChange={(e) => dispatch(setLuckyCate(e.target.value))}
           >
+            <option value="">Choose 2D SubCategories</option>
+
             {options}
           </select>
           <input

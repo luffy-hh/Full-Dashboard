@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import Container from "../../Component/Container";
+import { selectlogInData } from "../../Feactures/apiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "../../Component/Button";
 import styles from "./AllCreateForm.module.css";
 import CancelHot from "../../GameApp/Comoponent/HotNumber/CancelHot";
 
 function AllCreateForm({ hideFun, data, role, postFun, status }) {
+  const logInData = useSelector(selectlogInData);
+
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setComfirmPassword] = useState("");
@@ -21,7 +24,7 @@ function AllCreateForm({ hideFun, data, role, postFun, status }) {
           value: name,
           setValue: setName,
         };
-        case 5:
+      case 5:
         return {
           ...item,
           value: email,
@@ -39,7 +42,7 @@ function AllCreateForm({ hideFun, data, role, postFun, status }) {
           value: confirmPassword,
           setValue: setComfirmPassword,
         };
-      
+
       default:
         return item;
     }
@@ -58,7 +61,14 @@ function AllCreateForm({ hideFun, data, role, postFun, status }) {
     </Container>
   ));
 
-  const postData = { name, email, password, confirmPassword, role: role };
+  const postData = {
+    name,
+    email,
+    password,
+    confirmPassword,
+    role: role,
+    uplineId: logInData.user._id,
+  };
   console.log(postData);
   const postHandle = (e, postFun) => {
     e.preventDefault();

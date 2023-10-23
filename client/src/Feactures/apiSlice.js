@@ -94,6 +94,7 @@ export const fetchPostAllMaster = createAsyncThunk(
   async ({ api, postData }) => {
     const data = await postDatas(api, postData);
 
+    console.log(data);
     return data;
   }
 );
@@ -166,6 +167,10 @@ const dataSlice = createSlice({
   reducers: {
     alreadyLogin: (state) => {
       state.formshow = true;
+    },
+
+    setFormShow: (state, action) => {
+      state.formshow = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -350,7 +355,7 @@ const dataSlice = createSlice({
   },
 });
 
-export const { alreadyLogin } = dataSlice.actions;
+export const { alreadyLogin, setFormShow } = dataSlice.actions;
 
 //logINDATA
 

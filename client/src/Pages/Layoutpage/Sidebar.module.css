@@ -61,9 +61,8 @@ aside ul li .sidebarItem:hover .sidebarTitle a {
   align-items: center;
   gap: 1.6rem;
   padding-left: 1.2rem;
- 
 }
-.dropDownItem span{
+.dropDownItem span {
   font-size: 1.5rem !important;
 }
 
@@ -100,4 +99,16 @@ aside ul li .sidebarItem:hover .sidebarTitle a {
 
 .activeLink {
   color: var(--primary);
+}
+
+.log_out_btn {
+  text-align: center;
+  width: 80%;
+  padding: 8px 0;
+  font-size: 1.6rem;
+  background-color: var(--blue-light);
+  color: var(--text-white);
+}
+.log_out_btn:hover {
+  background-color: var(--blue);
 }

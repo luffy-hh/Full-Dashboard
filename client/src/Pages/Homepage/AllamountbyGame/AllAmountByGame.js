@@ -7,7 +7,7 @@ function AllAmountByGame() {
   const chartGameData = useSelector(selectChartGameData);
 
   const list = chartGameData.map((d) => (
-    <li>
+    <li key={d.game}>
       <span>{d.game}</span>
       <span>{d.win}</span>
     </li>

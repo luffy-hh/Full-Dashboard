@@ -25,6 +25,9 @@ const container2DMorning12Router = require("./2dGames/routes/thai2DMorning12Rout
 const luckyNumbers2dRouter = require("./2DLuckyNumber/routes/2DLuckyNumberRoutes");
 const lottery2dsale = require("./sales/routes/2dsaleroutes");
 const thai2DBettingHistoriesRouter = require("./2DBettingHistories/routes/2DBettingHistoriesRoute");
+const banktype = require("./bank/routes/bankTypeRoutes");
+const bankName = require("./bank/routes/bankNameRoutes");
+const bankAccount = require("./bank/routes/bankAccRoutes");
 
 // Middleware
 // app.use(helmet());
@@ -32,22 +35,7 @@ const thai2DBettingHistoriesRouter = require("./2DBettingHistories/routes/2DBett
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
-// Add this route before your existing routes
-// app.use("/api/v1/proxy", async (req, res) => {
-//   const { url, method, body, headers } = req.body;
 
-//   try {
-//     const response = await fetch(url, {
-//       method,
-//       headers,
-//       body: JSON.stringify(body),
-//     });
-//     const data = await response.json();
-//     res.json(data);
-//   } catch (error) {
-//     res.status(500).json({ error: "Error proxying the request" });
-//   }
-// });
 app.use((req, res, next) => {
   res.setHeader(
     "Content-Security-Policy",
@@ -68,8 +56,8 @@ app.use(express.json({ limit: "10kb" }));
 // app.use(mongoSanitize());
 
 // app.use(xss());
-
-app.use(express.static("static"));
+app.use(express.static("public"));
+app.use(express.static("client"));
 
 app.use((req, res, next) => {
   console.log("This is Test Middleware");
@@ -91,6 +79,11 @@ app.use("/api/v1/userRole", userRoleRouter);
 // User Register
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/userProfile", userProfileRouter);
+
+//Bank Account
+app.use("/api/v1/banktype", banktype);
+app.use("/api/v1/bankName", bankName);
+app.use("/api/v1/bankAcc", bankAccount);
 
 // Main Unit
 app.use("/api/v1/mainunit", mainUnitRouter);

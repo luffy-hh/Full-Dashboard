@@ -38,7 +38,7 @@ function AllMaster() {
     dispatch(fetchGetAllMaster({ api: "user/Master", accessToken }));
   }, [postMaster]);
 
-  const allmasterArr = master && master.data.userAll;
+  const allmasterArr = master?.data.userAll;
 
   return (
     <div className={styles.allusesPage}>

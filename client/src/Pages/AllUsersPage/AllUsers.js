@@ -16,14 +16,21 @@ import {
   selectlogInData,
   postAlluser,
   selectPostUser,
-  selectPostUserStatus, selectPostTransfer
+  selectPostUserStatus,
+  selectPostTransfer,
 } from "../../Feactures/apiSlice";
 import {
   selectAllUserQuery,
   setAllUserQuery,
 } from "../../Feactures/ShowHideSlice";
 
-import { selectDepositeAmount, setAmount,selectWithDrawAmount,setWithDrawAmount, selectCondition } from "../../Feactures/modalSlice";
+import {
+  selectDepositeAmount,
+  setAmount,
+  selectWithDrawAmount,
+  setWithDrawAmount,
+  selectCondition,
+} from "../../Feactures/modalSlice";
 import styles from "./AllUsers.module.css";
 import Searchbar from "../../Component/Searchbar/Searchbar";
 import CustomBox from "../../Component/CustomBox/CustomBox";
@@ -32,31 +39,43 @@ function AllUsers() {
   const dispatch = useDispatch();
   const userData = useSelector(userDatas);
   const postUser = useSelector(selectPostUser);
-  const postTransfer = useSelector(selectPostTransfer)
+  const postTransfer = useSelector(selectPostTransfer);
 
   const allUser = useSelector(selectAllUser);
   const logInData = useSelector(selectlogInData);
   const allUserStatus = useSelector(selectAllUserStatus);
   const allUserQuery = useSelector(selectAllUserQuery);
-  const condition = useSelector(selectCondition)
+  const condition = useSelector(selectCondition);
   const depositeAmount = useSelector(selectDepositeAmount);
   const withDrawAmount = useSelector(selectWithDrawAmount);
   const accessToken = logInData.token;
 
   useEffect(() => {
     dispatch(fetchGetAlluser({ api: "user/User", accessToken }));
-  }, [postUser,postTransfer]);
+  }, [postUser, postTransfer]);
 
-  const allUserArr = allUser && allUser.data.userAll;
+  const allUserArr = allUser?.data.userAll;
 
-  const modalComponent = condition === "DEP" ? <CustomBox title="Deposite Unit" amount = {depositeAmount} setAmount = {setAmount} /> : <CustomBox title= "Withdraw Unit" amount = {withDrawAmount} setAmount={setWithDrawAmount}/>
+  const modalComponent =
+    condition === "DEP" ? (
+      <CustomBox
+        title="Deposite Unit"
+        amount={depositeAmount}
+        setAmount={setAmount}
+      />
+    ) : (
+      <CustomBox
+        title="Withdraw Unit"
+        amount={withDrawAmount}
+        setAmount={setWithDrawAmount}
+      />
+    );
 
-  console.log(withDrawAmount)
-  console.log(depositeAmount)
+  console.log(withDrawAmount);
+  console.log(depositeAmount);
 
   return (
     <div className={styles.allusesPage}>
-     
       {showForm ? (
         <div className={`box_shadow ${styles.allusers_container}`}>
           <Container className={styles.allusers_heading}>
@@ -77,7 +96,7 @@ function AllUsers() {
             />
           )}
 
-           {modalComponent}
+          {modalComponent}
         </div>
       ) : (
         <AllCreateForm

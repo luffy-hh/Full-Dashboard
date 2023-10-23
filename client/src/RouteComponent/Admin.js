@@ -28,6 +28,7 @@ import { selectcurrentLoginUser } from "../Feactures/apiSlice";
 import MasterReport from "../Pages/WinLoseReport/MasterReport";
 import UserReport from "../Pages/WinLoseReport/UserReport";
 import UserReportTable from "../Pages/WinLoseReport/Component/UserReportTable";
+import MasterHome from "../MasterLogin/MasterHomePge/MasterHome";
 
 const admin = [
   { id: 0, path: "/admin", route: <Home /> },
@@ -54,17 +55,7 @@ const admin = [
   { id: 21, path: "user-report/:userId", route: <UserReportTable /> },
 ];
 
-const master = [
-  { id: 0, path: "master", route: <Home /> },
-  { id: 3, path: "allusers", route: <AllUsers /> }, //new componetn
-  { id: 9, path: "luckynumber", route: <LuckyNumber /> }, //disable create btn
-  { id: 10, path: "typesOfDeposite", route: <DepositeType /> },
-  { id: 11, path: "differentOfDeposite", route: <DepositeDiff /> },
-  { id: 12, path: "depositeRule", route: <DepositeRule /> },
-  { id: 14, path: "depositeAcc", route: <DepositeAcc /> },
-  { id: 15, path: "deposite-withdraw-limit", route: <DepoAndWithLimit /> },
-  { id: 16, path: "unithistoryTransfer", route: <UnitHistoryTransfer /> },
-];
+const master = [{ id: 0, path: "master", route: <MasterHome /> }];
 function Admin() {
   const formshow = useSelector(selectSetShowForm);
   const currentLoginUser = useSelector(selectcurrentLoginUser);
@@ -73,6 +64,7 @@ function Admin() {
     (currentLoginUser === "Admin" && admin) ||
     (currentLoginUser === "Master" && master) ||
     [];
+
   return (
     <Routes>
       <Route path="/admin" element={formshow ? <Layout /> : <Login />}>

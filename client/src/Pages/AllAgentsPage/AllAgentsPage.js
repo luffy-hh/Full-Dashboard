@@ -39,7 +39,7 @@ function AllAgentsPage() {
     dispatch(fetchGetAllAgent({ api: "user/Agent", accessToken }));
   }, [postAgent]);
 
-  const agentArr = agents && agents.data.userAll;
+  const agentArr = agents?.data.userAll;
   return (
     <div className={styles.allusesPage}>
       {agent ? (
