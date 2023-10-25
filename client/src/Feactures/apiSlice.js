@@ -94,6 +94,7 @@ export const fetchPostAllMaster = createAsyncThunk(
   async ({ api, postData }) => {
     const data = await postDatas(api, postData);
 
+    console.log(data);
     return data;
   }
 );
@@ -121,6 +122,8 @@ const initialState = {
   logInStatus: "idle",
   logInError: null,
   formshow: false,
+  masterLayoutShow: false,
+  agentLayoutShow: false,
   mainUnitData: null,
   allMainUnitAmount: null,
   mainUnitStatus: "idle",
@@ -167,6 +170,18 @@ const dataSlice = createSlice({
     alreadyLogin: (state) => {
       state.formshow = true;
     },
+
+    setFormShow: (state, action) => {
+      state.formshow = action.payload;
+    },
+
+    setMasterLayoutShow: (state, action) => {
+      state.masterLayoutShow = action.payload;
+    },
+
+    setAgentLayoutShow: (state, action) => {
+      state.agentLayoutShow = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -177,8 +192,16 @@ const dataSlice = createSlice({
       .addCase(fetchPostLogin.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.logInData = action.payload;
-        state.formshow = true;
         state.currentLoginUser = state.logInData.user.role;
+        if (state.currentLoginUser === "Admin") {
+          state.formshow = true;
+        } else if (state.currentLoginUser === "Master") {
+          state.masterLayoutShow = true;
+        } else if (state.currentLoginUser === "Agent") {
+          state.agentLayoutShow = true;
+        } else {
+          return;
+        }
       })
       .addCase(fetchPostLogin.rejected, (state, action) => {
         state.logInStatus = "failed";
@@ -300,7 +323,9 @@ const dataSlice = createSlice({
       })
       .addCase(fetchPostAllAgent.fulfilled, (state, action) => {
         state.postAgentStatus = "succeeded";
+
         state.postAgent = action.payload;
+        console.log("AGENT", state.postAgent);
       })
       .addCase(fetchPostAllAgent.rejected, (state, action) => {
         state.postAgentStatus = "failed";
@@ -350,7 +375,8 @@ const dataSlice = createSlice({
   },
 });
 
-export const { alreadyLogin } = dataSlice.actions;
+export const { alreadyLogin, setFormShow, setMasterLayoutShow } =
+  dataSlice.actions;
 
 //logINDATA
 
@@ -359,6 +385,8 @@ export const selectcurrentLoginUser = (state) => state.data.currentLoginUser;
 export const selectlogInData = (state) => state.data.logInData;
 export const selectlogInStatus = (state) => state.data.logInStatus;
 export const selectSetShowForm = (state) => state.data.formshow;
+export const selectAgentLayoutShow = (state) => state.data.agentLayoutShow;
+export const selectMasterLayoutShow = (state) => state.data.masterLayoutShow;
 export const selectToken = (state) => state.data.token;
 
 export const selectMainUnitData = (state) => state.data.mainUnitData;

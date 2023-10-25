@@ -74,19 +74,21 @@ exports.updateLotterySettingById = async (req, res) => {
       originalLimitAmount,
       originalLotterySetting
     );
-    console.log("Update Limit Amount:", updateData.limitAmount);
-    const morning = await Thai2DMorning12.find({});
-    const updatedMorning = await Thai2DMorning12.updateMany(
-      {},
-      {
-        $set: {
-          limitAmount: updateData.limitAmount,
-          lastAmount: updateData.limitAmount,
+    // console.log("Update Limit Amount:", updateData?.limitAmount);
+    if (updateData.limitAmount !== undefined) {
+      const morning = await Thai2DMorning12.find({});
+      const updatedMorning = await Thai2DMorning12.updateMany(
+        {},
+        {
+          $set: {
+            limitAmount: updateData.limitAmount,
+            lastAmount: updateData.limitAmount,
+          },
         },
-      },
-      { new: true }
-    );
-    console.log(updatedMorning, morning, 86);
+        { new: true }
+      );
+      console.log(updatedMorning, morning, 86);
+    }
 
     res.status(200).json({
       status: "Success",

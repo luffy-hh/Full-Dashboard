@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Sidebar.module.css";
+import { useDispatch } from "react-redux";
 import { BsFillGridFill } from "react-icons/bs";
 import { BsPersonCircle } from "react-icons/bs";
 import { BsFillPersonLinesFill } from "react-icons/bs";
@@ -21,8 +22,9 @@ import { BiDollarCircle } from "react-icons/bi";
 import { BiSolidReport } from "react-icons/bi";
 import NestSidebar from "./NestSidebar";
 import { NavLink } from "react-router-dom";
-import { selectcurrentLoginUser } from "../../Feactures/apiSlice";
+import { selectcurrentLoginUser, setFormShow } from "../../Feactures/apiSlice";
 import { useSelector } from "react-redux";
+import NormalButton from "../../Component/NormalButton";
 
 const sData = [
   {
@@ -256,19 +258,98 @@ const masterData = [
         icon: <BsPeople />,
       },
       {
-        title: "All Affiliate Agents",
-        route: "allaffiliateagents",
-        icon: <BsPeople />,
-      },
-      {
         title: "All Master",
         route: "allmaster",
         icon: <BsPeople />,
       },
+    ],
+  },
+  {
+    title: "Bank Account",
+    route: null,
+    icon: <RiBankCardFill />,
+    iconRight: <BsChevronRight />,
+    show: false,
+    subNav: [
       {
-        title: "All Admins",
-        route: "alladmins",
+        title: "DepositeAccount",
+        route: "depositeAcc",
+        icon: <BiDollarCircle />,
+      },
+    ],
+  },
+  {
+    title: "Win/Lose Report",
+    route: null,
+    icon: <BiSolidReport />,
+    iconRight: <BsChevronRight />,
+    show: false,
+    subNav: [
+      {
+        title: "Master Report",
+        route: "master-report",
+        icon: <BiSolidReport />,
+      },
+      {
+        title: "User Report",
+        route: "user-report",
+        icon: <BiSolidReport />,
+      },
+    ],
+  },
+];
+
+const agentData = [
+  {
+    title: "Agent Dashboard",
+    route: "/agent",
+    icon: <BsFillGridFill />,
+    show: false,
+  },
+  {
+    title: "Users",
+    route: null,
+    icon: <BsPersonCircle />,
+    iconRight: <BsChevronRight />,
+    show: false,
+    subNav: [
+      {
+        title: "All Users",
+        route: "allusers",
         icon: <BsPeople />,
+      },
+      {
+        title: "All Agents",
+        route: "allagents",
+        icon: <BsPeople />,
+      },
+    ],
+  },
+  {
+    title: "Bank Account",
+    route: null,
+    icon: <RiBankCardFill />,
+    iconRight: <BsChevronRight />,
+    show: false,
+    subNav: [
+      {
+        title: "DepositeAccount",
+        route: "depositeAcc",
+        icon: <BiDollarCircle />,
+      },
+    ],
+  },
+  {
+    title: "Win/Lose Report",
+    route: null,
+    icon: <BiSolidReport />,
+    iconRight: <BsChevronRight />,
+    show: false,
+    subNav: [
+      {
+        title: "User Report",
+        route: "user-report",
+        icon: <BiSolidReport />,
       },
     ],
   },
@@ -276,12 +357,18 @@ const masterData = [
 
 function Sidebar() {
   const currentLoginUser = useSelector(selectcurrentLoginUser);
+  const dispatch = useDispatch();
+
+  const logOut = () => {
+    dispatch(setFormShow(false));
+  };
 
   const [data, setData] = useState([]);
   useEffect(() => {
     currentLoginUser !== "" &&
       ((currentLoginUser === "Admin" && setData(sData)) ||
-        (currentLoginUser === "Master" && setData(masterData)));
+        (currentLoginUser === "Master" && setData(masterData)) ||
+        (currentLoginUser === "Agent" && setData(agentData)));
   }, [currentLoginUser]);
 
   const dropDown = (item) => {
@@ -319,6 +406,15 @@ function Sidebar() {
             ) : null}
           </li>
         ))}
+
+        <li>
+          <NormalButton
+            onClick={logOut}
+            className={`btn ${styles.log_out_btn}`}
+          >
+            Log Out
+          </NormalButton>
+        </li>
       </ul>
     </aside>
   );

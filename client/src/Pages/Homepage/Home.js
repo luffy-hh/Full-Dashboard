@@ -1,14 +1,84 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
+import { BsPeopleFill } from "react-icons/bs";
+import {
+  selectChartData,
+  selectChartChoose,
+  setChartChoose,
+} from "../../Feactures/winOrLoseSlice";
 import { useSelector, useDispatch } from "react-redux";
-
 import styles from "./Home.module.css";
+import BarChart from "./ChartForAdmin/BarChart";
+import DohnutChart from "./ChartForAdmin/DohnutChart";
+import AllAmountByGame from "./AllamountbyGame/AllAmountByGame";
 
+const dashUser = [
+  { id: 1, user: "Master", total: "280" },
+  { id: 2, user: "Agent", total: "300" },
+  { id: 3, user: "Users", total: "3500" },
+  { id: 4, user: "Total Profit", total: "40000000" },
+];
 
 function Home() {
+  const chartData = useSelector(selectChartData);
+  const options = {
+    plugins: {
+      legend: {
+        display: true,
+        position: "right",
+      },
+    },
+  };
+
+  const [chooseChar, setChooseChar] = useState("win");
+  const [data, setData] = useState({
+    labels: chartData.map((d) => d.year),
+    datasets: [
+      {
+        label: `User ${chooseChar}`,
+        data: chartData.map((d) => (chooseChar === "win" ? d.win : d.lose)),
+        backgroundColor: ["#1d4ed8"],
+      },
+    ],
+  });
+
+  const [donut, setDonut] = useState({
+    labels: chartData.map((d) => d.game),
+    datasets: [
+      {
+        label: "User Lose ",
+        data: chartData.map((d) => d.lose),
+      },
+    ],
+  });
+
+  const list = dashUser.map((d) => (
+    <li key={d.id}>
+      <div className={styles.dash_user}>
+        <span className={styles.dash_amount}>{d.total}</span>
+        <span>{d.user}</span>
+      </div>
+      <span className={styles.dash_user_icon}>
+        <BsPeopleFill />
+      </span>
+    </li>
+  ));
   return (
-    <div className={`page_style`}>
-      <h3>My admin</h3>
-  
+    <div style={{ backgroundColor: "#111827" }} className="page_style">
+      <ul className={styles.dash_all_user}> {list}</ul>
+
+      <div>
+        <BarChart chartData={data} />
+        {/* <select
+          value={chooseChar}
+          onChange={(e) => setChooseChar(e.target.value)}
+        >
+          <option value="">Choose User Win/Lose</option>
+          <option value="win">User Win</option>
+          <option value="lose">User Lose</option>
+        </select> */}
+        <DohnutChart chartData={donut} options={options} />
+      </div>
+      <AllAmountByGame />
     </div>
   );
 }

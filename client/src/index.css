@@ -169,6 +169,7 @@ a {
   font-family: "Roboto";
   color: var(--text);
   border-radius: 10px;
+  padding-bottom: 0 !important;
 }
 
 .modalStyle .ant-modal-title {

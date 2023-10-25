@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import {
   selectGetUnitTransfer,
-  selectGetUnitTransferStatus,
   fetchGetAllUnitTransfer,
   selectlogInData,
 } from "../../Feactures/apiSlice";
@@ -11,7 +10,7 @@ import styles from "./UnitHistoryTransfer.module.css";
 function UnitHistoryTransfer() {
   const dispatch = useDispatch();
   const getUnitTransfer = useSelector(selectGetUnitTransfer);
-  const getUnitTransferStatus = useSelector(selectGetUnitTransferStatus);
+
   const logInData = useSelector(selectlogInData);
   const accessToken = logInData.token;
 
@@ -21,8 +20,7 @@ function UnitHistoryTransfer() {
     );
   }, []);
 
-  const unitTransferArr =
-    getUnitTransfer && getUnitTransfer.data.mainUnitTransferHistory;
+  const unitTransferArr = getUnitTransfer?.data.mainUnitTransferHistory;
 
   const list =
     unitTransferArr &&

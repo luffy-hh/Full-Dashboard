@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { act } from "react-dom/test-utils";
 
 const twodHead = [
   { text: "ထိပ်စီးနံပါတ်ဂဏန်း", active: false, id: 1 },
@@ -18,14 +17,15 @@ const table1Data = [
     no: "No",
     twoD: "2D",
     bet: "No of Bet",
+    total: "Total Amount",
     success: "Amount of Success",
     profit: "Porfit/Loss",
   },
 ];
 
 const table1ExpData = [
-  { no: 0, twoD: 0, bet: 0, success: 0, profit: 0 },
-  { no: 0, twoD: 0, bet: 0, success: 0, profit: 0 },
+  { no: 0, twoD: 20, bet: 5000, total: 50, success: 0, profit: 0 },
+  { no: 0, twoD: 50, bet: 7000, total: 80, success: 0, profit: 0 },
 ];
 
 const table3ExpData = [
@@ -47,14 +47,6 @@ const table3ExpData = [
   },
 ];
 
-const optionLucky = [
-  "Choose 2D Categories",
-  "Thai 2D morning",
-  "Thai 2D evening",
-  "Dubai 2D morning",
-  "Thai 3D half month",
-];
-
 const allTwodData = { twodHead };
 const initialState = {
   allTwodData,
@@ -62,9 +54,9 @@ const initialState = {
   table1Data,
   table1ExpData,
   table3ExpData,
-  optionLucky,
+
   lukyCate: "",
-  lukyNo: null,
+  lukyNo: "",
 };
 
 const adminTwodSlice = createSlice({
@@ -112,7 +104,7 @@ export const showTable3 = (state) => state.adminTwoD.twoDReportHead[2].active;
 export const selectTable1Data = (state) => state.adminTwoD.table1Data;
 export const selectTable3ExpData = (state) => state.adminTwoD.table3ExpData;
 export const selecttable1ExpData = (state) => state.adminTwoD.table1ExpData;
-export const selectOptionLucky = (state) => state.adminTwoD.optionLucky;
+
 export const selectLuckyCate = (state) => state.adminTwoD.lukyCate;
 export const selectLuckyNo = (state) => state.adminTwoD.lukyNo;
 

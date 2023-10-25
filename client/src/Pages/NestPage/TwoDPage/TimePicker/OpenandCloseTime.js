@@ -42,8 +42,7 @@ function OpenandCloseTime() {
   }, [patchLotterySetting]);
 
   const currentAmount =
-    getLotterySettingStatus === "succeeded" &&
-    getLotterySetting.data.showLotterySettingAll[0].limitAmount;
+    getLotterySetting?.data.showLotterySettingAll[0].limitAmount;
 
   const currentData =
     getLotterySetting && getLotterySetting.data.showLotterySettingAll[0];

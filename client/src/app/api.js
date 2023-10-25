@@ -86,3 +86,19 @@ export const fetchDataWithToken = async (api, accessToken) => {
     throw new Error("Error fetching data: " + error.message);
   }
 };
+
+export const postDataWithImg = async (api, formData, accessToken) => {
+  try {
+    const response = await fetch(`${BASE_URL}${api}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: formData,
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error("Error posting data");
+  }
+};
