@@ -9,6 +9,8 @@ moment.tz.setDefault("Asia/Yangon");
 
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
+const GameCategory = require("../gameCategories/models/gameCategoryModels");
+const GameSubCat = require("../gameCategories/models/gameSubCatModels");
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -59,8 +61,67 @@ exports.signup = catchAsync(async (req, res, next) => {
     }
     reqBody.userId = userId;
 
+    // Fetch data from the GameCategory and GameSubCat collections
+    const gameCategories = await GameCategory.find();
+    const gameSubCategories = await GameSubCat.find();
+
+    // Create an array of category objects with default status 'true' and include the category name
+    const categoriesObjArr = gameCategories.map((category) => {
+      return {
+        cat_id: category._id, // Assuming _id is the GameCategory ID field
+        status: true,
+        cat_name: category.cat_name, // Include category name
+      };
+    });
+
+    // Create an array of sub-category objects with default status 'true' and include the subcategory name
+    const subCatArr = gameSubCategories.map((subCategory) => {
+      return {
+        cat_id: subCategory._id, // Assuming _id is the GameSubCat ID field
+        status: true,
+        subCat_name: subCategory.subCatName, // Include subcategory name
+      };
+    });
+
+    // Add the categories_id and subCat_id arrays to the user document
+    reqBody.categoriesObjArr = categoriesObjArr;
+    reqBody.subCatArr = subCatArr;
+
+    // Check if the user's role is "Agent"
+    if (reqBody.role === "Agent") {
+      // Fetch the master user's data based on the uplineId
+      const masterUser = await User.findOne({ userId: reqBody.uplineId });
+
+      // Copy fields from the master user to the agent user
+      reqBody.categoriesObjArr = masterUser.categoriesObjArr;
+      reqBody.subCatArr = masterUser.subCatArr;
+    }
+
+    // Check if the user's role is "User"
+    if (reqBody.role === "User") {
+      // Fetch the master user's data based on the uplineId
+      const agentUser = await User.findOne({ userId: reqBody.uplineId });
+
+      // Copy fields from the master user to the agent user
+      reqBody.categoriesObjArr = agentUser.categoriesObjArr;
+      reqBody.subCatArr = agentUser.subCatArr;
+    }
+
     const newUser = await User.create(reqBody);
-    createSendToken(newUser, 201, res);
+
+    // Generate a JWT token
+    const token = signToken(newUser._id);
+
+    // Exclude the password field from the response
+    newUser.password = undefined;
+
+    res.status(201).json({
+      status: "success",
+      token,
+      data: {
+        user: newUser,
+      },
+    });
   } catch (err) {
     res.status(404).json({
       status: "fail",
@@ -113,7 +174,7 @@ exports.login = catchAsync(async (req, res, next) => {
 });
 
 exports.protect = catchAsync(async (req, res, next) => {
-  //1. Request လုပ်တဲ့ Client မှာ Token ရှိ/မရှိ စစ်ပါတယ်။
+  // 1. Request လုပ်တဲ့ Client မှာ Token ရှိ/မရှိ စစ်ပါတယ်။
   let token;
   if (
     req.headers.authorization &&
@@ -123,40 +184,28 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
 
   if (!token) {
-    return next(new AppError("You are not login , Please Login!", 401));
+    return next(new AppError("You are not logged in. Please log in!", 401));
   }
 
-  //2. ရှိတယ်ဆိုတဲ့ Token ကရော တစ်ကယ် မှန်/မမှန် စစ်ပါတယ်။
-  const decodedFromToken = await jwt.verify(
-    token,
-    process.env.JWT_SECRET,
-    (err, decoded) => {
-      if (err) {
-        throw new Error("Token is invalid");
-      } else {
-        console.log("decoded Jwt", decoded.id);
-        return decoded;
-      }
-    }
-  );
-  console.log(token, decodedFromToken);
+  // 2. ရှိတယ်ဆိုတဲ့ Token ကရော တစ်ကယ် မှန်/မမှန် စစ်ပါတယ်။
+  const decoded = await jwt.verify(token, process.env.JWT_SECRET);
 
-  //3. Token မှန်တယ်ဆိုရင်တောင် Token ပိုင်ရှင် User က ရှိနေသေးတာ ဟုတ်/မဟုတ် ကိုစစ်ပါတယ်။
-  const currentUser = await User.findById(decodedFromToken.id);
-  console.log(currentUser);
+  // 3. Token မှန်တယ်ဆိုရင်တောင် Token ပိုင်ရှင် User က ရှိနေသေးတာ ဟုတ်/မဟုတ် ကိုစစ်ပါတယ်။
+  const currentUser = await User.findById(decoded.id);
+
   if (!currentUser) {
     return next(
-      new AppError(
-        "The user belonging to this token does no longer exist.",
-        401
-      )
+      new AppError("The user belonging to this token does not exist.", 401)
     );
   }
 
-  //4. Token ယူပြီးမှ User က Password ချိန်းလိုက်တဲ့အခြေအနေကိုလဲ စစ်ထားဖို့လိုပါတယ်။
-  if (currentUser.changedPasswordAfter(decodedFromToken.iat)) {
+  // 4. Token ယူပြီးမှ User က Password ချိန်းလိုက်တဲ့အခြေအနေကိုလဲ စစ်ထားဖို့လိုပါတယ်။
+  if (currentUser.changedPasswordAfter(decoded.iat)) {
     return next(
-      new AppError("User Recently Change Password ! Please Login Again", 401)
+      new AppError(
+        "User recently changed the password. Please log in again",
+        401
+      )
     );
   }
 
@@ -331,48 +380,6 @@ exports.forgetPassword = catchAsync(async (req, res, next) => {
     );
   }
 });
-
-// exports.resetPassword = catchAsync(async (req, res, next) => {
-//   // ၁/	User ကို base ထားပြီး Token လေးတွေကို ယူပါ့မယ်။
-//   const hashedToken = crypto
-//     .createHash("sha256")
-//     .update(req.params.token)
-//     .digest("hex");
-
-//   const user = await User.findOne({
-//     passwordResetToken: hashedToken,
-//     passwordResetExpires: { $gt: Date.now() },
-//   });
-//   // ၂/	တစ်ကယ်လို့ Token က သက်တမ်းမကုန်သေးရင် new password ကို သတ်မှတ်ပေးပါ့မယ်။
-//   if (!user) {
-//     return next(new AppError("Token is invalid or has expired", 400));
-//   }
-//   // ၃/	Current User ရဲ့ changePasswordAt Property ကို Update လုပ်ပါ့မယ်။
-//   user.password = req.body.password;
-//   user.passwordConfirm = req.body.password;
-//   user.passwordResetToken = undefined;
-//   user.passwordResetExipre = undefined;
-//   await user.save();
-
-//   // ၄/	User ကို Log လုပ်မယ်။ JWT Token ကိုပို့ပါ့မယ်။
-//   createSendToken(user, 200, res);
-// });
-
-// exports.updatePassword = catchAsync(async (req, res, next) => {
-//   // 1./ Collection ကနေ User ကို လှမ်းယူပါ့မယ်။
-//   const user = User.findById(req.body.id).select("+password");
-//   // 2./ User ထည့်လိုက်တဲ့ Current Password သည် မှန်ကန်မှု ရှိ/မရှိ စစ်ပါ့မယ်။
-//   if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
-//     return next(new AppError("Your current password is wrong.", 401));
-//   }
-
-//   // 3./ Password မှန်တယ်ဆိုရင် Update ပေးလုပ့်ပါ့မယ်။
-//   user.password = req.body.password;
-//   user.passwordConfirm = req.body.passwordConfirm;
-//   await user.save();
-//   // 4./ User ကို Login ပြန်ဝင်ခိုင်းပါ့မယ်။ Update လုပ်ထားတဲ့ Password အသစ်နဲ့ JWT Token ပြန်ပို့ပါ့မယ်။
-//   createSendToken(user, 200, res);
-// });
 
 exports.resetPassword = catchAsync(async (req, res, next) => {
   // 1) Get user based on the token
