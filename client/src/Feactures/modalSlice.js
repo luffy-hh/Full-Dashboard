@@ -6,6 +6,9 @@ const modalShowHide = {
   modalShow: false,
   modalSupGameCat: false,
   modalLucky: false,
+  modalDeposite: false,
+  modalDifDepo: false,
+  modalAccDepo: false,
 };
 
 const initialState = { modalShowHide, depositeToUser, conDition };
@@ -39,6 +42,16 @@ const modalSlice = createSlice({
     setModalLucky: (state, action) => {
       state.modalShowHide.modalLucky = action.payload;
     },
+
+    setModalDeposite: (state, action) => {
+      state.modalShowHide.modalDeposite = action.payload;
+    },
+    setModalDifDepo: (state, action) => {
+      state.modalShowHide.modalDifDepo = action.payload;
+    },
+    setModalAccDepo: (state, action) => {
+      state.modalShowHide.modalAccDepo = action.payload;
+    },
   },
 });
 
@@ -50,6 +63,9 @@ export const {
   setWithDrawAmount,
   setModalSupGameCat,
   setModalLucky,
+  setModalDeposite,
+  setModalDifDepo,
+  setModalAccDepo,
 } = modalSlice.actions;
 export const selectModalShow = (state) => state.modal.modalShowHide.modalShow;
 export const selectUserId = (state) => state.modal.depositeToUser.userId;
@@ -61,4 +77,11 @@ export const selectCondition = (state) => state.modal.conDition.condition;
 export const selectModalSupGameCat = (state) =>
   state.modal.modalShowHide.modalSupGameCat;
 export const selectModalLucky = (state) => state.modal.modalShowHide.modalLucky;
+export const selectModalDeposite = (state) =>
+  state.modal.modalShowHide.modalDeposite;
+
+export const selectModalDiffDepo = (state) =>
+  state.modal.modalShowHide.modalDifDepo;
+export const selectModalAccDepo = (state) =>
+  state.modal.modalShowHide.modalAccDepo;
 export default modalSlice.reducer;

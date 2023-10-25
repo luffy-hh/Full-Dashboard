@@ -39,14 +39,14 @@ exports.create2DsaleDoc = async (req, res) => {
       const reqBody = req.body;
       // make an array for playableNumber
       const playedNumbers = reqBody.saleNumberArr.filter((sale) => {
-        let curNum = All2D12AM.find((num) => num.number === sale.number);
-        return sale.amount <= curNum.lastAmount;
+        let curNum = All2D12AM.find((num) => num.number === sale.number && num);
+        return sale.amount <= curNum.lastAmount && sale;
       });
 
       // make an array for unplayableNumber
       const unPlayAbleNumbers = reqBody.saleNumberArr.filter((sale) => {
-        let curNum = All2D12AM.find((num) => num.number === sale.number);
-        return sale.amount > curNum.lastAmount;
+        let curNum = All2D12AM.find((num) => num.number === sale.number && num);
+        return sale.amount > curNum.lastAmount && sale;
       });
 
       const totalSaleAmount = playedNumbers

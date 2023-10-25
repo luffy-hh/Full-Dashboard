@@ -9,7 +9,6 @@ const bankNameSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "Bank name must be added"],
-    unique: true,
   },
   img: {
     type: String,

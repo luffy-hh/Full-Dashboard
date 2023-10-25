@@ -258,19 +258,98 @@ const masterData = [
         icon: <BsPeople />,
       },
       {
-        title: "All Affiliate Agents",
-        route: "allaffiliateagents",
-        icon: <BsPeople />,
-      },
-      {
         title: "All Master",
         route: "allmaster",
         icon: <BsPeople />,
       },
+    ],
+  },
+  {
+    title: "Bank Account",
+    route: null,
+    icon: <RiBankCardFill />,
+    iconRight: <BsChevronRight />,
+    show: false,
+    subNav: [
       {
-        title: "All Admins",
-        route: "alladmins",
+        title: "DepositeAccount",
+        route: "depositeAcc",
+        icon: <BiDollarCircle />,
+      },
+    ],
+  },
+  {
+    title: "Win/Lose Report",
+    route: null,
+    icon: <BiSolidReport />,
+    iconRight: <BsChevronRight />,
+    show: false,
+    subNav: [
+      {
+        title: "Master Report",
+        route: "master-report",
+        icon: <BiSolidReport />,
+      },
+      {
+        title: "User Report",
+        route: "user-report",
+        icon: <BiSolidReport />,
+      },
+    ],
+  },
+];
+
+const agentData = [
+  {
+    title: "Agent Dashboard",
+    route: "/agent",
+    icon: <BsFillGridFill />,
+    show: false,
+  },
+  {
+    title: "Users",
+    route: null,
+    icon: <BsPersonCircle />,
+    iconRight: <BsChevronRight />,
+    show: false,
+    subNav: [
+      {
+        title: "All Users",
+        route: "allusers",
         icon: <BsPeople />,
+      },
+      {
+        title: "All Agents",
+        route: "allagents",
+        icon: <BsPeople />,
+      },
+    ],
+  },
+  {
+    title: "Bank Account",
+    route: null,
+    icon: <RiBankCardFill />,
+    iconRight: <BsChevronRight />,
+    show: false,
+    subNav: [
+      {
+        title: "DepositeAccount",
+        route: "depositeAcc",
+        icon: <BiDollarCircle />,
+      },
+    ],
+  },
+  {
+    title: "Win/Lose Report",
+    route: null,
+    icon: <BiSolidReport />,
+    iconRight: <BsChevronRight />,
+    show: false,
+    subNav: [
+      {
+        title: "User Report",
+        route: "user-report",
+        icon: <BiSolidReport />,
       },
     ],
   },
@@ -288,7 +367,8 @@ function Sidebar() {
   useEffect(() => {
     currentLoginUser !== "" &&
       ((currentLoginUser === "Admin" && setData(sData)) ||
-        (currentLoginUser === "Master" && setData(masterData)));
+        (currentLoginUser === "Master" && setData(masterData)) ||
+        (currentLoginUser === "Agent" && setData(agentData)));
   }, [currentLoginUser]);
 
   const dropDown = (item) => {

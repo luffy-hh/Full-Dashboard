@@ -35,10 +35,14 @@ exports.createBankName = catchAsync(async (req, res) => {
         "host"
       )}/images/bank_name/${req.file.filename}`;
       const newBankName = await BankName.create({ ...req.body });
+
+      const newBankData = await BankName.findById(newBankName._id).populate(
+        "bankTypeId"
+      );
       res.status(201).json({
         status: "success",
         data: {
-          newBankName,
+          newBankData,
           imageLink,
         },
       });
@@ -63,9 +67,7 @@ exports.getBankNameAll = catchAsync(async (req, res) => {
     console.log(JSON.parse(queryStr));
 
     // Select the 'img' field in the query
-    const query = BankName.find(JSON.parse(queryStr))
-      .select("img")
-      .populate("bankTypeId");
+    const query = BankName.find().populate("bankTypeId");
 
     const allBankName = await query;
 
@@ -94,16 +96,23 @@ exports.getBankNameAll = catchAsync(async (req, res) => {
   }
 });
 
-// Update Bank Type name
+// Update Bank name
 exports.updateBankName = catchAsync(async (req, res) => {
   try {
     const bankNameId = req.params.id; // Assuming you have the bank name's ID in the route parameter
+    console.log(bankNameId);
+    // Access the fields from form-data
+    const name = req.body.name;
+    const status = req.body.status || true;
+
+    console.log(name);
+
     const updateObj = {
-      name: req.body.name,
-      status: req.body.status || true,
+      name,
+      status,
     };
 
-    // If a new image is uploaded, update the image and generate the image link
+    // Access the uploaded image data
     if (req.file) {
       updateObj.img = req.file.filename;
       updateObj.imgLink = `${req.protocol}://${req.get(
@@ -111,13 +120,14 @@ exports.updateBankName = catchAsync(async (req, res) => {
       )}/images/bank_name/${req.file.filename}`;
     }
 
+    // Use findByIdAndUpdate to update the fields
     const updatedBankName = await BankName.findByIdAndUpdate(
       bankNameId,
       updateObj,
       {
         new: true,
       }
-    );
+    ).populate("bankTypeId");
 
     res.status(200).json({
       status: "Success",

@@ -1,24 +1,25 @@
 const express = require("express");
-const bankNameController = require("../controllers/bankNameControllers");
+const bankAnnouncementController = require("../controllers/bankAnnouncementController");
 const userController = require("../../users/userControllers");
 
 const router = express.Router();
 // Read All User Roles and Creat User Role
 router
   .route("/")
-  .get(userController.protect, bankNameController.getBankNameAll)
+  .get(
+    userController.protect,
+    userController.restrictTo("Admin", "User"),
+    bankAnnouncementController.getBankAnnounc
+  )
   .post(
-    bankNameController.uploadBankNameImg,
     userController.protect,
     userController.restrictTo("Admin"),
-    bankNameController.createBankName
-  );
-router
-  .route("/:id")
+    bankAnnouncementController.createBankAnnounc
+  )
   .patch(
     userController.protect,
     userController.restrictTo("Admin"),
-    bankNameController.uploadBankNameImg,
-    bankNameController.updateBankName
+    bankAnnouncementController.updateBankAnnounc
   );
+
 module.exports = router;

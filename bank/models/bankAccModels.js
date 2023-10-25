@@ -6,6 +6,10 @@ const bankAccSchema = new mongoose.Schema({
     ref: "BankName",
     required: [true, "Bank Name must be specified"],
   },
+  account_name: {
+    type: String,
+    required: [true, "Bank account must be added"],
+  },
   account: {
     type: String,
     required: [true, "Bank account must be added"],

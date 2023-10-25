@@ -12,7 +12,7 @@ const xss = require("xss-clean");
 const app = express();
 app.use(cors());
 const lottery2dRoutes = require("./2DAll/routes/lottery2dRoutes");
-const userRoleRouter = require("./userRoles/userRolesRoute");
+
 const userRouter = require("./users/userRoutes");
 const userProfileRouter = require("./users/userProfileRoute");
 const mainUnitRouter = require("./mainUnit/routes/mainUnitRoute");
@@ -28,6 +28,7 @@ const thai2DBettingHistoriesRouter = require("./2DBettingHistories/routes/2DBett
 const banktype = require("./bank/routes/bankTypeRoutes");
 const bankName = require("./bank/routes/bankNameRoutes");
 const bankAccount = require("./bank/routes/bankAccRoutes");
+const bankAnnouncement = require("./bank/routes/bankAnnouncementRoute");
 
 // Middleware
 // app.use(helmet());
@@ -73,9 +74,6 @@ app.use((req, res, next) => {
 //Lottery
 app.use("/api/v1/lottery2dthai12", lottery2dRoutes);
 
-// User Role
-app.use("/api/v1/userRole", userRoleRouter);
-
 // User Register
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/userProfile", userProfileRouter);
@@ -84,6 +82,7 @@ app.use("/api/v1/userProfile", userProfileRouter);
 app.use("/api/v1/banktype", banktype);
 app.use("/api/v1/bankName", bankName);
 app.use("/api/v1/bankAcc", bankAccount);
+app.use("/api/v1/bankAnnounc", bankAnnouncement);
 
 // Main Unit
 app.use("/api/v1/mainunit", mainUnitRouter);

@@ -3,6 +3,7 @@ const Thai2DSale = require("../../sales/models/2dsalemodels");
 const TwoDLucky = require("../models/2DLuckyNumber");
 const User = require("../../users/userModels");
 const MainUnit = require("../../mainUnit/models/mainUnitModel");
+const catchAsync = require("../../utils/catchAsync");
 
 exports.create2DLucky = async (req, res, next) => {
   try {
@@ -48,7 +49,7 @@ exports.create2DLucky = async (req, res, next) => {
           return updateUser;
         })
     );
-    console.log(winnedPlay);
+    console.log(updatedUsers);
     res.status(200).json({
       status: "succeed",
       message: "Lucky Numbers created successfully",
@@ -64,3 +65,18 @@ exports.create2DLucky = async (req, res, next) => {
     console.log(deleteAll2DSale);
   }
 };
+
+exports.getAll2DLucky = catchAsync(async (req, res, next) => {
+  try {
+    const allLucky = await TwoDLucky.find({});
+    res.status(200).json({
+      status: "Success",
+      allLucky,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "Failed",
+      message: error.message,
+    });
+  }
+});

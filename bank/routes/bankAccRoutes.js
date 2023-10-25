@@ -15,5 +15,10 @@ router
 
 router
   .route("/:id")
-  .patch(userController.protect, bankAccController.updateBankAcc);
+  .patch(
+    userController.protect,
+    userController.restrictTo("Admin"),
+    bankAccController.uploadBankAccImg,
+    bankAccController.updateBankAcc
+  );
 module.exports = router;

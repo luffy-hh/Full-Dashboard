@@ -17,14 +17,15 @@ const table1Data = [
     no: "No",
     twoD: "2D",
     bet: "No of Bet",
+    total: "Total Amount",
     success: "Amount of Success",
     profit: "Porfit/Loss",
   },
 ];
 
 const table1ExpData = [
-  { no: 0, twoD: 0, bet: 0, success: 0, profit: 0 },
-  { no: 0, twoD: 0, bet: 0, success: 0, profit: 0 },
+  { no: 0, twoD: 20, bet: 5000, total: 50, success: 0, profit: 0 },
+  { no: 0, twoD: 50, bet: 7000, total: 80, success: 0, profit: 0 },
 ];
 
 const table3ExpData = [

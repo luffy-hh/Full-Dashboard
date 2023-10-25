@@ -35,10 +35,13 @@ exports.createBankAcc = catchAsync(async (req, res) => {
         req.file.filename
       }`;
       const newBankAcc = await BankAcc.create({ ...req.body });
+      const newBankAccData = await BankAcc.findById(newBankAcc._id).populate(
+        "bankNameId"
+      );
       res.status(201).json({
         status: "success",
         data: {
-          newBankAcc,
+          newBankAccData,
           imageLink,
         },
       });
@@ -63,9 +66,7 @@ exports.getBankAccAll = catchAsync(async (req, res) => {
     console.log(JSON.parse(queryStr));
 
     // Select the 'img' field in the query
-    const query = BankAcc.find(JSON.parse(queryStr))
-      .select("img")
-      .populate("bankNameId");
+    const query = BankAcc.find(JSON.parse(queryStr)).populate("bankNameId");
 
     const allBankAcc = await query;
 
@@ -94,16 +95,28 @@ exports.getBankAccAll = catchAsync(async (req, res) => {
   }
 });
 
-// Update Bank Type name
+// Update Bank Account name
 exports.updateBankAcc = catchAsync(async (req, res) => {
   try {
-    const bankNameId = req.params.id; // Assuming you have the bank name's ID in the route parameter
-    const updateObj = {
-      name: req.body.name,
-      status: req.body.status || true,
-    };
+    const bankAccId = req.params.id; // Assuming you have the bank name's ID in the route parameter
+    const updateObj = {};
 
-    // If a new image is uploaded, update the image and generate the image link
+    if (req.body.bankNameId) {
+      updateObj.bankNameId = req.body.bankNameId;
+    }
+
+    if (req.body.name) {
+      updateObj.name = req.body.name;
+    }
+
+    if (req.body.account) {
+      updateObj.account = req.body.account;
+    }
+
+    if (req.body.status) {
+      updateObj.status = req.body.status;
+    }
+
     if (req.file) {
       updateObj.img = req.file.filename;
       updateObj.imgLink = `${req.protocol}://${req.get(
@@ -111,8 +124,8 @@ exports.updateBankAcc = catchAsync(async (req, res) => {
       )}/images/bank_name/${req.file.filename}`;
     }
 
-    const updatedBankName = await BankName.findByIdAndUpdate(
-      bankNameId,
+    const updatedBankAcc = await BankAcc.findByIdAndUpdate(
+      bankAccId,
       updateObj,
       {
         new: true,
@@ -122,7 +135,7 @@ exports.updateBankAcc = catchAsync(async (req, res) => {
     res.status(200).json({
       status: "Success",
       data: {
-        updatedBankName,
+        updatedBankAcc,
       },
     });
   } catch (err) {

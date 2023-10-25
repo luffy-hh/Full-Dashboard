@@ -24,11 +24,10 @@ import UnitHistoryTransfer from "../Pages/UnitHistoryTransfer/UnitHistoryTransfe
 import GameCategories from "../Pages/Game Categories/GameCategories";
 import ThaiTwoD12am from "../Pages/TwoDReport/ThaiTwoD12am";
 
-import { selectcurrentLoginUser } from "../Feactures/apiSlice";
 import MasterReport from "../Pages/WinLoseReport/MasterReport";
 import UserReport from "../Pages/WinLoseReport/UserReport";
 import UserReportTable from "../Pages/WinLoseReport/Component/UserReportTable";
-import MasterHome from "../MasterLogin/MasterHomePge/MasterHome";
+
 
 const admin = [
   { id: 0, path: "/admin", route: <Home /> },
@@ -55,20 +54,20 @@ const admin = [
   { id: 21, path: "user-report/:userId", route: <UserReportTable /> },
 ];
 
-const master = [{ id: 0, path: "master", route: <MasterHome /> }];
+
 function Admin() {
   const formshow = useSelector(selectSetShowForm);
-  const currentLoginUser = useSelector(selectcurrentLoginUser);
+  // const currentLoginUser = useSelector(selectcurrentLoginUser);
 
-  const currentLogin =
-    (currentLoginUser === "Admin" && admin) ||
-    (currentLoginUser === "Master" && master) ||
-    [];
+  // const currentLogin =
+  //   (currentLoginUser === "Admin" && admin) ||
+  //   (currentLoginUser === "Master" && master) ||
+  //   [];
 
   return (
     <Routes>
       <Route path="/admin" element={formshow ? <Layout /> : <Login />}>
-        {currentLogin?.map((d) => (
+        {admin.map((d) => (
           <Route key={d.id} path={d.path} element={d.route} />
         ))}
       </Route>

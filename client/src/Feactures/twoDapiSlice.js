@@ -67,6 +67,7 @@ export const postLuckyNo = createAsyncThunk(
   "data/postLuckyNo",
   async ({ api, postData, accessToken }) => {
     const data = await postDataWithToken(api, postData, accessToken);
+    console.log(data);
     return data;
   }
 );
