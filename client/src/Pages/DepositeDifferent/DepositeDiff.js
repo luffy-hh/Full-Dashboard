@@ -9,6 +9,7 @@ import {
   selectPostBankType,
   fetGetBankName,
   selectBankName,
+  selectPostBankName,
 } from "../../Feactures/bankApiSlice";
 import { selectlogInData } from "../../Feactures/apiSlice";
 import styles from "../DepositeType/DepositeType.module.css";
@@ -20,6 +21,7 @@ function DepositeDiff() {
   const postBankType = useSelector(selectPostBankType);
   const bankType = useSelector(selectBankType);
   const bankName = useSelector(selectBankName);
+  const postBankName = useSelector(selectPostBankName);
 
   useEffect(() => {
     dispatch(fetGetBankType({ api: "banktype", accessToken }));
@@ -27,11 +29,22 @@ function DepositeDiff() {
 
   useEffect(() => {
     dispatch(fetGetBankName({ api: "bankName", accessToken }));
-  }, []);
+  }, [postBankName]);
 
   const allBanks = bankType?.data.allBankType;
   const bankNameArr = bankName?.data.allBankName;
-  console.log(bankNameArr && bankNameArr);
+
+  const list = bankNameArr?.map((d, i) => (
+    <tr key={d._id} className={styles.deposite_tr_style}>
+      <td>{i + 1}</td>
+      <td>{d.bankTypeId.name}</td>
+      <td>{d.name}</td>
+      <td>Logo</td>
+      <td>
+        <NormalButton className={styles.deposite_edit_btn}>Edit</NormalButton>
+      </td>
+    </tr>
+  ));
   return (
     <>
       <DifferentDepositeBox allBankArr={allBanks} />
@@ -57,26 +70,7 @@ function DepositeDiff() {
                 <th>လုပ်ဆောင်ချက်</th>
               </tr>
             </thead>
-            <tbody>
-              <tr className={styles.deposite_tr_style}>
-                <td>1</td>
-                <td>Online Payment</td>
-                <td>Wave Pay</td>
-                <td>Logo</td>
-                <td
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    gap: "2.4rem",
-                  }}
-                >
-                  <NormalButton className={styles.deposite_edit_btn}>
-                    Edit
-                  </NormalButton>
-                </td>
-              </tr>
-            </tbody>
+            <tbody>{list}</tbody>
           </table>
         </div>
       </div>

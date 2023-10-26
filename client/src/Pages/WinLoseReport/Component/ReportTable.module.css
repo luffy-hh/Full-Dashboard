@@ -39,7 +39,7 @@
 }
 
 .report_main_table_container {
-  max-width: 110rem;
+  width: 100%;
   overflow: auto;
   border-radius: 8px;
 }

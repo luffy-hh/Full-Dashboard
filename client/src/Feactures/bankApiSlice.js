@@ -154,7 +154,7 @@ const bankApiSlice = createSlice({
       .addCase(fetPostBankAcc.fulfilled, (state, action) => {
         state.postBankAccStatus = "succeeded";
         state.postBankAcc = action.payload;
-        console.log(state.bankName);
+        console.log(state.postBankAcc);
       })
       .addCase(fetPostBankAcc.rejected, (state, action) => {
         state.postBankAccStatus = "failed";
@@ -174,5 +174,9 @@ export const selectPostBankNameStatus = (state) =>
 
 export const selectBankName = (state) => state.bank.bankName;
 export const selectBankNameStatus = (state) => state.bank.bankNameStatus;
+
+export const selectBankAcc = (state) => state.bank.bankAcc;
+export const selectPostBankAcc = (state) => state.bank.postBankAcc;
+export const selectPostBankAccStatus = (state) => state.bank.postBankAccStatus;
 
 export default bankApiSlice.reducer;

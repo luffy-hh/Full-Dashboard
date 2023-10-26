@@ -109,3 +109,60 @@
 .bank_input div select:focus {
   outline: 1px solid var(--blue);
 }
+
+/* User Detail click */
+.user_detail_header {
+  display: flex;
+  gap: 4.8rem;
+  align-items: center;
+}
+
+.user_detail_profile {
+  width: 10rem;
+  height: 10rem;
+  border-radius: 50%;
+  border: 5px dashed var(--blue);
+}
+
+.user_info_box {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  font-size: 1.6rem;
+}
+.user_info_box p {
+  display: flex;
+  gap: 4.8rem;
+}
+.user_detail_info {
+  display: block;
+  width: 20rem;
+}
+
+.game_cat_container {
+  padding: 4.8rem 0;
+}
+
+.game_cat_container h3 {
+  font-size: 2rem;
+  font-weight: 500;
+}
+
+.game_cat_container ul {
+  margin-top: 2.4rem;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.4rem;
+}
+
+.close_game {
+  padding: 1.2rem 2.4rem;
+  display: flex;
+  align-items: center;
+  gap: 3.2rem;
+  justify-content: space-between;
+  font-size: 1.6rem;
+  transition: all 0.3s;
+  color: var(--text-white);
+}

@@ -4,6 +4,9 @@ import {
   fetGetBankName,
   selectBankName,
   selectPostBankName,
+  fetGetBankAcc,
+  selectPostBankAcc,
+  selectBankAcc,
 } from "../../Feactures/bankApiSlice";
 import { selectlogInData } from "../../Feactures/apiSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,13 +20,36 @@ function DepositeAcc() {
   const postBankName = useSelector(selectPostBankName);
   const logInData = useSelector(selectlogInData);
   const accessToken = logInData.token;
+  const postBankAcc = useSelector(selectPostBankAcc);
+  const bankAcc = useSelector(selectBankAcc);
 
   useEffect(() => {
     dispatch(fetGetBankName({ api: "bankName", accessToken }));
   }, [postBankName]);
 
+  useEffect(() => {
+    dispatch(fetGetBankAcc({ api: "bankAcc", accessToken }));
+  }, [postBankAcc]);
+
   const bankNameArr = bankName?.data.allBankName;
-  console.log(bankNameArr && bankNameArr);
+
+  const bankAccArr = bankAcc?.data.allBankAcc;
+
+  console.log(bankAccArr && bankAccArr);
+
+  const list = bankAccArr?.map((d, i) => (
+    <tr key={d._id} className={styles.deposite_tr_style}>
+      <td>{i + 1}</td>
+      <td>Online Payment</td>
+      <td>{d.bankAcc.account_name}</td>
+      <td>Logo</td>
+      <td>{d.bankAcc.account}</td>
+      <td>{d.bankAcc.name}</td>
+      <td>
+        <NormalButton className={styles.deposite_edit_btn}>Edit</NormalButton>
+      </td>
+    </tr>
+  ));
 
   return (
     <>
@@ -43,8 +69,8 @@ function DepositeAcc() {
             <thead>
               <tr>
                 <th style={{ minWidth: "8rem" }}>စဥ်</th>
-                <th style={{ minWidth: "20rem" }}>ငွေသွင်း/ထုတ်အမျိုးအစား</th>
-                <th style={{ minWidth: "20rem" }}>ငွေသွင်း/ထုတ်အမျိုးကွဲ </th>
+                <th style={{ minWidth: "20rem" }}>Bank Type</th>
+                <th style={{ minWidth: "20rem" }}>Bank Name</th>
 
                 <th style={{ minWidth: "20rem" }}>လိုဂို</th>
                 <th style={{ minWidth: "20rem" }}>Account No</th>
@@ -52,31 +78,7 @@ function DepositeAcc() {
                 <th style={{ minWidth: "25rem" }}>လုပ်ဆောင်ချက်</th>
               </tr>
             </thead>
-            <tbody>
-              <tr className={styles.deposite_tr_style}>
-                <td>1</td>
-                <td>Online Payment</td>
-                <td>Wave Pay</td>
-                <td>Logo</td>
-                <td>122222</td>
-                <td>Thu Thu</td>
-                <td
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    gap: "2.4rem",
-                  }}
-                >
-                  <NormalButton className={styles.deposite_edit_btn}>
-                    Edit
-                  </NormalButton>
-                  <NormalButton className={styles.deposite_delete_btn}>
-                    Delete
-                  </NormalButton>
-                </td>
-              </tr>
-            </tbody>
+            <tbody>{list}</tbody>
           </table>
         </div>
       </div>

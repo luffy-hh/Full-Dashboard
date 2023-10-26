@@ -32,3 +32,12 @@
   border-radius: 8px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
+
+.all_user_name_link {
+  cursor: pointer;
+}
+
+.all_user_name_link:hover {
+  color: var(--blue);
+  border-bottom: 2px solid var(--blue-light);
+}

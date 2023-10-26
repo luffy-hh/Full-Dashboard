@@ -9,9 +9,15 @@ const modalShowHide = {
   modalDeposite: false,
   modalDifDepo: false,
   modalAccDepo: false,
+  modalUserDetail: false,
 };
 
-const initialState = { modalShowHide, depositeToUser, conDition };
+const initialState = {
+  modalShowHide,
+  depositeToUser,
+  conDition,
+  userDetailData: null,
+};
 const modalSlice = createSlice({
   name: "modal",
   initialState,
@@ -52,6 +58,14 @@ const modalSlice = createSlice({
     setModalAccDepo: (state, action) => {
       state.modalShowHide.modalAccDepo = action.payload;
     },
+
+    setModalUserDetail: (state, action) => {
+      state.modalShowHide.modalUserDetail = action.payload;
+    },
+
+    setUserDetailData: (state, action) => {
+      state.userDetailData = action.payload;
+    },
   },
 });
 
@@ -66,6 +80,8 @@ export const {
   setModalDeposite,
   setModalDifDepo,
   setModalAccDepo,
+  setModalUserDetail,
+  setUserDetailData,
 } = modalSlice.actions;
 export const selectModalShow = (state) => state.modal.modalShowHide.modalShow;
 export const selectUserId = (state) => state.modal.depositeToUser.userId;
@@ -84,4 +100,8 @@ export const selectModalDiffDepo = (state) =>
   state.modal.modalShowHide.modalDifDepo;
 export const selectModalAccDepo = (state) =>
   state.modal.modalShowHide.modalAccDepo;
+
+export const selectModalUserDetail = (state) =>
+  state.modal.modalShowHide.modalUserDetail;
+export const selectUserDetailData = (state) => state.modal.userDetailData;
 export default modalSlice.reducer;

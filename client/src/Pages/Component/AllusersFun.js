@@ -35,6 +35,7 @@ function AllusersFun({ data, toId }) {
     dispatch(setUserId(toId));
     dispatch(setCondition(text));
   };
+
   const userFunBtn = [
     { icon: <MdAdd />, text: "DEP", fun: handleDepo }, //addd
     { icon: <AiOutlineMinus />, text: "WDL", fun: handleWithdraw }, //withdraw out

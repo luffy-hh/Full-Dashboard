@@ -186,3 +186,11 @@ a {
   width: 10rem;
   font-family: "Roboto";
 }
+
+.color_red {
+  background-color: var(--red-light);
+}
+
+.color_green {
+  background-color: var(--green-light);
+}

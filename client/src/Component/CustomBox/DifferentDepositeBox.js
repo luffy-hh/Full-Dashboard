@@ -39,6 +39,9 @@ function DifferentDepositeBox({ allBankArr }) {
 
     if (postBankNameStatus === "succeeded") {
       dispatch(setModalDifDepo(false));
+      setBankType("");
+      setBankName("");
+      setLogo("");
     }
   };
   return (

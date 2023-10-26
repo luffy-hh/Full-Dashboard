@@ -9,7 +9,7 @@ import {
   selectUserDetailHead,
 } from "../../../Feactures/winOrLoseSlice";
 import { useSelector } from "react-redux";
-//{betTime: "2023/10/14 18:18:37",resultTime : "2023/10/14 18:30:37", userID : 'Ar1111',GameCode : "sport11",GameName:"sport11",Category :"slot",subCategory:"Pragmatic",bBalance:5000,bet:100,win:1100,winLose:1000,aBalance:3000,status:Bet,detail:"pragmatic.com",description : "slot"}
+
 function UserReportTable() {
   const { userId } = useParams();
   const userDetail = useSelector(selectUserDetail);
