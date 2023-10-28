@@ -73,7 +73,7 @@ exports.getBankAccAll = catchAsync(async (req, res) => {
     // Construct image links for each result
     const bankAccWithImageLinks = allBankAcc.map((bankAcc) => {
       return {
-        ...bankAcc,
+        ...bankAcc._doc,
         imgLink: `${req.protocol}://${req.get("host")}/images/bank_name/${
           bankAcc.img
         }`,

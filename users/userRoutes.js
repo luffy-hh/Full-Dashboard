@@ -46,4 +46,12 @@ router
     userController.getUsersAll
   );
 
+// router
+//   .route("/user/master")
+//   .patch(
+//     userController.protect,
+//     userController.restrictTo("Admin"),
+//     userController.updateMasterStatus
+//   );
+
 module.exports = router;

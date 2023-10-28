@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const GameCategories = require("../models/gameCategoryModels"); // Import the model
 
 const gameSubCategorySchema = new mongoose.Schema({
   catName_id: {

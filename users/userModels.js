@@ -85,36 +85,6 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: () => moment().tz("Asia/Yangon").format(),
   },
-  categoriesObjArr: [
-    {
-      cat_id: {
-        type: "string",
-      },
-      cat_name: {
-        type: "string",
-      },
-      status: {
-        type: Boolean,
-        default: true,
-      },
-    },
-  ],
-
-  subCatArr: [
-    {
-      subCat_id: {
-        type: "string",
-      },
-      subCat_name: {
-        type: "string",
-      },
-      status: {
-        type: Boolean,
-        default: true,
-      },
-    },
-  ],
-
   passwordChangedAt: Date,
   passwordResetToken: String,
   passwordResetExipre: Date,

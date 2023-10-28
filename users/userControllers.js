@@ -12,6 +12,9 @@ const catchAsync = require("../utils/catchAsync");
 const GameCategory = require("../gameCategories/models/gameCategoryModels");
 const GameSubCat = require("../gameCategories/models/gameSubCatModels");
 
+const MasterCatStatus = require("../category_status/models/master_cat_status_models");
+const MasterSubCatStatus = require("../category_status/models/master_subCat_status_models");
+
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
@@ -61,53 +64,40 @@ exports.signup = catchAsync(async (req, res, next) => {
     }
     reqBody.userId = userId;
 
-    // Fetch data from the GameCategory and GameSubCat collections
-    const gameCategories = await GameCategory.find();
-    const gameSubCategories = await GameSubCat.find();
-
-    // Create an array of category objects with default status 'true' and include the category name
-    const categoriesObjArr = gameCategories.map((category) => {
-      return {
-        cat_id: category._id, // Assuming _id is the GameCategory ID field
-        status: true,
-        cat_name: category.cat_name, // Include category name
-      };
-    });
-
-    // Create an array of sub-category objects with default status 'true' and include the subcategory name
-    const subCatArr = gameSubCategories.map((subCategory) => {
-      return {
-        cat_id: subCategory._id, // Assuming _id is the GameSubCat ID field
-        status: true,
-        subCat_name: subCategory.subCatName, // Include subcategory name
-      };
-    });
-
-    // Add the categories_id and subCat_id arrays to the user document
-    reqBody.categoriesObjArr = categoriesObjArr;
-    reqBody.subCatArr = subCatArr;
-
-    // Check if the user's role is "Agent"
-    if (reqBody.role === "Agent") {
-      // Fetch the master user's data based on the uplineId
-      const masterUser = await User.findOne({ userId: reqBody.uplineId });
-
-      // Copy fields from the master user to the agent user
-      reqBody.categoriesObjArr = masterUser.categoriesObjArr;
-      reqBody.subCatArr = masterUser.subCatArr;
-    }
-
-    // Check if the user's role is "User"
-    if (reqBody.role === "User") {
-      // Fetch the master user's data based on the uplineId
-      const agentUser = await User.findOne({ userId: reqBody.uplineId });
-
-      // Copy fields from the master user to the agent user
-      reqBody.categoriesObjArr = agentUser.categoriesObjArr;
-      reqBody.subCatArr = agentUser.subCatArr;
-    }
-
     const newUser = await User.create(reqBody);
+
+    if (newUser.role === "Master") {
+      const gameCategories = await GameCategory.find();
+      const GameSubCategories = await GameSubCat.find();
+      const masterUserId = newUser._id.toString();
+      const categoriesObjArr = [];
+      const subCatObjArr = [];
+
+      for (const category of gameCategories) {
+        const categoryObj = {
+          cat_id: category._id.toString(),
+          status: category.status,
+          cat_name: category.cat_name,
+        };
+        categoriesObjArr.push(categoryObj);
+      }
+
+      // Save the user to update categoriesObjArr
+      await MasterCatStatus.create({
+        master_id: masterUserId,
+        categoryStatus: categoriesObjArr,
+      });
+
+      for (const subCat of GameSubCategories) {
+        subCatObjArr.push(subCat);
+      }
+
+      // Save the user to update SubcategoriesObjArr
+      await MasterSubCatStatus.create({
+        master_id: masterUserId,
+        subCatStatus: subCatObjArr,
+      });
+    }
 
     // Generate a JWT token
     const token = signToken(newUser._id);
