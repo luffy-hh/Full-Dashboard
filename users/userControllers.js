@@ -14,6 +14,8 @@ const GameSubCat = require("../gameCategories/models/gameSubCatModels");
 
 const MasterCatStatus = require("../category_status/models/master_cat_status_models");
 const MasterSubCatStatus = require("../category_status/models/master_subCat_status_models");
+const LotteryFilterSetting = require("../lotteryFilterSetting/models/lotteryFilterSettingModels");
+const AgentComession = require("../category_status/models/agent_comession_models");
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -89,12 +91,47 @@ exports.signup = catchAsync(async (req, res, next) => {
       });
 
       for (const subCat of GameSubCategories) {
-        subCatObjArr.push(subCat);
+        const obj = await LotteryFilterSetting.findOne({
+          subCategoryId: subCat._id,
+        });
+        if (obj) {
+          const newObj = {
+            ...subCat.toObject(),
+            mainCompensation: obj.mainCompensation,
+          };
+          subCatObjArr.push(newObj);
+        }
       }
 
       // Save the user to update SubcategoriesObjArr
       await MasterSubCatStatus.create({
         master_id: masterUserId,
+        subCatStatus: subCatObjArr,
+      });
+    }
+
+    if (newUser.role === "Agent") {
+      const GameSubCategories = await GameSubCat.find();
+      const uplineID = newUser.uplineId;
+      const agentId = newUser._id.toString();
+      const subCatObjArr = [];
+
+      for (const subCat of GameSubCategories) {
+        const obj = await LotteryFilterSetting.findOne({
+          subCategoryId: subCat._id,
+        });
+        if (obj) {
+          const newObj = {
+            ...subCat.toObject(),
+          };
+          subCatObjArr.push(newObj);
+        }
+      }
+      console.log(subCatObjArr);
+
+      await AgentComession.create({
+        uplineId: uplineID,
+        agent_id: agentId,
         subCatStatus: subCatObjArr,
       });
     }

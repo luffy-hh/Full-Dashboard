@@ -1,7 +1,10 @@
 const mongoose = require("mongoose");
 
-const masterSubCatStatusSchema = new mongoose.Schema({
-  master_id: {
+const agentSubCatComessionSchema = new mongoose.Schema({
+  uplineId: {
+    type: String,
+  },
+  agent_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
@@ -25,21 +28,13 @@ const masterSubCatStatusSchema = new mongoose.Schema({
         type: Number,
         default: 0,
       },
-      mainCompensation: {
-        type: Number,
-        default: 0,
-      },
-      status: {
-        type: Boolean,
-        default: true,
-      },
     },
   ],
 });
 
-const MasterSubCatStatus = mongoose.model(
-  "MasterSubCatStatus",
-  masterSubCatStatusSchema
+const AgentSubCatComession = mongoose.model(
+  "AgentSubCatComession",
+  agentSubCatComessionSchema
 );
 
-module.exports = MasterSubCatStatus;
+module.exports = AgentSubCatComession;
