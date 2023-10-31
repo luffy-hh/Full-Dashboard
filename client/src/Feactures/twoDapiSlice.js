@@ -72,6 +72,30 @@ export const postLuckyNo = createAsyncThunk(
   }
 );
 
+export const fetPatchCloseNo = createAsyncThunk(
+  "data/fetPatchCloseNo",
+  async ({ api, patchData, accessToken }) => {
+    const data = await patchDatas(api, patchData, accessToken);
+    return data;
+  }
+);
+
+export const fetPatchMasterGameCat = createAsyncThunk(
+  "data/fetPatchMasterGameCat",
+  async ({ api, patchData, accessToken }) => {
+    const data = await patchDatas(api, patchData, accessToken);
+    return data;
+  }
+);
+
+export const fetPatchMasterSubGameCat = createAsyncThunk(
+  "data/fetPatchMasterSubGameCat",
+  async ({ api, patchData, accessToken }) => {
+    const data = await patchDatas(api, patchData, accessToken);
+    return data;
+  }
+);
+
 const initialState = {
   allTwoDNo: {},
   allTwoDNoStatus: "idle",
@@ -101,6 +125,16 @@ const initialState = {
   postLuckyNoData: {},
   postLuckyNoDataStatus: "idle",
   postLuckyNoDataError: null,
+  patchCloseNo: {},
+  patchCloseNoStatus: "idle",
+  patchCloseNoError: null,
+  patchMasterGameCat: {},
+  patchMasterGameCatStatus: "idle",
+  patchMasterGameCatError: null,
+
+  patchMasterSubGameCat: {},
+  patchMasterSubGameCatStatus: "idle",
+  patchMasterSubGameCatError: null,
 };
 const twoDapiSlice = createSlice({
   name: "twoDapi",
@@ -250,6 +284,47 @@ const twoDapiSlice = createSlice({
       .addCase(postLuckyNo.rejected, (state, action) => {
         state.postLuckyNoDataStatus = "failed";
         state.postLuckyNoDataError = action.error.message;
+      })
+
+      //patch close No
+      .addCase(fetPatchCloseNo.pending, (state) => {
+        state.patchCloseNoStatus = "loading";
+      })
+      .addCase(fetPatchCloseNo.fulfilled, (state, action) => {
+        state.patchCloseNoStatus = "succeeded";
+        state.patchCloseNo = action.payload;
+      })
+      .addCase(fetPatchCloseNo.rejected, (state, action) => {
+        state.patchCloseNoStatus = "failed";
+        state.patchCloseNoError = action.error.message;
+      })
+
+      //patch Master game cat
+      .addCase(fetPatchMasterGameCat.pending, (state) => {
+        state.patchMasterGameCatStatus = "loading";
+      })
+      .addCase(fetPatchMasterGameCat.fulfilled, (state, action) => {
+        state.patchMasterGameCatStatus = "succeeded";
+        state.patchMasterGameCat = action.payload;
+        console.log(state.patchMasterGameCat);
+      })
+      .addCase(fetPatchMasterGameCat.rejected, (state, action) => {
+        state.patchMasterGameCatStatus = "failed";
+        state.patchMasterGameCatError = action.error.message;
+      })
+
+      //patch Master game cat
+      .addCase(fetPatchMasterSubGameCat.pending, (state) => {
+        state.patchMasterSubGameCatStatus = "loading";
+      })
+      .addCase(fetPatchMasterSubGameCat.fulfilled, (state, action) => {
+        state.patchMasterSubGameCatStatus = "succeeded";
+        state.patchMasterSubGameCat = action.payload;
+        console.log(state.patchMasterSubGameCat);
+      })
+      .addCase(fetPatchMasterSubGameCat.rejected, (state, action) => {
+        state.patchMasterSubGameCatStatus = "failed";
+        state.patchMasterSubGameCatError = action.error.message;
       });
   },
 });
@@ -288,5 +363,12 @@ export const selectfilterTwoDArr = (state) => state.twoDapi.filterTwoDArr;
 
 export const selectLuckyNo = (state) => state.twoDapi.luckyNo;
 // export const selectPostLuckyNo = (state) => state.twoDapi.postLuckyNoData;
+
+export const selectPatchCloseNo = (state) => state.twoDapi.patchCloseNo;
+export const selectPatchCloseNoStatus = (state) =>
+  state.twoDapi.patchCloseNoStatus;
+
+export const selectPatchMasterGameCatCloseStatus = (state) =>
+  state.twoDapi.patchMasterGameCatStatus;
 
 export default twoDapiSlice.reducer;

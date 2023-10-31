@@ -6,15 +6,25 @@ import Button from "../../Component/Button";
 import styles from "./AllCreateForm.module.css";
 import CancelHot from "../../GameApp/Comoponent/HotNumber/CancelHot";
 
-function AllCreateForm({ hideFun, data, role, postFun, status }) {
+function AllCreateForm({ hideFun, data, role, postFun, status, upLineData }) {
   const logInData = useSelector(selectlogInData);
 
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setComfirmPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [uplineId, setUpLineId] = useState(logInData.user.userId);
   const dispatch = useDispatch();
   const loading = useSelector(status);
+
+  const addAgentOrMaster = role === "Agent" || role === "User";
+  console.log(upLineData);
+
+  const optionList = upLineData?.map((d) => (
+    <option key={d.userId} value={d.userId}>
+      {d.name}
+    </option>
+  ));
 
   const fullData = data.map((item) => {
     switch (item.state) {
@@ -61,13 +71,14 @@ function AllCreateForm({ hideFun, data, role, postFun, status }) {
     </Container>
   ));
 
+  console.log(uplineId);
   const postData = {
     name,
     email,
     password,
     confirmPassword,
     role: role,
-    uplineId: logInData.user._id,
+    uplineId: uplineId,
   };
   console.log(postData);
   const postHandle = (e, postFun) => {
@@ -83,7 +94,24 @@ function AllCreateForm({ hideFun, data, role, postFun, status }) {
   return (
     <Container className={styles.master_form_container}>
       <form className={styles.master_form}>
-        <Container className={styles.master_form_grid}>{dataList}</Container>
+        <Container className={styles.master_form_grid}>
+          {addAgentOrMaster && (
+            <Container className={styles.option_form}>
+              <select
+                value={uplineId}
+                onChange={(e) => setUpLineId(e.target.value)}
+              >
+                {role === "User" && <option value="">Select Agent List</option>}
+                {role === "Agent" && (
+                  <option value="">Select Master List</option>
+                )}
+                {optionList}
+              </select>
+            </Container>
+          )}
+
+          {dataList}
+        </Container>
         <Container className={styles.master_btn_container}>
           <Button
             onClick={(e) => postHandle(e, postFun)}

@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsPeopleFill } from "react-icons/bs";
+import { selectChartData } from "../../Feactures/winOrLoseSlice";
 import {
-  selectChartData,
-  selectChartChoose,
-  setChartChoose,
-} from "../../Feactures/winOrLoseSlice";
+  fetchGetAllAgent,
+  fetchGetAllMaster,
+  selectlogInData,
+} from "../../Feactures/apiSlice";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./Home.module.css";
 import BarChart from "./ChartForAdmin/BarChart";
@@ -19,6 +20,15 @@ const dashUser = [
 ];
 
 function Home() {
+  const dispatch = useDispatch();
+  const logInData = useSelector(selectlogInData);
+  const accessToken = logInData.token;
+
+  useEffect(() => {
+    dispatch(fetchGetAllAgent({ api: "user/Agent", accessToken }));
+    dispatch(fetchGetAllMaster({ api: "user/Master", accessToken }));
+  }, []);
+
   const chartData = useSelector(selectChartData);
   const options = {
     plugins: {

@@ -1,22 +1,60 @@
 import React from "react";
+import { setMasterGameCat } from "../../../Feactures/apiSlice";
+import { fetPatchMasterGameCat } from "../../../Feactures/twoDapiSlice";
+import {
+  selectlogInData,
+  setFilterMasterSubGameCat,
+} from "../../../Feactures/apiSlice";
+
 import { Switch } from "antd";
+import { setModalMasterSubGame } from "../../../Feactures/modalSlice";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "../CustomBox.module.css";
 
-function UserDetailGameCat({ data }) {
-  const list = data?.categoriesObjArr.map((d) => (
+function UserDetailGameCat({ data, masterId }) {
+  const dispatch = useDispatch();
+  const logInData = useSelector(selectlogInData);
+  const accessToken = logInData.token;
+
+  const subHanlde = (id) => {
+    dispatch(setModalMasterSubGame(true));
+
+    dispatch(setFilterMasterSubGameCat({ id: id }));
+  };
+
+  const closeGameHandle = (id, status) => {
+    const patchData = {
+      catIdToUpdate: id,
+      status: !status,
+    };
+
+    dispatch(
+      fetPatchMasterGameCat({
+        api: `mastercatstatus/${masterId}`,
+        patchData,
+        accessToken,
+      })
+    );
+    dispatch(setMasterGameCat({ id: id }));
+  };
+
+  const list = data?.map((d) => (
     <li
       key={d._id}
       className={`box_shadow ${styles.close_game} ${
         d.status ? "color_green" : "color_red"
       }`}
     >
-      <span> {d.cat_name} </span>
-      <Switch checked={d.status} onChange={() => closeGameHandle()} />
+      <span style={{ cursor: "pointer" }} onClick={() => subHanlde(d.cat_id)}>
+        {d.cat_name}{" "}
+      </span>
+      <Switch
+        checked={d.status}
+        onChange={() => closeGameHandle(d.cat_id, d.status)}
+      />
     </li>
   ));
-  const closeGameHandle = () => {
-    console.log("heeh");
-  };
+
   return (
     <section className={styles.game_cat_container}>
       <h3>Game Category</h3>

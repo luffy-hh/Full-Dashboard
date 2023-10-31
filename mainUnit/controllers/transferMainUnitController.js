@@ -12,8 +12,8 @@ exports.transferMainUnitfun = async (req, res) => {
     const currentMyanmarTime = moment().format("YYYY-MM-DD HH:mm:ss");
 
     // Admin Data
-    const adminId = "652828b555d62366ddb1bc4c";
-    const adminObj = await User.findById(adminId);
+    const adminId = "653fd58fa90b7b9df5f1330e";
+    const adminObj = await User.findById(req.user.id);// change to 'req.user.id'
     const adminName = adminObj.name;
 
     // Admin Unit Data

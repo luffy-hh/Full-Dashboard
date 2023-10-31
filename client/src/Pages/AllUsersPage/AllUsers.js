@@ -18,6 +18,7 @@ import {
   selectPostUser,
   selectPostUserStatus,
   selectPostTransfer,
+  selectForAgentList,
 } from "../../Feactures/apiSlice";
 import {
   selectAllUserQuery,
@@ -29,6 +30,8 @@ import {
   setAmount,
   selectWithDrawAmount,
   setWithDrawAmount,
+  setDescr,
+  selectDescr,
   selectCondition,
 } from "../../Feactures/modalSlice";
 import styles from "./AllUsers.module.css";
@@ -48,6 +51,9 @@ function AllUsers() {
   const condition = useSelector(selectCondition);
   const depositeAmount = useSelector(selectDepositeAmount);
   const withDrawAmount = useSelector(selectWithDrawAmount);
+  const descr = useSelector(selectDescr);
+  const agentList = useSelector(selectForAgentList);
+
   const accessToken = logInData.token;
 
   useEffect(() => {
@@ -62,12 +68,16 @@ function AllUsers() {
         title="Deposite Unit"
         amount={depositeAmount}
         setAmount={setAmount}
+        descr={descr}
+        setDescr={setDescr}
       />
     ) : (
       <CustomBox
         title="Withdraw Unit"
         amount={withDrawAmount}
         setAmount={setWithDrawAmount}
+        descr={descr}
+        setDescr={setDescr}
       />
     );
 
@@ -105,6 +115,7 @@ function AllUsers() {
           role="User"
           postFun={postAlluser}
           status={selectPostUserStatus}
+          upLineData={agentList}
         />
       )}
     </div>

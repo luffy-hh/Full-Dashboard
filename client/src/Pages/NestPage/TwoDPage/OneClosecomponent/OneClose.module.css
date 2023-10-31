@@ -33,98 +33,45 @@
   margin-top: 1.2rem;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
+  gap: 2.4rem;
 }
 .enable_no_box li {
-  justify-self: center;
+  display: flex;
+  justify-content: center;
+  gap: 2.4rem;
+  align-items: center;
   margin-bottom: 1.2rem;
-
-  background-color: var(--blue-light);
   padding: 6px 2rem 0;
   color: var(--text-white);
   border-radius: 8px;
-}
-.enable_no_box li label {
-  display: flex;
-  gap: 1rem;
+  padding: 1.2rem 0;
 }
 
-.enable_no_box li label div {
+.enable_no_flex {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 1rem;
+  align-items: center;
+}
+.enable_limit {
   font-size: 1.6rem;
 }
-.disable_no {
-  font-weight: 700;
-}
-
-.no_count {
-  font-size: 1.2rem;
-}
-
-.container {
-  display: block;
-  position: relative;
-  padding-left: 35px;
-  margin-bottom: 12px;
+.edit_icon {
+  font-size: 2rem;
   cursor: pointer;
-  font-size: 22px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  padding: 5px 10px;
+  outline: none;
+  color: var(--text-white);
+  border: none;
+  background: none;
+  transition: all 0.3s;
 }
 
-/* Hide the browser's default checkbox */
-.container input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
+.edit_icon:hover {
+  background-color: var(--green-light);
+  border-radius: 5px;
 }
 
-/* Create a custom checkbox */
-.checkmark {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  left: 0;
-  height: 1.8rem;
-  width: 1.8rem;
-  background-color: #eee;
-}
-
-/* On mouse-over, add a grey background color */
-.container:hover input ~ .checkmark {
-  background-color: #ccc;
-}
-
-/* When the checkbox is checked, add a blue background */
-.container input:checked ~ .checkmark {
-  background-color: var(--green-dark);
-}
-
-/* Create the checkmark/indicator (hidden when not checked) */
-.checkmark:after {
-  content: "";
-  position: absolute;
-  display: none;
-}
-
-/* Show the checkmark when checked */
-.container input:checked ~ .checkmark:after {
-  display: block;
-}
-
-/* Style the checkmark/indicator */
-.container .checkmark:after {
-  left: 5px;
-  width: 5px;
-  height: 10px;
-  border: solid white;
-  border-width: 0 3px 3px 0;
-  -webkit-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  transform: rotate(45deg);
+.edit_icon:active {
+  opacity: 0.5;
 }

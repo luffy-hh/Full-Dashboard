@@ -3,8 +3,9 @@ import AllusersFun from "./AllusersFun";
 import {
   setModalUserDetail,
   setUserDetailData,
+  selectUserDetailData,
 } from "../../Feactures/modalSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import styles from "./AllusersTable.module.css";
 import UserDetailBox from "../../Component/CustomBox/UserDetail/UserDetailBox";
@@ -13,6 +14,7 @@ function MainTable({ data, dataArr, query }) {
   const admin = data === "admin";
   // const datas = admin ? alladminData : allusersData;
   const dispatch = useDispatch();
+  const userDetailData = useSelector(selectUserDetailData);
 
   const handleUserDetail = (userData) => {
     dispatch(setModalUserDetail(true));
@@ -51,7 +53,7 @@ function MainTable({ data, dataArr, query }) {
       ));
   return (
     <>
-      <UserDetailBox isMaster={data} />
+      {userDetailData && <UserDetailBox isMaster={data} />}
       <table className={"table_d"}>
         <thead>
           <tr>

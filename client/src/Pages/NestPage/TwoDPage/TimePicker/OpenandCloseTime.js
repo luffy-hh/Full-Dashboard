@@ -44,14 +44,21 @@ function OpenandCloseTime() {
   const currentAmount =
     getLotterySetting?.data.showLotterySettingAll[0].limitAmount;
 
+  const currentMainCompo =
+    getLotterySetting?.data.showLotterySettingAll[0].mainCompensation;
+
   const currentData =
     getLotterySetting && getLotterySetting.data.showLotterySettingAll[0];
+
   const lotterySettingId =
     getLotterySetting && getLotterySetting.data.showLotterySettingAll[0]._id;
 
   const patchData = {
-    startDate: moment(openTime.toString()).tz("Asia/Yangon").format(),
-    endDate: moment(closeTime.toString()).tz("Asia/Yangon").format(),
+    // startDate: moment(openTime.toString()).tz("Asia/Yangon").format(),
+    id: lotterySettingId,
+    startDate: openTime.toString(),
+    endDate: closeTime.toString(),
+    // endDate: moment(closeTime.toString()).tz("Asia/Yangon").format(),
     limitAmount:
       Number(limitAmount) === 0 ? currentAmount : Number(limitAmount),
     status,
@@ -61,7 +68,7 @@ function OpenandCloseTime() {
   const handlePost = () => {
     dispatch(
       fetchPatchLotterySetting({
-        api: `lotterysetting/${lotterySettingId}`,
+        api: `lotterysetting`,
         patchData,
         accessToken,
       })

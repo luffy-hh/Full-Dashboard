@@ -87,6 +87,27 @@ export const fetchDataWithToken = async (api, accessToken) => {
   }
 };
 
+export const fetchDataWithID = async (api, idData, accessToken) => {
+  try {
+    const response = await fetch(`${BASE_URL}${api}/${idData}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error("Error fetching data: " + error.message);
+  }
+};
+
 export const postDataWithImg = async (api, formData, accessToken) => {
   try {
     const response = await fetch(`${BASE_URL}${api}`, {

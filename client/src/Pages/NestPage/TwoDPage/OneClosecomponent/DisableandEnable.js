@@ -3,10 +3,19 @@ import {
   fetGetAllTwoDNo,
   selectAllTwoDNo,
   selectAllTwoDNoStatue,
+  selectPatchCloseNo,
 } from "../../../../Feactures/twoDapiSlice";
+import CloseNoBox from "../../../../Component/CustomBox/CloseNoBox";
+import {
+  setModalCloseNo,
+  setCloseNoData,
+  selectCloseNoData,
+} from "../../../../Feactures/modalSlice";
 import { selectlogInData } from "../../../../Feactures/apiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Spinner from "../../../../Component/Spinner/Spinner";
+import { FiEdit } from "react-icons/fi";
+
 import styles from "./OneClose.module.css";
 
 // const diableAndEnableNo = [
@@ -31,17 +40,24 @@ function DisableandEnable({ query }) {
   const allTwoDNo = useSelector(selectAllTwoDNo);
   const allTwoDNoStatus = useSelector(selectAllTwoDNoStatue);
   const logInData = useSelector(selectlogInData);
+  const patchCloseNo = useSelector(selectPatchCloseNo);
+  const closeNoData = useSelector(selectCloseNoData);
 
   const accessToken = logInData.token;
 
+  useEffect(() => {
+    dispatch(fetGetAllTwoDNo({ api: "lottery2dthai12", accessToken }));
+  }, [patchCloseNo]);
+
   const succeed = allTwoDNoStatus === "succeeded";
 
-  useEffect(() => {
-    dispatch(fetGetAllTwoDNo({ api: "thai2dmorning12am", accessToken }));
-  }, []);
+  const handleEdit = (data) => {
+    dispatch(setModalCloseNo(true));
+    dispatch(setCloseNoData(data));
+  };
 
   const number_list = succeed ? (
-    allTwoDNo.data.all2DNumber
+    allTwoDNo.data.lottery2dNumAll
       .filter((val) => {
         if (query === "") {
           return val;
@@ -50,15 +66,14 @@ function DisableandEnable({ query }) {
         }
       })
       .map((d, i) => (
-        <li key={d._id}>
-          <label htmlFor={`box_${i}`} className={styles.container}>
-            <input type="checkbox" id={`box_${i}`} />
-            <span className={styles.checkmark}></span>
-            <div>
-              <span className={styles.disable_no}>{d.number}</span>
-              <span className={styles.no_count}>{d.limitAmount}</span>
-            </div>
-          </label>
+        <li key={d._id} className={`${d.status ? "color_blue" : "color_red"}`}>
+          <button className={styles.edit_icon} onClick={() => handleEdit(d)}>
+            <FiEdit />
+          </button>
+          <div className={styles.enable_no_flex}>
+            <span>{d.number}</span>
+            <span className={styles.enable_limit}>{d.limitAmount}</span>
+          </div>
         </li>
       ))
   ) : (
@@ -66,12 +81,15 @@ function DisableandEnable({ query }) {
   );
 
   return (
-    <div className={styles.disable_enable_box}>
-      <p className={styles.enabel_box}>
-        2 Digit (Disable and Enable selected Number)
-      </p>
-      <ul className={styles.enable_no_box}>{number_list}</ul>
-    </div>
+    <>
+      {closeNoData && <CloseNoBox />}
+      <div className={styles.disable_enable_box}>
+        <p className={styles.enabel_box}>
+          2 Digit (Disable and Enable selected Number)
+        </p>
+        <ul className={styles.enable_no_box}> {number_list}</ul>
+      </div>
+    </>
   );
 }
 

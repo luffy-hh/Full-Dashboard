@@ -37,14 +37,16 @@ function DepositeAcc() {
 
   console.log(bankAccArr && bankAccArr);
 
+  //need to delete above 4 element
+
   const list = bankAccArr?.map((d, i) => (
     <tr key={d._id} className={styles.deposite_tr_style}>
       <td>{i + 1}</td>
       <td>Online Payment</td>
-      <td>{d.bankAcc.account_name}</td>
+      <td>{d.account_name}</td>
       <td>Logo</td>
-      <td>{d.bankAcc.account}</td>
-      <td>{d.bankAcc.name}</td>
+      <td>{d.account}</td>
+      <td>{d.name}</td>
       <td>
         <NormalButton className={styles.deposite_edit_btn}>Edit</NormalButton>
       </td>

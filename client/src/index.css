@@ -190,7 +190,9 @@ a {
 .color_red {
   background-color: var(--red-light);
 }
-
+.color_blue {
+  background-color: var(--blue-light);
+}
 .color_green {
   background-color: var(--green-light);
 }

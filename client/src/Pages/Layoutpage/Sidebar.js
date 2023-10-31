@@ -51,7 +51,7 @@ const sData = [
         icon: <BsFillPersonFill />,
       },
       {
-        title: "Unit History Transfer",
+        title: "Unit Transfer History",
         route: "unithistoryTransfer",
         icon: <BsFillPersonFill />,
       },

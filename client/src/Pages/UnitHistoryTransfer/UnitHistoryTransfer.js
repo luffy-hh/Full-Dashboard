@@ -22,6 +22,11 @@ function UnitHistoryTransfer() {
 
   const unitTransferArr = getUnitTransfer?.data.mainUnitTransferHistory;
 
+  const sortList = unitTransferArr
+    ?.slice()
+    .sort((a, b) => a.transferDate - b.transferDate);
+  console.log(sortList);
+
   const list =
     unitTransferArr &&
     unitTransferArr.map((d, i) => (
@@ -38,14 +43,14 @@ function UnitHistoryTransfer() {
         <td>{d.afterUnitAmt}</td>
         <td>{d.fromName}</td>
         <td>{d.toName}</td>
-        <td>This is for gift</td>
+        <td>{d.description}</td>
       </tr>
     ));
 
   return (
     <div className={`page_style ${styles.unit_transfer_page}`}>
       <p className={`${styles.transfer_title} box_shadow`}>
-        UnitHistoryTransfer
+        Unit Transfer History
       </p>
       <div className={` hide_scroll ${styles.transfer_container} `}>
         <table className={`box_shadow ${styles.table_transfer}`}>

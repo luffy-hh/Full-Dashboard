@@ -3,6 +3,15 @@ import AllusersTable from "../Component/AllusersTable";
 import AllCreateForm from "../Component/AllCreateForm";
 import { useSelector, useDispatch } from "react-redux";
 import {
+  selectDepositeAmount,
+  setAmount,
+  selectWithDrawAmount,
+  setWithDrawAmount,
+  selectCondition,
+  setDescr,
+  selectDescr,
+} from "../../Feactures/modalSlice";
+import {
   masterBool,
   masterFun,
   selectMasterQuery,
@@ -16,12 +25,14 @@ import {
   selectPostMaster,
   selectPostMasterStatus,
   fetchPostAllMaster,
+  selectPostTransfer,
 } from "../../Feactures/apiSlice";
 import NormalButton from "../../Component/NormalButton";
 import Container from "../../Component/Container";
 import { masterDatas } from "../../Feactures/AllUserPageSlice";
 import styles from "../AllUsersPage/AllUsers.module.css";
 import Searchbar from "../../Component/Searchbar/Searchbar";
+import CustomBox from "../../Component/CustomBox/CustomBox";
 
 function AllMaster() {
   const showMaster = useSelector(masterBool);
@@ -31,14 +42,39 @@ function AllMaster() {
   const master = useSelector(selectMaster);
   const masterStatus = useSelector(selectMasterStatus);
   const postMaster = useSelector(selectPostMaster);
+  const postTransfer = useSelector(selectPostTransfer);
+  const descr = useSelector(selectDescr);
+  const depositeAmount = useSelector(selectDepositeAmount);
+  const withDrawAmount = useSelector(selectWithDrawAmount);
+  const condition = useSelector(selectCondition);
+
   const accessToken = logInData.token;
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchGetAllMaster({ api: "user/Master", accessToken }));
-  }, [postMaster]);
+  }, [postMaster, postTransfer]);
 
   const allmasterArr = master?.data.userAll;
+
+  const modalComponent =
+    condition === "DEP" ? (
+      <CustomBox
+        title="Deposite Unit"
+        amount={depositeAmount}
+        setAmount={setAmount}
+        descr={descr}
+        setDescr={setDescr}
+      />
+    ) : (
+      <CustomBox
+        title="Withdraw Unit"
+        amount={withDrawAmount}
+        setAmount={setWithDrawAmount}
+        descr={descr}
+        setDescr={setDescr}
+      />
+    );
 
   return (
     <div className={styles.allusesPage}>
@@ -61,6 +97,8 @@ function AllMaster() {
               query={masterQuery}
             />
           )}
+
+          {modalComponent}
         </div>
       ) : (
         <AllCreateForm
@@ -69,6 +107,7 @@ function AllMaster() {
           role="Master"
           postFun={fetchPostAllMaster}
           status={selectPostMasterStatus}
+          upLineData={null}
         />
       )}
     </div>

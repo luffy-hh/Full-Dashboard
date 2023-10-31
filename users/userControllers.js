@@ -89,8 +89,7 @@ exports.signup = catchAsync(async (req, res, next) => {
         master_id: masterUserId,
         categoryStatus: categoriesObjArr,
       });
-
-      for (const subCat of GameSubCategories) {
+      for (let subCat of GameSubCategories) {
         const obj = await LotteryFilterSetting.findOne({
           subCategoryId: subCat._id,
         });
@@ -102,7 +101,7 @@ exports.signup = catchAsync(async (req, res, next) => {
           subCatObjArr.push(newObj);
         }
       }
-
+     
       // Save the user to update SubcategoriesObjArr
       await MasterSubCatStatus.create({
         master_id: masterUserId,
@@ -114,19 +113,33 @@ exports.signup = catchAsync(async (req, res, next) => {
       const GameSubCategories = await GameSubCat.find();
       const uplineID = newUser.uplineId;
       const agentId = newUser._id.toString();
-      const subCatObjArr = [];
+      // const subCatObjArr = [];
 
-      for (const subCat of GameSubCategories) {
+      const subCatObjArr = await Promise.all(GameSubCategories.map(async (subCat)=>{
         const obj = await LotteryFilterSetting.findOne({
-          subCategoryId: subCat._id,
+          subCategoryId:subCat._id.toString(),
         });
-        if (obj) {
+
+        if(obj){
           const newObj = {
             ...subCat.toObject(),
-          };
-          subCatObjArr.push(newObj);
+          }
+          return newObj;
         }
-      }
+        return;
+      }))
+
+      // for (const subCat of GameSubCategories) {
+      //   const obj = await LotteryFilterSetting.findOne({
+      //     subCategoryId: subCat._id,
+      //   });
+      //   if (obj) {
+      //     const newObj = {
+      //       ...subCat.toObject(),
+      //     };
+      //     subCatObjArr.push(newObj);
+      //   }
+      // }
       console.log(subCatObjArr);
 
       await AgentComession.create({

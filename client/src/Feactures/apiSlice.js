@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
-  fetchData,
+  fetchDataWithID,
   postDatas,
   patchDatas,
   fetchDataWithToken,
@@ -115,6 +115,22 @@ export const fetchGetAllUnitTransfer = createAsyncThunk(
   }
 );
 
+export const fetchGetMasterGameCat = createAsyncThunk(
+  "data/fetchGetMasterGameCat",
+  async ({ api, idData, accessToken }) => {
+    const data = await fetchDataWithID(api, idData, accessToken);
+    return data;
+  }
+);
+
+export const fetchGetMasterSubGameCat = createAsyncThunk(
+  "data/fetchGetMasterSubGameCat",
+  async ({ api, idData, accessToken }) => {
+    const data = await fetchDataWithID(api, idData, accessToken);
+    return data;
+  }
+);
+
 const initialState = {
   logInData: {},
   currentLoginUser: "",
@@ -161,6 +177,15 @@ const initialState = {
   getUnitTransfer: null,
   getUnitTransferStatus: "idle",
   getUnitTransferError: null,
+  masterGameCat: null,
+  masterGameCatStatus: "idle",
+  masterGameCatError: null,
+  masterSubGameCat: null,
+  masterSubGameCatStatus: "idle",
+  masterSubGameCatError: null,
+  forAgentList: null,
+  forMasterList: null,
+  filterMasterSubGameCat: null,
 };
 
 const dataSlice = createSlice({
@@ -181,6 +206,26 @@ const dataSlice = createSlice({
 
     setAgentLayoutShow: (state, action) => {
       state.agentLayoutShow = action.payload;
+    },
+
+    setMasterGameCat: (state, action) => {
+      state.masterGameCat.data.allGameCatStatus.categoryStatus =
+        state.masterGameCat.data.allGameCatStatus.categoryStatus.map((d) =>
+          d.cat_id === action.payload.id ? { ...d, status: !d.status } : d
+        );
+    },
+
+    setFilterMasterSubGameCat: (state, action) => {
+      state.filterMasterSubGameCat = state.filterMasterSubGameCat.filter(
+        (d) => d.catName_id === action.payload.id
+      );
+      console.log(state.filterMasterSubGameCat);
+    },
+
+    closeMasterSubGameCat: (state, action) => {
+      state.filterMasterSubGameCat = state.filterMasterSubGameCat.map((d) =>
+        d._id === action.payload ? { ...d, status: !d.status } : d
+      );
     },
   },
   extraReducers: (builder) => {
@@ -258,7 +303,9 @@ const dataSlice = createSlice({
       })
       .addCase(fetchGetAlluser.fulfilled, (state, action) => {
         state.allUserStatus = "succeeded";
+
         state.allUser = action.payload;
+        console.log(state.allUser);
       })
       .addCase(fetchGetAlluser.rejected, (state, action) => {
         state.allUserStatus = "failed";
@@ -272,6 +319,7 @@ const dataSlice = createSlice({
       .addCase(fetchGetAllMaster.fulfilled, (state, action) => {
         state.masterStatus = "succeeded";
         state.master = action.payload;
+        state.forMasterList = state.master.data.userAll;
       })
       .addCase(fetchGetAllMaster.rejected, (state, action) => {
         state.masterStatus = "failed";
@@ -285,6 +333,7 @@ const dataSlice = createSlice({
       .addCase(fetchGetAllAgent.fulfilled, (state, action) => {
         state.agentStatus = "succeeded";
         state.agent = action.payload;
+        state.forAgentList = state.agent.data.userAll;
       })
       .addCase(fetchGetAllAgent.rejected, (state, action) => {
         state.agentStatus = "failed";
@@ -371,12 +420,45 @@ const dataSlice = createSlice({
       .addCase(fetchGetAllUnitTransfer.rejected, (state, action) => {
         state.getUnitTransferStatus = "failed";
         state.getUnitTransferError = action.error.message;
+      })
+      //Master Game Cat
+      .addCase(fetchGetMasterGameCat.pending, (state) => {
+        state.masterGameCatStatus = "loading";
+      })
+      .addCase(fetchGetMasterGameCat.fulfilled, (state, action) => {
+        state.masterGameCatStatus = "succeeded";
+        state.masterGameCat = action.payload;
+      })
+      .addCase(fetchGetMasterGameCat.rejected, (state, action) => {
+        state.masterGameCatStatus = "failed";
+        state.masterGameCatError = action.error.message;
+      })
+
+      //Master SupGame Cat
+      .addCase(fetchGetMasterSubGameCat.pending, (state) => {
+        state.masterSubGameCatStatus = "loading";
+      })
+      .addCase(fetchGetMasterSubGameCat.fulfilled, (state, action) => {
+        state.masterSubGameCatStatus = "succeeded";
+        state.masterSubGameCat = action.payload;
+        state.filterMasterSubGameCat =
+          state.masterSubGameCat.data.allGameSubCatStatus.subCatStatus;
+      })
+      .addCase(fetchGetMasterSubGameCat.rejected, (state, action) => {
+        state.masterSubGameCatStatus = "failed";
+        state.masterSubGameCatError = action.error.message;
       });
   },
 });
 
-export const { alreadyLogin, setFormShow, setMasterLayoutShow } =
-  dataSlice.actions;
+export const {
+  alreadyLogin,
+  setFormShow,
+  setMasterLayoutShow,
+  setMasterGameCat,
+  setFilterMasterSubGameCat,
+  closeMasterSubGameCat,
+} = dataSlice.actions;
 
 //logINDATA
 
@@ -430,5 +512,13 @@ export const selectPostTransferStatus = (state) =>
 export const selectGetUnitTransfer = (state) => state.data.getUnitTransfer;
 export const selectGetUnitTransferStatus = (state) =>
   state.data.getUnitTransferStatus;
+
+export const selectMasterGameCat = (state) => state.data.masterGameCat;
+export const selectMasterSubGameCat = (state) => state.data.masterSubGameCat;
+
+export const selectForAgentList = (state) => state.data.forAgentList;
+export const selectForMasterList = (state) => state.data.forMasterList;
+export const selectFilterMasterSubGame = (state) =>
+  state.data.filterMasterSubGameCat;
 
 export default dataSlice.reducer;
