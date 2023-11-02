@@ -35,17 +35,19 @@ function AllAdmin() {
   return (
     <div className={styles.all_admin_page}>
       {adminshow ? (
-        <div className={styles.all_admin_container}>
-          <Container className={styles.allusers_heading}>
-            <p>Member</p>
+        <div>
+          <div className={styles.all_admin_container}>
+            <Container className={styles.allusers_heading}>
+              <p>Member</p>
 
-            <NormalButton
-              onClick={() => dispatch(adminFun())}
-              className={styles.add_new_btn}
-            >
-              Create Admin
-            </NormalButton>
-          </Container>
+              <NormalButton
+                onClick={() => dispatch(adminFun())}
+                className={styles.add_new_btn}
+              >
+                Create Admin
+              </NormalButton>
+            </Container>
+          </div>
           {succeeded && (
             <AllusersTable data="admin" dataArr={adminArr} query="" />
           )}

@@ -5,6 +5,8 @@ import {
   fetchGetAllAgent,
   fetchGetAllMaster,
   selectlogInData,
+  selectAllCounts,
+  fetGetAllCounts,
 } from "../../Feactures/apiSlice";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./Home.module.css";
@@ -22,12 +24,16 @@ const dashUser = [
 function Home() {
   const dispatch = useDispatch();
   const logInData = useSelector(selectlogInData);
+  const allCounts = useSelector(selectAllCounts);
   const accessToken = logInData.token;
 
   useEffect(() => {
     dispatch(fetchGetAllAgent({ api: "user/Agent", accessToken }));
     dispatch(fetchGetAllMaster({ api: "user/Master", accessToken }));
+    dispatch(fetGetAllCounts({ api: "userCounts", accessToken }));
   }, []);
+
+  const allCountsObj = allCounts?.data.resObj;
 
   const chartData = useSelector(selectChartData);
   const options = {
@@ -61,20 +67,43 @@ function Home() {
     ],
   });
 
-  const list = dashUser.map((d) => (
-    <li key={d.id}>
-      <div className={styles.dash_user}>
-        <span className={styles.dash_amount}>{d.total}</span>
-        <span>{d.user}</span>
-      </div>
-      <span className={styles.dash_user_icon}>
-        <BsPeopleFill />
-      </span>
-    </li>
-  ));
   return (
     <div style={{ backgroundColor: "#111827" }} className="page_style">
-      <ul className={styles.dash_all_user}> {list}</ul>
+      <ul className={styles.dash_all_user}>
+        <li>
+          <div className={styles.dash_user}>
+            <span className={styles.dash_amount}>
+              {allCountsObj?.masterCount}
+            </span>
+            <span>Master</span>
+          </div>
+          <span className={styles.dash_user_icon}>
+            <BsPeopleFill />
+          </span>
+        </li>
+        <li>
+          <div className={styles.dash_user}>
+            <span className={styles.dash_amount}>
+              {allCountsObj?.agentCount}
+            </span>
+            <span>Agent</span>
+          </div>
+          <span className={styles.dash_user_icon}>
+            <BsPeopleFill />
+          </span>
+        </li>
+        <li>
+          <div className={styles.dash_user}>
+            <span className={styles.dash_amount}>
+              {allCountsObj?.userCount}
+            </span>
+            <span>Users</span>
+          </div>
+          <span className={styles.dash_user_icon}>
+            <BsPeopleFill />
+          </span>
+        </li>
+      </ul>
 
       <div>
         <BarChart chartData={data} />

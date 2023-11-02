@@ -1,30 +1,56 @@
-import React from 'react';
+import React from "react";
+import {
+  selectCopyId,
+  selectModalCopyText,
+  setModalCopyText,
+} from "../../Feactures/apiSlice";
 
-const CopyText = () => {
+import { useSelector, useDispatch } from "react-redux";
+import styles from "../CustomBox/CustomBox.module.css";
+import { Modal } from "antd";
+
+const CopyText = ({ password }) => {
+  const modalCopyText = useSelector(selectModalCopyText);
+  const userId = useSelector(selectCopyId);
+  const dispatch = useDispatch();
   const handleCopy = () => {
-    const copyContent = document.getElementById('textToCopy');
+    const copyContent = document.getElementById("textToCopy");
     const textToCopy = copyContent.innerText;
 
-    navigator.clipboard.writeText(textToCopy)
+    navigator.clipboard
+      .writeText(textToCopy)
       .then(() => {
-        alert('Text copied to clipboard Successfully');
+        alert("Text copied to clipboard Successfully");
       })
-      .catch(error => {
-        console.error('Error copying text: ', error);
+      .catch((error) => {
+        console.error("Error copying text: ", error);
       });
+
+    dispatch(setModalCopyText(false));
   };
 
   return (
-    <>
-    <div id="textToCopy" style={{ border: '1px solid black', padding: '10px' }}>
-      <span>gohlatt</span>
-      <span>gohlatter3456</span>
-      <span>mail</span>
-      
-    </div>
-    <button onClick={handleCopy}>Copy Text</button>
-
-    </>
+    <Modal
+      title={`Copy ID and Password`}
+      open={modalCopyText}
+      onOk={handleCopy}
+      onCancel={() => dispatch(setModalCopyText(false))}
+      cancelButtonProps={{ style: { display: "none" } }}
+      width={600}
+      okText={"Copy"}
+      className="modalStyle"
+    >
+      <div id="textToCopy" className={styles.copy_text_box}>
+        <p>
+          <span className={styles.copy_left}>User ID</span>{" "}
+          <span>{userId}</span>
+        </p>
+        <p>
+          <span className={styles.copy_left}>Password</span>{" "}
+          <span>{password}</span>
+        </p>
+      </div>
+    </Modal>
   );
 };
 

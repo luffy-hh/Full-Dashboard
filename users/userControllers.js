@@ -344,6 +344,38 @@ exports.getProfile = async (req, res) => {
   }
 };
 
+// Read All User By Role
+exports.getAllUserByRole = async (req, res) => {
+  try {
+    const masterQuery = User.find({ role: "Master" });
+    const masterAll = await masterQuery;
+
+    const agentQuery = User.find({ role: "Agent" });
+    const agentAll = await agentQuery;
+
+    const userQuery = User.find({ role: "User" });
+    const userAll = await userQuery;
+
+    const resObj = {
+      masterCount: masterAll.length,
+      agentCount: agentAll.length,
+      userCount: userAll.length,
+    };
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        resObj,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "failed",
+      message: err,
+    });
+  }
+};
+
 // Profile
 exports.updateProfile = async (req, res) => {
   try {

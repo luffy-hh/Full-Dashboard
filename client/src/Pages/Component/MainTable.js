@@ -27,7 +27,7 @@ function MainTable({ data, dataArr, query }) {
       .filter((val) => {
         if (query === "") {
           return val;
-        } else if (val.name.toLowerCase().includes(query.toLowerCase())) {
+        } else if (val.userId.includes(query)) {
           return val;
         }
       })
@@ -42,6 +42,7 @@ function MainTable({ data, dataArr, query }) {
               {d.name}
             </span>
           </td>
+          <td>{d.userId}</td>
           {admin ? null : <td>{d.unit}</td>}
           {<AllusersFun data={data} toId={d._id} />}
           <td>{d.status ? "Active" : "InActive"}</td>
@@ -54,15 +55,16 @@ function MainTable({ data, dataArr, query }) {
   return (
     <>
       {userDetailData && <UserDetailBox isMaster={data} />}
-      <table className={"table_d"}>
+      <table className={"table_d box_shadow"}>
         <thead>
           <tr>
-            <th style={{ width: "7rem" }}>No</th>
-            <th style={{ width: "10rem" }}>Name</th>
-            {admin ? null : <th style={{ width: "13rem" }}>Balance</th>}
+            <th style={{ minWidth: "7rem" }}>No</th>
+            <th style={{ minWidth: "20rem" }}>Name</th>
+            <th style={{ minWidth: "10rem" }}>UserID</th>
+            {admin ? null : <th style={{ minWidth: "20rem" }}>Balance</th>}
             <th>Function</th>
-            <th style={{ width: "9rem" }}>Status</th>
-            <th style={{ width: "13rem" }}>Last login Time</th>
+            <th style={{ minWidth: "15rem" }}>Status</th>
+            <th style={{ minWidth: "20rem" }}>Last login Time</th>
           </tr>
         </thead>
         <tbody>{tableData}</tbody>

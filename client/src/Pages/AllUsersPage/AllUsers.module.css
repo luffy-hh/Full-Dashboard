@@ -4,6 +4,8 @@
   width: 100vw;
   margin-left: 28rem;
   padding: 2.4rem 3.2rem;
+  overflow: hidden;
+  min-height: 100vh;
 }
 .allusers_container {
   background-color: var(--text-white);

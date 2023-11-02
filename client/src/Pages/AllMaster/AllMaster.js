@@ -79,17 +79,19 @@ function AllMaster() {
   return (
     <div className={styles.allusesPage}>
       {showMaster ? (
-        <div className={`box_shadow ${styles.allusers_container}`}>
-          <Container className={styles.allusers_heading}>
-            <p>Member</p>
-            <Searchbar query={masterQuery} setQuery={setMasterQuery} />
-            <NormalButton
-              onClick={() => dispatch(masterFun())}
-              className={styles.add_new_btn}
-            >
-              Create Master
-            </NormalButton>
-          </Container>
+        <div>
+          <div className={`box_shadow ${styles.allusers_container}`}>
+            <Container className={styles.allusers_heading}>
+              <p>Member</p>
+              <Searchbar query={masterQuery} setQuery={setMasterQuery} />
+              <NormalButton
+                onClick={() => dispatch(masterFun())}
+                className={styles.add_new_btn}
+              >
+                Create Master
+              </NormalButton>
+            </Container>
+          </div>
           {masterStatus === "succeeded" && (
             <AllusersTable
               data="master"

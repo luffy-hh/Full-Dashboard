@@ -34,8 +34,6 @@ function CustomBox({ title, amount, setAmount, descr, setDescr }) {
     description: descr,
   };
 
-  console.log(postDataDep);
-
   const clickHandle = () => {
     if (condition === "DEP") {
       dispatch(
@@ -45,7 +43,12 @@ function CustomBox({ title, amount, setAmount, descr, setDescr }) {
           accessToken,
         })
       );
-      dispatch(setModalShow(postTransferStatus === "succeeded" ? false : true));
+
+      if (postTransferStatus) {
+        dispatch(setModalShow(false));
+        dispatch(setAmount(""));
+        dispatch(setDescr(""));
+      }
     } else {
       dispatch(
         postTransferUnit({
@@ -54,7 +57,11 @@ function CustomBox({ title, amount, setAmount, descr, setDescr }) {
           accessToken,
         })
       );
-      dispatch(setModalShow(postTransferStatus === "succeeded" ? false : true));
+      if (postTransferStatus) {
+        dispatch(setModalShow(false));
+        dispatch(setAmount(""));
+        dispatch(setDescr(""));
+      }
     }
   };
   return (

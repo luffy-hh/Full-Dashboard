@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 5px;
+  gap: 8px;
 }
 .user_fun_btn {
   outline: none;
@@ -17,9 +17,15 @@
   color: #44403c;
   transition: all 0.3s;
 }
+.user_fun_btn:active {
+  opacity: 0.5;
+  box-shadow: none;
+}
 .user_fun_btn:hover {
   background-color: #f59e0b;
   color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+    rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 }
 .user_fun_icon {
   font-weight: 600;

@@ -20,6 +20,9 @@ import { PiNumberSquareSevenBold } from "react-icons/pi";
 import { RiBankCardFill } from "react-icons/ri";
 import { BiDollarCircle } from "react-icons/bi";
 import { BiSolidReport } from "react-icons/bi";
+import { RiLuggageDepositFill } from "react-icons/ri";
+import { BiMoneyWithdraw } from "react-icons/bi";
+import { ImHistory } from "react-icons/im";
 import NestSidebar from "./NestSidebar";
 import { NavLink } from "react-router-dom";
 import { selectcurrentLoginUser, setFormShow } from "../../Feactures/apiSlice";
@@ -257,11 +260,6 @@ const masterData = [
         route: "allagents",
         icon: <BsPeople />,
       },
-      {
-        title: "All Master",
-        route: "allmaster",
-        icon: <BsPeople />,
-      },
     ],
   },
   {
@@ -296,6 +294,25 @@ const masterData = [
         icon: <BiSolidReport />,
       },
     ],
+  },
+  {
+    title: "To Deposit",
+    route: "todeposit",
+    icon: <RiLuggageDepositFill />,
+    show: false,
+  },
+
+  {
+    title: "To WithDraw",
+    route: "towithdraw",
+    icon: <BiMoneyWithdraw />,
+    show: false,
+  },
+  {
+    title: "Deposit/Withdraw History",
+    route: "todeposit-withdraw-history",
+    icon: <ImHistory />,
+    show: false,
   },
 ];
 

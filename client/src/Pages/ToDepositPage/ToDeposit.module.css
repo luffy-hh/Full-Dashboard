@@ -1,0 +1,70 @@
+.account_head {
+  padding: 2.4rem;
+  background-color: var(--text-white);
+}
+.account {
+  font-size: 2.4rem;
+  margin-bottom: 1.2rem;
+}
+
+.system {
+  font-size: 1.6rem;
+  margin-bottom: 3.2rem;
+}
+.account_head > div {
+  padding: 1.2rem 2.4rem;
+  background-color: rgb(228, 226, 226);
+  margin-bottom: 1.2rem;
+}
+.paymethod_container {
+  background-color: var(--text-white) !important;
+  display: grid;
+  grid-template-columns: 25rem 1fr;
+  gap: 4.8rem;
+  margin-top: 4.8rem;
+}
+.paymethod_container ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+.paymethod_container ul li {
+  display: block;
+  border: 1px solid #999;
+  padding: 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.count_method {
+  font-size: 1.4rem;
+}
+
+.active,
+.paymethod_container ul li:hover {
+  background-color: var(--blue-light);
+  color: var(--text-white);
+  transition: all 0.3s;
+}
+
+.card_container {
+  background-color: var(--blue-white);
+}
+.card_container p {
+  font-size: 1.6rem;
+  padding: 1rem;
+}
+.card_box {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2.4rem;
+  padding: 2.4rem;
+}
+
+.pay_btn {
+  width: 100%;
+  padding: 1rem 0;
+  font-size: 1.8rem;
+  background-color: var(--blue-light);
+  color: var(--text-white);
+}

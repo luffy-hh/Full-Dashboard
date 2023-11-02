@@ -23,11 +23,9 @@ import DepoAndWithLimit from "../Pages/DepositeandWithdrawLimit/DepoAndWithLimit
 import UnitHistoryTransfer from "../Pages/UnitHistoryTransfer/UnitHistoryTransfer";
 import GameCategories from "../Pages/Game Categories/GameCategories";
 import ThaiTwoD12am from "../Pages/TwoDReport/ThaiTwoD12am";
-
 import MasterReport from "../Pages/WinLoseReport/MasterReport";
 import UserReport from "../Pages/WinLoseReport/UserReport";
 import UserReportTable from "../Pages/WinLoseReport/Component/UserReportTable";
-
 
 const admin = [
   { id: 0, path: "/admin", route: <Home /> },
@@ -53,7 +51,6 @@ const admin = [
   { id: 20, path: "user-report", route: <UserReport /> },
   { id: 21, path: "user-report/:userId", route: <UserReportTable /> },
 ];
-
 
 function Admin() {
   const formshow = useSelector(selectSetShowForm);

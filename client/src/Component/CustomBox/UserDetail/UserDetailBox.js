@@ -17,6 +17,7 @@ import UserDetailGameCat from "./UserDetailGameCat";
 
 import styles from "../CustomBox.module.css";
 import UserSubGameBox from "./UserSubGameBox";
+import UserDetailCom from "./UserDetailCom";
 
 function UserDetailBox({ isMaster }) {
   const modal = useSelector(selectModalUserDetail);
@@ -97,6 +98,8 @@ function UserDetailBox({ isMaster }) {
             data={masterGameArr}
             masterId={userDetailData._id}
           />
+
+          <UserDetailCom />
         </section>
         <UserSubGameBox masterId={userDetailData._id} />
       </Modal>

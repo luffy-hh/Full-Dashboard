@@ -1,0 +1,26 @@
+.deposit_title {
+  background-color: var(--text-white);
+  padding: 2.4rem;
+  font-weight: 500;
+}
+
+.depo_with_history {
+  width: 100%;
+  overflow: auto;
+  border-radius: 8px;
+}
+.depo_with_history table {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.depo_with_history table thead tr th:first-child {
+  min-width: 5rem;
+}
+
+.depo_with_history table thead tr th {
+  min-width: 20rem;
+}
+
+.depo_with_history table thead tr th:last-child {
+  min-width: 25rem;
+}

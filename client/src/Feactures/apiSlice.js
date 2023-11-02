@@ -131,10 +131,19 @@ export const fetchGetMasterSubGameCat = createAsyncThunk(
   }
 );
 
+export const fetGetAllCounts = createAsyncThunk(
+  "data/fetGetAllCounts",
+  async ({ api, accessToken }) => {
+    const data = await fetchDataWithToken(api, accessToken);
+    return data;
+  }
+);
+
 const initialState = {
   logInData: {},
   currentLoginUser: "",
   token: "",
+  currentUserId: "",
   logInStatus: "idle",
   logInError: null,
   formshow: false,
@@ -186,6 +195,11 @@ const initialState = {
   forAgentList: null,
   forMasterList: null,
   filterMasterSubGameCat: null,
+  allCounts: null,
+  allCountsStatus: "idle",
+  allCountsError: null,
+  modalCopyText: false,
+  copyId: "",
 };
 
 const dataSlice = createSlice({
@@ -198,6 +212,10 @@ const dataSlice = createSlice({
 
     setFormShow: (state, action) => {
       state.formshow = action.payload;
+    },
+
+    setModalCopyText: (state, action) => {
+      state.modalCopyText = action.payload;
     },
 
     setMasterLayoutShow: (state, action) => {
@@ -217,7 +235,7 @@ const dataSlice = createSlice({
 
     setFilterMasterSubGameCat: (state, action) => {
       state.filterMasterSubGameCat = state.filterMasterSubGameCat.filter(
-        (d) => d.catName_id === action.payload.id
+        (d) => d.catName_id === action.payload
       );
       console.log(state.filterMasterSubGameCat);
     },
@@ -238,6 +256,7 @@ const dataSlice = createSlice({
         state.status = "succeeded";
         state.logInData = action.payload;
         state.currentLoginUser = state.logInData.user.role;
+        state.currentUserId = state.logInData.user.userId;
         if (state.currentLoginUser === "Admin") {
           state.formshow = true;
         } else if (state.currentLoginUser === "Master") {
@@ -360,6 +379,9 @@ const dataSlice = createSlice({
       .addCase(postAlluser.fulfilled, (state, action) => {
         state.postUserStatus = "succeeded";
         state.postUser = action.payload;
+
+        state.modalCopyText = true;
+        state.copyId = state.postUser.data.user.userId;
       })
       .addCase(postAlluser.rejected, (state, action) => {
         state.postUserStatus = "failed";
@@ -374,7 +396,8 @@ const dataSlice = createSlice({
         state.postAgentStatus = "succeeded";
 
         state.postAgent = action.payload;
-        console.log("AGENT", state.postAgent);
+        state.modalCopyText = true;
+        state.copyId = state.postAgent.data.user.userId;
       })
       .addCase(fetchPostAllAgent.rejected, (state, action) => {
         state.postAgentStatus = "failed";
@@ -388,7 +411,8 @@ const dataSlice = createSlice({
       .addCase(fetchPostAllMaster.fulfilled, (state, action) => {
         state.postMasterStatus = "succeeded";
         state.postMaster = action.payload;
-        console.log(state.postMaster);
+        state.modalCopyText = true;
+        state.copyId = state.postMaster.data.user.userId;
       })
       .addCase(fetchPostAllMaster.rejected, (state, action) => {
         state.postMasterStatus = "failed";
@@ -447,6 +471,19 @@ const dataSlice = createSlice({
       .addCase(fetchGetMasterSubGameCat.rejected, (state, action) => {
         state.masterSubGameCatStatus = "failed";
         state.masterSubGameCatError = action.error.message;
+      })
+
+      //All Count Cat
+      .addCase(fetGetAllCounts.pending, (state) => {
+        state.allCountsStatus = "loading";
+      })
+      .addCase(fetGetAllCounts.fulfilled, (state, action) => {
+        state.allCountsStatus = "succeeded";
+        state.allCounts = action.payload;
+      })
+      .addCase(fetGetAllCounts.rejected, (state, action) => {
+        state.allCountsStatus = "failed";
+        state.allCountsError = action.error.message;
       });
   },
 });
@@ -458,6 +495,7 @@ export const {
   setMasterGameCat,
   setFilterMasterSubGameCat,
   closeMasterSubGameCat,
+  setModalCopyText,
 } = dataSlice.actions;
 
 //logINDATA
@@ -520,5 +558,11 @@ export const selectForAgentList = (state) => state.data.forAgentList;
 export const selectForMasterList = (state) => state.data.forMasterList;
 export const selectFilterMasterSubGame = (state) =>
   state.data.filterMasterSubGameCat;
+
+export const selectAllCounts = (state) => state.data.allCounts;
+export const selectCurrentUserId = (state) => state.data.currentUserId;
+
+export const selectModalCopyText = (state) => state.data.modalCopyText;
+export const selectCopyId = (state) => state.data.copyId;
 
 export default dataSlice.reducer;

@@ -53,6 +53,9 @@ body {
 .btn_hover:hover {
   background-color: var(--blue);
 }
+.btn:active {
+  opacity: 0.5;
+}
 
 a {
   text-decoration: none;

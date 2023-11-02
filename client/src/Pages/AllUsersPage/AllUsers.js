@@ -87,17 +87,19 @@ function AllUsers() {
   return (
     <div className={styles.allusesPage}>
       {showForm ? (
-        <div className={`box_shadow ${styles.allusers_container}`}>
-          <Container className={styles.allusers_heading}>
-            <p>Member</p>
-            <Searchbar query={allUserQuery} setQuery={setAllUserQuery} />
-            <NormalButton
-              className={styles.add_new_btn}
-              onClick={() => dispatch(userFun())}
-            >
-              Create User
-            </NormalButton>
-          </Container>
+        <div>
+          <div className={`box_shadow ${styles.allusers_container}`}>
+            <Container className={styles.allusers_heading}>
+              <p>Member</p>
+              <Searchbar query={allUserQuery} setQuery={setAllUserQuery} />
+              <NormalButton
+                className={styles.add_new_btn}
+                onClick={() => dispatch(userFun())}
+              >
+                Create User
+              </NormalButton>
+            </Container>
+          </div>
           {allUserStatus === "succeeded" && (
             <AllusersTable
               data="user"

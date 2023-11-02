@@ -20,6 +20,7 @@ function DepositeAccBox({ bankNameArr }) {
   const loading = useSelector(selectPostBankAccStatus);
   const logInData = useSelector(selectlogInData);
   const accessToken = logInData.token;
+  const ownerId = logInData.user._id;
   const dispatch = useDispatch();
   const [bankName, setBankName] = useState("");
   const [accNo, setAccNo] = useState("");
@@ -39,6 +40,7 @@ function DepositeAccBox({ bankNameArr }) {
   formData.append("img", logo);
   formData.append("name", name);
   formData.append("account_name", bankAcc);
+  formData.append("ownerId", ownerId);
 
   const handlePost = () => {
     dispatch(fetPostBankAcc({ api: "bankAcc", formData, accessToken }));

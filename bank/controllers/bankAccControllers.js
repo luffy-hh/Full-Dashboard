@@ -35,9 +35,9 @@ exports.createBankAcc = catchAsync(async (req, res) => {
         req.file.filename
       }`;
       const newBankAcc = await BankAcc.create({ ...req.body });
-      const newBankAccData = await BankAcc.findById(newBankAcc._id).populate(
-        "bankNameId"
-      );
+      const newBankAccData = await BankAcc.findById(newBankAcc._id)
+        .populate("bankNameId")
+        .populate("ownerId");
       res.status(201).json({
         status: "success",
         data: {
@@ -66,7 +66,9 @@ exports.getBankAccAll = catchAsync(async (req, res) => {
     console.log(JSON.parse(queryStr));
 
     // Select the 'img' field in the query
-    const query = BankAcc.find(JSON.parse(queryStr)).populate("bankNameId");
+    const query = BankAcc.find(JSON.parse(queryStr))
+      .populate("bankNameId")
+      .populate("ownerId");
 
     const allBankAcc = await query;
 

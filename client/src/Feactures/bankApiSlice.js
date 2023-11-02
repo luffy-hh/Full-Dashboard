@@ -3,7 +3,9 @@ import {
   fetchDataWithToken,
   postDataWithToken,
   postDataWithImg,
+  patchDatas,
 } from "../app/api";
+import { startTransition } from "react";
 
 export const fetGetBankType = createAsyncThunk(
   "data/fetGetBankType",
@@ -53,6 +55,22 @@ export const fetGetBankAcc = createAsyncThunk(
   }
 );
 
+export const fetGetBankAnnounc = createAsyncThunk(
+  "data/fetGetBankAnnounc",
+  async ({ api, accessToken }) => {
+    const data = await fetchDataWithToken(api, accessToken);
+    return data;
+  }
+);
+
+export const fetPatchBankAnnounc = createAsyncThunk(
+  "data/fetPatchBankAnnounc",
+  async ({ api, patchData, accessToken }) => {
+    const data = await patchDatas(api, patchData, accessToken);
+    return data;
+  }
+);
+
 const initialState = {
   bankType: null,
   bankTypeStatus: "idle",
@@ -72,6 +90,12 @@ const initialState = {
   postBankAcc: null,
   postBankAccStatus: "idle",
   postBankAccError: null,
+  bankAnnounc: null,
+  bankAnnouncStatus: "idle",
+  bankAnnouncError: null,
+  patchBankAnnounc: null,
+  patchBankAnnouncStatus: "idle",
+  patchBankAnnouncError: null,
 };
 const bankApiSlice = createSlice({
   name: "bank",
@@ -159,6 +183,34 @@ const bankApiSlice = createSlice({
       .addCase(fetPostBankAcc.rejected, (state, action) => {
         state.postBankAccStatus = "failed";
         state.postBankAccError = action.error.message;
+      })
+
+      //for bank Announc  get method
+      .addCase(fetGetBankAnnounc.pending, (state) => {
+        state.bankAnnouncStatus = "loading";
+      })
+      .addCase(fetGetBankAnnounc.fulfilled, (state, action) => {
+        state.bankAnnouncStatus = "succeeded";
+        state.bankAnnounc = action.payload;
+        console.log(state.bankAnnounc);
+      })
+      .addCase(fetGetBankAnnounc.rejected, (state, action) => {
+        state.bankAnnouncStatus = "failed";
+        state.bankAnnouncError = action.error.message;
+      })
+
+      //for bank Announc  get method
+      .addCase(fetPatchBankAnnounc.pending, (state) => {
+        state.patchBankAnnouncStatus = "loading";
+      })
+      .addCase(fetPatchBankAnnounc.fulfilled, (state, action) => {
+        state.patchBankAnnouncStatus = "succeeded";
+        state.patchBankAnnounc = action.payload;
+        console.log(state.patchBankAnnounc);
+      })
+      .addCase(fetPatchBankAnnounc.rejected, (state, action) => {
+        state.patchBankAnnouncStatus = "failed";
+        state.patchBankAnnouncError = action.error.message;
       });
   },
 });
@@ -178,5 +230,12 @@ export const selectBankNameStatus = (state) => state.bank.bankNameStatus;
 export const selectBankAcc = (state) => state.bank.bankAcc;
 export const selectPostBankAcc = (state) => state.bank.postBankAcc;
 export const selectPostBankAccStatus = (state) => state.bank.postBankAccStatus;
+
+export const selectBankAnnounc = (state) => state.bank.bankAnnounc;
+export const selectPatchBankAnnouncStatus = (state) =>
+  state.bank.patchBankAnnouncStatus;
+export const selectBankAnnouncStatus = (state) => state.bank.bankAnnouncStatus;
+
+export const selectPatchBankAnnounc = (state) => state.bank.patchBankAnnounc;
 
 export default bankApiSlice.reducer;

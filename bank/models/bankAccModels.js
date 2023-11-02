@@ -6,6 +6,11 @@ const bankAccSchema = new mongoose.Schema({
     ref: "BankName",
     required: [true, "Bank Name must be specified"],
   },
+  ownerId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: [true, "Bank Name must be specified"],
+  },
   account_name: {
     type: String,
     required: [true, "Bank account must be added"],

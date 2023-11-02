@@ -42,11 +42,11 @@ function DepositeAcc() {
   const list = bankAccArr?.map((d, i) => (
     <tr key={d._id} className={styles.deposite_tr_style}>
       <td>{i + 1}</td>
-      <td>Online Payment</td>
-      <td>{d.account_name}</td>
+
+      <td>{d.name}</td>
       <td>Logo</td>
       <td>{d.account}</td>
-      <td>{d.name}</td>
+      <td>{d.account_name}</td>
       <td>
         <NormalButton className={styles.deposite_edit_btn}>Edit</NormalButton>
       </td>
@@ -71,7 +71,7 @@ function DepositeAcc() {
             <thead>
               <tr>
                 <th style={{ minWidth: "8rem" }}>စဥ်</th>
-                <th style={{ minWidth: "20rem" }}>Bank Type</th>
+
                 <th style={{ minWidth: "20rem" }}>Bank Name</th>
 
                 <th style={{ minWidth: "20rem" }}>လိုဂို</th>

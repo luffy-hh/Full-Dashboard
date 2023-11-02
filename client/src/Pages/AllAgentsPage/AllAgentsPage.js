@@ -82,18 +82,19 @@ function AllAgentsPage() {
   return (
     <div className={styles.allusesPage}>
       {agent ? (
-        <div className={`box_shadow ${styles.allusers_container}`}>
-          <Container className={styles.allusers_heading}>
-            <p>Member</p>
-            <Searchbar query={agentQuery} setQuery={setAgentQuery} />
-            <NormalButton
-              onClick={() => dispatch(agentFun())}
-              className={styles.add_new_btn}
-            >
-              Create Agent
-            </NormalButton>
-          </Container>
-
+        <div>
+          <div className={`box_shadow ${styles.allusers_container}`}>
+            <Container className={styles.allusers_heading}>
+              <p>Member</p>
+              <Searchbar query={agentQuery} setQuery={setAgentQuery} />
+              <NormalButton
+                onClick={() => dispatch(agentFun())}
+                className={styles.add_new_btn}
+              >
+                Create Agent
+              </NormalButton>
+            </Container>
+          </div>
           {agentStatus === "succeeded" && (
             <AllusersTable data="agent" dataArr={agentArr} query={agentQuery} />
           )}

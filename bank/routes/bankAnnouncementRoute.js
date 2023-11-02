@@ -8,7 +8,6 @@ router
   .route("/")
   .get(
     userController.protect,
-    userController.restrictTo("Admin", "User"),
     bankAnnouncementController.getBankAnnounc
   )
   .post(

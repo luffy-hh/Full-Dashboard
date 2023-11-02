@@ -2,14 +2,17 @@ const Thai2DSale = require("../models/2dsalemodels");
 const Thai2DNum12AM = require("../../2DAll/models/thai2DLotteryMorning12Models");
 const lotterySetting = require("../../lotterySetting/models/lotterySettingModels");
 const User = require("../../users/userModels");
+const SaleHistories = require('../models/2dSaleHistoriesModel')
 const MainUnit = require("../../mainUnit/models/mainUnitModel");
 const moment = require("moment-timezone");
+
 exports.create2DsaleDoc = async (req, res) => {
   try {
     console.log(req.body);
-    const mainUnitId = "6527d1074eb2bfc53e025c9d";
+    const mainUnitArr = await MainUnit.find({})
+    const mainUnitId = mainUnitArr[0]._id;
     const selectedSetting = await lotterySetting.findById(req.body.subCatId);
-    const mainUnit = await MainUnit.findById(mainUnitId);
+    const mainUnitObj = await MainUnit.findById(mainUnitId);
     const All2D12AM = await Thai2DNum12AM.find({});
     const currentTime = new Date();
     console.log(selectedSetting.startDate, selectedSetting.endDate);
@@ -24,7 +27,7 @@ exports.create2DsaleDoc = async (req, res) => {
       currentTime.getTime() < endDate.getTime()
     );
 
-    const user = await User.findById(req.body.userId);
+    const user = await User.findById(req.user.id);
 
     if (
       startDate.getTime() <= currentTime.getTime() &&
@@ -34,28 +37,29 @@ exports.create2DsaleDoc = async (req, res) => {
       // make an array for playableNumber
       const playedNumbers = reqBody.saleNumberArr.filter((sale) => {
         let curNum = All2D12AM.find((num) => num.number === sale.number);
-        return sale.amount <= curNum.lastAmount;
+        return sale.amount <= curNum.lastAmount && sale;
       });
 
       // make an array for unplayableNumber
       const unPlayAbleNumbers = reqBody.saleNumberArr.filter((sale) => {
         let curNum = All2D12AM.find((num) => num.number === sale.number);
-        return sale.amount > curNum.lastAmount;
+        return sale.amount > curNum.lastAmount && sale;
       });
+      console.log(playedNumbers,unPlayAbleNumbers)
 
       const totalSaleAmount = playedNumbers
-        .map((num) => num.amount)
-        .reduce((acr, cur) => acr + cur, 0);
+          .map((num) => num.amount)
+          .reduce((acr, cur) => Number(acr) + Number(cur), 0);
       console.log(
         user,
         user.unit,
         totalSaleAmount,
-        mainUnit.mainUnit,
+        mainUnitObj.mainUnit,
         "line 94"
       );
       if (totalSaleAmount <= user.unit) {
         const updatedMainUnit = await MainUnit.findByIdAndUpdate(mainUnitId, {
-          mainUnit: mainUnit.mainUnit + totalSaleAmount,
+          mainUnit: mainUnitObj.mainUnit + totalSaleAmount,
         });
         const updatedUser = await User.findByIdAndUpdate(reqBody.userId, {
           unit: user.unit - totalSaleAmount,
@@ -64,13 +68,14 @@ exports.create2DsaleDoc = async (req, res) => {
         for (const sale of playedNumbers) {
           let number = sale.number;
           const updatedDocument = await Thai2DNum12AM.findOne({ number });
-          const newThai2DSale = new Thai2DSale({
+          const obj = {
             subCatId: reqBody.subCatId,
-            userId: reqBody.userId,
+            userId: user.id,
             number: number,
             amount: sale.amount,
-          });
-
+          };
+          const newThai2DSale = new Thai2DSale({ ...obj });
+          await SaleHistories.create({...obj})
           // Save the new Thai2DSale document to the database
           await newThai2DSale.save();
 
