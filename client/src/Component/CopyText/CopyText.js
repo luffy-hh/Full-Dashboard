@@ -17,14 +17,13 @@ const CopyText = ({ password }) => {
     const copyContent = document.getElementById("textToCopy");
     const textToCopy = copyContent.innerText;
 
-    navigator.clipboard
-      .writeText(textToCopy)
-      .then(() => {
-        alert("Text copied to clipboard Successfully");
-      })
-      .catch((error) => {
-        console.error("Error copying text: ", error);
-      });
+    navigator.clipboard.writeText(textToCopy);
+    // .then(() => {
+    //   alert("Text copied to clipboard Successfully");
+    // })
+    // .catch((error) => {
+    //   console.error("Error copying text: ", error);
+    // });
 
     dispatch(setModalCopyText(false));
   };

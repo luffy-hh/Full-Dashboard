@@ -44,7 +44,8 @@
   margin-bottom: 5px;
 }
 .depo_with_form div input,
-.depo_with_form div select {
+.depo_with_form div select,
+.depo_with_form div p {
   width: 100%;
   outline: none;
   border: 1px solid #999;

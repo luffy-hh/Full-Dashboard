@@ -112,14 +112,14 @@ a {
   margin-top: 2.4rem;
   height: 80vh;
   overflow: auto;
-  padding-bottom: 7rem;
+  border-radius: 8px;
 }
 .table_d {
   border-collapse: collapse;
   width: 100%;
-  margin-top: 2.4rem;
   background-color: var(--text-white);
   color: var(--text);
+  border-radius: 8px;
 }
 
 .table_d tbody tr td,

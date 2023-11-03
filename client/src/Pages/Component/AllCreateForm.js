@@ -2,15 +2,17 @@ import React, { useState } from "react";
 import Container from "../../Component/Container";
 import { selectlogInData } from "../../Feactures/apiSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { setShowDropDown } from "../../Feactures/ShowHideSlice";
 
 import Button from "../../Component/Button";
 import styles from "./AllCreateForm.module.css";
 import CancelHot from "../../GameApp/Comoponent/HotNumber/CancelHot";
 import CopyText from "../../Component/CopyText/CopyText";
+import Dropdown from "../../Component/Dropdown/Dropdown";
 
 function AllCreateForm({ hideFun, data, role, postFun, status, upLineData }) {
   const logInData = useSelector(selectlogInData);
-
+  const showRole = role === "User" ? "Select Agent List" : "Select Master List";
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setComfirmPassword] = useState("");
@@ -19,13 +21,21 @@ function AllCreateForm({ hideFun, data, role, postFun, status, upLineData }) {
   const dispatch = useDispatch();
   const [copyPass, setCopyPass] = useState("");
   const loading = useSelector(status);
+  const [selectName, setSelectName] = useState(showRole);
 
   const addAgentOrMaster = role === "Agent" || role === "User";
 
+  // const upLineRole = role === "User" ? "Agent" : "Master";
+
+  const addIdandName = (id, name) => {
+    setUpLineId(id);
+    setSelectName(name);
+    dispatch(setShowDropDown());
+  };
   const optionList = upLineData?.map((d) => (
-    <option key={d.userId} value={d.userId}>
+    <li key={d.userId} onClick={() => addIdandName(d.userId, d.name)}>
       {d.name}
-    </option>
+    </li>
   ));
 
   const fullData = data.map((item) => {
@@ -73,7 +83,6 @@ function AllCreateForm({ hideFun, data, role, postFun, status, upLineData }) {
     </Container>
   ));
 
-  console.log(uplineId);
   const postData = {
     name,
     email,
@@ -102,7 +111,7 @@ function AllCreateForm({ hideFun, data, role, postFun, status, upLineData }) {
           <Container className={styles.master_form_grid}>
             {addAgentOrMaster && (
               <Container className={styles.option_form}>
-                <select
+                {/* <select
                   value={uplineId}
                   onChange={(e) => setUpLineId(e.target.value)}
                 >
@@ -113,7 +122,12 @@ function AllCreateForm({ hideFun, data, role, postFun, status, upLineData }) {
                     <option value="">Select Master List</option>
                   )}
                   {optionList}
-                </select>
+                </select> */}
+                <Dropdown
+                  width={"40rem"}
+                  title={selectName}
+                  list={optionList}
+                />
               </Container>
             )}
 

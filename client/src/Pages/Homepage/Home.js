@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { BsPeopleFill } from "react-icons/bs";
 import { selectChartData } from "../../Feactures/winOrLoseSlice";
 import {
-  fetchGetAllAgent,
-  fetchGetAllMaster,
   selectlogInData,
   selectAllCounts,
   fetGetAllCounts,
@@ -28,8 +26,6 @@ function Home() {
   const accessToken = logInData.token;
 
   useEffect(() => {
-    dispatch(fetchGetAllAgent({ api: "user/Agent", accessToken }));
-    dispatch(fetchGetAllMaster({ api: "user/Master", accessToken }));
     dispatch(fetGetAllCounts({ api: "userCounts", accessToken }));
   }, []);
 

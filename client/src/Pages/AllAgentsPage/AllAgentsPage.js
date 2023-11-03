@@ -34,6 +34,7 @@ import {
   selectPostAgentStatus,
   selectForMasterList,
   selectPostTransfer,
+  fetchGetAllMaster,
 } from "../../Feactures/apiSlice";
 
 function AllAgentsPage() {
@@ -57,6 +58,10 @@ function AllAgentsPage() {
   useEffect(() => {
     dispatch(fetchGetAllAgent({ api: "user/Agent", accessToken }));
   }, [postAgent, postTransfer]);
+
+  useEffect(() => {
+    dispatch(fetchGetAllMaster({ api: "user/Master", accessToken }));
+  }, []);
 
   const agentArr = agents?.data.userAll;
 

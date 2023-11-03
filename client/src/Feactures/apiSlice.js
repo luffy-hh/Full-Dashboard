@@ -379,7 +379,6 @@ const dataSlice = createSlice({
       .addCase(postAlluser.fulfilled, (state, action) => {
         state.postUserStatus = "succeeded";
         state.postUser = action.payload;
-
         state.modalCopyText = true;
         state.copyId = state.postUser.data.user.userId;
       })

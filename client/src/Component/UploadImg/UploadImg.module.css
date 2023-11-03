@@ -1,0 +1,12 @@
+.upload_label {
+  width: 30rem !important;
+
+  display: flex;
+  align-items: center;
+  color: var(--green-light);
+  gap: 2.4rem;
+}
+.upload_label img {
+  width: 5rem;
+  cursor: pointer;
+}

@@ -5,7 +5,6 @@ import {
   postDataWithImg,
   patchDatas,
 } from "../app/api";
-import { startTransition } from "react";
 
 export const fetGetBankType = createAsyncThunk(
   "data/fetGetBankType",
@@ -71,7 +70,34 @@ export const fetPatchBankAnnounc = createAsyncThunk(
   }
 );
 
+export const fetPostDeposit = createAsyncThunk(
+  "data/fetPostDeposit",
+  async ({ api, postData, accessToken }) => {
+    const data = await postDataWithToken(api, postData, accessToken);
+    return data;
+  }
+);
+
+export const fetGetDeposit = createAsyncThunk(
+  "data/fetGetDeposit",
+  async ({ api, accessToken }) => {
+    const data = await fetchDataWithToken(api, accessToken);
+    return data;
+  }
+);
+
+const toDeposite = {
+  bankNameList: null,
+  showName: true,
+  bankAccList: null,
+  clickBankNameId: "",
+  clickBankAcc: "",
+  clickName: "",
+  showDepForm: false,
+};
+
 const initialState = {
+  toDeposite,
   bankType: null,
   bankTypeStatus: "idle",
   bankTypeError: null,
@@ -96,11 +122,41 @@ const initialState = {
   patchBankAnnounc: null,
   patchBankAnnouncStatus: "idle",
   patchBankAnnouncError: null,
+  postDeposit: {},
+  postDepositStatus: "idle",
+  postDepositError: null,
+  deposit: null,
+  depositStatus: "idle",
+  depositError: null,
 };
 const bankApiSlice = createSlice({
   name: "bank",
   initialState,
-  reducers: {},
+  reducers: {
+    filterBankNameList: (state, action) => {
+      state.toDeposite.bankNameList = state.bankName.data.allBankName.filter(
+        (d) => d.bankTypeId._id === action.payload.id
+      );
+    },
+
+    filterBankAccList: (state, action) => {
+      state.toDeposite.bankAccList = state.bankAcc.data.allBankAcc.filter(
+        (d) => d.bankNameId._id === action.payload.id
+      );
+      state.toDeposite.clickBankAcc = action.payload.name;
+      state.toDeposite.showName = false;
+    },
+
+    setShowName: (state, action) => {
+      state.toDeposite.showName = action.payload;
+    },
+
+    setClickName: (state, action) => {
+      state.toDeposite.clickName = action.payload.name;
+      state.toDeposite.showDepForm = true;
+      state.toDeposite.clickBankNameId = action.payload.id;
+    },
+  },
   extraReducers: (builder) => {
     builder
       //for bank type get method
@@ -135,7 +191,6 @@ const bankApiSlice = createSlice({
       .addCase(fetPostBankName.fulfilled, (state, action) => {
         state.postBankNameStatus = "succeeded";
         state.postBankName = action.payload;
-        console.log(state.postBankName);
       })
       .addCase(fetPostBankName.rejected, (state, action) => {
         state.postBankNameStatus = "failed";
@@ -150,7 +205,7 @@ const bankApiSlice = createSlice({
       .addCase(fetGetBankName.fulfilled, (state, action) => {
         state.bankNameStatus = "succeeded";
         state.bankName = action.payload;
-        console.log(state.bankName);
+        state.toDeposite.bankNameList = state.bankName.data.allBankName;
       })
       .addCase(fetGetBankName.rejected, (state, action) => {
         state.bankNameStatus = "failed";
@@ -164,7 +219,6 @@ const bankApiSlice = createSlice({
       .addCase(fetGetBankAcc.fulfilled, (state, action) => {
         state.bankAccStatus = "succeeded";
         state.bankAcc = action.payload;
-        console.log(state.bankName);
       })
       .addCase(fetGetBankAcc.rejected, (state, action) => {
         state.bankAccStatus = "failed";
@@ -211,9 +265,43 @@ const bankApiSlice = createSlice({
       .addCase(fetPatchBankAnnounc.rejected, (state, action) => {
         state.patchBankAnnouncStatus = "failed";
         state.patchBankAnnouncError = action.error.message;
+      })
+
+      //for Deposit  post method
+      .addCase(fetPostDeposit.pending, (state) => {
+        state.postDepositStatus = "loading";
+      })
+      .addCase(fetPostDeposit.fulfilled, (state, action) => {
+        state.postDepositStatus = "succeeded";
+        state.postDeposit = action.payload;
+        console.log(state.postDeposit);
+      })
+      .addCase(fetPostDeposit.rejected, (state, action) => {
+        state.postDepositStatus = "failed";
+        state.postDepositError = action.error.message;
+      })
+
+      //for Deposit  GET  method
+      .addCase(fetGetDeposit.pending, (state) => {
+        state.postDepositStatus = "loading";
+      })
+      .addCase(fetGetDeposit.fulfilled, (state, action) => {
+        state.depositStatus = "succeeded";
+        state.deposit = action.payload;
+      })
+      .addCase(fetGetDeposit.rejected, (state, action) => {
+        state.depositStatus = "failed";
+        state.depositError = action.error.message;
       });
   },
 });
+
+export const {
+  filterBankNameList,
+  filterBankAccList,
+  setShowName,
+  setClickName,
+} = bankApiSlice.actions;
 
 export const selectBankType = (state) => state.bank.bankType;
 export const selectPostBankType = (state) => state.bank.postBankType;
@@ -237,5 +325,19 @@ export const selectPatchBankAnnouncStatus = (state) =>
 export const selectBankAnnouncStatus = (state) => state.bank.bankAnnouncStatus;
 
 export const selectPatchBankAnnounc = (state) => state.bank.patchBankAnnounc;
+export const selectBankNameList = (state) => state.bank.toDeposite.bankNameList;
+export const selectShowName = (state) => state.bank.toDeposite.showName;
+export const selectBankAccList = (state) => state.bank.toDeposite.bankAccList;
 
+export const selectClickName = (state) => state.bank.toDeposite.clickName;
+export const selectClickBankNameId = (state) =>
+  state.bank.toDeposite.clickBankNameId;
+export const selectClickBankAcc = (state) => state.bank.toDeposite.clickBankAcc;
+export const selectShowDepoForm = (state) => state.bank.toDeposite.showDepForm;
+
+export const selectPostDeposit = (state) => state.bank.postDeposit;
+export const selectPostDepositStatus = (state) => state.bank.postDepositStatus;
+
+export const selectDeposit = (state) => state.bank.deposit;
+export const selectDepositStatus = (state) => state.bank.depositStatus;
 export default bankApiSlice.reducer;

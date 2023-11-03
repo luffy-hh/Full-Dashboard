@@ -25,6 +25,7 @@ const initialState = {
   agent: true,
   searchQuery,
   depositeRule,
+  showDropDown: false,
 };
 
 const ShowHideSlice = createSlice({
@@ -93,6 +94,10 @@ const ShowHideSlice = createSlice({
     setTextTwo: (state, action) => {
       state.depositeRule.textTwo = action.payload;
     },
+
+    setShowDropDown: (state) => {
+      state.showDropDown = !state.showDropDown;
+    },
   },
 });
 
@@ -112,6 +117,7 @@ export const {
   setTextTwoShow,
   setTextTwo,
   agentFun,
+  setShowDropDown,
 } = ShowHideSlice.actions;
 
 export const nestBool = (state) => state.shows.show;
@@ -141,5 +147,6 @@ export const selectText = (state) => state.shows.depositeRule.text;
 export const selectTextTwoShow = (state) =>
   state.shows.depositeRule.textTwoShow;
 export const selectTextTwo = (state) => state.shows.depositeRule.textTwo;
+export const selectShowDropDown = (state) => state.shows.showDropDown;
 
 export default ShowHideSlice.reducer;

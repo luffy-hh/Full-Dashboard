@@ -22,7 +22,7 @@ exports.createDeposit = catchAsync(async (req, res) => {
 
     const token = req.headers.authorization.split(" ")[1];
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-    const fromId = decoded.id;
+    const fromId = req.user.id;
     const currentUserObj = await User.findById(fromId);
     const uplieId = currentUserObj.userId;
     const uplieObj = await User.findOne({ userId: uplieId });
@@ -36,13 +36,12 @@ exports.createDeposit = catchAsync(async (req, res) => {
       bankAcc: reqBody.bankAcc,
       transferCode: reqBody.transferCode,
       amount: reqBody.amount,
-      status: "panding",
+      status: "pending",
       description: "deposit",
     };
 
     const newDeposit = await Deposit.create({ ...insertObj });
-
-    const resObj = newDeposit
+    const resObj = await Deposit.findById(newDeposit._id)
       .populate("fromId")
       .populate("toId")
       .populate("bankName_id");

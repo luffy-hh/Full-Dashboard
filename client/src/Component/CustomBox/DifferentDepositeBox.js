@@ -8,14 +8,18 @@ import {
   fetPostBankName,
   selectPostBankNameStatus,
 } from "../../Feactures/bankApiSlice";
+import { setShowDropDown } from "../../Feactures/ShowHideSlice";
 import { selectlogInData } from "../../Feactures/apiSlice";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./CustomBox.module.css";
+import Dropdown from "../Dropdown/Dropdown";
+import UploadImg from "../UploadImg/UploadImg";
 
 function DifferentDepositeBox({ allBankArr }) {
   const modalDeposite = useSelector(selectModalDiffDepo);
   const dispatch = useDispatch();
   const [bankType, setBankType] = useState("");
+  const [selectBankType, setSelectBankType] = useState("Select Bank Type");
   const [bankName, setBankName] = useState("");
   const [logo, setLogo] = useState(null);
 
@@ -23,10 +27,16 @@ function DifferentDepositeBox({ allBankArr }) {
   const accessToken = logInData.token;
   const postBankNameStatus = useSelector(selectPostBankNameStatus);
 
+  const hadleData = (id, name) => {
+    setBankType(id);
+    setSelectBankType(name);
+    dispatch(setShowDropDown());
+  };
+
   const bankList = allBankArr?.map((d) => (
-    <option key={d._id} value={d._id}>
+    <li key={d._id} onClick={() => hadleData(d._id, d.name)}>
       {d.name}
-    </option>
+    </li>
   ));
 
   const formData = new FormData();
@@ -58,13 +68,8 @@ function DifferentDepositeBox({ allBankArr }) {
       <form className={styles.bank_input}>
         <div>
           <label>Bank Type</label>
-          <select
-            value={bankType}
-            onChange={(e) => setBankType(e.target.value)}
-          >
-            <option value="">Select Bank Type</option>
-            {bankList}
-          </select>
+
+          <Dropdown width={"30rem"} title={selectBankType} list={bankList} />
         </div>
         <div>
           <label>Bank Name</label>
@@ -76,7 +81,7 @@ function DifferentDepositeBox({ allBankArr }) {
         </div>
         <div>
           <label>Logo</label>
-          <input type="file" onChange={(e) => setLogo(e.target.files[0])} />
+          <UploadImg setFile={setLogo} />
         </div>
       </form>
     </Modal>

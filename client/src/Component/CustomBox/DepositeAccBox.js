@@ -12,8 +12,12 @@ import {
   selectPostBankAccStatus,
 } from "../../Feactures/bankApiSlice";
 
+import { setShowDropDown } from "../../Feactures/ShowHideSlice";
+
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./CustomBox.module.css";
+import Dropdown from "../Dropdown/Dropdown";
+import UploadImg from "../UploadImg/UploadImg";
 
 function DepositeAccBox({ bankNameArr }) {
   const modalDeposite = useSelector(selectModalAccDepo);
@@ -27,11 +31,18 @@ function DepositeAccBox({ bankNameArr }) {
   const [name, setName] = useState("");
   const [bankAcc, setBankAcc] = useState("");
   const [logo, setLogo] = useState(null);
+  const [selectBank, setSelectBankName] = useState("Select Bank Name");
+
+  const hadnleData = (id, name) => {
+    setSelectBankName(name);
+    setBankName(id);
+    dispatch(setShowDropDown());
+  };
 
   const bankList = bankNameArr?.map((d) => (
-    <option key={d._id} value={d._id}>
+    <li key={d._id} onClick={() => hadnleData(d._id, d.name)}>
       {d.name}
-    </option>
+    </li>
   ));
 
   const formData = new FormData();
@@ -67,13 +78,8 @@ function DepositeAccBox({ bankNameArr }) {
       <form className={styles.bank_input}>
         <div>
           <label>Bank Name</label>
-          <select
-            value={bankName}
-            onChange={(e) => setBankName(e.target.value)}
-          >
-            <option value="">Select Bank Name</option>
-            {bankList}
-          </select>
+
+          <Dropdown width={"30rem"} title={selectBank} list={bankList} />
         </div>
         <div>
           <label>Bank Account No</label>
@@ -102,7 +108,7 @@ function DepositeAccBox({ bankNameArr }) {
 
         <div>
           <label>Logo</label>
-          <input type="file" onChange={(e) => setLogo(e.target.files[0])} />
+          <UploadImg setFile={setLogo} />
         </div>
       </form>
     </Modal>

@@ -84,19 +84,6 @@ const todeposit = [
   },
 ];
 
-const payMentMethod = [
-  {
-    show: true,
-    method: "All Methods",
-    pay: ["AYA", "KBZ", "CB", "KPay", "CBPay", "WavePay", "AYAPay"],
-  },
-  { show: false, method: "Banks", pay: ["AYA", "KBZ", "CB"] },
-  {
-    show: false,
-    method: "Online Banking",
-    pay: ["KPay", "CBPay", "WavePay", "AYAPay"],
-  },
-];
 const initialState = {
   masterCommisionTable: [],
   userTable: [],
@@ -110,7 +97,6 @@ const initialState = {
   userDetailComHead,
   todeposit,
   todepositHead,
-  payMentMethod,
 };
 
 const AllUserPageSlice = createSlice({
@@ -131,14 +117,6 @@ const AllUserPageSlice = createSlice({
     //for user add table
     addUser: (state, action) => {
       state.userTable.push(action.payload);
-    },
-
-    changeActive: (state, action) => {
-      state.payMentMethod = state.payMentMethod.map((d) =>
-        d.method === action.payload
-          ? { ...d, show: true }
-          : { ...d, show: false }
-      );
     },
   },
 });
@@ -164,7 +142,5 @@ export const selectUserDetailComHead = (state) =>
 
 export const selectToDeposit = (state) => state.userPageData.todeposit;
 export const selectToDepositHead = (state) => state.userPageData.todepositHead;
-
-export const selectPayMentMethod = (state) => state.userPageData.payMentMethod;
 
 export default AllUserPageSlice.reducer;

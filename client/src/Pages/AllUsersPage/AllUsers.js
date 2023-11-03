@@ -19,6 +19,7 @@ import {
   selectPostUserStatus,
   selectPostTransfer,
   selectForAgentList,
+  fetchGetAllAgent,
 } from "../../Feactures/apiSlice";
 import {
   selectAllUserQuery,
@@ -59,6 +60,10 @@ function AllUsers() {
   useEffect(() => {
     dispatch(fetchGetAlluser({ api: "user/User", accessToken }));
   }, [postUser, postTransfer]);
+
+  useEffect(() => {
+    dispatch(fetchGetAllAgent({ api: "user/Agent", accessToken }));
+  }, []);
 
   const allUserArr = allUser?.data.userAll;
 

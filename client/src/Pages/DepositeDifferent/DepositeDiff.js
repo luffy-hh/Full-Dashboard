@@ -58,8 +58,8 @@ function DepositeDiff() {
             Create
           </NormalButton>
         </div>
-        <div className="table_d_container">
-          <table className="table_d box_shadow">
+        <div className="table_d_container hide_scroll box_shadow">
+          <table className="table_d">
             <thead>
               <tr>
                 <th style={{ width: "8rem" }}>စဥ်</th>
