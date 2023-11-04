@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 
 const bankNameSchema = new mongoose.Schema({
-  bankTypeId: {
+  bankType: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "BankType",
     required: [true, "Bank type must be specified"],
   },
-  name: {
+  bankName: {
     type: String,
     required: [true, "Bank name must be added"],
   },

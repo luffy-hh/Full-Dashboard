@@ -10,9 +10,9 @@ router
   .post(
     bankNameController.uploadBankNameImg,
     userController.protect,
-    userController.restrictTo("Admin"),
     bankNameController.createBankName
   );
+
 router
   .route("/:id")
   .patch(

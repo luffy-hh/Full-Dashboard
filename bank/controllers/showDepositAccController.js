@@ -9,10 +9,10 @@ const jwt = require("jsonwebtoken");
 // Read All Bank Account
 exports.getBankAccDeposit = catchAsync(async (req, res) => {
   try {
-    // const token = req.headers.authorization.split(" ")[1];
-    // const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-    // const currentUserId = decoded.id;
-    const currentUserObj = await User.findById(req.user.id);
+    const token = req.headers.authorization.split(" ")[1];
+    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+    const currentUserId = decoded.id;
+    const currentUserObj = await User.findById(currentUserId);
     const currentUplineId = currentUserObj.uplineId;
     const uplineObj = await User.findOne({ userId: currentUplineId });
     const uplineUserId = uplineObj._id.toString();

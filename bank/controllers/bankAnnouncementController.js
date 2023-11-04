@@ -50,15 +50,13 @@ exports.getBankAnnounc = catchAsync(async (req, res) => {
 // Update Bank Announcement
 exports.updateBankAnnounc = catchAsync(async (req, res) => {
   try {
-    const bankAnnouncId = "653927421daa11cfe5f1c9d5";
     const updateObj = req.body;
 
+    const bankAnnouncmentArr = await BankAnnouncement.find();
     const updateBankAnnouncment = await BankAnnouncement.findByIdAndUpdate(
-      bankAnnouncId,
-      updateObj,
-      {
-        new: true,
-      }
+      bankAnnouncmentArr[0]._id,
+      { ...updateObj },
+      { new: true }
     );
     res.status(200).json({
       status: "Success",

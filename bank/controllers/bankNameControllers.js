@@ -35,14 +35,13 @@ exports.createBankName = catchAsync(async (req, res) => {
         "host"
       )}/images/bank_name/${req.file.filename}`;
       const newBankName = await BankName.create({ ...req.body });
-
-      const newBankData = await BankName.findById(newBankName._id).populate(
-        "bankTypeId"
+      const newBankNameData = await BankName.findById(newBankName._id).populate(
+        "bankType"
       );
       res.status(201).json({
         status: "success",
         data: {
-          newBankData,
+          newBankNameData,
           imageLink,
         },
       });
@@ -58,17 +57,7 @@ exports.createBankName = catchAsync(async (req, res) => {
 // Read All Bank Name
 exports.getBankNameAll = catchAsync(async (req, res) => {
   try {
-    const queryObj = { ...req.query };
-    const excludeFields = ["page", "sort", "limit", "fields"];
-    excludeFields.forEach((el) => delete queryObj[el]);
-
-    let queryStr = JSON.stringify(queryObj);
-    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-    console.log(JSON.parse(queryStr));
-
-    // Select the 'img' field in the query
-    const query = BankName.find().populate("bankTypeId");
-
+    const query = BankName.find().populate("bankType");
     const allBankName = await query;
 
     // Construct image links for each result
@@ -96,23 +85,23 @@ exports.getBankNameAll = catchAsync(async (req, res) => {
   }
 });
 
-// Update Bank name
+// Update Bank Name
 exports.updateBankName = catchAsync(async (req, res) => {
   try {
     const bankNameId = req.params.id; // Assuming you have the bank name's ID in the route parameter
-    console.log(bankNameId);
-    // Access the fields from form-data
-    const name = req.body.name;
-    const status = req.body.status || true;
+    const updateObj = {};
 
-    console.log(name);
+    if (req.body.bankType) {
+      updateObj.bankType = req.body.bankType;
+    }
 
-    const updateObj = {
-      name,
-      status,
-    };
+    if (req.body.bankName) {
+      updateObj.bankName = req.body.bankName;
+    }
+    if (req.body.status) {
+      updateObj.status = req.body.status;
+    }
 
-    // Access the uploaded image data
     if (req.file) {
       updateObj.img = req.file.filename;
       updateObj.imgLink = `${req.protocol}://${req.get(
@@ -120,14 +109,13 @@ exports.updateBankName = catchAsync(async (req, res) => {
       )}/images/bank_name/${req.file.filename}`;
     }
 
-    // Use findByIdAndUpdate to update the fields
     const updatedBankName = await BankName.findByIdAndUpdate(
       bankNameId,
       updateObj,
       {
         new: true,
       }
-    ).populate("bankTypeId");
+    ).populate("bankType");
 
     res.status(200).json({
       status: "Success",

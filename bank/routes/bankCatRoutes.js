@@ -1,21 +1,21 @@
 const express = require("express");
-const bankAnnouncementController = require("../controllers/bankAnnouncementController");
+const bankCatController = require("../controllers/bankCatControllers");
 const userController = require("../../users/userControllers");
 
 const router = express.Router();
 // Read All User Roles and Creat User Role
 router
   .route("/")
-  .get(userController.protect, bankAnnouncementController.getBankAnnounc)
+  .get(userController.protect, bankCatController.getBankCatAll)
   .post(
     userController.protect,
     userController.restrictTo("Admin"),
-    bankAnnouncementController.createBankAnnounc
+    bankCatController.createBankCat
   )
   .patch(
     userController.protect,
     userController.restrictTo("Admin"),
-    bankAnnouncementController.updateBankAnnounc
+    bankCatController.updateBankCategory
   );
 
 module.exports = router;

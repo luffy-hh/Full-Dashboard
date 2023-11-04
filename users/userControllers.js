@@ -101,7 +101,7 @@ exports.signup = catchAsync(async (req, res, next) => {
           subCatObjArr.push(newObj);
         }
       }
-     
+
       // Save the user to update SubcategoriesObjArr
       await MasterSubCatStatus.create({
         master_id: masterUserId,
@@ -115,19 +115,21 @@ exports.signup = catchAsync(async (req, res, next) => {
       const agentId = newUser._id.toString();
       // const subCatObjArr = [];
 
-      const subCatObjArr = await Promise.all(GameSubCategories.map(async (subCat)=>{
-        const obj = await LotteryFilterSetting.findOne({
-          subCategoryId:subCat._id.toString(),
-        });
+      const subCatObjArr = await Promise.all(
+        GameSubCategories.map(async (subCat) => {
+          const obj = await LotteryFilterSetting.findOne({
+            subCategoryId: subCat._id.toString(),
+          });
 
-        if(obj){
-          const newObj = {
-            ...subCat.toObject(),
+          if (obj) {
+            const newObj = {
+              ...subCat.toObject(),
+            };
+            return newObj;
           }
-          return newObj;
-        }
-        return;
-      }))
+          return;
+        })
+      );
 
       // for (const subCat of GameSubCategories) {
       //   const obj = await LotteryFilterSetting.findOne({
@@ -379,11 +381,11 @@ exports.getAllUserByRole = async (req, res) => {
 // Profile
 exports.updateProfile = async (req, res) => {
   try {
-    const token = req.headers.authorization.split(" ")[1];
-    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+    // const token = req.headers.authorization.split(" ")[1];
+    // const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
     const updateObj = req.body;
 
-    const updateUser = await User.findByIdAndUpdate(decoded.id, updateObj, {
+    const updateUser = await User.findByIdAndUpdate(req.user.id, updateObj, {
       new: true,
     });
     console.log(updateUser);

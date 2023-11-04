@@ -1,15 +1,15 @@
 const mongoose = require("mongoose");
 
 const bankAccSchema = new mongoose.Schema({
-  bankNameId: {
+  bankNameData: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "BankName",
     required: [true, "Bank Name must be specified"],
   },
-  ownerId: {
+  ownderData: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    required: [true, "Bank Name must be specified"],
+    required: [true, "Bank Account Owner must be specified"],
   },
   account_name: {
     type: String,
@@ -19,7 +19,7 @@ const bankAccSchema = new mongoose.Schema({
     type: String,
     required: [true, "Bank account must be added"],
   },
-  name: {
+  description: {
     type: String,
   },
   img: {

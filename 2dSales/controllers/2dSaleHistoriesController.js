@@ -29,7 +29,7 @@ exports.getHistory = async (req, res, next) => {
         })
       );
       console.log(userListOfThisMaster);
-      const allHistoriesOfAgentArr = await TwoDSaleHistories.find();
+      await TwoDSaleHistories.find();
     }
   } catch (e) {
     res.status(400).json({

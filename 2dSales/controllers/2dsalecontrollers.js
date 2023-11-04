@@ -1,15 +1,15 @@
 const Thai2DSale = require("../models/2dsalemodels");
-const Thai2DNum12AM = require("../../2DAll/models/thai2DLotteryMorning12Models");
-const lotterySetting = require("../../lotterySetting/models/lotterySettingModels");
+const Thai2DNum12AM = require("../../lottery_nuumbers/models/thai2DNum12Models");
+const lotterySetting = require("../../lotteryFilterSetting/models/lotteryFilterSettingModels");
 const User = require("../../users/userModels");
-const SaleHistories = require('../models/2dSaleHistoriesModel')
+const SaleHistories = require("../models/2dSaleHistoriesModel");
 const MainUnit = require("../../mainUnit/models/mainUnitModel");
 const moment = require("moment-timezone");
 
 exports.create2DsaleDoc = async (req, res) => {
   try {
     console.log(req.body);
-    const mainUnitArr = await MainUnit.find({})
+    const mainUnitArr = await MainUnit.find({});
     const mainUnitId = mainUnitArr[0]._id;
     const selectedSetting = await lotterySetting.findById(req.body.subCatId);
     const mainUnitObj = await MainUnit.findById(mainUnitId);
@@ -45,11 +45,11 @@ exports.create2DsaleDoc = async (req, res) => {
         let curNum = All2D12AM.find((num) => num.number === sale.number);
         return sale.amount > curNum.lastAmount && sale;
       });
-      console.log(playedNumbers,unPlayAbleNumbers)
+      console.log(playedNumbers, unPlayAbleNumbers);
 
       const totalSaleAmount = playedNumbers
-          .map((num) => num.amount)
-          .reduce((acr, cur) => Number(acr) + Number(cur), 0);
+        .map((num) => num.amount)
+        .reduce((acr, cur) => Number(acr) + Number(cur), 0);
       console.log(
         user,
         user.unit,
@@ -75,7 +75,7 @@ exports.create2DsaleDoc = async (req, res) => {
             amount: sale.amount,
           };
           const newThai2DSale = new Thai2DSale({ ...obj });
-          await SaleHistories.create({...obj})
+          await SaleHistories.create({ ...obj });
           // Save the new Thai2DSale document to the database
           await newThai2DSale.save();
 

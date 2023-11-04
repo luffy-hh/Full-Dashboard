@@ -2,6 +2,9 @@ const multer = require("multer");
 const BankAcc = require("../models/bankAccModels");
 const AppError = require("../../utils/appError");
 const catchAsync = require("../../utils/catchAsync");
+const User = require("../../users/userModels");
+const { promisify } = require("util");
+const jwt = require("jsonwebtoken");
 
 const multerStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -29,15 +32,22 @@ exports.uploadBankAccImg = upload.single("img");
 exports.createBankAcc = catchAsync(async (req, res) => {
   try {
     if (req.file) {
-      const reqBody = req.body;
+      const token = req.headers.authorization.split(" ")[1];
+      const decoded = await promisify(jwt.verify)(
+        token,
+        process.env.JWT_SECRET
+      );
+      const currentUserId = decoded.id;
+      const reqBody = { ...req.body, ownderData: currentUserId };
       reqBody.img = req.file.filename;
       const imageLink = `${req.protocol}://${req.get("host")}/images/bank_acc/${
         req.file.filename
       }`;
-      const newBankAcc = await BankAcc.create({ ...req.body });
+      const newBankAcc = await BankAcc.create({ ...reqBody });
       const newBankAccData = await BankAcc.findById(newBankAcc._id)
-        .populate("bankNameId")
-        .populate("ownerId");
+        .populate("bankNameData")
+        .populate("ownderData");
+      console.log(newBankAccData);
       res.status(201).json({
         status: "success",
         data: {
@@ -67,10 +77,95 @@ exports.getBankAccAll = catchAsync(async (req, res) => {
 
     // Select the 'img' field in the query
     const query = BankAcc.find(JSON.parse(queryStr))
-      .populate("bankNameId")
-      .populate("ownerId");
+      .populate("bankNameData")
+      .populate("ownderData");
 
     const allBankAcc = await query;
+
+    // Construct image links for each result
+    const bankAccWithImageLinks = allBankAcc.map((bankAcc) => {
+      return {
+        ...bankAcc._doc,
+        imgLink: `${req.protocol}://${req.get("host")}/images/bank_name/${
+          bankAcc.img
+        }`,
+      };
+    });
+
+    res.status(200).json({
+      status: "Success",
+      length: allBankAcc.length,
+      data: {
+        allBankAcc: bankAccWithImageLinks, // Include image links in the response
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "failed",
+      message: err,
+    });
+  }
+});
+
+// Read Bank Account Me
+exports.getBankAccMe = catchAsync(async (req, res) => {
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+    const currentUserId = decoded.id;
+    console.log(currentUserId);
+
+    // Select the 'img' field in the query
+    const query = BankAcc.find({ ownderData: currentUserId })
+      .populate("bankNameData")
+      .populate("ownderData");
+
+    const allBankAcc = await query;
+    console.log(allBankAcc);
+
+    // Construct image links for each result
+    const bankAccWithImageLinks = allBankAcc.map((bankAcc) => {
+      return {
+        ...bankAcc._doc,
+        imgLink: `${req.protocol}://${req.get("host")}/images/bank_name/${
+          bankAcc.img
+        }`,
+      };
+    });
+
+    res.status(200).json({
+      status: "Success",
+      length: allBankAcc.length,
+      data: {
+        allBankAcc: bankAccWithImageLinks, // Include image links in the response
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "failed",
+      message: err,
+    });
+  }
+});
+
+// Read Bank Account Upline
+exports.getBankAccUpline = catchAsync(async (req, res) => {
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+    const currentUserId = decoded.id;
+    const currentUserObj = await User.findById(currentUserId);
+    const currentUserUplineId = currentUserObj.uplineId;
+    const uplineObj = await User.findOne({ userId: currentUserUplineId });
+    const uplineUserObjId = uplineObj._id.toString();
+
+    // Select the 'img' field in the query
+    const query = BankAcc.find({ ownderData: uplineUserObjId })
+      .populate("bankNameData")
+      .populate("ownderData");
+
+    const allBankAcc = await query;
+    console.log(allBankAcc);
 
     // Construct image links for each result
     const bankAccWithImageLinks = allBankAcc.map((bankAcc) => {

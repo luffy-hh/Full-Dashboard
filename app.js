@@ -21,6 +21,9 @@ const gameSubCatRouter = require("./gameCategories/routes/gameSubCatRouters");
 const lotterySettingRouter = require("./lotteryFilterSetting/routes/lotteryFilterSettingRoutes");
 // const container2DMorning12Router = require("./2dGames/routes/thai2DMorning12Routes");
 const lottery2dsale = require("./2dSales/routes/2dsaleroutes");
+const bankCategory = require("./bank/routes/bankCatRoutes");
+const bankAccountMe = require("./bank/routes/bankAccMeRoutes");
+const bankAccountUpline = require("./bank/routes/bankAccUplineRoutes");
 const banktype = require("./bank/routes/bankTypeRoutes");
 const bankName = require("./bank/routes/bankNameRoutes");
 const bankAccount = require("./bank/routes/bankAccRoutes");
@@ -86,9 +89,12 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/userProfile", userProfileRouter);
 app.use("/api/v1/userCounts", allUserCount);
 //Bank Account
+app.use("/api/v1/bankcat", bankCategory);
 app.use("/api/v1/banktype", banktype);
 app.use("/api/v1/bankName", bankName);
 app.use("/api/v1/bankAcc", bankAccount);
+app.use("/api/v1/bankAccMe", bankAccountMe);
+app.use("/api/v1/backAccUpline", bankAccountUpline);
 app.use("/api/v1/bankAnnounc", bankAnnouncement);
 
 // Main Unit

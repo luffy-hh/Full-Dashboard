@@ -1,9 +1,13 @@
 const mongoose = require("mongoose");
 const bankTypeSchema = new mongoose.Schema({
-  name: {
+  bankCatData: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "BankCategories",
+    required: [true, "Bank type must be specified"],
+  },
+  bankTypeName: {
     type: String,
     required: [true, "Product name must be add"],
-    unique: true,
   },
   status: {
     type: Boolean,

@@ -1,14 +1,17 @@
-const BankType = require("../models/banktypeModels");
+const bankType = require("../models/bankTypeModles");
 const AppError = require("../../utils/appError");
 const catchAsync = require("../../utils/catchAsync");
 // Create Bank Type
 exports.createBankType = catchAsync(async (req, res) => {
   try {
-    const newBankType = await BankType.create(req.body);
+    const newBankType = await bankType.create(req.body);
+    const resBankType = await bankType
+      .findById(newBankType._id)
+      .populate("bankCatData");
     res.status(201).json({
       status: "success",
       data: {
-        newBankType,
+        resBankType,
       },
     });
   } catch (err) {
@@ -22,22 +25,13 @@ exports.createBankType = catchAsync(async (req, res) => {
 // Read All Bank Type
 exports.getBankTypeAll = catchAsync(async (req, res) => {
   try {
-    const queryObj = { ...req.query };
-    const excludeFields = ["page", "sort", "limit", "fields"];
-    excludeFields.forEach((el) => delete queryObj[el]);
-
-    let queryStr = JSON.stringify(queryObj);
-    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-    console.log(JSON.parse(queryStr));
-
-    const query = BankType.find(JSON.parse(queryStr));
-    const allBankType = await query;
+    const allBankTypes = await bankType.find().populate("bankCatData");
 
     res.status(200).json({
       status: "Success",
-      length: allBankType.length,
+      length: allBankTypes.length,
       data: {
-        allBankType: allBankType,
+        allBankTypes,
       },
     });
   } catch (err) {
@@ -52,19 +46,16 @@ exports.getBankTypeAll = catchAsync(async (req, res) => {
 exports.updateBankType = catchAsync(async (req, res) => {
   try {
     const bankTypeId = req.body.id;
-    const updateObj = {
-      name: req.body.name ? req.body.name : updateBankType.name,
-      status: req.body.status || true,
-    };
+    const updateBankType = await bankType
+      .findByIdAndUpdate(
+        bankTypeId,
+        { ...req.body },
+        {
+          new: true,
+        }
+      )
+      .populate("bankCatData");
 
-    const updateBankType = await BankType.findByIdAndUpdate(
-      bankTypeId,
-      updateObj,
-      {
-        new: true,
-      }
-    );
-    console.log(updateBankType);
     res.status(200).json({
       status: "Success",
       data: {
