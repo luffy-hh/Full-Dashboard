@@ -19,7 +19,7 @@ const mainUnitTransfer = require("./mainUnit/routes/transferMainUnitRoute");
 const gameCategoriesRouter = require("./gameCategories/routes/gameCategoryRoutes");
 const gameSubCatRouter = require("./gameCategories/routes/gameSubCatRouters");
 const lotterySettingRouter = require("./lotteryFilterSetting/routes/lotteryFilterSettingRoutes");
-
+const lottery2dsaleRoute = require("./2dSales/routes/2dsaleroutes");
 const bankCategory = require("./bank/routes/bankCatRoutes");
 const banktype = require("./bank/routes/bankTypeRoutes");
 const bankName = require("./bank/routes/bankNameRoutes");
@@ -33,9 +33,10 @@ const bankNameUpline = require("./bank/routes/bankNameRoutes");
 const withdarw = require("./withdrawl/routes/withdrawRoutes");
 const withdrawDownline = require("./withdrawl/routes/withdrawDownlineRoutes");
 const withdrawUpline = require("./withdrawl/routes/withdrawUplineRoutes");
+const withdarwAdmin = require("./withdrawl/routes/withdrawAdminRoutes");
 
 const allUserCount = require("./users/allUserCountRoutes");
-
+const twoDLuckyRoute = require("./2DLuckySetting/routes/TwoDLuckiesRoute");
 const masterCatStatusAdmin = require("./category_status/routes/master_cat_status_routes");
 const masterSubCatStatusAdmin = require("./category_status/routes/master_subcat_status_routes");
 const agentCatStatusAdmin = require("./category_status/routes/agent_cat_status_routes");
@@ -107,10 +108,11 @@ app.use("/api/v1/bankNameUpline", bankNameUpline);
 app.use("/api/v1/withdarw", withdarw);
 app.use("/api/v1/withdarwDownline", withdrawDownline);
 app.use("/api/v1/withdarwUpline", withdrawUpline);
+app.use("/api/v1/withdarwAdmin", withdarwAdmin);
 
 app.use("/api/v1/bankAnnounc", bankAnnouncement);
 app.use("/api/v1/showDepositBankAcc", showDepositBankAcc);
-app.use("/api/v1/deposit", deposit);
+//app.use("/api/v1/deposit", deposit);
 
 // Main Unit
 app.use("/api/v1/mainunit", mainUnitRouter);
@@ -134,7 +136,10 @@ app.use("/api/v1/lotterysetting", lotterySettingRouter);
 // app.use("/api/v1/thai2dmorning12", container2DMorning12Router);
 
 //Lottery Sale
-// app.use("/api/v1/thai2dmorning12sale", lottery2dsale);
+app.use("/api/v1/thai2dsale", lottery2dsaleRoute);
+
+// 2D lucky
+app.use("/api/v1/twoDLucky", twoDLuckyRoute);
 
 //Game Cat and Sub Cat Status
 app.use("/api/v1/mastercatstatus", masterCatStatusAdmin);

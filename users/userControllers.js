@@ -66,7 +66,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     }
     reqBody.userId = userId;
 
-    const newUser = await User.create(reqBody);
+    const newUser = await User.create({ ...reqBody });
 
     if (newUser.role === "Master") {
       const gameCategories = await GameCategory.find();
@@ -90,14 +90,30 @@ exports.signup = catchAsync(async (req, res, next) => {
         categoryStatus: categoriesObjArr,
       });
 
+      // const subCatObjArr = await Promise.all(
+      //   GameSubCategories.map(async (subCat) => {
+      //     const obj = await LotteryFilterSetting.findOne({
+      //       subCategoryId: subCat._id.toString(),
+      //     });
+
+      //     if (obj) {
+      //       const newObj = {
+      //         ...subCat.toObject(),
+      //         mainCompensation: obj.mainCompensation,
+      //       };
+      //       return newObj;
+      //     }
+      //     return;
+      //   })
+      // );
       for (const subCat of GameSubCategories) {
-        const obj = await LotteryFilterSetting.findOne({
+        const obj = await LotteryFilterSetting.find({
           subCategoryId: subCat._id,
         });
         if (obj) {
           const newObj = {
             ...subCat.toObject(),
-            mainCompensation: obj.mainCompensation,
+            mainCompensation: Number(obj.mainCompensation),
           };
           subCatObjArr.push(newObj);
         }

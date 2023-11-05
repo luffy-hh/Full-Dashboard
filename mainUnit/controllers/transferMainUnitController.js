@@ -13,7 +13,7 @@ exports.transferMainUnitfun = async (req, res) => {
 
     // Admin Data
     const adminId = "652828b555d62366ddb1bc4c";
-    const adminObj = await User.findById(adminId);
+    const adminObj = await User.findById(req.user.id);
     const adminName = adminObj.name;
 
     // Admin Unit Data
@@ -45,7 +45,7 @@ exports.transferMainUnitfun = async (req, res) => {
       );
       const returnObjHistory = {
         transferAmt: transferUnit,
-        beforeUnitAmt: mainUnit,
+        beforeUnitAmt: Number(mainUnit),
         afterUnitAmt: afterUnitAmt,
         fromId: adminId,
         fromName: adminName,
@@ -116,7 +116,7 @@ exports.transferMainUnitfun = async (req, res) => {
   } catch (err) {
     res.status(400).json({
       status: "failed",
-      message: err,
+      message: err.stack,
     });
   }
 };

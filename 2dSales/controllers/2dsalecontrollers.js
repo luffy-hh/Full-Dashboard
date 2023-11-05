@@ -2,16 +2,23 @@ const Thai2DSale = require("../models/2dsalemodels");
 const Thai2DNum12AM = require("../../lottery_nuumbers/models/thai2DNum12Models");
 const lotterySetting = require("../../lotteryFilterSetting/models/lotteryFilterSettingModels");
 const User = require("../../users/userModels");
+const GameSubCat = require("../../gameCategories/models/gameSubCatModels");
 const SaleHistories = require("../models/2dSaleHistoriesModel");
 const MainUnit = require("../../mainUnit/models/mainUnitModel");
 const moment = require("moment-timezone");
+const mongoose = require("mongoose");
 
 exports.create2DsaleDoc = async (req, res) => {
   try {
-    console.log(req.body);
     const mainUnitArr = await MainUnit.find({});
     const mainUnitId = mainUnitArr[0]._id;
-    const selectedSetting = await lotterySetting.findById(req.body.subCatId);
+    const allSetting = await lotterySetting.find({});
+    const currentSubCat = await GameSubCat.findById(req.body.subCatId);
+    console.log(currentSubCat);
+    const selectedSetting = await lotterySetting.findOne({
+      subCategoryId: currentSubCat._id,
+    });
+    console.log(selectedSetting);
     const mainUnitObj = await MainUnit.findById(mainUnitId);
     const All2D12AM = await Thai2DNum12AM.find({});
     const currentTime = new Date();

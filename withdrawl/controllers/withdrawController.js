@@ -1,4 +1,4 @@
-const BankAcc = require("../models/bankAccModels");
+const BankAcc = require("../../bank/models/bankAccModels");
 const Withdraw = require("../models/withdrawlModels");
 const AppError = require("../../utils/appError");
 const catchAsync = require("../../utils/catchAsync");
@@ -15,7 +15,7 @@ exports.createWithdraw = catchAsync(async (req, res) => {
     const currentUserId = decoded.id;
     const currentUserObj = await User.findById(currentUserId);
     const currentUserUplineId = currentUserObj.uplineId;
-    const uplineUserObj = await User.findOne({ uplineId: currentUserUplineId });
+    const uplineUserObj = await User.findOne({ userId: currentUserUplineId });
     const uplineObjId = uplineUserObj._id.toString();
     const reqBody = req.body;
     const currentTime = new Date();
@@ -132,15 +132,19 @@ exports.getAllWithdrawDownline = catchAsync(async (req, res) => {
   try {
     const token = req.headers.authorization.split(" ")[1];
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-    const userId = decoded.id;
+    const userId = decoded.id.toString();
+
     const getAllShwoWithdraw = await Withdraw.find({ fromId: userId })
       .populate("fromId")
       .populate("toId")
       .populate("bankNameId");
 
-    getAllShwoWithdraw.action_time = moment(getAllShwoWithdraw.action_time)
-      .tz("Asia/Yangon")
-      .format();
+    // Loop through each document to format action_time
+    // getAllShwoWithdraw.forEach((withdraw) => {
+    //   withdraw.action_time = moment(withdraw.action_time)
+    //     .tz("Asia/Yangon")
+    //     .format();
+    // });
 
     res.status(200).json({
       status: "Success",
@@ -152,7 +156,7 @@ exports.getAllWithdrawDownline = catchAsync(async (req, res) => {
   } catch (err) {
     res.status(400).json({
       status: "failed",
-      message: err,
+      message: err.message,
     });
   }
 });
