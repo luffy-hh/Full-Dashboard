@@ -89,7 +89,8 @@ exports.signup = catchAsync(async (req, res, next) => {
         master_id: masterUserId,
         categoryStatus: categoriesObjArr,
       });
-      for (let subCat of GameSubCategories) {
+
+      for (const subCat of GameSubCategories) {
         const obj = await LotteryFilterSetting.findOne({
           subCategoryId: subCat._id,
         });
@@ -113,35 +114,19 @@ exports.signup = catchAsync(async (req, res, next) => {
       const GameSubCategories = await GameSubCat.find();
       const uplineID = newUser.uplineId;
       const agentId = newUser._id.toString();
-      // const subCatObjArr = [];
+      const subCatObjArr = [];
 
-      const subCatObjArr = await Promise.all(
-        GameSubCategories.map(async (subCat) => {
-          const obj = await LotteryFilterSetting.findOne({
-            subCategoryId: subCat._id.toString(),
-          });
-
-          if (obj) {
-            const newObj = {
-              ...subCat.toObject(),
-            };
-            return newObj;
-          }
-          return;
-        })
-      );
-
-      // for (const subCat of GameSubCategories) {
-      //   const obj = await LotteryFilterSetting.findOne({
-      //     subCategoryId: subCat._id,
-      //   });
-      //   if (obj) {
-      //     const newObj = {
-      //       ...subCat.toObject(),
-      //     };
-      //     subCatObjArr.push(newObj);
-      //   }
-      // }
+      for (const subCat of GameSubCategories) {
+        const obj = await LotteryFilterSetting.findOne({
+          subCategoryId: subCat._id,
+        });
+        if (obj) {
+          const newObj = {
+            ...subCat.toObject(),
+          };
+          subCatObjArr.push(newObj);
+        }
+      }
       console.log(subCatObjArr);
 
       await AgentComession.create({
@@ -346,46 +331,14 @@ exports.getProfile = async (req, res) => {
   }
 };
 
-// Read All User By Role
-exports.getAllUserByRole = async (req, res) => {
-  try {
-    const masterQuery = User.find({ role: "Master" });
-    const masterAll = await masterQuery;
-
-    const agentQuery = User.find({ role: "Agent" });
-    const agentAll = await agentQuery;
-
-    const userQuery = User.find({ role: "User" });
-    const userAll = await userQuery;
-
-    const resObj = {
-      masterCount: masterAll.length,
-      agentCount: agentAll.length,
-      userCount: userAll.length,
-    };
-
-    res.status(200).json({
-      status: "success",
-      data: {
-        resObj,
-      },
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: "failed",
-      message: err,
-    });
-  }
-};
-
 // Profile
 exports.updateProfile = async (req, res) => {
   try {
-    // const token = req.headers.authorization.split(" ")[1];
-    // const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+    const token = req.headers.authorization.split(" ")[1];
+    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
     const updateObj = req.body;
 
-    const updateUser = await User.findByIdAndUpdate(req.user.id, updateObj, {
+    const updateUser = await User.findByIdAndUpdate(decoded.id, updateObj, {
       new: true,
     });
     console.log(updateUser);
@@ -500,3 +453,35 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   // 4) Log user in, send JWT
   createSendToken(user, 200, res);
 });
+
+// Read All User By Role
+exports.getAllUserByRole = async (req, res) => {
+  try {
+    const masterQuery = User.find({ role: "Master" });
+    const masterAll = await masterQuery;
+
+    const agentQuery = User.find({ role: "Agent" });
+    const agentAll = await agentQuery;
+
+    const userQuery = User.find({ role: "User" });
+    const userAll = await userQuery;
+
+    const resObj = {
+      masterCount: masterAll.length,
+      agentCount: agentAll.length,
+      userCount: userAll.length,
+    };
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        resObj,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "failed",
+      message: err,
+    });
+  }
+};

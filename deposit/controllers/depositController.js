@@ -1,4 +1,4 @@
-const Deposit = require("../models/depositModels");
+const Deposit = require("../modals/depositModels");
 const AppError = require("../../utils/appError");
 const catchAsync = require("../../utils/catchAsync");
 const User = require("../../users/userModels");
@@ -22,7 +22,7 @@ exports.createDeposit = catchAsync(async (req, res) => {
 
     const token = req.headers.authorization.split(" ")[1];
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-    const fromId = req.user.id;
+    const fromId = decoded.id;
     const currentUserObj = await User.findById(fromId);
     const uplieId = currentUserObj.userId;
     const uplieObj = await User.findOne({ userId: uplieId });
@@ -36,12 +36,13 @@ exports.createDeposit = catchAsync(async (req, res) => {
       bankAcc: reqBody.bankAcc,
       transferCode: reqBody.transferCode,
       amount: reqBody.amount,
-      status: "pending",
+      status: "panding",
       description: "deposit",
     };
 
     const newDeposit = await Deposit.create({ ...insertObj });
-    const resObj = await Deposit.findById(newDeposit._id)
+
+    const resObj = newDeposit
       .populate("fromId")
       .populate("toId")
       .populate("bankName_id");

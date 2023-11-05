@@ -19,22 +19,28 @@ const mainUnitTransfer = require("./mainUnit/routes/transferMainUnitRoute");
 const gameCategoriesRouter = require("./gameCategories/routes/gameCategoryRoutes");
 const gameSubCatRouter = require("./gameCategories/routes/gameSubCatRouters");
 const lotterySettingRouter = require("./lotteryFilterSetting/routes/lotteryFilterSettingRoutes");
-// const container2DMorning12Router = require("./2dGames/routes/thai2DMorning12Routes");
-const lottery2dsale = require("./2dSales/routes/2dsaleroutes");
+
 const bankCategory = require("./bank/routes/bankCatRoutes");
-const bankAccountMe = require("./bank/routes/bankAccMeRoutes");
-const bankAccountUpline = require("./bank/routes/bankAccUplineRoutes");
 const banktype = require("./bank/routes/bankTypeRoutes");
 const bankName = require("./bank/routes/bankNameRoutes");
 const bankAccount = require("./bank/routes/bankAccRoutes");
+const bankAccountMe = require("./bank/routes/bankAccMeRoutes");
+const bankAccountUpline = require("./bank/routes/bankAccUplineRoutes");
 const bankAnnouncement = require("./bank/routes/bankAnnouncementRoute");
-const allUserCount = require("./users/allUserCountRoutes");
 const showDepositBankAcc = require("./bank/routes/showDepositAccRoutes");
+const bankNameUpline = require("./bank/routes/bankNameRoutes");
+
+const withdarw = require("./withdrawl/routes/withdrawRoutes");
+const withdrawDownline = require("./withdrawl/routes/withdrawDownlineRoutes");
+const withdrawUpline = require("./withdrawl/routes/withdrawUplineRoutes");
+
+const allUserCount = require("./users/allUserCountRoutes");
+
 const masterCatStatusAdmin = require("./category_status/routes/master_cat_status_routes");
 const masterSubCatStatusAdmin = require("./category_status/routes/master_subcat_status_routes");
 const agentCatStatusAdmin = require("./category_status/routes/agent_cat_status_routes");
 const agentSubCatStatusAdmin = require("./category_status/routes/agent_subcat_status_route");
-const deposit = require("./deposit/routes/depositRoutes");
+const agentSubCatComessionAdmin = require("./category_status/routes/agent_comession_rotes");
 
 //Lottery Numbers
 const lottery2dRoutes = require("./lottery_nuumbers/routes/lottery2dRoutes");
@@ -82,12 +88,12 @@ app.use((req, res, next) => {
 
 //Lottery - For Admin
 app.use("/api/v1/lottery2dthai12", lottery2dRoutes);
-app.use("/api/v1/showDepositBankAcc", showDepositBankAcc);
-app.use("/api/v1/deposit", deposit);
+
 // User Register
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/userProfile", userProfileRouter);
 app.use("/api/v1/userCounts", allUserCount);
+
 //Bank Account
 app.use("/api/v1/bankcat", bankCategory);
 app.use("/api/v1/banktype", banktype);
@@ -95,7 +101,16 @@ app.use("/api/v1/bankName", bankName);
 app.use("/api/v1/bankAcc", bankAccount);
 app.use("/api/v1/bankAccMe", bankAccountMe);
 app.use("/api/v1/backAccUpline", bankAccountUpline);
+app.use("/api/v1/bankNameUpline", bankNameUpline);
+
+// Withdarw
+app.use("/api/v1/withdarw", withdarw);
+app.use("/api/v1/withdarwDownline", withdrawDownline);
+app.use("/api/v1/withdarwUpline", withdrawUpline);
+
 app.use("/api/v1/bankAnnounc", bankAnnouncement);
+app.use("/api/v1/showDepositBankAcc", showDepositBankAcc);
+app.use("/api/v1/deposit", deposit);
 
 // Main Unit
 app.use("/api/v1/mainunit", mainUnitRouter);
@@ -119,7 +134,7 @@ app.use("/api/v1/lotterysetting", lotterySettingRouter);
 // app.use("/api/v1/thai2dmorning12", container2DMorning12Router);
 
 //Lottery Sale
-app.use("/api/v1/thai2dsale", lottery2dsale);
+// app.use("/api/v1/thai2dmorning12sale", lottery2dsale);
 
 //Game Cat and Sub Cat Status
 app.use("/api/v1/mastercatstatus", masterCatStatusAdmin);
@@ -127,6 +142,8 @@ app.use("/api/v1/mastersubcatstatus", masterSubCatStatusAdmin);
 
 app.use("/api/v1/agentcatstatus", agentCatStatusAdmin);
 app.use("/api/v1/agentsubcatstatus", agentSubCatStatusAdmin);
+
+app.use("/api/v1/agentsubcatcomession", agentSubCatComessionAdmin);
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "static/index.html"));

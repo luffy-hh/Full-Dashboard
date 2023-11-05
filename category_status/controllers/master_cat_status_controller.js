@@ -20,7 +20,7 @@ const MasterCatStatus = require("../models/master_cat_status_models");
 
 // Read All Categoires Stattus With Master
 exports.getGameCatStatusAll = async (req, res) => {
-  const masterId = req.params.id;
+  const masterId = req.body.id;
 
   const allGameCatStatus = await MasterCatStatus.findOne({
     master_id: masterId,
@@ -41,7 +41,7 @@ exports.getGameCatStatusAll = async (req, res) => {
 // Update Game Category Status
 exports.updateGameCatStatus = async (req, res) => {
   try {
-    const masterId = req.params.id;
+    const masterId = req.body.masterId;
     const catIdToUpdate = req.body.catIdToUpdate;
     const statusVal = req.body.status;
 

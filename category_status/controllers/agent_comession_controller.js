@@ -1,4 +1,4 @@
-const MasterSubCatStatus = require("../models/master_subCat_status_models");
+const AgentSubCatComession = require("../models/agent_comession_models");
 
 // Create Game Category
 // exports.createGameCat = async (req, res) => {
@@ -19,15 +19,15 @@ const MasterSubCatStatus = require("../models/master_subCat_status_models");
 // };
 
 // Read All Categoires Stattus With Master
-exports.getGameSubCatStatusAll = async (req, res) => {
-  const masterId = req.body.id;
+exports.getGameSubCatComessionAll = async (req, res) => {
+  const agentId = req.body.id;
 
-  const allGameSubCatStatus = await MasterSubCatStatus.findOne({
-    master_id: masterId,
+  const allGameSubCatStatus = await AgentSubCatComession.findOne({
+    agent_id: agentId,
   }).populate({
-    path: "master_id",
+    path: "agent_id",
     select:
-      "-userId -email -role -uplineId -downlineId -unit -promotionUnit -gameUnit -userLevel -status -loginTime -__v",
+      "-userId -email -role -downlineId -unit -promotionUnit -gameUnit -userLevel -status -loginTime -__v",
   });
 
   res.status(200).json({
@@ -39,7 +39,7 @@ exports.getGameSubCatStatusAll = async (req, res) => {
 };
 
 // Update Game Sub Category Status
-exports.updateGameSubCatStatus = async (req, res) => {
+exports.updateGameSubCatComession = async (req, res) => {
   try {
     const masterId = req.body.masterId;
     const subCatIdToUpdate = req.body.subCatIdToUpdate;
