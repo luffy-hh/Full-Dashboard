@@ -107,14 +107,16 @@ exports.signup = catchAsync(async (req, res, next) => {
       //   })
       // );
       for (const subCat of GameSubCategories) {
-        const obj = await LotteryFilterSetting.find({
+        const obj = await LotteryFilterSetting.findOne({
           subCategoryId: subCat._id,
         });
+        console.log('lotterysetting:',obj, obj?.mainCompensation)
         if (obj) {
           const newObj = {
             ...subCat.toObject(),
-            mainCompensation: Number(obj.mainCompensation),
+            mainCompensation: obj.mainCompensation,
           };
+          console.log(newObj)
           subCatObjArr.push(newObj);
         }
       }

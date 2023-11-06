@@ -67,7 +67,7 @@ exports.updateLotterySettingById = async (req, res) => {
     );
 
     await Thai2DNum12AM.updateMany({
-      $set: { limitAmount: updateLotterySetting.limitAmount },
+      $set: { limitAmount: updateLotterySetting.limitAmount,lastAmount:updateLotterySetting.limitAmount },
     });
 
     res.status(200).json({

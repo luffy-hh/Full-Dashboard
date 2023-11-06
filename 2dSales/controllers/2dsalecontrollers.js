@@ -12,7 +12,6 @@ exports.create2DsaleDoc = async (req, res) => {
   try {
     const mainUnitArr = await MainUnit.find({});
     const mainUnitId = mainUnitArr[0]._id;
-    const allSetting = await lotterySetting.find({});
     const currentSubCat = await GameSubCat.findById(req.body.subCatId);
     console.log(currentSubCat);
     const selectedSetting = await lotterySetting.findOne({
@@ -35,7 +34,7 @@ exports.create2DsaleDoc = async (req, res) => {
     );
 
     const user = await User.findById(req.user.id);
-
+      console.log(user)
     if (
       startDate.getTime() <= currentTime.getTime() &&
       currentTime.getTime() < endDate.getTime()
@@ -52,7 +51,7 @@ exports.create2DsaleDoc = async (req, res) => {
         let curNum = All2D12AM.find((num) => num.number === sale.number);
         return sale.amount > curNum.lastAmount && sale;
       });
-      console.log(playedNumbers, unPlayAbleNumbers);
+      // console.log(playedNumbers, unPlayAbleNumbers);
 
       const totalSaleAmount = playedNumbers
         .map((num) => num.amount)
@@ -68,9 +67,10 @@ exports.create2DsaleDoc = async (req, res) => {
         const updatedMainUnit = await MainUnit.findByIdAndUpdate(mainUnitId, {
           mainUnit: mainUnitObj.mainUnit + totalSaleAmount,
         });
-        const updatedUser = await User.findByIdAndUpdate(reqBody.userId, {
-          unit: user.unit - totalSaleAmount,
+        const updatedUser = await User.findByIdAndUpdate(user.id, {
+          $inc:{unit: -totalSaleAmount},
         });
+        console.log(updatedUser)
         // Loop through the saleNumberArr and create Thai2DSale documents
         for (const sale of playedNumbers) {
           let number = sale.number;

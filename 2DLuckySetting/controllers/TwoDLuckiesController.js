@@ -13,9 +13,13 @@ exports.createTwoDLucky = async (req, res, next) => {
       date: currentDay,
     });
     console.log(newTwoDLucky);
-    const dailyPlayedObjOfEachSubCatArr = await Thai2DSale.deleteMany({
+    const dailyPlayedObjOfEachSubCatArr = await Thai2DSale.find({
+      subCatId: newTwoDLucky?.subCatId,
+    })
+    const dailyPlayedObjDeletedSubCatArr = await Thai2DSale.deleteMany({
       subCatId: newTwoDLucky?.subCatId,
     });
+    console.log(dailyPlayedObjOfEachSubCatArr);
     let winnerListArr = [];
     for (let play in dailyPlayedObjOfEachSubCatArr) {
       if (play?.number === newTwoDLucky?.number) {
@@ -41,6 +45,7 @@ exports.createTwoDLucky = async (req, res, next) => {
           returnedAmount,
           date: currentDay,
         };
+        console.log(obj);
         const winnerObj = createLuckyWinner(obj);
         winnerListArr.push(winnerObj);
       }
