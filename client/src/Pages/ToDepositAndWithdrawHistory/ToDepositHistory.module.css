@@ -1,7 +1,13 @@
 .deposit_title {
   background-color: var(--text-white);
   padding: 2.4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.deposit_title p {
   font-weight: 500;
+  font-size: 1.6rem;
 }
 
 .depo_with_history {
@@ -22,6 +28,32 @@
   min-width: 20rem;
 }
 
-.depo_with_history table thead tr th:last-child {
+.descr {
   min-width: 25rem;
+}
+.action {
+  min-width: 33rem !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2.4rem;
+}
+.acc_btn,
+.rej_btn {
+  width: 13rem;
+  font-size: 1.6rem;
+  color: var(--text-white);
+  padding: 8px 0;
+}
+.rej_btn {
+  background-color: var(--red-light);
+}
+.rej_btn:hover {
+  background-color: var(--red-dark);
+}
+.acc_btn {
+  background-color: var(--blue-light);
+}
+.date_style {
+  min-width: 30rem;
 }

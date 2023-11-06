@@ -6,6 +6,7 @@ const depositeToUser = {
   amount: "",
   withdrawAmount: "",
   descr: "",
+  userObj: null,
 };
 const modalShowHide = {
   modalShow: false,
@@ -18,9 +19,11 @@ const modalShowHide = {
   modalGameAction: false,
   modalDetail: false,
   modalReport: false,
+  modalActive: false,
   modalChangePassword: false,
   modalCloseNo: false,
   modalMasterSubGame: false,
+  modalBankAcc: false,
 };
 
 const initialState = {
@@ -48,6 +51,10 @@ const modalSlice = createSlice({
 
     setCondition: (state, action) => {
       state.conDition.condition = action.payload;
+    },
+
+    setUserObj: (state, action) => {
+      state.depositeToUser.userObj = action.payload;
     },
 
     setAmount: (state, action) => {
@@ -82,6 +89,10 @@ const modalSlice = createSlice({
       state.modalShowHide.modalGameAction = action.payload;
     },
 
+    setModalActive: (state, action) => {
+      state.modalShowHide.modalActive = action.payload;
+    },
+
     setModalDetail: (state, action) => {
       state.modalShowHide.modalDetail = action.payload;
     },
@@ -92,6 +103,10 @@ const modalSlice = createSlice({
 
     setModalChangePassword: (state, action) => {
       state.modalShowHide.modalChangePassword = action.payload;
+    },
+
+    setModalBankAcc: (state, action) => {
+      state.modalShowHide.modalBankAcc = action.payload;
     },
 
     setUserDetailData: (state, action) => {
@@ -131,6 +146,9 @@ export const {
   setCloseNoData,
   setModalMasterSubGame,
   setDescr,
+  setModalActive,
+  setUserObj,
+  setModalBankAcc,
 } = modalSlice.actions;
 export const selectModalShow = (state) => state.modal.modalShowHide.modalShow;
 export const selectUserId = (state) => state.modal.depositeToUser.userId;
@@ -172,5 +190,12 @@ export const selectModalMasterSubGame = (state) =>
   state.modal.modalShowHide.modalMasterSubGame;
 
 export const selectDescr = (state) => state.modal.depositeToUser.descr;
+export const selectUserObj = (state) => state.modal.depositeToUser.userObj;
+
+export const selectModalActive = (state) =>
+  state.modal.modalShowHide.modalActive;
+
+export const selectModalBankAcc = (state) =>
+  state.modal.modalShowHide.modalBankAcc;
 
 export default modalSlice.reducer;

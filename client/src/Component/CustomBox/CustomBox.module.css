@@ -85,7 +85,7 @@
 
 .bank_input div {
   display: flex;
-  gap: 2.4rem;
+  justify-content: space-between;
   align-items: center;
 }
 .bank_input div label {

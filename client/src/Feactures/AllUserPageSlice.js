@@ -58,30 +58,76 @@ const commisionList = [
 
 const todepositHead = [
   "No",
-  "Type",
-  "Summit Time",
   "Amount",
+  "Summit Acc ID",
+  "Banking Type",
+  "Payment Type",
+  "Receiver Account",
+  "Transition ID",
+  "From Account",
   "Status",
-  "Status Time",
-  "Description",
+  "Photo Link",
+  "Action",
+  "User Summit Time",
 ];
-const todeposit = [
-  {
-    type: "Deposite",
-    sumitTime: "10/11/2020",
-    amount: 50000,
-    status: "Approved",
-    statusTime: "10/11/2020",
-    description: "Ok",
-  },
-  {
-    type: "Withdraw",
-    sumitTime: "10/11/2020",
-    amount: 10000,
-    status: "Rejected",
-    statusTime: "10/11/2020",
-    description: "Noooo",
-  },
+
+const toWithdrawHead = [
+  "No",
+  "Amount",
+  "Summit Acc ID",
+  "Bank Name",
+  "Receiver Name",
+  "Receiver Account",
+  "Status",
+  "User Summit Time",
+];
+
+const toWithdrawHeadRequset = [
+  "No",
+  "Amount",
+  "Summit Acc ID",
+  "Bank Name",
+  "Receiver Name",
+  "Receiver Account",
+  "Status",
+  "Action",
+  "User Summit Time",
+];
+
+const bankCatHead = ["No", "Bank Categories", "Action"];
+
+const bankTypeHead = ["No", "Banking Type", "Action"];
+
+const bankNameHead = ["No", "Banking Type", "Bank Name", "Logo", "Action"];
+
+const bankAccHead = [
+  "No",
+  "Bank Name",
+  "Account Name",
+  "Account No",
+  "Logo",
+  "Description",
+  "Action",
+];
+
+const upLineOrDownLine = [
+  { text: "UpLine", id: 1, from: "From DownLine" },
+  { text: "DownLine", id: 2, from: "From UpLine" },
+];
+
+const todepositHistoryHead = [
+  "No",
+  "Amount",
+  "Summit Acc",
+  "Banking Type",
+  "Payment Type",
+  "Receiver Account",
+  "Transition ID",
+  "From Account",
+  "Status",
+  "Photo Link",
+  "Summit Time",
+  "Action Time",
 ];
 
 const initialState = {
@@ -95,8 +141,15 @@ const initialState = {
   agent: agentData,
   userDetailCom,
   userDetailComHead,
-  todeposit,
+  todepositHistoryHead,
   todepositHead,
+  bankCatHead,
+  bankTypeHead,
+  bankNameHead,
+  bankAccHead,
+  toWithdrawHead,
+  toWithdrawHeadRequset,
+  upLineOrDownLine,
 };
 
 const AllUserPageSlice = createSlice({
@@ -140,7 +193,20 @@ export const selectUserDetailCom = (state) => state.userPageData.userDetailCom;
 export const selectUserDetailComHead = (state) =>
   state.userPageData.userDetailComHead;
 
-export const selectToDeposit = (state) => state.userPageData.todeposit;
 export const selectToDepositHead = (state) => state.userPageData.todepositHead;
+export const selectTodepositHistoryHead = (state) =>
+  state.userPageData.todepositHistoryHead;
+
+export const selectToWithdrawHead = (state) =>
+  state.userPageData.toWithdrawHead;
+export const selectToWithdrawHeadRequset = (state) =>
+  state.userPageData.toWithdrawHeadRequset;
+
+export const selectBankCatHead = (state) => state.userPageData.bankCatHead;
+export const selectBankTypeHead = (state) => state.userPageData.bankTypeHead;
+export const selectBankNameHead = (state) => state.userPageData.bankNameHead;
+export const selectBankAccHead = (state) => state.userPageData.bankAccHead;
+export const selectUpLineOrDownLine = (state) =>
+  state.userPageData.upLineOrDownLine;
 
 export default AllUserPageSlice.reducer;

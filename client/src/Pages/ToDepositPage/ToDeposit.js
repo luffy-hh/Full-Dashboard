@@ -5,22 +5,13 @@ import { AiFillNotification } from "react-icons/ai";
 import {
   selectBankAnnounc,
   fetGetBankAnnounc,
-  fetGetBankType,
-  selectBankType,
-  fetGetBankName,
-  selectBankNameList,
-  filterBankNameList,
-  selectShowName,
-  filterBankAccList,
-  fetGetBankAcc,
-  selectBankAccList,
-  setShowName,
-  setClickName,
+  fetGetBankAccUpline,
   selectShowDepoForm,
+  selectBankAccUpline,
 } from "../../Feactures/bankApiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./ToDeposit.module.css";
-import Paymethod from "./PayMehtod/Paymethod";
+import BankAccountList from "./BankAccountCom/BankAccountList";
 
 function ToDeposit() {
   const dispatch = useDispatch();
@@ -28,47 +19,38 @@ function ToDeposit() {
   const logInData = useSelector(selectlogInData);
   const accessToken = logInData.token;
   const bankAnnounc = useSelector(selectBankAnnounc);
-  const bankType = useSelector(selectBankType);
-  const bankNameList = useSelector(selectBankNameList);
-  const isShow = useSelector(selectShowName);
-  const bankAccList = useSelector(selectBankAccList);
+  const bankAccUpline = useSelector(selectBankAccUpline);
+
   const showDepoForm = useSelector(selectShowDepoForm);
 
   useEffect(() => {
     dispatch(fetGetBankAnnounc({ api: "bankAnnounc", accessToken }));
-    dispatch(fetGetBankType({ api: "banktype", accessToken }));
-    dispatch(fetGetBankName({ api: "bankName", accessToken }));
-    dispatch(fetGetBankAcc({ api: "bankAcc", accessToken }));
+
+    dispatch(fetGetBankAccUpline({ api: "backAccUpline", accessToken }));
   }, []);
 
   const bankText = bankAnnounc?.data.bankAnnounc[0];
-  const bankTypeArr = bankType?.data.allBankType;
+  const bankAccUplineArr = bankAccUpline?.data.allBankAcc;
 
   return (
     <div className="page_style" style={{ position: "relative" }}>
       {!showDepoForm ? (
         <div className={`box_shadow ${styles.account_head}`}>
-          <p className={styles.account}>Account {currentUserId}</p>
+          <p className={styles.account}>AccountID {currentUserId}</p>
           <p className={styles.system}>Payment System in your region</p>
-          <div>
-            <span style={{ fontSize: "2rem" }}>
-              <AiFillNotification />{" "}
-            </span>{" "}
-            {bankText?.description_deposit}
+          <div className={styles.account_alret}>
+            <div>
+              <span style={{ fontSize: "2rem" }}>
+                <AiFillNotification />{" "}
+              </span>{" "}
+              {bankText?.description_deposit}
+            </div>
+            <div>
+              <AiFillNotification /> {bankText?.description_withdraw}
+            </div>
           </div>
-          <div>
-            <AiFillNotification /> {bankText?.description_withdraw}
-          </div>
-          <Paymethod
-            sideData={bankTypeArr}
-            bankNameList={bankNameList}
-            changeBank={filterBankNameList}
-            isShow={isShow}
-            changeAcc={filterBankAccList}
-            bankAccList={bankAccList}
-            setShowName={setShowName}
-            setClickName={setClickName}
-          />
+
+          <BankAccountList bankAccList={bankAccUplineArr} />
         </div>
       ) : (
         <ToDepositAndWithdrawForm />

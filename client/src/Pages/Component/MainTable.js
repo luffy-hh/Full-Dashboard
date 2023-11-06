@@ -44,7 +44,7 @@ function MainTable({ data, dataArr, query }) {
           </td>
           <td>{d.userId}</td>
           {admin ? null : <td>{d.unit}</td>}
-          {<AllusersFun data={data} toId={d._id} />}
+          {<AllusersFun data={data} toId={d._id} user={d} />}
           <td>{d.status ? "Active" : "InActive"}</td>
           <td className="table_d_lastTime">
             <span>{new Date(d.loginTime).toLocaleDateString()}</span>

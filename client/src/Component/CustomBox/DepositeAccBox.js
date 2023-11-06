@@ -8,8 +8,8 @@ import {
 import { selectlogInData } from "../../Feactures/apiSlice";
 
 import {
-  fetPostBankAcc,
-  selectPostBankAccStatus,
+  fetPostBankName,
+  selectPostBankNameStatus,
 } from "../../Feactures/bankApiSlice";
 
 import { setShowDropDown } from "../../Feactures/ShowHideSlice";
@@ -21,52 +21,48 @@ import UploadImg from "../UploadImg/UploadImg";
 
 function DepositeAccBox({ bankNameArr }) {
   const modalDeposite = useSelector(selectModalAccDepo);
-  const loading = useSelector(selectPostBankAccStatus);
+  const loading = useSelector(selectPostBankNameStatus);
   const logInData = useSelector(selectlogInData);
   const accessToken = logInData.token;
-  const ownerId = logInData.user._id;
+
   const dispatch = useDispatch();
+  const [bankType, setBankType] = useState("");
   const [bankName, setBankName] = useState("");
-  const [accNo, setAccNo] = useState("");
-  const [name, setName] = useState("");
-  const [bankAcc, setBankAcc] = useState("");
+
   const [logo, setLogo] = useState(null);
-  const [selectBank, setSelectBankName] = useState("Select Bank Name");
+  const [selectBankType, setSelectBankType] = useState("Select Bank Type");
 
   const hadnleData = (id, name) => {
-    setSelectBankName(name);
-    setBankName(id);
+    setSelectBankType(name);
+    setBankType(id);
     dispatch(setShowDropDown());
   };
 
   const bankList = bankNameArr?.map((d) => (
-    <li key={d._id} onClick={() => hadnleData(d._id, d.name)}>
-      {d.name}
+    <li key={d._id} onClick={() => hadnleData(d._id, d.bankTypeName)}>
+      {d.bankTypeName}
     </li>
   ));
 
   const formData = new FormData();
-  formData.append("bankNameId", bankName);
-  formData.append("account", accNo);
+  formData.append("bankType", bankType);
+  formData.append("bankName", bankName);
   formData.append("img", logo);
-  formData.append("name", name);
-  formData.append("account_name", bankAcc);
-  formData.append("ownerId", ownerId);
 
   const handlePost = () => {
-    dispatch(fetPostBankAcc({ api: "bankAcc", formData, accessToken }));
+    dispatch(fetPostBankName({ api: "bankName", formData, accessToken }));
+
     if (loading === "succeeded") {
       dispatch(setModalAccDepo(false));
-      setAccNo("");
-      setBankAcc("");
-      setBankName("");
+      setSelectBankType("Select Bank Type");
+      setBankType("");
       setLogo(null);
-      setName("");
+      setBankName("");
     }
   };
   return (
     <Modal
-      title="Create Bank Account"
+      title="Create Bank Name"
       open={modalDeposite}
       onOk={() => handlePost()}
       onCancel={() => dispatch(setModalAccDepo(false))}
@@ -77,32 +73,17 @@ function DepositeAccBox({ bankNameArr }) {
     >
       <form className={styles.bank_input}>
         <div>
-          <label>Bank Name</label>
+          <label>Bank Type</label>
 
-          <Dropdown width={"30rem"} title={selectBank} list={bankList} />
+          <Dropdown width={"30rem"} title={selectBankType} list={bankList} />
         </div>
+
         <div>
-          <label>Bank Account No</label>
+          <label>Bank Name</label>
           <input
             type="text"
-            value={accNo}
-            onChange={(e) => setAccNo(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Name</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Accout Name</label>
-          <input
-            type="text"
-            value={bankAcc}
-            onChange={(e) => setBankAcc(e.target.value)}
+            value={bankName}
+            onChange={(e) => setBankName(e.target.value)}
           />
         </div>
 

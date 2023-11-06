@@ -466,6 +466,8 @@ const dataSlice = createSlice({
         state.masterSubGameCat = action.payload;
         state.filterMasterSubGameCat =
           state.masterSubGameCat.data.allGameSubCatStatus.subCatStatus;
+
+        console.log(state.masterSubGameCat, "master subgameCat");
       })
       .addCase(fetchGetMasterSubGameCat.rejected, (state, action) => {
         state.masterSubGameCatStatus = "failed";

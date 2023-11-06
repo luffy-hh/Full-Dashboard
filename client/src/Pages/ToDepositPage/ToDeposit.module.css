@@ -11,75 +11,57 @@
   font-size: 1.6rem;
   margin-bottom: 3.2rem;
 }
-.account_head > div {
+.account_alret div {
   padding: 1.2rem 2.4rem;
   background-color: rgb(228, 226, 226);
   margin-bottom: 1.2rem;
 }
-.paymethod_container {
-  background-color: var(--text-white) !important;
-  display: grid;
-  grid-template-columns: 25rem 1fr;
-  gap: 4.8rem;
-  margin-top: 4.8rem;
-}
-.paymethod_container ul {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-}
-.paymethod_container ul li {
-  display: block;
-  border: 1px solid #999;
-  padding: 1.2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.count_method {
-  font-size: 1.4rem;
-}
 
-.active,
-.paymethod_container ul li:hover {
-  background-color: var(--blue-light);
-  color: var(--text-white);
-  transition: all 0.3s;
-}
-
-.card_container {
+.bank_acc_list {
+  margin-top: 2.4rem;
+  padding: 2.4rem;
   background-color: var(--blue-white);
 }
-.card_container p,
-.card_container div p {
+.bank_acc_list p {
   font-size: 1.6rem;
-  padding: 1rem;
+}
+.bank_acc {
+  list-style: none;
+  margin-top: 3.2rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3.2rem;
 }
 
-.card_head_back {
+.bank_acc_btn {
+  width: 100%;
+  padding: 1rem 1.2rem;
+  background-color: var(--blue-light);
+  font-size: 1.6rem;
+  color: var(--text-white);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2.4rem;
-}
-
-.back_icon {
-  font-size: 2.4rem;
-  color: var(--green-dark);
+  flex-direction: column;
+  gap: 1.2rem;
+  transition: all 0.3s;
+  border-radius: 8px;
   cursor: pointer;
 }
 
-.card_box {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2.4rem;
-  padding: 2.4rem;
+.bank_acc_btn:hover {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px,
+    rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
 }
 
-.pay_btn {
-  width: 100%;
-  padding: 1rem 0;
+.copy_btn {
   font-size: 1.8rem;
-  background-color: var(--blue-light);
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none;
   color: var(--text-white);
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.copy_btn:active {
+  opacity: 0.7;
 }

@@ -4,42 +4,43 @@ import { useDispatch, useSelector } from "react-redux";
 import NormalButton from "../../Component/NormalButton";
 import DifferentDepositeBox from "../../Component/CustomBox/DifferentDepositeBox";
 import {
+  fetGetBankCat,
+  selectBankCat,
+  selectPostBankCat,
   fetGetBankType,
   selectBankType,
   selectPostBankType,
-  fetGetBankName,
-  selectBankName,
-  selectPostBankName,
 } from "../../Feactures/bankApiSlice";
 import { selectlogInData } from "../../Feactures/apiSlice";
+import { selectBankTypeHead } from "../../Feactures/AllUserPageSlice";
+import Tables from "../../Component/Tables";
 import styles from "../DepositeType/DepositeType.module.css";
 
-function DepositeDiff() {
+function BankType() {
   const dispatch = useDispatch();
   const logInData = useSelector(selectlogInData);
   const accessToken = logInData.token;
-  const postBankType = useSelector(selectPostBankType);
+  const postBankCat = useSelector(selectPostBankCat);
+  const bankCat = useSelector(selectBankCat);
   const bankType = useSelector(selectBankType);
-  const bankName = useSelector(selectBankName);
-  const postBankName = useSelector(selectPostBankName);
+  const postBankType = useSelector(selectPostBankType);
+  const bankTypeHead = useSelector(selectBankTypeHead);
+
+  useEffect(() => {
+    dispatch(fetGetBankCat({ api: "bankcat", accessToken }));
+  }, [postBankCat]);
 
   useEffect(() => {
     dispatch(fetGetBankType({ api: "banktype", accessToken }));
   }, [postBankType]);
 
-  useEffect(() => {
-    dispatch(fetGetBankName({ api: "bankName", accessToken }));
-  }, [postBankName]);
+  const allBankCat = bankCat?.data.allBankCategories;
+  const bankTypeArr = bankType?.data.allBankTypes;
 
-  const allBanks = bankType?.data.allBankType;
-  const bankNameArr = bankName?.data.allBankName;
-
-  const list = bankNameArr?.map((d, i) => (
+  const list = bankTypeArr?.map((d, i) => (
     <tr key={d._id} className={styles.deposite_tr_style}>
       <td>{i + 1}</td>
-      <td>{d.bankTypeId.name}</td>
-      <td>{d.name}</td>
-      <td>Logo</td>
+      <td>{d.bankTypeName}</td>
       <td>
         <NormalButton className={styles.deposite_edit_btn}>Edit</NormalButton>
       </td>
@@ -47,10 +48,10 @@ function DepositeDiff() {
   ));
   return (
     <>
-      <DifferentDepositeBox allBankArr={allBanks} />
+      <DifferentDepositeBox allBankArr={allBankCat} />
       <div className="page_style">
         <div className={`box_shadow ${styles.deposite_container}`}>
-          <p>ငွေသွင်း/ထုတ်အမျိုးကွဲ</p>
+          <p>Bank Type</p>
           <NormalButton
             onClick={() => dispatch(setModalDifDepo(true))}
             className={styles.deposite_create_btn}
@@ -59,23 +60,11 @@ function DepositeDiff() {
           </NormalButton>
         </div>
         <div className="table_d_container hide_scroll box_shadow">
-          <table className="table_d">
-            <thead>
-              <tr>
-                <th style={{ width: "8rem" }}>စဥ်</th>
-                <th>Bank Type</th>
-                <th>Bank Name </th>
-
-                <th style={{ minWidth: "15rem" }}>လိုဂို</th>
-                <th>လုပ်ဆောင်ချက်</th>
-              </tr>
-            </thead>
-            <tbody>{list}</tbody>
-          </table>
+          <Tables thead={bankTypeHead} tbody={list} />
         </div>
       </div>
     </>
   );
 }
 
-export default DepositeDiff;
+export default BankType;

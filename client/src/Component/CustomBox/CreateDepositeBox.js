@@ -5,51 +5,48 @@ import {
   setModalDeposite,
 } from "../../Feactures/modalSlice";
 import {
-  fetPostBankType,
-  selectPostBankTypeStatus,
+  fetPostBankCat,
+  selectPostBankCatStatus,
 } from "../../Feactures/bankApiSlice";
 import { selectlogInData } from "../../Feactures/apiSlice";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./CustomBox.module.css";
 
 function CreateDepositeBox() {
-  const [bankName, setBankName] = useState("");
+  const [bankCat, setBankCat] = useState("");
   const modalDeposite = useSelector(selectModalDeposite);
   const dispatch = useDispatch();
   const logInData = useSelector(selectlogInData);
   const accessToken = logInData.token;
-  const postBankTypeStatus = useSelector(selectPostBankTypeStatus);
+  const postBankCatStatus = useSelector(selectPostBankCatStatus);
 
   const handleSubmit = () => {
     dispatch(
-      fetPostBankType({
-        api: "banktype",
-        postData: { name: bankName },
+      fetPostBankCat({
+        api: "bankcat",
+        postData: { bankCatName: bankCat },
         accessToken,
       })
     );
 
-    dispatch(setModalDeposite(postBankTypeStatus === "succeeded" && false));
+    dispatch(setModalDeposite(postBankCatStatus === "succeeded" && false));
   };
 
   return (
     <Modal
-      title="Create Bank Type"
+      title="Create Bank Category"
       open={modalDeposite}
       onOk={handleSubmit}
       onCancel={() => dispatch(setModalDeposite(false))}
       cancelButtonProps={{ style: { display: "none" } }}
       width={600}
-      okText={postBankTypeStatus === "loading" ? "loading" : "Submit"}
+      okText={postBankCatStatus === "loading" ? "loading" : "Submit"}
       className="modalStyle"
     >
       <form className={styles.bank_input}>
         <div>
-          <label>Bank Type</label>
-          <input
-            value={bankName}
-            onChange={(e) => setBankName(e.target.value)}
-          />
+          <label>Bank Category</label>
+          <input value={bankCat} onChange={(e) => setBankCat(e.target.value)} />
         </div>
       </form>
     </Modal>

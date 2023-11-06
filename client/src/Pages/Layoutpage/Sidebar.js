@@ -24,6 +24,7 @@ import { RiLuggageDepositFill } from "react-icons/ri";
 import { BiMoneyWithdraw } from "react-icons/bi";
 import { ImHistory } from "react-icons/im";
 import NestSidebar from "./NestSidebar";
+import { MdRequestQuote } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 import { selectcurrentLoginUser, setFormShow } from "../../Feactures/apiSlice";
 import { useSelector } from "react-redux";
@@ -167,29 +168,34 @@ const sData = [
     show: false,
   },
   {
-    title: "Bank Account",
+    title: "Bank",
     route: null,
     icon: <RiBankCardFill />,
     iconRight: <BsChevronRight />,
     show: false,
     subNav: [
       {
-        title: "TypesOfDeposite",
-        route: "typesOfDeposite",
+        title: "Bank Category",
+        route: "bankCategory",
         icon: <BiDollarCircle />,
       },
       {
-        title: "DifferentOfDeposite",
-        route: "differentOfDeposite",
+        title: "Bank Type",
+        route: "bankType",
         icon: <BiDollarCircle />,
       },
       {
-        title: "DepositeAccount",
-        route: "depositeAcc",
+        title: "Bank Name",
+        route: "bankName",
         icon: <BiDollarCircle />,
       },
       {
-        title: "DepositeRule",
+        title: "Bank Account",
+        route: "bankAcc",
+        icon: <BiDollarCircle />,
+      },
+      {
+        title: "Bank Rules",
         route: "depositeRule",
         icon: <BiDollarCircle />,
       },
@@ -234,6 +240,25 @@ const sData = [
       },
     ],
   },
+  {
+    title: "To WithDraw",
+    route: "towithdraw",
+    icon: <BiMoneyWithdraw />,
+    iconRight: <BsChevronRight />,
+    show: false,
+    subNav: [
+      {
+        title: "To Withdraw Request",
+        route: "towithdraw-request",
+        icon: <MdRequestQuote />,
+      },
+      {
+        title: "To Withdraw History",
+        route: "towithdraw-history",
+        icon: <ImHistory />,
+      },
+    ],
+  },
 ];
 
 const masterData = [
@@ -263,15 +288,15 @@ const masterData = [
     ],
   },
   {
-    title: "Bank Account",
+    title: "Bank",
     route: null,
     icon: <RiBankCardFill />,
     iconRight: <BsChevronRight />,
     show: false,
     subNav: [
       {
-        title: "DepositeAccount",
-        route: "depositeAcc",
+        title: "BankAccount",
+        route: "bankAcc",
         icon: <BiDollarCircle />,
       },
     ],
@@ -299,20 +324,40 @@ const masterData = [
     title: "To Deposit",
     route: "todeposit",
     icon: <RiLuggageDepositFill />,
+    iconRight: <BsChevronRight />,
     show: false,
+    subNav: [
+      {
+        title: "To Deposit Request",
+        route: "todeposit-request",
+        icon: <MdRequestQuote />,
+      },
+      {
+        title: "To Deposit History",
+        route: "todeposit-history",
+        icon: <ImHistory />,
+      },
+    ],
   },
 
   {
     title: "To WithDraw",
     route: "towithdraw",
     icon: <BiMoneyWithdraw />,
+    iconRight: <BsChevronRight />,
     show: false,
-  },
-  {
-    title: "Deposit/Withdraw History",
-    route: "todeposit-withdraw-history",
-    icon: <ImHistory />,
-    show: false,
+    subNav: [
+      {
+        title: "To Withdraw Request",
+        route: "towithdraw-request",
+        icon: <MdRequestQuote />,
+      },
+      {
+        title: "To Withdraw History",
+        route: "towithdraw-history",
+        icon: <ImHistory />,
+      },
+    ],
   },
 ];
 
@@ -343,15 +388,15 @@ const agentData = [
     ],
   },
   {
-    title: "Bank Account",
+    title: "Bank",
     route: null,
     icon: <RiBankCardFill />,
     iconRight: <BsChevronRight />,
     show: false,
     subNav: [
       {
-        title: "DepositeAccount",
-        route: "depositeAcc",
+        title: "Bank Account",
+        route: "bankAcc",
         icon: <BiDollarCircle />,
       },
     ],
@@ -367,6 +412,45 @@ const agentData = [
         title: "User Report",
         route: "user-report",
         icon: <BiSolidReport />,
+      },
+    ],
+  },
+  {
+    title: "To Deposit",
+    route: "todeposit",
+    icon: <RiLuggageDepositFill />,
+    iconRight: <BsChevronRight />,
+    show: false,
+    subNav: [
+      {
+        title: "To Deposit Request",
+        route: "todeposit-request",
+        icon: <MdRequestQuote />,
+      },
+      {
+        title: "To Deposit History",
+        route: "todeposit-history",
+        icon: <ImHistory />,
+      },
+    ],
+  },
+
+  {
+    title: "To WithDraw",
+    route: "towithdraw",
+    icon: <BiMoneyWithdraw />,
+    iconRight: <BsChevronRight />,
+    show: false,
+    subNav: [
+      {
+        title: "To Withdraw Request",
+        route: "towithdraw-request",
+        icon: <MdRequestQuote />,
+      },
+      {
+        title: "To Withdraw History",
+        route: "towithdraw-history",
+        icon: <ImHistory />,
       },
     ],
   },

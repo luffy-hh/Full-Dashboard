@@ -21,9 +21,8 @@
   flex-direction: column;
 
   top: 5rem;
-  background-color: #60a5fa;
+  background-color: var(--blue-light);
   width: 100%;
-  border-radius: 8px;
   color: var(--text-white);
 }
 .dropdown_container ul li {
@@ -38,7 +37,7 @@
   background-color: var(--blue);
 }
 
-.dropdown_container ul li:first-child {
+/* .dropdown_container ul li:first-child {
   border-top-right-radius: 8px;
   border-top-left-radius: 8px;
 }
@@ -46,7 +45,7 @@
 .dropdown_container ul li:last-child {
   border-bottom-right-radius: 8px;
   border-bottom-left-radius: 8px;
-}
+} */
 .dropdown_icon {
   font-size: 1.8rem;
   cursor: pointer;

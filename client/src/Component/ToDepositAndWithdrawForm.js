@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Button from "../Component/Button";
-import { BiSolidImageAdd } from "react-icons/bi";
 import {
   selectClickName,
   selectClickBankAcc,
@@ -46,7 +45,7 @@ function ToDepositAndWithdrawForm() {
 
       <form className={styles.depo_with_form} onSubmit={(e) => handlePost(e)}>
         <div>
-          <label>To Current User</label>
+          <label>From</label>
           <input type="text" />
         </div>
         <div>
@@ -57,14 +56,7 @@ function ToDepositAndWithdrawForm() {
             onChange={(e) => setAmount(e.target.value)}
           />
         </div>
-        <div>
-          <label>Select Banking Type</label>
-          <p>{clickBankAcc}</p>
-        </div>
-        <div>
-          <label>Select Payment Type </label>
-          <p>{clickName}</p>
-        </div>
+
         <div>
           <label>Account To</label>
           <input type="text" />
@@ -77,13 +69,7 @@ function ToDepositAndWithdrawForm() {
             onChange={(e) => setTax(e.target.value)}
           />
         </div>
-        <div className={styles.input_file}>
-          <span>Transition History ScreenShot</span>
-          <label htmlFor="img">
-            <BiSolidImageAdd />
-          </label>
-          <input id="img" type="file" />
-        </div>
+
         <div className={styles.dep_with_btn}>
           <Button className="btn_hover">Submit</Button>
         </div>

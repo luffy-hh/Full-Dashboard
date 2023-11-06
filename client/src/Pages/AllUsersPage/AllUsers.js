@@ -38,6 +38,7 @@ import {
 import styles from "./AllUsers.module.css";
 import Searchbar from "../../Component/Searchbar/Searchbar";
 import CustomBox from "../../Component/CustomBox/CustomBox";
+import UserActiveBox from "../../Component/CustomBox/UserActiveBox";
 function AllUsers() {
   const showForm = useSelector(userBool);
   const dispatch = useDispatch();
@@ -114,6 +115,7 @@ function AllUsers() {
           )}
 
           {modalComponent}
+          <UserActiveBox />
         </div>
       ) : (
         <AllCreateForm

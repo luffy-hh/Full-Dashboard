@@ -5,6 +5,8 @@ import {
   setModalShow,
   setUserId,
   setCondition,
+  setModalActive,
+  setUserObj,
 } from "../../Feactures/modalSlice";
 import { useDispatch } from "react-redux";
 import { MdAdd } from "react-icons/md";
@@ -13,7 +15,6 @@ import { AiOutlineMinus } from "react-icons/ai";
 import { BsGraphUpArrow } from "react-icons/bs";
 import { MdStorage } from "react-icons/md";
 import { FiKey } from "react-icons/fi";
-import { LuSwords } from "react-icons/lu";
 
 import { BsLockFill } from "react-icons/bs";
 
@@ -23,7 +24,7 @@ const adminData = [
   { icon: <BsLockFill />, text: "Active" },
 ];
 
-function AllusersFun({ data, toId }) {
+function AllusersFun({ data, toId, user }) {
   const handleDepo = (text) => {
     dispatch(setModalShow(true));
     dispatch(setUserId(toId));
@@ -36,14 +37,22 @@ function AllusersFun({ data, toId }) {
     dispatch(setCondition(text));
   };
 
+  const handleAction = () => {
+    alert("This function is not avaliable");
+  };
+
+  const handleActive = () => {
+    dispatch(setModalActive(true));
+    dispatch(setUserObj(user));
+  };
+
   const userFunBtn = [
     { icon: <MdAdd />, text: "DEP", fun: handleDepo }, //addd
     { icon: <AiOutlineMinus />, text: "WDL", fun: handleWithdraw }, //withdraw out
-    { icon: <LuSwords />, text: "Action" },
-    { icon: <BsGraphUpArrow />, text: "Report" },
-    { icon: <MdStorage />, text: "Log" },
-    { icon: <FiKey />, text: "Password" },
-    { icon: <BsLockFill />, text: "Active" },
+    { icon: <BsGraphUpArrow />, text: "Report", fun: handleAction },
+    { icon: <MdStorage />, text: "Log", fun: handleAction },
+    { icon: <FiKey />, text: "Password", fun: handleAction },
+    { icon: <BsLockFill />, text: "Active", fun: handleActive },
   ];
 
   const datas = data === "admin" ? adminData : userFunBtn;

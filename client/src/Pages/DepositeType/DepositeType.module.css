@@ -12,34 +12,18 @@
   overflow: hidden;
 }
 
-.depositeAcc_table_container {
-  margin-top: 2.4rem;
-  height: 80vh;
-  overflow-y: auto;
-  padding-bottom: 7rem;
-  overflow-x: scroll;
-  width: 100%;
+.bank_acc table thead tr th {
+  min-width: 20rem;
+}
+.bank_acc table thead tr th:first-child {
+  min-width: 8rem;
+}
+.description {
+  min-width: 30rem !important;
 }
 
-.table_d_acc {
-  border-collapse: collapse;
-  margin-top: 2.4rem;
-  background-color: var(--text-white);
-  color: var(--text);
-}
-
-.table_d_acc tbody tr td,
-.table_d_acc thead tr th {
-  text-align: center;
-  padding: 8px;
-  font-size: 1.6rem;
-}
-.table_d_acc thead tr {
-  background-color: var(--blue-light);
-  color: var(--text-white);
-}
 .deposite_create_btn {
-  padding: 8px 1.6rem;
+  padding: 8px 2.4rem;
 }
 .deposite_edit_btn {
   padding: 8px 3rem;

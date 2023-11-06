@@ -54,7 +54,8 @@ body {
   background-color: var(--blue);
 }
 .btn:active {
-  opacity: 0.5;
+  opacity: 0.8;
+  box-shadow: none;
 }
 
 a {
@@ -110,7 +111,6 @@ a {
 /* For table */
 .table_d_container {
   margin-top: 2.4rem;
-  height: 80vh;
   overflow: auto;
   border-radius: 8px;
 }

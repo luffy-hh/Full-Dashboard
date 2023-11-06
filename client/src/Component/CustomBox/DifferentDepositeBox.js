@@ -5,83 +5,78 @@ import {
   setModalDifDepo,
 } from "../../Feactures/modalSlice";
 import {
-  fetPostBankName,
-  selectPostBankNameStatus,
+  selectPostBankTypeStatus,
+  fetPostBankType,
 } from "../../Feactures/bankApiSlice";
 import { setShowDropDown } from "../../Feactures/ShowHideSlice";
 import { selectlogInData } from "../../Feactures/apiSlice";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./CustomBox.module.css";
 import Dropdown from "../Dropdown/Dropdown";
-import UploadImg from "../UploadImg/UploadImg";
 
 function DifferentDepositeBox({ allBankArr }) {
   const modalDeposite = useSelector(selectModalDiffDepo);
   const dispatch = useDispatch();
-  const [bankType, setBankType] = useState("");
-  const [selectBankType, setSelectBankType] = useState("Select Bank Type");
-  const [bankName, setBankName] = useState("");
-  const [logo, setLogo] = useState(null);
+  const [bankCatData, setBankCatData] = useState("");
+  const [bankTypeName, setBankTypeName] = useState("");
+  const [selectBankType, setSelectBankType] = useState(
+    "Select Bank Categories"
+  );
 
   const logInData = useSelector(selectlogInData);
   const accessToken = logInData.token;
-  const postBankNameStatus = useSelector(selectPostBankNameStatus);
+  const postBankTypeStatus = useSelector(selectPostBankTypeStatus);
 
   const hadleData = (id, name) => {
-    setBankType(id);
+    setBankCatData(id);
     setSelectBankType(name);
     dispatch(setShowDropDown());
   };
 
   const bankList = allBankArr?.map((d) => (
-    <li key={d._id} onClick={() => hadleData(d._id, d.name)}>
-      {d.name}
+    <li key={d._id} onClick={() => hadleData(d._id, d.bankCatName)}>
+      {d.bankCatName}
     </li>
   ));
 
-  const formData = new FormData();
-  formData.append("bankTypeId", bankType);
-  formData.append("name", bankName);
-  formData.append("img", logo);
+  const postData = {
+    bankCatData,
+    bankTypeName,
+  };
 
   const handlePost = () => {
-    dispatch(fetPostBankName({ api: "bankName", formData, accessToken }));
-
-    if (postBankNameStatus === "succeeded") {
+    dispatch(fetPostBankType({ api: "banktype", postData, accessToken }));
+    if (postBankTypeStatus === "succeeded") {
       dispatch(setModalDifDepo(false));
-      setBankType("");
-      setBankName("");
-      setLogo("");
+      setBankTypeName("");
+      setBankCatData("");
+      setBankCatData("Select Bank Categories");
     }
   };
   return (
     <Modal
-      title="Create Bank Name"
+      title="Create Bank Type"
       open={modalDeposite}
       onOk={() => handlePost()}
       onCancel={() => dispatch(setModalDifDepo(false))}
       cancelButtonProps={{ style: { display: "none" } }}
       width={600}
-      okText={postBankNameStatus === "loading" ? "loading" : "Submit"}
+      okText={postBankTypeStatus === "loading" ? "loading" : "Submit"}
       className="modalStyle"
     >
       <form className={styles.bank_input}>
         <div>
-          <label>Bank Type</label>
+          <label>Bank Category</label>
 
           <Dropdown width={"30rem"} title={selectBankType} list={bankList} />
         </div>
         <div>
-          <label>Bank Name</label>
+          <label>Bank Type</label>
           <input
             type="text"
-            value={bankName}
-            onChange={(e) => setBankName(e.target.value)}
+            value={bankTypeName}
+            onChange={(e) => setBankTypeName(e.target.value)}
           />
-        </div>
-        <div>
-          <label>Logo</label>
-          <UploadImg setFile={setLogo} />
         </div>
       </form>
     </Modal>
