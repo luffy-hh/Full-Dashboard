@@ -5,8 +5,7 @@ const userController = require("../../users/userControllers");
 const router = express.Router();
 
 router
-  .route("/")
-  .post(userController.protect, depositController.createWithdraw)
-  .get(userController.protect, depositController.getAllWithdraw);
+  .route("/:id")
+  .patch(userController.protect, depositController.updateDepositMasterToAdmin);
 
 module.exports = router;

@@ -35,6 +35,10 @@ const withdrawDownline = require("./withdrawl/routes/withdrawDownlineRoutes");
 const withdrawUpline = require("./withdrawl/routes/withdrawUplineRoutes");
 const withdarwAdmin = require("./withdrawl/routes/withdrawAdminRoutes");
 
+const deposit = require("./deposit/routes/depositRoutes");
+const depositDownline = require("./deposit/routes/depositDownlineRoutes");
+const depositUpline = require("./deposit/routes/depositUplineRoutes");
+const depositAdmin = require("./deposit/routes/depositAdminRoutes");
 const allUserCount = require("./users/allUserCountRoutes");
 const twoDLuckyRoute = require("./2DLuckySetting/routes/TwoDLuckiesRoute");
 const masterCatStatusAdmin = require("./category_status/routes/master_cat_status_routes");
@@ -60,15 +64,15 @@ app.use((req, res, next) => {
   );
   next();
 });
-const limiter = rateLimit({
-  max: 100,
-  windowMs: 60 * 60 * 1000,
-  message: "Too many request from this IP, please try again in an hour!",
-});
+//const limiter = rateLimit({
+  //max: 100,
+  //windowMs: 60 * 60 * 1000,
+  //message: "Too many request from this IP, please try again in an hour!",
+//});
 
-app.use("/api", limiter);
+//app.use("/api", limiter);
 
-app.use(express.json({ limit: "10kb" }));
+//app.use(express.json({ limit: "10kb" }));
 
 // app.use(mongoSanitize());
 
@@ -76,10 +80,10 @@ app.use(express.json({ limit: "10kb" }));
 
 app.use(express.static("public"));
 
-app.use((req, res, next) => {
-  console.log("This is Test Middleware");
-  next();
-});
+//app.use((req, res, next) => {
+  //console.log("This is Test Middleware");
+  //next();
+//});
 
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
@@ -110,9 +114,15 @@ app.use("/api/v1/withdarwDownline", withdrawDownline);
 app.use("/api/v1/withdarwUpline", withdrawUpline);
 app.use("/api/v1/withdarwAdmin", withdarwAdmin);
 
+// Deposit
+app.use("/api/v1/deposit", deposit);
+app.use("/api/v1/depositDownline", depositDownline);
+app.use("/api/v1/depositUpline", depositUpline);
+app.use("/api/v1/depositAdmin", depositAdmin);
+
 app.use("/api/v1/bankAnnounc", bankAnnouncement);
 app.use("/api/v1/showDepositBankAcc", showDepositBankAcc);
-//app.use("/api/v1/deposit", deposit);
+
 
 // Main Unit
 app.use("/api/v1/mainunit", mainUnitRouter);

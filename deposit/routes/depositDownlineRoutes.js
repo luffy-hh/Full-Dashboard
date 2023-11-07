@@ -6,7 +6,6 @@ const router = express.Router();
 
 router
   .route("/")
-  .post(userController.protect, depositController.createWithdraw)
-  .get(userController.protect, depositController.getAllWithdraw);
+  .get(userController.protect, depositController.getDepositDownline);
 
 module.exports = router;

@@ -4,6 +4,7 @@ const catchAsync = require("../../utils/catchAsync");
 const User = require("../../users/userModels");
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
+const MainUnit = require("../../mainUnit/models/mainUnitModel");
 // Create Bank Type
 exports.createDeposit = catchAsync(async (req, res) => {
   try {
@@ -31,12 +32,13 @@ exports.createDeposit = catchAsync(async (req, res) => {
     const insertObj = {
       fromId,
       toId,
-      date: currentTime,
+      action_time: currentTime,
       bankName_id: reqBody.bankName_id,
-      bankAcc: reqBody.bankAcc,
+      fromAcc: reqBody.bankAcc,
       transferCode: reqBody.transferCode,
+      toAcc: reqBody.toAcc,
       amount: reqBody.amount,
-      status: "panding",
+      status: "Panding",
       description: "deposit",
     };
 
@@ -80,56 +82,114 @@ exports.getDeposit = catchAsync(async (req, res) => {
   }
 });
 
-// Update Bank Type name
-exports.updateDepositStatus = catchAsync(async (req, res) => {
+exports.getDepositUpline = catchAsync(async (req, res) => {
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+    const fromId = decoded.id;
+    const currentUserObj = await User.findById(fromId);
+    const uplieId = currentUserObj.userId;
+    const uplieObj = await User.findOne({ userId: uplieId });
+    const toId = uplieObj._id.toString();
+
+    const allDepositUpline = await Deposit.find({ toId: toId })
+      .populate("fromId")
+      .populate("toId")
+      .populate("bankName_id");
+
+    res.status(200).json({
+      status: "Success",
+      length: allDepositUpline.length,
+      data: {
+        allDepositUpline: allDepositUpline,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "failed",
+      message: err,
+    });
+  }
+});
+
+exports.getDepositDownline = catchAsync(async (req, res) => {
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+    const fromId = decoded.id;
+
+    const allDepositDownline = await Deposit.find({ fromId: fromId })
+      .populate("fromId")
+      .populate("toId")
+      .populate("bankName_id");
+
+    res.status(200).json({
+      status: "Success",
+      length: allDepositDownline.length,
+      data: {
+        allDepositDownline: allDepositDownline,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "failed",
+      message: err,
+    });
+  }
+});
+
+exports.updateDeposit = catchAsync(async (req, res) => {
   try {
     const reqBody = req.body;
-    if (reqBody.status === "confirm") {
-      const updateDeposit = await Deposit.findOneAndUpdate(reqBody.id, {
-        status: "confirm",
-      });
-      const toId = reqBody.toId;
-      const toIdObj = await User.findById(toId);
-      const minusAmount = toIdObj.unit - reqBody.amount;
-      const toUpdateObj = await User.findByIdAndUpdate(
-        toId,
+    const currentTime = new Date();
+    const token = req.headers.authorization.split(" ")[1];
+    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+    const userId = decoded.id;
+    const userObj = await User.findById(userId);
+    const depositId = req.params.id;
+    if (reqBody.status === "Confirm") {
+      const depositObj = await Deposit.findByIdAndUpdate(
+        depositId,
         {
-          amount: minusAmount,
+          action_time: currentTime,
+          status: "Confirm",
+        },
+        {
+          new: true,
+        }
+      );
+      const updateUnit = userObj.unit - reqBody.unit;
+      const updateUser = await User.findByIdAndUpdate(
+        userId,
+        {
+          unit: updateUnit,
         },
         { new: true }
       );
-      const fromId = reqBody.toId;
-      const fromIdObj = await User.findById(fromId);
-      const plusAmount = fromIdObj.unit + reqBody.amount;
-      const fromUpdateObj = await User.findByIdAndUpdate(
-        toId,
-        {
-          amount: plusAmount,
+      res.status(200).json({
+        status: "Success",
+        data: {
+          depositObj,
+          updateUser,
         },
-        { new: true }
+      });
+    }
+    if (reqBody.status === "Cancle") {
+      const depositObj = await Deposit.findByIdAndUpdate(
+        depositId,
+        {
+          action_time: currentTime,
+          status: "Cancle",
+        },
+        {
+          new: true,
+        }
       );
 
       res.status(200).json({
         status: "Success",
         data: {
-          toUpdateObj,
-          fromUpdateObj,
-          updateDeposit,
-        },
-      });
-    }
-    if (reqBody.status === "cancle") {
-      const updateDeposit = await Deposit.findOneAndUpdate(reqBody.id, {
-        status: "cancle",
-      });
-
-      const fromId = reqBody.toId;
-      const fromIdObj = await User.findById(fromId);
-      res.status(200).json({
-        status: "Cancle",
-        data: {
-          fromIdObj,
-          updateDeposit,
+          depositObj,
         },
       });
     }
@@ -137,6 +197,88 @@ exports.updateDepositStatus = catchAsync(async (req, res) => {
     res.status(400).json({
       status: "failed",
       message: err,
+    });
+  }
+});
+
+exports.updateDepositMasterToAdmin = catchAsync(async (req, res) => {
+  try {
+    const reqBody = req.body;
+    const currentTime = new Date();
+    const token = req.headers.authorization.split(" ")[1];
+    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+    const userId = decoded.id;
+    const userObj = await User.findById(userId);
+    const depositId = req.params.id;
+    const mainUnit = await MainUnit.find();
+
+    if (reqBody.status === "Confirm") {
+      const depositObj = await Deposit.findByIdAndUpdate(
+        depositId,
+        {
+          action_time: currentTime,
+          status: "Confirm",
+        },
+        {
+          new: true,
+        }
+      );
+
+      const mainUnitId = mainUnit[0]._id;
+      const mainUnitDocument = mainUnit[0]; // Assuming it's an array with one document
+
+      // Check if mainUnitDocument is valid and has a numeric mainUnit
+      if (
+        mainUnitDocument &&
+        !isNaN(mainUnitDocument.mainUnit) &&
+        !isNaN(reqBody.unit)
+      ) {
+        const updateUnit = mainUnitDocument.mainUnit - reqBody.unit;
+        const updateMainUnit = await MainUnit.findByIdAndUpdate(
+          mainUnitId,
+          {
+            mainUnit: updateUnit,
+          },
+          { new: true }
+        );
+
+        res.status(200).json({
+          status: "Success",
+          data: {
+            depositObj,
+            updateMainUnit,
+          },
+        });
+      } else {
+        throw new Error("Invalid mainUnit or reqBody.unit value");
+      }
+    }
+
+    if (reqBody.status === "Cancle") {
+      const depositObj = await Deposit.findByIdAndUpdate(
+        depositId,
+        {
+          action_time: currentTime,
+          status: "Cancle",
+        },
+        {
+          new: true,
+        }
+      );
+
+      res.status(200).json({
+        status: "Success",
+        data: {
+          depositObj,
+        },
+      });
+    } else {
+      throw new Error("Invalid userObj.unit or reqBody.unit value");
+    }
+  } catch (err) {
+    res.status(400).json({
+      status: "failed",
+      message: err.message,
     });
   }
 });

@@ -11,16 +11,16 @@ const depositSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  date: {
-    type: String,
-    required: true,
-  },
-  bankName_id: {
+  bankName_data: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "BankName",
     required: true,
   },
-  bankAcc: {
+  fromAcc: {
+    type: String,
+    require: true,
+  },
+  toAcc: {
     type: String,
     require: true,
   },
@@ -33,13 +33,19 @@ const depositSchema = new mongoose.Schema({
   amount: {
     type: Number,
     required: [true, "Please Enter Your Transfer Amount"],
-    minlength: 6,
+  },
+  action_time: {
+    type: String,
+    required: true,
   },
   status: {
     type: String,
-    default: true,
+    default: "Panding",
   },
-  description: "String",
+  description: {
+    type: String,
+    default: "Deposit",
+  },
 });
 
 const Deposit = mongoose.model("Deposit", depositSchema);

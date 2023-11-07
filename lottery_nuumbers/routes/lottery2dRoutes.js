@@ -8,7 +8,7 @@ router
   .route("/")
   .get(
     userController.protect,
-    userController.restrictTo("Admin"),
+    userController.restrictTo("Admin", "User"),
     lottery2dController.read2dAllNum
   )
   .patch(

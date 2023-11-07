@@ -52,6 +52,14 @@ exports.getHistory = async (req, res, next) => {
       // );
 
       // await TwoDSaleHistories.find();
+    } else if (loginUserRole === "User") {
+      const historiesOfThisUser = await TwoDSaleHistories.find({
+        userId: req.user.id,
+      });
+      res.status(200).json({
+        status: "succeed",
+        data: historiesOfThisUser,
+      });
     }
   } catch (e) {
     res.status(400).json({
