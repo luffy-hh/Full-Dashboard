@@ -25,7 +25,7 @@ exports.createDeposit = catchAsync(async (req, res) => {
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
     const fromId = decoded.id;
     const currentUserObj = await User.findById(fromId);
-    const uplieId = currentUserObj.userId;
+    const uplieId = currentUserObj.uplineId;
     const uplieObj = await User.findOne({ userId: uplieId });
     const toId = uplieObj._id.toString();
 
@@ -34,7 +34,7 @@ exports.createDeposit = catchAsync(async (req, res) => {
       toId,
       action_time: currentTime,
       bankName_id: reqBody.bankName_id,
-      fromAcc: reqBody.bankAcc,
+      fromAcc: reqBody.fromAcc,
       transferCode: reqBody.transferCode,
       toAcc: reqBody.toAcc,
       amount: reqBody.amount,
@@ -86,11 +86,7 @@ exports.getDepositUpline = catchAsync(async (req, res) => {
   try {
     const token = req.headers.authorization.split(" ")[1];
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-    const fromId = decoded.id;
-    const currentUserObj = await User.findById(fromId);
-    const uplieId = currentUserObj.userId;
-    const uplieObj = await User.findOne({ userId: uplieId });
-    const toId = uplieObj._id.toString();
+    const toId = decoded.id;
 
     const allDepositUpline = await Deposit.find({ toId: toId })
       .populate("fromId")
@@ -142,11 +138,15 @@ exports.updateDeposit = catchAsync(async (req, res) => {
   try {
     const reqBody = req.body;
     const currentTime = new Date();
+    const depositId = req.params.id;
+    const depositObj = await Deposit.findById(depositId);
     const token = req.headers.authorization.split(" ")[1];
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
     const userId = decoded.id;
     const userObj = await User.findById(userId);
-    const depositId = req.params.id;
+
+    const downlineUserObj = await User.findById(depositObj.fromId);
+
     if (reqBody.status === "Confirm") {
       const depositObj = await Deposit.findByIdAndUpdate(
         depositId,
@@ -166,11 +166,19 @@ exports.updateDeposit = catchAsync(async (req, res) => {
         },
         { new: true }
       );
+
+      const depositUnit = downlineUserObj.unit + reqBody.unit;
+      const downlineUserDepositUpdate = await User.findByIdAndUpdate(
+        depositObj.fromId,
+        { unit: depositUnit },
+        { new: true }
+      );
       res.status(200).json({
         status: "Success",
         data: {
           depositObj,
           updateUser,
+          downlineUserDepositUpdate,
         },
       });
     }

@@ -11,7 +11,7 @@ const depositSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  bankName_data: {
+  bankName_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "BankName",
     required: true,

@@ -3,42 +3,40 @@ const moment = require("moment-timezone");
 const User = require("../../users/userModels");
 const MasterSubCatStatus = require("../../category_status/models/master_subCat_status_models");
 const Thai2DSale = require("../../2dSales/models/2dsalemodels");
-const Thai2DNum12Am = require('../../lottery_nuumbers/models/thai2DNum12Models')
-const MainUnit = require('../../mainUnit/models/mainUnitModel')
+const Thai2DNum12Am = require("../../lottery_nuumbers/models/thai2DNum12Models");
+const MainUnit = require("../../mainUnit/models/mainUnitModel");
 const { createLuckyWinner } = require("./LuckyWinnerController");
-
 
 exports.createTwoDLucky = async (req, res, next) => {
   try {
     const mainUnitArr = await MainUnit.find({});
-    const mainUnitId = mainUnitArr[0]._id
-    const currentDay = new Date().getDate();
+    const mainUnitId = mainUnitArr[0]._id;
+    const currentDay = new Date.now();
     const newTwoDLucky = await TwoDLucky.create({
       ...req.body,
       date: currentDay,
     });
     console.log(newTwoDLucky);
-    if(newTwoDLucky){
+    if (newTwoDLucky) {
       const docs = await Thai2DNum12Am.find({});
       for (let doc of docs) {
         doc.lastAmount = doc.limitAmount;
         doc.totalAmount = 0;
-        doc.percentage= 0;
+        doc.percentage = 0;
         await doc.save();
       }
     }
     const dailyPlayedObjOfEachSubCatArr = await Thai2DSale.find({
       subCatId: newTwoDLucky?.subCatId,
-    })
+    });
     const dailyPlayedObjDeletedSubCatArr = await Thai2DSale.deleteMany({
       subCatId: newTwoDLucky?.subCatId,
     });
     console.log(dailyPlayedObjOfEachSubCatArr);
     let winnerListArr = [];
-    if(dailyPlayedObjOfEachSubCatArr.length >0 ){
+    if (dailyPlayedObjOfEachSubCatArr.length > 0) {
       for (const play of dailyPlayedObjOfEachSubCatArr) {
         if (play?.number === newTwoDLucky?.number) {
-
           const user = await User.findById(play.userId);
 
           const upLineAgent = await User.findOne({ userId: user?.uplineId });
@@ -50,13 +48,13 @@ exports.createTwoDLucky = async (req, res, next) => {
           const masterSubCats = await MasterSubCatStatus.findOne({
             master_id: upLineMaster._id,
           });
-          console.log(masterSubCats.subCatStatus)
+          console.log(masterSubCats.subCatStatus);
           const masterCommissionOfCurSubCat = masterSubCats.subCatStatus.find(
-              subCat => subCat._id.toString() === play.subCatId.toString()
+            (subCat) => subCat._id.toString() === play.subCatId.toString()
           );
           console.log(masterCommissionOfCurSubCat);
           const returnedAmount =
-              play?.amount * masterCommissionOfCurSubCat?.mainCompensation;
+            play?.amount * masterCommissionOfCurSubCat?.mainCompensation;
 
           const obj = {
             userId: play.userId,
@@ -65,13 +63,13 @@ exports.createTwoDLucky = async (req, res, next) => {
             date: currentDay,
           };
 
-          const winnerObj =await createLuckyWinner(obj);
-          const updatedUser = await User.findByIdAndUpdate(winnerObj.userId,{
-            $inc:{unit:winnerObj.returnedAmount}
-          })
-          const updatedMainUnit = await MainUnit.findByIdAndUpdate(mainUnitId,{
-            $inc:{mainUnit: -winnerObj.returnedAmount}
-          })
+          const winnerObj = await createLuckyWinner(obj);
+          const updatedUser = await User.findByIdAndUpdate(winnerObj.userId, {
+            $inc: { unit: winnerObj.returnedAmount },
+          });
+          const updatedMainUnit = await MainUnit.findByIdAndUpdate(mainUnitId, {
+            $inc: { mainUnit: -winnerObj.returnedAmount },
+          });
           winnerListArr.push(winnerObj);
         }
       }
@@ -79,13 +77,12 @@ exports.createTwoDLucky = async (req, res, next) => {
         status: "succeed",
         data: winnerListArr,
       });
-    }else{
+    } else {
       res.status(200).json({
-        status:'succeed',
-        message:'There is no play for today.'
-      })
+        status: "succeed",
+        message: "There is no play for today.",
+      });
     }
-
   } catch (e) {
     res.status(500).json({
       status: "failed",
@@ -96,7 +93,7 @@ exports.createTwoDLucky = async (req, res, next) => {
 
 exports.getAllSetLuckies = async (req, res, next) => {
   try {
-    const allLuckiesNums = await TwoDLucky.find({});
+    const allLuckiesNums = await TwoDLucky.find({}).populate("subCatId");
     res.status(200).json({
       status: "succeed",
       data: allLuckiesNums,

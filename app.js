@@ -65,9 +65,9 @@ app.use((req, res, next) => {
   next();
 });
 //const limiter = rateLimit({
-  //max: 100,
-  //windowMs: 60 * 60 * 1000,
-  //message: "Too many request from this IP, please try again in an hour!",
+//max: 100,
+//windowMs: 60 * 60 * 1000,
+//message: "Too many request from this IP, please try again in an hour!",
 //});
 
 //app.use("/api", limiter);
@@ -81,8 +81,8 @@ app.use((req, res, next) => {
 app.use(express.static("public"));
 
 //app.use((req, res, next) => {
-  //console.log("This is Test Middleware");
-  //next();
+//console.log("This is Test Middleware");
+//next();
 //});
 
 app.use((req, res, next) => {
@@ -123,7 +123,6 @@ app.use("/api/v1/depositAdmin", depositAdmin);
 app.use("/api/v1/bankAnnounc", bankAnnouncement);
 app.use("/api/v1/showDepositBankAcc", showDepositBankAcc);
 
-
 // Main Unit
 app.use("/api/v1/mainunit", mainUnitRouter);
 
@@ -160,7 +159,7 @@ app.use("/api/v1/agentsubcatstatus", agentSubCatStatusAdmin);
 
 app.use("/api/v1/agentsubcatcomession", agentSubCatComessionAdmin);
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "static/index.html"));
-});
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "static/index.html"));
+// });
 module.exports = app;
