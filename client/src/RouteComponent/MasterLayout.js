@@ -10,15 +10,17 @@ import AllAgentsPage from "../Pages/AllAgentsPage/AllAgentsPage";
 import ToWithdraw from "../Pages/ToWithdrawPage/ToWithdraw";
 
 import ToDeposit from "../Pages/ToDepositPage/ToDeposit";
-import ToDepositRequests from "../Pages/ToDepositAndWithdrawHistory/ToDepositRequests";
+
 import { Routes, Route } from "react-router-dom";
 import Login from "../Pages/Loginpage/Login";
 import { selectMasterLayoutShow } from "../Feactures/apiSlice";
 import { useSelector } from "react-redux";
-import ToDepositHistory from "../Pages/ToDepositAndWithdrawHistory/ToDepositHistory";
+
 import BankAcc from "../Pages/DepositeAccount/BankAcc";
 import MasterWithdrawHistory from "../Pages/ToWithdrawPage/MasterWithdraw/MasterWithdrawHistory";
 import MasterWithdrawRequest from "../Pages/ToWithdrawPage/MasterWithdraw/MasterWithdrawRequest";
+import MasterDepositHistory from "../Pages/ToDepositPage/MasterDeposit/MasterDepositHistory";
+import MasterDepositRequest from "../Pages/ToDepositPage/MasterDeposit/MasterDepositRequest";
 const master = [
   { id: 0, path: "/master", route: <Home /> },
   { id: 3, path: "allusers", route: <AllUsers /> },
@@ -28,8 +30,8 @@ const master = [
   { id: 20, path: "user-report", route: <UserReport /> },
   { id: 21, path: "user-report/:userId", route: <UserReportTable /> },
   { id: 22, path: "todeposit", route: <ToDeposit /> },
-  { id: 23, path: "todeposit-request", route: <ToDepositRequests /> },
-  { id: 25, path: "todeposit-history", route: <ToDepositHistory /> },
+  { id: 23, path: "todeposit-request", route: <MasterDepositRequest /> },
+  { id: 25, path: "todeposit-history", route: <MasterDepositHistory /> },
   { id: 24, path: "towithdraw", route: <ToWithdraw /> },
   { id: 26, path: "towithdraw-request", route: <MasterWithdrawRequest /> },
   { id: 27, path: "towithdraw-history", route: <MasterWithdrawHistory /> },

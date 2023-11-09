@@ -175,11 +175,52 @@ export const fetPatchWithDraw = createAsyncThunk(
   }
 );
 
+export const fetPatchDeposit = createAsyncThunk(
+  "data/fetPatchDeposit",
+  async ({ api, patchData, accessToken }) => {
+    const data = await patchDatas(api, patchData, accessToken);
+    return data;
+  }
+);
+
+export const fetGetMasterDeposit = createAsyncThunk(
+  "data/fetGetMasterDeposit",
+  async ({ api, accessToken }) => {
+    const data = await fetchDataWithToken(api, accessToken);
+    return data;
+  }
+);
+
+export const fetGetDepositUpline = createAsyncThunk(
+  "data/fetGetDepositUpline",
+  async ({ api, accessToken }) => {
+    const data = await fetchDataWithToken(api, accessToken);
+    return data;
+  }
+);
+
+export const fetGetMasterDepositUpline = createAsyncThunk(
+  "data/fetGetMasterDepositUpline",
+  async ({ api, accessToken }) => {
+    const data = await fetchDataWithToken(api, accessToken);
+    return data;
+  }
+);
+
+export const fetGetAgentDepositUpline = createAsyncThunk(
+  "data/fetGetAgentDepositUpline",
+  async ({ api, accessToken }) => {
+    const data = await fetchDataWithToken(api, accessToken);
+    return data;
+  }
+);
+
 const toDeposite = {
   clickBankNameId: "",
   clickBankAcc: "",
   clickName: "",
   showDepForm: false,
+  bankNameId: "",
 };
 
 const initialState = {
@@ -216,12 +257,6 @@ const initialState = {
   patchBankAnnounc: null,
   patchBankAnnouncStatus: "idle",
   patchBankAnnouncError: null,
-  postDeposit: {},
-  postDepositStatus: "idle",
-  postDepositError: null,
-  deposit: null,
-  depositStatus: "idle",
-  depositError: null,
 
   bankAccUpline: null,
   bankAccUplineStatus: "idle",
@@ -235,21 +270,21 @@ const initialState = {
   postWithdrawStatus: "idle",
   postWithdrawError: null,
 
+  postDeposit: {},
+  postDepositStatus: "idle",
+  postDepositError: null,
+
   withdraw: null,
   withdrawStatus: "idle",
   withdrawError: null,
-
-  masterWithdraw: null,
-  masterWithdrawStatus: "idle",
-  masterWithdrawError: null,
 
   withdrawUpLine: null,
   withdrawUpLineStatus: "idle",
   withdrawUpLineError: null,
 
-  patchWithdraw: {},
-  patchWithdrawStatus: "idle",
-  patchWithdrawError: null,
+  masterWithdraw: null,
+  masterWithdrawStatus: "idle",
+  masterWithdrawError: null,
 
   masterWithdrawUpLine: null,
   masterWithdrawUpLineStatus: "idle",
@@ -259,15 +294,49 @@ const initialState = {
   agentWithdrawUpLineStatus: "idle",
   agentWithdrawUpLineError: null,
 
+  deposit: null,
+  depositStatus: "idle",
+  depositError: null,
+
+  depositUpLine: null,
+  depositUpLineStatus: "idle",
+  depositUpLineError: null,
+
+  masterDeposit: null,
+  masterDepositStatus: "idle",
+  masterDepositError: null,
+
+  masterDepositUpLine: null,
+  masterDepositUpLineStatus: "idle",
+  masterDepositUpLineError: null,
+
+  agentDepositUpLine: null,
+  agentDepositUpLineStatus: "idle",
+  agentDepositUpLineError: null,
+
+  patchWithdraw: {},
+  patchWithdrawStatus: "idle",
+  patchWithdrawError: null,
+
+  patchDeposit: {},
+  patchDepositStatus: "idle",
+  patchDepositError: null,
+
   admintDownandUpHistory: null,
   masterDownandUpHistroy: null,
+  depositAdminHistory: null,
+  depositMasterHistory: null,
 };
 const bankApiSlice = createSlice({
   name: "bank",
   initialState,
   reducers: {
-    setShowDepoForm: (state, action) => {
-      state.toDeposite.showDepForm = action.payload;
+    setShowDepoForm: (state) => {
+      state.toDeposite.showDepForm = !state.toDeposite.showDepForm;
+    },
+
+    setBankNameIds: (state, action) => {
+      state.toDeposite.bankNameId = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -413,7 +482,7 @@ const bankApiSlice = createSlice({
       .addCase(fetPostDeposit.fulfilled, (state, action) => {
         state.postDepositStatus = "succeeded";
         state.postDeposit = action.payload;
-        console.log(state.postDeposit);
+        console.log(state.postDeposit, "Post Deposit");
       })
       .addCase(fetPostDeposit.rejected, (state, action) => {
         state.postDepositStatus = "failed";
@@ -427,6 +496,7 @@ const bankApiSlice = createSlice({
       .addCase(fetGetDeposit.fulfilled, (state, action) => {
         state.depositStatus = "succeeded";
         state.deposit = action.payload;
+        state.depositAdminHistory = state.deposit.data.allDepositDownline;
       })
       .addCase(fetGetDeposit.rejected, (state, action) => {
         state.depositStatus = "failed";
@@ -558,11 +628,85 @@ const bankApiSlice = createSlice({
       .addCase(fetPatchWithDraw.rejected, (state, action) => {
         state.patchWithdrawStatus = "failed";
         state.patchWithdrawError = action.error.message;
+      })
+
+      //PATCH Deposit
+      .addCase(fetPatchDeposit.pending, (state) => {
+        state.patchDepositStatus = "loading";
+      })
+      .addCase(fetPatchDeposit.fulfilled, (state, action) => {
+        state.patchDepositStatus = "succeeded";
+        state.patchDeposit = action.payload;
+        console.log(state.patchDeposit, "new");
+      })
+      .addCase(fetPatchDeposit.rejected, (state, action) => {
+        state.patchDepositStatus = "failed";
+        state.patchDepositError = action.error.message;
+      })
+
+      //GET Master Deposit
+      .addCase(fetGetMasterDeposit.pending, (state) => {
+        state.masterDepositStatus = "loading";
+      })
+      .addCase(fetGetMasterDeposit.fulfilled, (state, action) => {
+        state.masterDepositStatus = "succeeded";
+        state.masterDeposit = action.payload;
+        state.depositMasterHistory =
+          state.masterDeposit.data.allDepositDownline;
+      })
+      .addCase(fetGetMasterDeposit.rejected, (state, action) => {
+        state.masterDepositStatus = "failed";
+        state.masterDepositError = action.error.message;
+      })
+
+      //GET Deposit Upline
+      .addCase(fetGetDepositUpline.pending, (state) => {
+        state.depositUpLineStatus = "loading";
+      })
+      .addCase(fetGetDepositUpline.fulfilled, (state, action) => {
+        state.depositUpLineStatus = "succeeded";
+        state.depositUpLine = action.payload;
+        //==================================================
+        state.depositAdminHistory = state.depositUpLine.data.allDepositUpline;
+      })
+      .addCase(fetGetDepositUpline.rejected, (state, action) => {
+        state.depositUpLineStatus = "failed";
+        state.depositUpLineError = action.error.message;
+      })
+
+      //GET MasterDeposit Upline
+      .addCase(fetGetMasterDepositUpline.pending, (state) => {
+        state.masterDepositUpLineStatus = "loading";
+      })
+      .addCase(fetGetMasterDepositUpline.fulfilled, (state, action) => {
+        state.masterDepositUpLineStatus = "succeeded";
+        state.masterDepositUpLine = action.payload;
+
+        state.depositMasterHistory =
+          state.masterDepositUpLine.data.allDepositUpline;
+      })
+      .addCase(fetGetMasterDepositUpline.rejected, (state, action) => {
+        state.masterDepositUpLineStatus = "failed";
+        state.masterDepositUpLineError = action.error.message;
+      })
+
+      //GET AgentDeposit Upline
+      .addCase(fetGetAgentDepositUpline.pending, (state) => {
+        state.agentDepositUpLineStatus = "loading";
+      })
+      .addCase(fetGetAgentDepositUpline.fulfilled, (state, action) => {
+        state.agentDepositUpLineStatus = "succeeded";
+        state.agentDepositUpLine = action.payload;
+      })
+      .addCase(fetGetAgentDepositUpline.rejected, (state, action) => {
+        state.agentDepositUpLineStatus = "failed";
+        state.agentDepositUpLineError = action.error.message;
       });
   },
 });
 
-export const { setShowName, setShowDepoForm } = bankApiSlice.actions;
+export const { setShowName, setShowDepoForm, setBankNameIds } =
+  bankApiSlice.actions;
 
 export const selectBankCat = (state) => state.bank.bankCat;
 export const selectPostBankCat = (state) => state.bank.postBankCat;
@@ -592,10 +736,6 @@ export const selectClickBankNameId = (state) =>
 export const selectClickBankAcc = (state) => state.bank.toDeposite.clickBankAcc;
 export const selectShowDepoForm = (state) => state.bank.toDeposite.showDepForm;
 
-export const selectPostDeposit = (state) => state.bank.postDeposit;
-export const selectPostDepositStatus = (state) => state.bank.postDepositStatus;
-
-export const selectDeposit = (state) => state.bank.deposit;
 export const selectDepositStatus = (state) => state.bank.depositStatus;
 
 export const selectBankType = (state) => state.bank.bankType;
@@ -608,23 +748,43 @@ export const selectBankAccUpline = (state) => state.bank.bankAccUpline;
 export const selectBankNameUpline = (state) => state.bank.bankNameUpline;
 
 export const selectPostWithdraw = (state) => state.bank.postWithdraw;
+export const selectPostDeposit = (state) => state.bank.postDeposit;
+
 export const selectPostWithdrawStatus = (state) =>
   state.bank.postWithdrawStatus;
+export const selectPostDepositStatus = (state) => state.bank.postDepositStatus;
 
 export const selectWithdraw = (state) => state.bank.withdraw;
+export const selectDeposit = (state) => state.bank.deposit;
+
 export const selectWithdrawUpLine = (state) => state.bank.withdrawUpLine;
-export const selectPatchWithdrawStatus = (state) =>
-  state.bank.patchWithdrawStatus;
-export const selectPatchWithdraw = (state) => state.bank.patchWithdraw;
+export const selectDepositUpLine = (state) => state.bank.depositUpLine;
 
 export const selectAdminUpandDownHistory = (state) =>
   state.bank.admintDownandUpHistory;
-
 export const selectMasterUpandDownHistory = (state) =>
   state.bank.masterDownandUpHistroy;
+export const selectDepositAdminHistory = (state) =>
+  state.bank.depositAdminHistory;
+export const selectDepositMasterHistory = (state) =>
+  state.bank.depositMasterHistory;
 
 export const selectMasterWithdrawUpLine = (state) =>
   state.bank.masterWithdrawUpLine;
 export const selectAgentWithdrawUpLine = (state) =>
   state.bank.agentWithdrawUpLine;
+export const selectMasterDepositUpLine = (state) =>
+  state.bank.masterDepositUpLine;
+export const selectAgentDepositUpLine = (state) =>
+  state.bank.agentDepositUpLine;
+
+export const selectBankNameId = (state) => state.bank.toDeposite.bankNameId;
+
+export const selectPatchDepositStatus = (state) =>
+  state.bank.patchDepositStatus;
+export const selectPatchWithdrawStatus = (state) =>
+  state.bank.patchWithdrawStatus;
+export const selectPatchWithdraw = (state) => state.bank.patchWithdraw;
+export const selectPatchDeposit = (state) => state.bank.patchDeposit;
+
 export default bankApiSlice.reducer;

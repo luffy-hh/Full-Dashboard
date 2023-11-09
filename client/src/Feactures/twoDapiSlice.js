@@ -58,7 +58,14 @@ export const fetGetLuckyNoHistory = createAsyncThunk(
   "data/fetGetLuckyNoHistory",
   async ({ api, accessToken }) => {
     const data = await fetchDataWithToken(api, accessToken);
-    console.log(data);
+    return data;
+  }
+);
+
+export const fetGetLuckNo = createAsyncThunk(
+  "data/fetGetLuckNo",
+  async ({ api, accessToken }) => {
+    const data = await fetchDataWithToken(api, accessToken);
     return data;
   }
 );
@@ -122,9 +129,15 @@ const initialState = {
   luckyNo: null,
   luckyNoStatus: "idle",
   luckyNoError: null,
+
+  luckyNoData: null,
+  luckyNoDataStatus: "idle",
+  luckyNoDataError: null,
+
   postLuckyNoData: {},
   postLuckyNoDataStatus: "idle",
   postLuckyNoDataError: null,
+
   patchCloseNo: {},
   patchCloseNoStatus: "idle",
   patchCloseNoError: null,
@@ -272,6 +285,20 @@ const twoDapiSlice = createSlice({
         state.luckyNoError = action.error.message;
       })
 
+      //Get lucky No for lucky number  page
+      .addCase(fetGetLuckNo.pending, (state) => {
+        state.luckyNoDataStatus = "loading";
+      })
+      .addCase(fetGetLuckNo.fulfilled, (state, action) => {
+        state.luckyNoDataStatus = "succeeded";
+        state.luckyNoData = action.payload;
+        console.log(state.postLuckyNoData);
+      })
+      .addCase(fetGetLuckNo.rejected, (state, action) => {
+        state.luckyNoDataStatus = "failed";
+        state.luckyNoDataError = action.error.message;
+      })
+
       //post lucky No for lucky number  page
       .addCase(postLuckyNo.pending, (state) => {
         state.postLuckyNoDataStatus = "loading";
@@ -362,11 +389,13 @@ export const selectAllTwoDArr = (state) => state.twoDapi.allTwoDArr;
 export const selectfilterTwoDArr = (state) => state.twoDapi.filterTwoDArr;
 
 export const selectLuckyNo = (state) => state.twoDapi.luckyNo;
-// export const selectPostLuckyNo = (state) => state.twoDapi.postLuckyNoData;
+export const selectPostLuckyNo = (state) => state.twoDapi.postLuckyNoData;
 
 export const selectPatchCloseNo = (state) => state.twoDapi.patchCloseNo;
 export const selectPatchCloseNoStatus = (state) =>
   state.twoDapi.patchCloseNoStatus;
+
+export const selectLuckyNoData = (state) => state.twoDapi.luckyNoData;
 
 export const selectPatchMasterGameCatCloseStatus = (state) =>
   state.twoDapi.patchMasterGameCatStatus;

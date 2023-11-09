@@ -29,8 +29,10 @@ import BankType from "../Pages/DepositeDifferent/BankType";
 import BankCategory from "../Pages/DepositeType/BankCategory";
 import BankAcc from "../Pages/DepositeAccount/BankAcc";
 import AdminWithdrawHistory from "../Pages/ToWithdrawPage/AdminWithdraw/AdminWithdrawHistory";
-import ToWithdraw from "../Pages/ToWithdrawPage/ToWithdraw";
+
 import AdminWithdrawRequest from "../Pages/ToWithdrawPage/AdminWithdraw/AdminWithdrawRequest";
+import AdminDepositHistory from "../Pages/ToDepositPage/AdminDeposit/AdminDepositHistory";
+import AdminDepositRequest from "../Pages/ToDepositPage/AdminDeposit/AdminDepositRequest";
 
 const admin = [
   { id: 0, path: "/admin", route: <Home /> },
@@ -56,7 +58,9 @@ const admin = [
   { id: 19, path: "master-report", route: <MasterReport /> },
   { id: 20, path: "user-report", route: <UserReport /> },
   { id: 21, path: "user-report/:userId", route: <UserReportTable /> },
-  { id: 24, path: "towithdraw", route: <ToWithdraw /> },
+  { id: 28, path: "todeposit-history", route: <AdminDepositHistory /> },
+  { id: 29, path: "todeposit-request", route: <AdminDepositRequest /> },
+
   { id: 26, path: "towithdraw-request", route: <AdminWithdrawRequest /> },
   { id: 27, path: "towithdraw-history", route: <AdminWithdrawHistory /> },
 ];

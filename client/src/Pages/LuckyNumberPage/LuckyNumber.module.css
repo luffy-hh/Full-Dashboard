@@ -10,7 +10,6 @@
   padding: 2.4rem 3.2rem;
   background-color: var(--text-white);
 }
-
 .lucky_number_header {
   display: flex;
   justify-content: space-between;
@@ -32,10 +31,16 @@
   background-color: var(--blue);
 }
 
-.luck_tr_style:nth-child(even) {
-  background-color: #dddddd;
+.show_lucky_no table thead tr th:first-child {
+  min-width: 7rem;
 }
+.show_lucky_no table thead tr th {
+  min-width: 20rem;
+}
+.luky_date {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-.luck_tr_style td {
-  padding: 1.8rem 0 !important;
+  gap: 5px;
 }

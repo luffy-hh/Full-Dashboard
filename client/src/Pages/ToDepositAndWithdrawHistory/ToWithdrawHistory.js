@@ -60,7 +60,14 @@ function ToWithdrawHistory({
       key={d._id}
       style={{
         borderBottom: "1px solid #a8a29e",
-        backgroundColor: d.status === "Confirm" ? "#bbf7d0" : "#fecaca",
+        backgroundColor:
+          d.status === "Confirm"
+            ? "#bbf7d0"
+            : d.status === "Cancle"
+            ? "#fecaca"
+            : d.status === "Panding"
+            ? "#f5f5f4"
+            : "#f5f5f4",
       }}
       className="table_d_tbody_tr"
     >

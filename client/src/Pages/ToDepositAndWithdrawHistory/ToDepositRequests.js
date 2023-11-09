@@ -1,68 +1,109 @@
 import React, { useEffect } from "react";
-import { selectToDepositHead } from "../../Feactures/AllUserPageSlice";
+import { selectToDepositHeadReq } from "../../Feactures/AllUserPageSlice";
 import NormalButton from "../../Component/NormalButton";
-import { useSelector, useDispatch } from "react-redux";
 import {
-  selectPostDeposit,
-  selectDeposit,
-  selectDepositStatus,
-  fetGetDeposit,
+  fetPatchDeposit,
+  selectPatchWithdrawStatus,
+  selectPatchDeposit,
 } from "../../Feactures/bankApiSlice";
+import { useSelector, useDispatch } from "react-redux";
 import { selectlogInData } from "../../Feactures/apiSlice";
 import Tables from "../../Component/Tables";
 import styles from "./ToDepositHistory.module.css";
-function ToDepositHistory() {
-  const todepositeHead = useSelector(selectToDepositHead);
 
-  const deposit = useSelector(selectDeposit);
-  const postDeposit = useSelector(selectPostDeposit);
-  const depositStatus = useSelector(selectDepositStatus);
-  const dispatch = useDispatch();
+function ToDepositRequest({ api, editApi, getUpLineFun, upLineData }) {
+  const todepositeHead = useSelector(selectToDepositHeadReq);
+
   const logInData = useSelector(selectlogInData);
   const accessToken = logInData.token;
 
+  // const patchWithdrawStatus = useSelector(selectPatchWithdrawStatus);
+
+  const patchDeposit = useSelector(selectPatchDeposit);
+
+  const dispatch = useDispatch();
+  const withDrawUpLine = useSelector(upLineData);
+
   useEffect(() => {
-    dispatch(fetGetDeposit({ api: "deposit", accessToken }));
-  }, [postDeposit]);
+    dispatch(getUpLineFun({ api: api, accessToken })); //withdarwUpline
+  }, [patchDeposit]);
 
-  const allDeposit = deposit?.data.allDeposit;
-  console.log(allDeposit);
+  const withDrawArr = withDrawUpLine?.data.allDepositUpline;
+  console.log(withDrawArr && withDrawArr);
 
-  const tbodyList = allDeposit?.map((d, i) => (
-    <tr
-      key={i}
-      style={{
-        borderBottom: "1px solid #a8a29e",
-      }}
-      className="table_d_tbody_tr"
-    >
-      <td>{i + 1}</td>
-      <td>{d.amount}</td>
+  const handleAccept = (id, amount) => {
+    dispatch(
+      fetPatchDeposit({
+        api: `${editApi}/${id}`, //withdarwAdmin is for admin comfirm btn
+        patchData: { status: "Confirm", unit: amount },
+        accessToken,
+      })
+    );
+    console.log("working");
+  };
 
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td>{d.status}</td>
-      <td>No Data</td>
-      <td className={styles.action}>
-        <NormalButton className={`${styles.acc_btn} `}>Accept</NormalButton>
-        <NormalButton className={`${styles.rej_btn} `}>Rejected</NormalButton>
-      </td>
-      <td className={styles.date_style}>
-        <span style={{ marginRight: "1.2rem" }}>
-          {new Date(d.date).toLocaleDateString()}
-        </span>
-        <span>{new Date(d.date).toLocaleTimeString()}</span>
-      </td>
-    </tr>
+  const handleCancel = (id, amount) => {
+    dispatch(
+      fetPatchDeposit({
+        api: `${editApi}/${id}`, //withdarwAdmin is for admin comfirm btn
+        patchData: { status: "Cancle", unit: amount },
+        accessToken,
+      })
+    );
+    console.log("working");
+  };
+
+  const tbodyList = withDrawArr?.map((d, i) => (
+    <>
+      {d.status === "Panding" && (
+        <tr
+          key={`withdraw_${i}`}
+          style={{
+            borderBottom: "1px solid #a8a29e",
+          }}
+          className="table_d_tbody_tr"
+        >
+          <td>{i + 1}</td>
+          <td>{d.amount}</td>
+
+          <td>{d.fromId.userId} </td>
+          <td>{d.bankName_id.bankName}</td>
+          <td>{d.toId.name}</td>
+          <td>{d.toId.userId}</td>
+          <td>{d.transferCode}</td>
+          <td>{d.fromAcc}</td>
+
+          <td>{d.status}</td>
+          <td className={styles.action}>
+            <NormalButton
+              className={`${styles.acc_btn} `}
+              onClick={() => handleAccept(d._id, d.amount)}
+            >
+              Confirm
+            </NormalButton>
+            <NormalButton
+              onClick={() => handleCancel(d._id, d.amount)}
+              className={`${styles.rej_btn} `}
+            >
+              Cancle
+            </NormalButton>
+          </td>
+
+          <td className={styles.date_style}>
+            <span style={{ marginRight: "1.2rem" }}>
+              {new Date(d.action_time).toLocaleDateString()}
+            </span>
+            <span>{new Date(d.action_time).toLocaleTimeString()}</span>
+          </td>
+        </tr>
+      )}
+    </>
   ));
+
   return (
     <div className="page_style" style={{ overflow: "hidden" }}>
       <div className={`box_shadow ${styles.deposit_title}`}>
-        To Deposit Request
+        To Deosit Request
       </div>
       <div className={`hide_scroll ${styles.depo_with_history}`}>
         <Tables thead={todepositeHead} tbody={tbodyList} />
@@ -71,4 +112,4 @@ function ToDepositHistory() {
   );
 }
 
-export default ToDepositHistory;
+export default ToDepositRequest;

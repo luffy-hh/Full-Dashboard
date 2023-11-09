@@ -44,6 +44,8 @@ function ToWithdrawForm() {
     </li>
   ));
 
+  console.log(bankNameArr && bankNameArr);
+
   const postData = {
     bankNameId: bankNameId,
     recAcc,

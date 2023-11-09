@@ -18,7 +18,6 @@
   padding-right: 3.2rem;
 }
 .myadmin {
-  width: 18rem;
   background-color: #1f2937;
   height: 7rem;
   display: flex;
@@ -27,6 +26,7 @@
 }
 .myadmin h3 {
   padding-left: 3.2rem;
+  font-size: 2rem;
 }
 /* 
 main Unit btn  */

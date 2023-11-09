@@ -241,8 +241,27 @@ const sData = [
     ],
   },
   {
+    title: "To Deposit",
+    route: null,
+    icon: <RiLuggageDepositFill />,
+    iconRight: <BsChevronRight />,
+    show: false,
+    subNav: [
+      {
+        title: "To Deposit Request",
+        route: "todeposit-request",
+        icon: <MdRequestQuote />,
+      },
+      {
+        title: "To Deposit History",
+        route: "todeposit-history",
+        icon: <ImHistory />,
+      },
+    ],
+  },
+  {
     title: "To WithDraw",
-    route: "towithdraw",
+    route: null,
     icon: <BiMoneyWithdraw />,
     iconRight: <BsChevronRight />,
     show: false,

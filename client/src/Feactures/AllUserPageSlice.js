@@ -56,21 +56,34 @@ const commisionList = [
   { title: "Maung" },
 ];
 
-const todepositHead = [
+const todepositHeadReq = [
   "No",
   "Amount",
   "Summit Acc ID",
-  "Banking Type",
-  "Payment Type",
+  "Bank Name",
+  "Receiver Name",
   "Receiver Account",
   "Transition ID",
   "From Account",
   "Status",
-  "Photo Link",
   "Action",
   "User Summit Time",
 ];
 
+const todepositHeadHistory = [
+  "No",
+  "Amount",
+  "Summit Acc ID",
+  "Bank Name",
+  "Receiver Name",
+  "Receiver Account",
+  "Transition ID",
+  "From Account",
+  "Status",
+  "Action Time",
+];
+
+//this is for withdraw history
 const toWithdrawHead = [
   "No",
   "Amount",
@@ -82,6 +95,7 @@ const toWithdrawHead = [
   "User Summit Time",
 ];
 
+//this is for withdrawl requst
 const toWithdrawHeadRequset = [
   "No",
   "Amount",
@@ -142,7 +156,7 @@ const initialState = {
   userDetailCom,
   userDetailComHead,
   todepositHistoryHead,
-  todepositHead,
+  todepositHeadReq,
   bankCatHead,
   bankTypeHead,
   bankNameHead,
@@ -150,6 +164,7 @@ const initialState = {
   toWithdrawHead,
   toWithdrawHeadRequset,
   upLineOrDownLine,
+  todepositHeadHistory,
 };
 
 const AllUserPageSlice = createSlice({
@@ -193,7 +208,8 @@ export const selectUserDetailCom = (state) => state.userPageData.userDetailCom;
 export const selectUserDetailComHead = (state) =>
   state.userPageData.userDetailComHead;
 
-export const selectToDepositHead = (state) => state.userPageData.todepositHead;
+export const selectToDepositHeadReq = (state) =>
+  state.userPageData.todepositHeadReq;
 export const selectTodepositHistoryHead = (state) =>
   state.userPageData.todepositHistoryHead;
 
@@ -208,5 +224,8 @@ export const selectBankNameHead = (state) => state.userPageData.bankNameHead;
 export const selectBankAccHead = (state) => state.userPageData.bankAccHead;
 export const selectUpLineOrDownLine = (state) =>
   state.userPageData.upLineOrDownLine;
+
+export const selectTodepositHeadHistory = (state) =>
+  state.userPageData.todepositHeadHistory;
 
 export default AllUserPageSlice.reducer;

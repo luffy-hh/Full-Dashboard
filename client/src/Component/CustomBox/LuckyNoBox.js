@@ -25,13 +25,11 @@ function LuckyNoBox({ category, postFun, accessToken }) {
     </option>
   ));
 
-  const postData = { luckyNumber: luckyNo, subCatId: lukyCate };
+  const postData = { number: luckyNo, subCatId: lukyCate };
   console.log(postData);
 
   const clickHandle = () => {
-    dispatch(
-      postFun({ api: "luckyNumbers", postData, accessToken: accessToken })
-    );
+    dispatch(postFun({ api: "twoDLucky", postData, accessToken: accessToken }));
     dispatch(setModalLucky(false));
   };
 

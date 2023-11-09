@@ -6,6 +6,8 @@ const twodHead = [
   { text: "General", active: false, id: 3 },
 ];
 
+const luckyNoHead = ["No", "2D Number", "Category", "Status", "Date"];
+
 const twoDReportHead = [
   { text: "Table 1", active: true, id: 1 },
   { text: "Table 2", active: false, id: 2 },
@@ -48,12 +50,14 @@ const table3ExpData = [
 ];
 
 const allTwodData = { twodHead };
+
 const initialState = {
   allTwodData,
   twoDReportHead,
   table1Data,
   table1ExpData,
   table3ExpData,
+  luckyNoHead,
 
   lukyCate: "",
   lukyNo: "",
@@ -107,6 +111,7 @@ export const selecttable1ExpData = (state) => state.adminTwoD.table1ExpData;
 
 export const selectLuckyCate = (state) => state.adminTwoD.lukyCate;
 export const selectLuckyNo = (state) => state.adminTwoD.lukyNo;
+export const selectLuckyNoHead = (state) => state.adminTwoD.luckyNoHead;
 
 export default adminTwodSlice.reducer;
 

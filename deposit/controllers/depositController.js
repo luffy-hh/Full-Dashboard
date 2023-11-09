@@ -96,9 +96,7 @@ exports.getDepositUpline = catchAsync(async (req, res) => {
     res.status(200).json({
       status: "Success",
       length: allDepositUpline.length,
-      data: {
-        allDepositUpline: allDepositUpline,
-      },
+      data: { allDepositUpline: allDepositUpline },
     });
   } catch (err) {
     res.status(400).json({
@@ -122,9 +120,7 @@ exports.getDepositDownline = catchAsync(async (req, res) => {
     res.status(200).json({
       status: "Success",
       length: allDepositDownline.length,
-      data: {
-        allDepositDownline: allDepositDownline,
-      },
+      data: { allDepositDownline: allDepositDownline },
     });
   } catch (err) {
     res.status(400).json({
@@ -219,6 +215,7 @@ exports.updateDepositMasterToAdmin = catchAsync(async (req, res) => {
     const userObj = await User.findById(userId);
     const depositId = req.params.id;
     const mainUnit = await MainUnit.find();
+    const depositOrgObj = await Deposit.findById(depositId);
 
     if (reqBody.status === "Confirm") {
       const depositObj = await Deposit.findByIdAndUpdate(
@@ -249,12 +246,20 @@ exports.updateDepositMasterToAdmin = catchAsync(async (req, res) => {
           },
           { new: true }
         );
+        const updatedUser = await User.findByIdAndUpdate(
+          depositOrgObj.fromId,
+          {
+            $inc: { unit: reqBody.unit },
+          },
+          { new: true }
+        );
 
         res.status(200).json({
           status: "Success",
           data: {
             depositObj,
             updateMainUnit,
+            updatedUser,
           },
         });
       } else {

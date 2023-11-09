@@ -1,7 +1,10 @@
 import React from "react";
 
 import styles from "../ToDeposit.module.css";
-import { setShowDepoForm } from "../../../Feactures/bankApiSlice";
+import {
+  setShowDepoForm,
+  setBankNameIds,
+} from "../../../Feactures/bankApiSlice";
 import { useDispatch } from "react-redux";
 import { BiSolidCopy } from "react-icons/bi";
 
@@ -15,12 +18,14 @@ function BankAccountList({ bankAccList }) {
     alert("Succeeded Copy Account No");
   };
 
-  const handleAccount = () => {
-    dispatch(setShowDepoForm(true));
+  const handleAccount = (id) => {
+    console.log(id);
+    dispatch(setShowDepoForm());
+    dispatch(setBankNameIds(id));
   };
 
   const list = bankAccList?.map((d) => (
-    <li key={d._id} onClick={() => handleAccount()}>
+    <li key={d._id} onClick={() => handleAccount(d.bankNameData._id)}>
       <div className={`btn_hover ${styles.bank_acc_btn}`}>
         <span> {d.bankNameData.bankName}</span>
         <span> {d.account_name}</span>

@@ -17,6 +17,8 @@ import { useSelector } from "react-redux";
 import BankAcc from "../Pages/DepositeAccount/BankAcc";
 import AgentWithdrawHistory from "../Pages/ToWithdrawPage/AgentWithdraw/AgentWithdrawHistory";
 import AgentWithdrawRequest from "../Pages/ToWithdrawPage/AgentWithdraw/AgentWithdrawRequest";
+import AgentDepositRequest from "../Pages/ToDepositPage/AgentDeposit/AgentDepositRequest";
+import AgentDepositHistory from "../Pages/ToDepositPage/AgentDeposit/AgentDepositHistory";
 const agent = [
   { id: 0, path: "/agent", route: <Home /> },
   { id: 3, path: "allusers", route: <AllUsers /> },
@@ -26,8 +28,8 @@ const agent = [
   { id: 20, path: "user-report", route: <UserReport /> },
   { id: 21, path: "user-report/:userId", route: <UserReportTable /> },
   { id: 22, path: "todeposit", route: <ToDeposit /> },
-  { id: 23, path: "todeposit-request", route: <ToDepositRequests /> },
-  { id: 25, path: "todeposit-history", route: <ToDepositHistory /> },
+  { id: 23, path: "todeposit-request", route: <AgentDepositRequest /> },
+  { id: 25, path: "todeposit-history", route: <AgentDepositHistory /> },
   { id: 24, path: "towithdraw", route: <ToWithdraw /> },
   { id: 26, path: "towithdraw-request", route: <AgentWithdrawRequest /> },
   { id: 27, path: "towithdraw-history", route: <AgentWithdrawHistory /> },

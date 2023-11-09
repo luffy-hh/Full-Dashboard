@@ -5,7 +5,10 @@ exports.getHistory = async (req, res, next) => {
   try {
     const loginUserRole = req.user.role;
     if (loginUserRole === "Admin") {
-      const allHistories = await TwoDSaleHistories.find({});
+      const allHistories = await TwoDSaleHistories.find({})
+        .populate("subCatId")
+        .populate("userId");
+
       if (allHistories.length > 0) {
         res.status(200).json({
           status: "succeed",
