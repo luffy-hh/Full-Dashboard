@@ -8,13 +8,8 @@ const masterData = [
   { id: "comfirmpassword", label: "Comfrim Password", state: 4 },
 ];
 
-const userDetailCom = [
-  { com: "20%", za: "20", name: "MgMa" },
-  { com: "30%", za: "20", name: "Hla Hla" },
-];
-
 const userDetailComHead = [
-  "Agent List",
+  "SubGameCategory",
   "Commasion",
   "MainCompensation",
   "Edit",
@@ -124,6 +119,16 @@ const bankAccHead = [
   "Action",
 ];
 
+const donwlineUserHead = [
+  "No",
+  "Name",
+  "UserId",
+  "Balance",
+
+  "Status",
+  "Last Login Time",
+];
+
 const upLineOrDownLine = [
   { text: "UpLine", id: 1, from: "From DownLine" },
   { text: "DownLine", id: 2, from: "From UpLine" },
@@ -153,7 +158,7 @@ const initialState = {
   user: userData,
   admin: adminData,
   agent: agentData,
-  userDetailCom,
+  donwlineUserHead,
   userDetailComHead,
   todepositHistoryHead,
   todepositHeadReq,
@@ -204,7 +209,6 @@ export const commisionTable = (state) =>
 
 export const userTabledata = (state) => state.userPageData.userTable;
 
-export const selectUserDetailCom = (state) => state.userPageData.userDetailCom;
 export const selectUserDetailComHead = (state) =>
   state.userPageData.userDetailComHead;
 
@@ -227,5 +231,7 @@ export const selectUpLineOrDownLine = (state) =>
 
 export const selectTodepositHeadHistory = (state) =>
   state.userPageData.todepositHeadHistory;
+export const selectDonwlineUserHead = (state) =>
+  state.userPageData.donwlineUserHead;
 
 export default AllUserPageSlice.reducer;

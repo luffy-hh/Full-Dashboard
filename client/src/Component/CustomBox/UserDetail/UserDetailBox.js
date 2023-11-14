@@ -5,7 +5,10 @@ import {
   setModalUserDetail,
   selectUserDetailData,
 } from "../../../Feactures/modalSlice";
-import { selectlogInData } from "../../../Feactures/apiSlice";
+import {
+  selectAgentLayoutShow,
+  selectlogInData,
+} from "../../../Feactures/apiSlice";
 import {
   selectMasterGameCat,
   selectMasterSubGameCat,
@@ -22,6 +25,7 @@ import UserDetailCom from "./UserDetailCom";
 function UserDetailBox({ isMaster }) {
   const modal = useSelector(selectModalUserDetail);
   const userDetailData = useSelector(selectUserDetailData);
+  const masterSubGameCat = useSelector(selectMasterSubGameCat);
   const dispatch = useDispatch();
   const checkMaster = isMaster === "master";
   const masterGameCat = useSelector(selectMasterGameCat);
@@ -52,6 +56,9 @@ function UserDetailBox({ isMaster }) {
   }, []);
 
   const masterGameArr = masterGameCat?.data.allGameCatStatus.categoryStatus;
+  const masterSubGameArr =
+    masterSubGameCat?.data.allGameSubCatStatus.subCatStatus;
+  console.log(masterSubGameArr && masterSubGameArr);
 
   return (
     <>
@@ -99,7 +106,7 @@ function UserDetailBox({ isMaster }) {
             masterId={userDetailData._id}
           />
 
-          <UserDetailCom />
+          <UserDetailCom gameSubGame={masterSubGameArr} />
         </section>
         <UserSubGameBox masterId={userDetailData._id} />
       </Modal>

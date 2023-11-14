@@ -110,13 +110,13 @@ exports.signup = catchAsync(async (req, res, next) => {
         const obj = await LotteryFilterSetting.findOne({
           subCategoryId: subCat._id,
         });
-        console.log('lotterysetting:',obj, obj?.mainCompensation)
+        console.log("lotterysetting:", obj, obj?.mainCompensation);
         if (obj) {
           const newObj = {
             ...subCat.toObject(),
             mainCompensation: obj.mainCompensation,
           };
-          console.log(newObj)
+          console.log(newObj);
           subCatObjArr.push(newObj);
         }
       }
@@ -176,6 +176,7 @@ exports.signup = catchAsync(async (req, res, next) => {
 });
 
 exports.login = catchAsync(async (req, res, next) => {
+  console.log(req.body);
   try {
     const { userId, password } = req.body;
     const currentMyanmarTime = moment().format("YYYY-MM-DD HH:mm:ss");
@@ -213,7 +214,7 @@ exports.login = catchAsync(async (req, res, next) => {
   } catch (err) {
     res.status(404).json({
       status: "fail",
-      message: err,
+      message: err.stack,
     });
   }
 });
@@ -494,6 +495,28 @@ exports.getAllUserByRole = async (req, res) => {
       status: "success",
       data: {
         resObj,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "failed",
+      message: err,
+    });
+  }
+};
+
+// Downline User
+exports.downlineUser = async (req, res) => {
+  try {
+    const userObj = await User.findById(req.params.id);
+    const userId = userObj.userId;
+
+    const downlineObj = await User.find({ uplineId: userId });
+    res.status(200).json({
+      status: "success",
+      length: downlineObj.length,
+      data: {
+        downlineObj,
       },
     });
   } catch (err) {

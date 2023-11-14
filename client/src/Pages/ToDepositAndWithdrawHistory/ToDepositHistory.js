@@ -74,7 +74,7 @@ function ToDepositHistory({
       <td>{d.amount}</td>
 
       <td>{d.fromId.userId} </td>
-      <td>{d.bankName_id.bankName}</td>
+      <td>{d?.bankName_id?.bankName}</td>
       <td>{d.toId.name}</td>
       <td>{d.toId.userId}</td>
       <td>{d.transferCode}</td>

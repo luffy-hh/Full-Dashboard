@@ -21,6 +21,8 @@ import MasterWithdrawHistory from "../Pages/ToWithdrawPage/MasterWithdraw/Master
 import MasterWithdrawRequest from "../Pages/ToWithdrawPage/MasterWithdraw/MasterWithdrawRequest";
 import MasterDepositHistory from "../Pages/ToDepositPage/MasterDeposit/MasterDepositHistory";
 import MasterDepositRequest from "../Pages/ToDepositPage/MasterDeposit/MasterDepositRequest";
+import DownLineAgent from "../Component/DownLineUser/DownLineAgent";
+import DownLineAllUser from "../Component/DownLineUser/DownLineAllUser";
 const master = [
   { id: 0, path: "/master", route: <Home /> },
   { id: 3, path: "allusers", route: <AllUsers /> },
@@ -35,6 +37,8 @@ const master = [
   { id: 24, path: "towithdraw", route: <ToWithdraw /> },
   { id: 26, path: "towithdraw-request", route: <MasterWithdrawRequest /> },
   { id: 27, path: "towithdraw-history", route: <MasterWithdrawHistory /> },
+  { id: 31, path: "down_line_agent", route: <DownLineAgent /> },
+  { id: 32, path: "down_line_agent/:userId", route: <DownLineAllUser /> },
 ];
 
 function MasterLayout() {

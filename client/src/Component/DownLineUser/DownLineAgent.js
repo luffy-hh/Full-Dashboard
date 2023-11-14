@@ -1,53 +1,50 @@
 import React, { useEffect } from "react";
 
-import NormalButton from "../../Component/NormalButton";
-import Container from "../../Component/Container";
-import AllusersTable from "../Component/AllusersTable";
 import { useSelector, useDispatch } from "react-redux";
+
+import {
+  selectDownLineMaster,
+  fetGetDownLineMaster,
+  selectlogInData,
+} from "../../Feactures/apiSlice";
 import {
   selectDepositeAmount,
-  setAmount,
   selectWithDrawAmount,
-  setWithDrawAmount,
   selectCondition,
-  setDescr,
   selectDescr,
+  setWithDrawAmount,
+  setAmount,
+  setDescr,
 } from "../../Feactures/modalSlice";
-import CustomBox from "../../Component/CustomBox/CustomBox";
-import {
-  selectAgent,
-  agentFun,
-  selectAgentQuery,
-  setAgentQuery,
-} from "../../Feactures/ShowHideSlice";
+import { setAgentQuery, selectAgentQuery } from "../../Feactures/ShowHideSlice";
 import { selectAgentData } from "../../Feactures/AllUserPageSlice";
-import AllCreateForm from "../Component/AllCreateForm";
-import styles from "../AllUsersPage/AllUsers.module.css";
-import Searchbar from "../../Component/Searchbar/Searchbar";
 import {
-  selectAgents,
-  selectAgentStatus,
-  fetchGetAllAgent,
-  selectlogInData,
-  fetchPostAllAgent,
-  selectPostAgent,
-  selectPostAgentStatus,
-  selectForMasterList,
   selectPostTransfer,
-  fetchGetAllMaster,
+  fetchPostAllAgent,
+  selectPostAgentStatus,
+  selectPostAgent,
 } from "../../Feactures/apiSlice";
+import NormalButton from "../NormalButton";
+import {
+  selectShowDownLineMaster,
+  setDownLineMaster,
+} from "../../Feactures/ShowHideSlice";
+import CustomBox from "../CustomBox/CustomBox";
 
-function AllAgentsPage() {
+import Container from "../Container";
+import Searchbar from "../Searchbar/Searchbar";
+import AllusersTable from "../../Pages/Component/AllusersTable";
+import styles from "../../Pages/AllUsersPage/AllUsers.module.css";
+import AllDownLineCreateForm from "../../Pages/Component/AllDownLineCreateForm";
+
+function DownLineAgent() {
   const dispatch = useDispatch();
-  const agent = useSelector(selectAgent);
-  const agentData = useSelector(selectAgentData);
-  const agentQuery = useSelector(selectAgentQuery);
-  const agents = useSelector(selectAgents);
-  const agentStatus = useSelector(selectAgentStatus);
+  const downLineMaster = useSelector(selectDownLineMaster);
   const logInData = useSelector(selectlogInData);
-  const postAgent = useSelector(selectPostAgent);
-  const masterList = useSelector(selectForMasterList);
   const accessToken = logInData.token;
+  const userId = logInData.user._id;
+  const showDownLineMaster = useSelector(selectShowDownLineMaster);
+  const postAgent = useSelector(selectPostAgent);
 
   const depositeAmount = useSelector(selectDepositeAmount);
   const withDrawAmount = useSelector(selectWithDrawAmount);
@@ -55,15 +52,16 @@ function AllAgentsPage() {
   const postTransfer = useSelector(selectPostTransfer);
   const descr = useSelector(selectDescr);
 
-  useEffect(() => {
-    dispatch(fetchGetAllAgent({ api: "user/Agent", accessToken }));
-  }, [postAgent, postTransfer]);
+  const agentData = useSelector(selectAgentData);
+  const agentQuery = useSelector(selectAgentQuery);
 
   useEffect(() => {
-    dispatch(fetchGetAllMaster({ api: "user/Master", accessToken }));
-  }, []);
+    dispatch(
+      fetGetDownLineMaster({ api: `downlineUser/${userId}`, accessToken })
+    );
+  }, [postTransfer, postAgent]);
 
-  const agentArr = agents?.data.userAll;
+  const agentList = downLineMaster?.data.downlineObj;
 
   const modalComponent =
     condition === "DEP" ? (
@@ -85,43 +83,42 @@ function AllAgentsPage() {
     );
 
   return (
-    <div className={styles.allusesPage}>
-      {agent ? (
+    <div className="page_style" style={{ overflow: "hidden" }}>
+      {showDownLineMaster ? (
         <div>
           <div className={`box_shadow ${styles.allusers_container}`}>
             <Container className={styles.allusers_heading}>
               <p>Member</p>
               <Searchbar query={agentQuery} setQuery={setAgentQuery} />
               <NormalButton
-                onClick={() => dispatch(agentFun())}
+                onClick={() => dispatch(setDownLineMaster())}
                 className={styles.add_new_btn}
               >
                 Create Agent
               </NormalButton>
             </Container>
           </div>
-          {agentStatus === "succeeded" && (
+          {agentList && (
             <AllusersTable
               data="agent"
-              dataArr={agentArr}
+              dataArr={agentList}
               query={agentQuery}
-              downLine={false}
+              downLine={true}
             />
           )}
           {modalComponent}
         </div>
       ) : (
-        <AllCreateForm
-          hideFun={agentFun}
+        <AllDownLineCreateForm
+          hideFun={setDownLineMaster}
           data={agentData}
           role="Agent"
           postFun={fetchPostAllAgent}
           status={selectPostAgentStatus}
-          upLineData={masterList}
         />
       )}
     </div>
   );
 }
 
-export default AllAgentsPage;
+export default DownLineAgent;

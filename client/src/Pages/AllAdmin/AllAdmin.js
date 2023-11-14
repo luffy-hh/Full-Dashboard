@@ -49,7 +49,12 @@ function AllAdmin() {
             </Container>
           </div>
           {succeeded && (
-            <AllusersTable data="admin" dataArr={adminArr} query="" />
+            <AllusersTable
+              data="admin"
+              dataArr={adminArr}
+              query=""
+              downLine={false}
+            />
           )}
         </div>
       ) : (

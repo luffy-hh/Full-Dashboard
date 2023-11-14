@@ -1,22 +1,19 @@
 import React from "react";
 import Tables from "../../Tables";
-import {
-  selectUserDetailCom,
-  selectUserDetailComHead,
-} from "../../../Feactures/AllUserPageSlice";
+import { selectUserDetailComHead } from "../../../Feactures/AllUserPageSlice";
 import { useSelector } from "react-redux";
 import styles from "../CustomBox.module.css";
 import NormalButton from "../../NormalButton";
 
-function UserDetailCom() {
+function UserDetailCom({ gameSubGame }) {
   const userDetailHead = useSelector(selectUserDetailComHead);
-  const userDetailCom = useSelector(selectUserDetailCom);
 
-  const tbodyList = userDetailCom.map((d) => (
+  const tbodyList = gameSubGame?.map((d) => (
     <tr className="table_d_tbody_tr">
-      <td> {d.name}</td>
-      <td>{d.com}</td>
-      <td>{d.za}</td>
+      <td> {d.subCatName}</td>
+
+      <td>{d.comession}</td>
+      <td>{d.mainCompensation}</td>
       <td>
         <NormalButton className={`btn_hover ${styles.user_com_edit}`}>
           Edit
@@ -27,7 +24,9 @@ function UserDetailCom() {
   return (
     <section className={styles.user_com}>
       <h3>Commasion</h3>
-      <div className="table_d_container hide_scroll">
+      <div
+        className={`table_d_container hide_scroll ${styles.userDetailTable}`}
+      >
         <Tables thead={userDetailHead} tbody={tbodyList} />
       </div>
     </section>

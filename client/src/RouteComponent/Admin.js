@@ -40,8 +40,10 @@ const admin = [
   { id: 2, path: "unithistory", route: <UnitHistory /> },
   { id: 3, path: "allusers", route: <AllUsers /> },
   { id: 4, path: "allagents", route: <AllAgentsPage /> },
+
   { id: 5, path: "allaffiliateagents", route: <AllAffiliateAgents /> },
   { id: 6, path: "allmaster", route: <AllMaster /> },
+
   { id: 7, path: "alladmins", route: <AllAdmin /> },
   { id: 8, path: "lottery2d", route: <TwoDPage /> },
   { id: 9, path: "luckynumber", route: <LuckyNumber /> },

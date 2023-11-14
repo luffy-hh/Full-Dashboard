@@ -1,0 +1,12 @@
+.title {
+  padding: 2.4rem;
+  background-color: var(--text-white);
+  margin-bottom: 3.2rem;
+}
+.downline_table table thead tr th:first-child {
+  min-width: 8rem;
+}
+
+.downline_table table thead tr th {
+  min-width: 20rem;
+}

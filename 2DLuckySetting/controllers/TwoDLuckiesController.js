@@ -59,6 +59,7 @@ exports.createTwoDLucky = async (req, res, next) => {
           const obj = {
             userId: play.userId,
             playedAmount: play?.amount,
+            number: play.number,
             returnedAmount,
             date: currentDay,
           };

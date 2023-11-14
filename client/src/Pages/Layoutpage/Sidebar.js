@@ -295,13 +295,8 @@ const masterData = [
     show: false,
     subNav: [
       {
-        title: "All Users",
-        route: "allusers",
-        icon: <BsPeople />,
-      },
-      {
         title: "All Agents",
-        route: "allagents",
+        route: "down_line_agent",
         icon: <BsPeople />,
       },
     ],
@@ -396,12 +391,7 @@ const agentData = [
     subNav: [
       {
         title: "All Users",
-        route: "allusers",
-        icon: <BsPeople />,
-      },
-      {
-        title: "All Agents",
-        route: "allagents",
+        route: "down_line_user",
         icon: <BsPeople />,
       },
     ],

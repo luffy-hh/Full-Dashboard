@@ -97,6 +97,7 @@ function AllMaster() {
               data="master"
               dataArr={allmasterArr}
               query={masterQuery}
+              downLine={false}
             />
           )}
 

@@ -41,3 +41,12 @@
   color: var(--blue);
   border-bottom: 2px solid var(--blue-light);
 }
+.show_more_btn {
+  padding: 8px 1.6rem;
+
+  font-size: 1.6rem;
+  background-color: var(--blue-light);
+}
+.show_more_btn a {
+  color: var(--text-white);
+}

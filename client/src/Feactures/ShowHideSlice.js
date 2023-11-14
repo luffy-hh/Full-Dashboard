@@ -26,6 +26,8 @@ const initialState = {
   searchQuery,
   depositeRule,
   showDropDown: false,
+  downLineMaster: true,
+  downLineAgent: true,
 };
 
 const ShowHideSlice = createSlice({
@@ -44,6 +46,15 @@ const ShowHideSlice = createSlice({
     //for master page state
     masterFun: (state) => {
       state.master = !state.master;
+    },
+
+    //for downline master
+    setDownLineMaster: (state) => {
+      state.downLineMaster = !state.downLineMaster;
+    },
+
+    setDownLineAgent: (state) => {
+      state.downLineAgent = !state.downLineAgent;
     },
 
     //for user form show
@@ -118,6 +129,8 @@ export const {
   setTextTwo,
   agentFun,
   setShowDropDown,
+  setDownLineAgent,
+  setDownLineMaster,
 } = ShowHideSlice.actions;
 
 export const nestBool = (state) => state.shows.show;
@@ -126,6 +139,9 @@ export const masterBool = (state) => state.shows.master;
 export const userBool = (state) => state.shows.user;
 export const adminBool = (state) => state.shows.admin;
 export const selectAgent = (state) => state.shows.agent;
+
+export const selectShowDwonLineAgent = (state) => state.shows.downLineAgent;
+export const selectShowDownLineMaster = (state) => state.shows.downLineMaster;
 
 //serachbar state
 export const selectAllUserQuery = (state) =>

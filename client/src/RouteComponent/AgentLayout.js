@@ -19,6 +19,7 @@ import AgentWithdrawHistory from "../Pages/ToWithdrawPage/AgentWithdraw/AgentWit
 import AgentWithdrawRequest from "../Pages/ToWithdrawPage/AgentWithdraw/AgentWithdrawRequest";
 import AgentDepositRequest from "../Pages/ToDepositPage/AgentDeposit/AgentDepositRequest";
 import AgentDepositHistory from "../Pages/ToDepositPage/AgentDeposit/AgentDepositHistory";
+import DownLineUser from "../Component/DownLineUser/DownLineUser";
 const agent = [
   { id: 0, path: "/agent", route: <Home /> },
   { id: 3, path: "allusers", route: <AllUsers /> },
@@ -33,6 +34,7 @@ const agent = [
   { id: 24, path: "towithdraw", route: <ToWithdraw /> },
   { id: 26, path: "towithdraw-request", route: <AgentWithdrawRequest /> },
   { id: 27, path: "towithdraw-history", route: <AgentWithdrawHistory /> },
+  { id: 29, path: "down_line_user", route: <DownLineUser /> },
 ];
 
 function AgentLayout() {

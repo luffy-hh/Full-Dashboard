@@ -1,34 +1,54 @@
 import React from "react";
+import { selectTable1Data } from "../../Feactures/adminTwodSlice";
+import Tables from "../../Component/Tables";
+import { useSelector } from "react-redux";
+import { selectLuckyWinner } from "../../Feactures/twoDapiSlice";
+import styles from "./ThaiTwoD12am.module.css";
 
-function ThaiTwoDTable({ tableData, tableExpData }) {
-  const tableHeadList = tableData.map((d, i) => (
-    <tr key={i}>
-      <th>{d.no}</th>
-      <th style={{ minWidth: "10rem" }}>{d.twoD}</th>
-      <th>{d.bet}</th>
-      <th>{d.total}</th>
-      <th>{d.success}</th>
-      <th>{d.profit}</th>
-    </tr>
-  ));
+function ThaiTwoDTable({ mainData, text }) {
+  const table1Data = useSelector(selectTable1Data);
+  const luckyWinner = useSelector(selectLuckyWinner);
 
-  const tablelist = tableExpData.map((d, i) => (
-    <tr className="table_d_tbody_tr" key={i}>
-      <td>{d.no}</td>
-      <td>{d.twoD}</td>
-      <td>{d.bet}</td>
-      <td>{d.total}</td>
-      <td>{d.success}</td>
-      <td>{d.profit}</td>
-    </tr>
-  ));
+  const foundObjects = mainData?.map((target) => {
+    const foundData = luckyWinner.data?.filter(
+      (data) => data.number === target.number
+    );
 
+    console.log("working", foundData);
+
+    if (foundData) {
+      return { ...target, foundData };
+    } // or handle the case when no match is found
+  });
+
+  console.log(foundObjects);
+
+  const list = foundObjects
+    ?.sort((a, b) => a.number - b.number)
+    .map((d, i) => (
+      <tr className="table_d_tbody_tr" key={d.number}>
+        <td>{i + 1}</td>
+        <td>{d.number}</td>
+        <td>{d.count}</td>
+        <td>{d.amount}</td>
+        <td>
+          {d.foundData?.reduce((acc, curr) => acc + curr.returnedAmount, 0)}
+        </td>
+        <td>
+          {d.foundData.length >= 1
+            ? d.foundData?.reduce((acc, curr) => acc + curr.returnedAmount, 0) -
+              d.amount
+            : `${-d.amount}`}
+        </td>
+      </tr>
+    ));
   return (
-    <div className="table_d_container hide_scroll">
-      <table className="table_d">
-        <thead>{tableHeadList}</thead>
-        <tbody>{tablelist}</tbody>
-      </table>
+    <div className={`table_d_container hide_scroll ${styles.table1}`}>
+      {text === "Choose 2D Category" ? (
+        ""
+      ) : (
+        <Tables thead={table1Data} tbody={list} />
+      )}
     </div>
   );
 }

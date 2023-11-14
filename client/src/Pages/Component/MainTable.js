@@ -9,8 +9,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 import styles from "./AllusersTable.module.css";
 import UserDetailBox from "../../Component/CustomBox/UserDetail/UserDetailBox";
+import NormalButton from "../../Component/NormalButton";
+import { Link } from "react-router-dom";
 
-function MainTable({ data, dataArr, query }) {
+function MainTable({ data, dataArr, query, downLine }) {
   const admin = data === "admin";
   // const datas = admin ? alladminData : allusersData;
   const dispatch = useDispatch();
@@ -44,6 +46,13 @@ function MainTable({ data, dataArr, query }) {
           </td>
           <td>{d.userId}</td>
           {admin ? null : <td>{d.unit}</td>}
+          {downLine && (
+            <td>
+              <NormalButton className={`btn_hover ${styles.show_more_btn}`}>
+                <Link to={`${d._id}`}> Show More </Link>
+              </NormalButton>
+            </td>
+          )}
           {<AllusersFun data={data} toId={d._id} user={d} />}
           <td>{d.status ? "Active" : "InActive"}</td>
           <td className="table_d_lastTime">
@@ -62,7 +71,8 @@ function MainTable({ data, dataArr, query }) {
             <th style={{ minWidth: "20rem" }}>Name</th>
             <th style={{ minWidth: "10rem" }}>UserID</th>
             {admin ? null : <th style={{ minWidth: "20rem" }}>Balance</th>}
-            <th>Function</th>
+            {downLine && <th style={{ minWidth: "25rem" }}>DownLine</th>}
+            <th style={{ minWidth: "50rem" }}>Function</th>
             <th style={{ minWidth: "15rem" }}>Status</th>
             <th style={{ minWidth: "20rem" }}>Last login Time</th>
           </tr>

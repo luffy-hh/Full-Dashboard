@@ -6,6 +6,9 @@ import {
   fetchDataWithToken,
 } from "../app/api";
 
+import allTwoDNumber from "../asset/2d.json";
+console.log(allTwoDNumber);
+
 export const fetGetAllTwoDNo = createAsyncThunk(
   "data/fetGetAllTwoDNo",
   async ({ api, accessToken }) => {
@@ -70,6 +73,14 @@ export const fetGetLuckNo = createAsyncThunk(
   }
 );
 
+export const fetGetLuckyWinner = createAsyncThunk(
+  "data/fetGetLuckyWinner",
+  async ({ api, accessToken }) => {
+    const data = await fetchDataWithToken(api, accessToken);
+    return data;
+  }
+);
+
 export const postLuckyNo = createAsyncThunk(
   "data/postLuckyNo",
   async ({ api, postData, accessToken }) => {
@@ -104,6 +115,7 @@ export const fetPatchMasterSubGameCat = createAsyncThunk(
 );
 
 const initialState = {
+  allTwoDNumber,
   allTwoDNo: {},
   allTwoDNoStatus: "idle",
   allTwoDNoError: null,
@@ -134,6 +146,10 @@ const initialState = {
   luckyNoDataStatus: "idle",
   luckyNoDataError: null,
 
+  luckyWinner: null,
+  luckyWinnerStatus: "idle",
+  luckyWinnerError: null,
+
   postLuckyNoData: {},
   postLuckyNoDataStatus: "idle",
   postLuckyNoDataError: null,
@@ -148,6 +164,9 @@ const initialState = {
   patchMasterSubGameCat: {},
   patchMasterSubGameCatStatus: "idle",
   patchMasterSubGameCatError: null,
+
+  twoDReportHistory: null,
+  twoDTable1History: null,
 };
 const twoDapiSlice = createSlice({
   name: "twoDapi",
@@ -181,6 +200,12 @@ const twoDapiSlice = createSlice({
     closeSupGameCat: (state, action) => {
       state.fliterSupGameArr = state.fliterSupGameArr.map((d) =>
         d._id === action.payload ? { ...d, status: !d.status } : d
+      );
+    },
+
+    setFilterTwoDReportHistroy: (state, action) => {
+      state.twoDReportHistory = state.luckyNo.data.filter(
+        (d) => d.subCatId.catName_id === action.payload
       );
     },
   },
@@ -271,18 +296,30 @@ const twoDapiSlice = createSlice({
         state.filterEditGameError = action.error.message;
       })
 
-      //get luckyy NO history category  this will be go 2D report page table3
+      //get luckyy NO history category  this will be go 2D report page table3**************
       .addCase(fetGetLuckyNoHistory.pending, (state) => {
         state.luckyNoStatus = "loading";
       })
       .addCase(fetGetLuckyNoHistory.fulfilled, (state, action) => {
         state.luckyNoStatus = "succeeded";
         state.luckyNo = action.payload;
-        console.log(state.getSupGameCat);
       })
       .addCase(fetGetLuckyNoHistory.rejected, (state, action) => {
         state.luckyNoStatus = "failed";
         state.luckyNoError = action.error.message;
+      })
+
+      //get luckyy NO history category  this will be go 2D report page table3**************
+      .addCase(fetGetLuckyWinner.pending, (state) => {
+        state.luckyWinnerStatus = "loading";
+      })
+      .addCase(fetGetLuckyWinner.fulfilled, (state, action) => {
+        state.luckyWinnerStatus = "succeeded";
+        state.luckyWinner = action.payload;
+      })
+      .addCase(fetGetLuckyWinner.rejected, (state, action) => {
+        state.luckyWinnerStatus = "failed";
+        state.luckyWinnerError = action.error.message;
       })
 
       //Get lucky No for lucky number  page
@@ -362,6 +399,7 @@ export const {
   setClickSubName,
   setFilterSupGameArr,
   setFilterTwoDArr,
+  setFilterTwoDReportHistroy,
 } = twoDapiSlice.actions;
 
 export const selectAllTwoDNo = (state) => state.twoDapi.allTwoDNo;
@@ -399,5 +437,11 @@ export const selectLuckyNoData = (state) => state.twoDapi.luckyNoData;
 
 export const selectPatchMasterGameCatCloseStatus = (state) =>
   state.twoDapi.patchMasterGameCatStatus;
+
+export const selectTwoDReportHistory = (state) =>
+  state.twoDapi.twoDReportHistory;
+export const selectTwoDTable1Histroy = (state) =>
+  state.twoDapi.twoDTable1History;
+export const selectLuckyWinner = (state) => state.twoDapi.luckyWinner;
 
 export default twoDapiSlice.reducer;

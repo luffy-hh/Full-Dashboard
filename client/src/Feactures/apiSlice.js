@@ -139,6 +139,29 @@ export const fetGetAllCounts = createAsyncThunk(
   }
 );
 
+export const fetGetDownLineMaster = createAsyncThunk(
+  "data/fetGetDownLineMaster",
+  async ({ api, accessToken }) => {
+    const data = await fetchDataWithToken(api, accessToken);
+    return data;
+  }
+);
+
+export const fetGetDownLineAgent = createAsyncThunk(
+  "data/fetGetDownLineAgent",
+  async ({ api, accessToken }) => {
+    const data = await fetchDataWithToken(api, accessToken);
+    return data;
+  }
+);
+
+export const fetGetDownLineUser = createAsyncThunk(
+  "data/fetGetDownLineUser",
+  async ({ api, accessToken }) => {
+    const data = await fetchDataWithToken(api, accessToken);
+    return data;
+  }
+);
 const initialState = {
   logInData: {},
   currentLoginUser: "",
@@ -168,12 +191,25 @@ const initialState = {
   postUser: {},
   postUserStatus: "idle",
   postUserError: null,
+
   master: null,
   masterStatus: "idle",
   masterError: null,
   agent: null,
   agentStatus: "idle",
   agentError: null,
+
+  downLineMaster: null,
+  downLineMasterStatus: "idle",
+  downLineMasterError: null,
+  downLineAgent: null,
+  downLineAgentStatus: "idle",
+  downLineAgentError: null,
+
+  downLineUser: null,
+  downLineUserStatus: "idle",
+  downLineUserError: null,
+
   postAgent: {},
   postAgentStatus: "idle",
   postAgentError: null,
@@ -339,10 +375,24 @@ const dataSlice = createSlice({
         state.masterStatus = "succeeded";
         state.master = action.payload;
         state.forMasterList = state.master.data.userAll;
+        console.log(state.master);
       })
       .addCase(fetchGetAllMaster.rejected, (state, action) => {
         state.masterStatus = "failed";
         state.masterError = action.error.message;
+      })
+
+      //for Downlineallmaster get method store mainUnit arr
+      .addCase(fetGetDownLineMaster.pending, (state) => {
+        state.downLineMasterStatus = "loading";
+      })
+      .addCase(fetGetDownLineMaster.fulfilled, (state, action) => {
+        state.downLineMasterStatus = "succeeded";
+        state.downLineMaster = action.payload;
+      })
+      .addCase(fetGetDownLineMaster.rejected, (state, action) => {
+        state.downLineMasterStatus = "failed";
+        state.downLineMasterError = action.error.message;
       })
 
       //for all agent get method store mainUnit arr
@@ -357,6 +407,32 @@ const dataSlice = createSlice({
       .addCase(fetchGetAllAgent.rejected, (state, action) => {
         state.agentStatus = "failed";
         state.agentError = action.error.message;
+      })
+
+      //for downline all agent get method store mainUnit arr
+      .addCase(fetGetDownLineAgent.pending, (state) => {
+        state.downLineAgentStatus = "loading";
+      })
+      .addCase(fetGetDownLineAgent.fulfilled, (state, action) => {
+        state.downLineAgentStatus = "succeeded";
+        state.downLineAgent = action.payload;
+      })
+      .addCase(fetGetDownLineAgent.rejected, (state, action) => {
+        state.downLineAgentStatus = "failed";
+        state.downLineAgentError = action.error.message;
+      })
+
+      //for downline all user
+      .addCase(fetGetDownLineUser.pending, (state) => {
+        state.downLineUserStatus = "loading";
+      })
+      .addCase(fetGetDownLineUser.fulfilled, (state, action) => {
+        state.downLineUserStatus = "succeeded";
+        state.downLineUser = action.payload;
+      })
+      .addCase(fetGetDownLineUser.rejected, (state, action) => {
+        state.downLineUserStatus = "failed";
+        state.downLineUserError = action.error.message;
       })
 
       //for alladmin get method store mainUnit arr
@@ -379,8 +455,11 @@ const dataSlice = createSlice({
       .addCase(postAlluser.fulfilled, (state, action) => {
         state.postUserStatus = "succeeded";
         state.postUser = action.payload;
-        state.modalCopyText = true;
-        state.copyId = state.postUser.data.user.userId;
+
+        if (state.postUser.status === "Success") {
+          state.modalCopyText = true;
+          state.copyId = state.postUser.data.user.userId;
+        }
       })
       .addCase(postAlluser.rejected, (state, action) => {
         state.postUserStatus = "failed";
@@ -395,8 +474,11 @@ const dataSlice = createSlice({
         state.postAgentStatus = "succeeded";
 
         state.postAgent = action.payload;
-        state.modalCopyText = true;
-        state.copyId = state.postAgent.data.user.userId;
+
+        if (state.postAgentStatus === "succeeded") {
+          state.modalCopyText = true;
+          state.copyId = state.postAgent?.data.user.userId;
+        }
       })
       .addCase(fetchPostAllAgent.rejected, (state, action) => {
         state.postAgentStatus = "failed";
@@ -565,5 +647,10 @@ export const selectCurrentUserId = (state) => state.data.currentUserId;
 
 export const selectModalCopyText = (state) => state.data.modalCopyText;
 export const selectCopyId = (state) => state.data.copyId;
+
+export const selectDownLineMaster = (state) => state.data.downLineMaster;
+export const selectDownLineAgent = (state) => state.data.downLineAgent;
+
+export const selectDownLineUser = (state) => state.data.downLineUser;
 
 export default dataSlice.reducer;

@@ -5,7 +5,7 @@ const userController = require("../../users/userControllers");
 const router = express.Router();
 
 router
-  .route("/")
+  .route("/:id")
   .get(
     userController.protect,
     userController.restrictTo("Admin"),

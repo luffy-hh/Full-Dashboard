@@ -1,56 +1,70 @@
-.two_d_head_container{
-    padding: 2.4rem 3.2rem;
-    background-color: var(--text-white);
+.two_d_head_container {
+  padding: 2.4rem 3.2rem;
+  background-color: var(--text-white);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.twoD_head{
-    display: flex;
-    list-style: none;
-    gap: 3.2rem;
-    align-items: center;
-  
+.twoD_head {
+  display: flex;
+  list-style: none;
+  gap: 3.2rem;
+  align-items: center;
 }
-.twoD_head li{
-    cursor: pointer;
-}
-
-.twoD_head_active{
-    padding: 8px 1.6rem;
-    background-color: var(--blue-light);
-    cursor: pointer;
-    border-radius: 5px;
-    color: var(--text-white);
-}
-.thai_table_2{
-    margin-top: 3.2rem;
-}
-.thai_table_2 p:first-child{
-    color: var(--text-white);
-    background-color: var(--blue);
-    font-size: 2rem;
+.twoD_head li {
+  cursor: pointer;
 }
 
-.thai_no_table_total{
-    margin-top: 3.2rem;
+.twoD_head_active {
+  padding: 8px 1.6rem;
+  background-color: var(--blue-light);
+  cursor: pointer;
+  border-radius: 5px;
+  color: var(--text-white);
 }
-.thai_no_table2{
-    display: grid;
-    grid-template-columns: repeat(10,1fr);
-    border: 1px solid rgba(124, 172, 250, 0.5);
-    list-style: none;
+.thai_table_2 {
+  margin-top: 3.2rem;
 }
-.thai_no_table2 li{
-    border: 1px solid rgba(124, 172, 250, 0.5);
+.thai_table_2 p:first-child {
+  color: var(--text-white);
+  background-color: var(--blue);
+  font-size: 2rem;
 }
-.thai_no_table2 li{
-    display: flex;
-    justify-content: space-between;
-    padding: 1.2rem 5px;
-    align-items: center;
+
+.thai_no_table_total {
+  margin-top: 3.2rem;
 }
-.thai_no_table_no{
-    padding: 5px 1rem;
-    background-color: var(--green-light);
-    color: var(--text-white);
-    border-radius: 2px;
+.thai_no_table2 {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  border: 1px solid rgba(124, 172, 250, 0.5);
+  list-style: none;
+}
+.thai_no_table2 li {
+  border: 1px solid rgba(124, 172, 250, 0.5);
+}
+.thai_no_table2 li {
+  display: flex;
+  justify-content: space-between;
+  padding: 1.2rem 5px;
+  align-items: center;
+}
+.thai_no_table_no {
+  padding: 5px 1rem;
+  background-color: var(--green-light);
+  color: var(--text-white);
+  border-radius: 2px;
+}
+
+.table3_report table thead tr th:first-child,
+.table1 table thead tr th {
+  min-width: 8rem;
+}
+
+.table3_report table thead tr th:nth-child(2) {
+  min-width: 25rem;
+}
+.table3_report table thead tr th {
+  min-width: 20rem;
 }

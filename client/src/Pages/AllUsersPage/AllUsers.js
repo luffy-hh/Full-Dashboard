@@ -111,6 +111,7 @@ function AllUsers() {
               data="user"
               dataArr={allUserArr}
               query={allUserQuery}
+              downLine={false}
             />
           )}
 

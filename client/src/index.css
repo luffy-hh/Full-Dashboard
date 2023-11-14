@@ -120,6 +120,7 @@ a {
   background-color: var(--text-white);
   color: var(--text);
   border-radius: 8px;
+  user-select: none;
 }
 
 .table_d tbody tr td,

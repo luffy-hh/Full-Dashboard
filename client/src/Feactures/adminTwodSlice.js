@@ -15,38 +15,22 @@ const twoDReportHead = [
 ];
 
 const table1Data = [
-  {
-    no: "No",
-    twoD: "2D",
-    bet: "No of Bet",
-    total: "Total Amount",
-    success: "Amount of Success",
-    profit: "Porfit/Loss",
-  },
+  "No",
+  "2D",
+  "No of Bet",
+  "Total Amount",
+  "Amount of Success",
+  "Porfit/Loss",
 ];
 
-const table1ExpData = [
-  { no: 0, twoD: 20, bet: 5000, total: 50, success: 0, profit: 0 },
-  { no: 0, twoD: 50, bet: 7000, total: 80, success: 0, profit: 0 },
-];
-
-const table3ExpData = [
-  {
-    name: "gggwp",
-    amount: 3444,
-    totallBet: 4333,
-    winAmount: 344,
-    top: 233,
-    profit: 45555,
-  },
-  {
-    name: "hahah",
-    amount: 3444,
-    totallBet: 4333,
-    winAmount: 344,
-    top: 233,
-    profit: 45555,
-  },
+const table3Data = [
+  "No",
+  "ထိုးသားစာရင်း",
+  "အကြိမ်အရေအတွက်",
+  "ထိုးသည့်ပမာဏစုစုပေါင်း",
+  "နိုင်သည့်ပမာဏ",
+  "ဂုတ်စီး",
+  "အရှုံးအမြတ်",
 ];
 
 const allTwodData = { twodHead };
@@ -55,8 +39,7 @@ const initialState = {
   allTwodData,
   twoDReportHead,
   table1Data,
-  table1ExpData,
-  table3ExpData,
+  table3Data,
   luckyNoHead,
 
   lukyCate: "",
@@ -106,9 +89,7 @@ export const showTable1 = (state) => state.adminTwoD.twoDReportHead[0].active;
 export const showTable2 = (state) => state.adminTwoD.twoDReportHead[1].active;
 export const showTable3 = (state) => state.adminTwoD.twoDReportHead[2].active;
 export const selectTable1Data = (state) => state.adminTwoD.table1Data;
-export const selectTable3ExpData = (state) => state.adminTwoD.table3ExpData;
-export const selecttable1ExpData = (state) => state.adminTwoD.table1ExpData;
-
+export const selectTable3Data = (state) => state.adminTwoD.table3Data;
 export const selectLuckyCate = (state) => state.adminTwoD.lukyCate;
 export const selectLuckyNo = (state) => state.adminTwoD.lukyNo;
 export const selectLuckyNoHead = (state) => state.adminTwoD.luckyNoHead;

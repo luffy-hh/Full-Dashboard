@@ -3,12 +3,12 @@ const mongoose = require("mongoose");
 const lottery2dSaleSchema = new mongoose.Schema({
   subCatId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "gamesubcats", // Reference to the gamesubcats collection
+    ref: "GameSubCat", // Reference to the gamesubcats collection
     required: [true, "Please insert subCatId"],
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "users", // Reference to the users collection
+    ref: "User", // Reference to the users collection
     required: [true, "Please insert userId"],
   },
   number: {
