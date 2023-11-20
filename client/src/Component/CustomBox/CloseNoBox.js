@@ -13,7 +13,7 @@ import {
 import { selectlogInData } from "../../Feactures/apiSlice";
 import styles from "./CustomBox.module.css";
 
-function CloseNoBox() {
+function CloseNoBox({ api }) {
   const modalCloseNo = useSelector(selectModalCloseNo);
   const closeNoData = useSelector(selectCloseNoData);
   const logInData = useSelector(selectlogInData);
@@ -34,9 +34,7 @@ function CloseNoBox() {
   };
 
   const handleSubmit = () => {
-    dispatch(
-      fetPatchCloseNo({ api: "lottery2dthai12", patchData, accessToken })
-    );
+    dispatch(fetPatchCloseNo({ api: api, patchData, accessToken }));
 
     if (patchCloseNoStatus === "succeeded") {
       dispatch(setModalCloseNo(false));

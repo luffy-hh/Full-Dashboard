@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const LotteryFilterSetting = require("../models/lotteryFilterSettingModels");
 const moment = require("moment-timezone");
 const Thai2DNum12AM = require("../../lottery_nuumbers/models/thai2DNum12Models");
+const Thai2DNumEvening = require("../../lottery_nuumbers/models/thai2DNumEveningModel");
 
 // Create Lottery Setting
 exports.createLotterySetting = async (req, res) => {
@@ -65,10 +66,21 @@ exports.updateLotterySettingById = async (req, res) => {
         runValidators: true,
       }
     );
-
-    await Thai2DNum12AM.updateMany({
-      $set: { limitAmount: updateLotterySetting.limitAmount,lastAmount:updateLotterySetting.limitAmount },
-    });
+    if (updateLotterySetting.subCategoryName === "Thai 12:00 PM") {
+      await Thai2DNum12AM.updateMany({
+        $set: {
+          limitAmount: updateLotterySetting.limitAmount,
+          lastAmount: updateLotterySetting.limitAmount,
+        },
+      });
+    } else if (updateLotterySetting.subCategoryName === "Thai 4:30 PM") {
+      await Thai2DNumEvening.updateMany({
+        $set: {
+          limitAmount: updateLotterySetting.limitAmount,
+          lastAmount: updateLotterySetting.limitAmount,
+        },
+      });
+    }
 
     res.status(200).json({
       status: "Success",

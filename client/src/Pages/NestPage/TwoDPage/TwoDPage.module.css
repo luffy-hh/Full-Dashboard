@@ -114,6 +114,11 @@ table tr:nth-child(even) {
 .two_d_container h3 {
   font-size: 1.8rem;
 }
+.two_d_title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
 .two_d_head {
   margin-top: 4.8rem;

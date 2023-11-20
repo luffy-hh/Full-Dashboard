@@ -146,18 +146,6 @@ const sData = [
         title: "Lottery",
         route: "lotterysetting",
         icon: <BsFillDpadFill />,
-        iconRight: <BsChevronRight />,
-        show: false,
-        tribleNav: [
-          {
-            title: "2D",
-            route: "lottery2d",
-          },
-          {
-            title: "3D",
-            route: "lottery3d",
-          },
-        ],
       },
     ],
   },
@@ -215,7 +203,7 @@ const sData = [
     show: false,
     subNav: [
       {
-        title: "Thai 2D 12am",
+        title: "All 2D Report",
         route: "thai2D-12am",
         icon: <BsPeople />,
       },
@@ -381,6 +369,20 @@ const agentData = [
     route: "/agent",
     icon: <BsFillGridFill />,
     show: false,
+  },
+  {
+    title: "Unit",
+    route: null,
+    icon: <BsFillPersonLinesFill />,
+    iconRight: <BsChevronRight />,
+    show: false,
+    subNav: [
+      {
+        title: "Unit Transfer History",
+        route: "unithistoryTransfer",
+        icon: <BsFillPersonFill />,
+      },
+    ],
   },
   {
     title: "Users",

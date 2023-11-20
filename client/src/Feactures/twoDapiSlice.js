@@ -138,6 +138,7 @@ const initialState = {
   filterEditGameError: null,
   allTwoDArr: [],
   filterTwoDArr: [], //this is dymanic this array will be 3d or 2d depending on ID
+
   luckyNo: null,
   luckyNoStatus: "idle",
   luckyNoError: null,
@@ -167,6 +168,8 @@ const initialState = {
 
   twoDReportHistory: null,
   twoDTable1History: null,
+
+  subGameCatId: {},
 };
 const twoDapiSlice = createSlice({
   name: "twoDapi",
@@ -177,6 +180,10 @@ const twoDapiSlice = createSlice({
         state.getGameCat.data.allGameCategory.map((d) =>
           d.cat_name === action.payload ? { ...d, status: !d.status } : d
         );
+    },
+
+    setSubGameCatId: (state, action) => {
+      state.subGameCatId = { ...action.payload };
     },
 
     setClickSubName: (state, action) => {
@@ -205,7 +212,7 @@ const twoDapiSlice = createSlice({
 
     setFilterTwoDReportHistroy: (state, action) => {
       state.twoDReportHistory = state.luckyNo.data.filter(
-        (d) => d.subCatId.catName_id === action.payload
+        (d) => d.subCatId._id === action.payload
       );
     },
   },
@@ -400,6 +407,7 @@ export const {
   setFilterSupGameArr,
   setFilterTwoDArr,
   setFilterTwoDReportHistroy,
+  setSubGameCatId,
 } = twoDapiSlice.actions;
 
 export const selectAllTwoDNo = (state) => state.twoDapi.allTwoDNo;
@@ -443,5 +451,7 @@ export const selectTwoDReportHistory = (state) =>
 export const selectTwoDTable1Histroy = (state) =>
   state.twoDapi.twoDTable1History;
 export const selectLuckyWinner = (state) => state.twoDapi.luckyWinner;
+
+export const selectSubGameCatId = (state) => state.twoDapi.subGameCatId;
 
 export default twoDapiSlice.reducer;

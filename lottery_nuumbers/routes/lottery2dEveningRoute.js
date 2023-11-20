@@ -11,6 +11,6 @@ router
     restrictTo("Admin", "User"),
     lotteryEveningController.read2dAllNum
   )
-  .post(protect, restrictTo("Admin"), lotteryEveningController.update2DNum);
+  .patch(protect, restrictTo("Admin"), lotteryEveningController.update2DNum);
 
 module.exports = router;

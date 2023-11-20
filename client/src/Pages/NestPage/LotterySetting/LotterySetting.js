@@ -1,32 +1,39 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { PiNumberCircleTwoDuotone } from "react-icons/pi";
-import { PiNumberCircleThreeDuotone } from "react-icons/pi";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  fetGetSubGameCat,
+  selectSubGameCat,
+  setSubGameCatId,
+} from "../../../Feactures/twoDapiSlice";
+import { selectlogInData } from "../../../Feactures/apiSlice";
 import styles from "./LotterySetting.module.css";
 
-const lotteryData = [
-  {
-    id: 1,
-    text: "Thai 2D morning",
-    icon: <PiNumberCircleTwoDuotone />,
-    link: "admin/lottery2d",
-  },
-  { id: 2, text: "Thai 3D morning", icon: <PiNumberCircleThreeDuotone /> },
-];
-
 function LotterySetting() {
+  const dispatch = useDispatch();
+  const logInData = useSelector(selectlogInData);
+  const accessToken = logInData.token;
+  const subGameCat = useSelector(selectSubGameCat);
   const navigate = useNavigate();
-  const handleChange = (link) => {
-    navigate(`/${link}`);
+
+  useEffect(() => {
+    dispatch(fetGetSubGameCat({ api: "gamesubcat", accessToken }));
+  }, []);
+
+  const subGameCatArr = subGameCat?.data.allSubGameCat;
+
+  const handleChange = (id, index) => {
+    navigate(`/admin/lottery2d`);
+    dispatch(setSubGameCatId({ id: id, index: index }));
   };
-  const lottery = lotteryData.map((l) => (
+
+  const lottery = subGameCatArr?.map((l, index) => (
     <div
-      onClick={() => handleChange(l.link)}
-      key={l.id}
+      onClick={() => handleChange(l._id, index)}
+      key={l._id}
       className={`box_shadow ${styles.lottery_card}`}
     >
-      <span>{l.icon}</span>
-      <p>{l.text}</p>
+      <p>{l.subCatName}</p>
     </div>
   ));
   return (

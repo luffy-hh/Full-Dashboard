@@ -8,6 +8,9 @@ const lotterySettingSchema = new mongoose.Schema({
     ref: "GameSubCat",
     required: true,
   },
+  subCategoryName: {
+    type: String,
+  },
   startDate: {
     type: Date,
   },

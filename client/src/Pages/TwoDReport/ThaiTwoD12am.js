@@ -36,9 +36,12 @@ function ThaiTwoD12am() {
 
   useEffect(() => {
     dispatch(fetGetSubGameCat({ api: "gamesubcat", accessToken }));
+  }, []);
+
+  useEffect(() => {
     dispatch(fetGetLuckyNoHistory({ api: "thai2dsale", accessToken }));
     dispatch(fetGetLuckyWinner({ api: "luckyWinners", accessToken }));
-  }, []);
+  }, [selectText]);
 
   console.log(twoDReportHistory && twoDReportHistory);
   const resultDict = {};
@@ -67,7 +70,7 @@ function ThaiTwoD12am() {
     dispatch(setShowDropDown());
   };
   const list = gameSubCatArr?.map((d) => (
-    <li key={d._id} onClick={() => handleData(d.catName_id, d.subCatName)}>
+    <li key={d._id} onClick={() => handleData(d._id, d.subCatName)}>
       {d.subCatName}
     </li>
   ));

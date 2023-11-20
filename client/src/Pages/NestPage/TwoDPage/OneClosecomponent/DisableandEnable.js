@@ -35,7 +35,7 @@ import styles from "./OneClose.module.css";
 //   diableAndEnableNo.push(`${i}`);
 // }
 
-function DisableandEnable({ query }) {
+function DisableandEnable({ query, subObj }) {
   const dispatch = useDispatch();
   const allTwoDNo = useSelector(selectAllTwoDNo);
   const allTwoDNoStatus = useSelector(selectAllTwoDNoStatue);
@@ -45,8 +45,10 @@ function DisableandEnable({ query }) {
 
   const accessToken = logInData.token;
 
+  const apiArr = ["lottery2dthai12", "lottery2dThai4:30"];
+
   useEffect(() => {
-    dispatch(fetGetAllTwoDNo({ api: "lottery2dthai12", accessToken }));
+    dispatch(fetGetAllTwoDNo({ api: apiArr[subObj.index], accessToken }));
   }, [patchCloseNo]);
 
   const succeed = allTwoDNoStatus === "succeeded";
@@ -82,7 +84,7 @@ function DisableandEnable({ query }) {
 
   return (
     <>
-      {closeNoData && <CloseNoBox />}
+      {closeNoData && <CloseNoBox api={apiArr[subObj.index]} />}
       <div className={styles.disable_enable_box}>
         <p className={styles.enabel_box}>
           2 Digit (Disable and Enable selected Number)

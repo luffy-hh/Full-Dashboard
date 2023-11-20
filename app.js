@@ -48,7 +48,7 @@ const masterSubCatStatusAdmin = require("./category_status/routes/master_subcat_
 const agentCatStatusAdmin = require("./category_status/routes/agent_cat_status_routes");
 const agentSubCatStatusAdmin = require("./category_status/routes/agent_subcat_status_route");
 const agentSubCatComessionAdmin = require("./category_status/routes/agent_comession_rotes");
-
+const transferTo = require("./transition/routes/transitionsRoutes");
 //Lottery Numbers
 const lottery2dRoutes = require("./lottery_nuumbers/routes/lottery2dRoutes");
 const lottery2dEveningRoutes = require("./lottery_nuumbers/routes/lottery2dEveningRoute");
@@ -166,6 +166,8 @@ app.use("/api/v1/agentsubcatstatus", agentSubCatStatusAdmin);
 
 app.use("/api/v1/agentsubcatcomession", agentSubCatComessionAdmin);
 
+// Transition
+app.use("/api/v1/transferTo", transferTo);
 // app.get("*", (req, res) => {
 //   res.sendFile(path.join(__dirname, "static/index.html"));
 // });

@@ -37,6 +37,10 @@
 .show_lucky_no table thead tr th {
   min-width: 20rem;
 }
+
+.show_lucky_no table thead tr th:last-child {
+  min-width: 25rem;
+}
 .luky_date {
   display: flex;
   justify-content: center;

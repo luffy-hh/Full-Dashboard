@@ -17,6 +17,7 @@ router
   )
   .patch(
     userController.protect,
+    userController.restrictTo("Admin"),
     lotteryFilterSettingController.updateLotterySettingById
   );
 

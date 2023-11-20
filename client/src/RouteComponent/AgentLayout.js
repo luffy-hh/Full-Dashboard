@@ -8,11 +8,8 @@ import AllAgentsPage from "../Pages/AllAgentsPage/AllAgentsPage";
 import { Routes, Route } from "react-router-dom";
 import Login from "../Pages/Loginpage/Login";
 import { selectAgentLayoutShow } from "../Feactures/apiSlice";
-import ToDepositHistory from "../Pages/ToDepositAndWithdrawHistory/ToDepositHistory";
-
 import ToWithdraw from "../Pages/ToWithdrawPage/ToWithdraw";
 import ToDeposit from "../Pages/ToDepositPage/ToDeposit";
-import ToDepositRequests from "../Pages/ToDepositAndWithdrawHistory/ToDepositRequests";
 import { useSelector } from "react-redux";
 import BankAcc from "../Pages/DepositeAccount/BankAcc";
 import AgentWithdrawHistory from "../Pages/ToWithdrawPage/AgentWithdraw/AgentWithdrawHistory";
@@ -20,10 +17,12 @@ import AgentWithdrawRequest from "../Pages/ToWithdrawPage/AgentWithdraw/AgentWit
 import AgentDepositRequest from "../Pages/ToDepositPage/AgentDeposit/AgentDepositRequest";
 import AgentDepositHistory from "../Pages/ToDepositPage/AgentDeposit/AgentDepositHistory";
 import DownLineUser from "../Component/DownLineUser/DownLineUser";
+import AgentUnitHistroy from "../Pages/UnitHistoryTransfer/AgentUnitHistroy";
 const agent = [
   { id: 0, path: "/agent", route: <Home /> },
   { id: 3, path: "allusers", route: <AllUsers /> },
   { id: 4, path: "allagents", route: <AllAgentsPage /> },
+  { id: 5, path: "unithistoryTransfer", route: <AgentUnitHistroy /> },
 
   { id: 14, path: "bankAcc", route: <BankAcc /> },
   { id: 20, path: "user-report", route: <UserReport /> },

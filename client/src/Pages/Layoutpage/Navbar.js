@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
 import {
   selectMainUnitData,
-  selectMainUnitStatus,
+  fetGetUserProfile,
+  selectUserProfile,
   fetchMainUnit,
   selectlogInData,
+  selectPostTransferToUser,
 } from "../../Feactures/apiSlice";
 import { selectPostTransfer } from "../../Feactures/apiSlice";
 import styles from "./Navbar.module.css";
@@ -12,21 +14,28 @@ import { useSelector, useDispatch } from "react-redux";
 
 function Navbar() {
   const mainUnitData = useSelector(selectMainUnitData);
-  const mainUnitStatus = useSelector(selectMainUnitStatus);
   const logInData = useSelector(selectlogInData);
   const accessToken = logInData.token;
   const role = logInData.user.role;
   const userName = logInData.user.name;
-  const unit = logInData.user.unit;
+
   const postTransfer = useSelector(selectPostTransfer);
+  const postTransferToUser = useSelector(selectPostTransferToUser);
+  const userProfile = useSelector(selectUserProfile);
+
   // fetching main unit
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchMainUnit({ api: "mainunit", accessToken }));
-  }, [postTransfer]);
+    if (role === "Admin") {
+      dispatch(fetchMainUnit({ api: "mainunit", accessToken }));
+    } else {
+      dispatch(fetGetUserProfile({ api: "userProfile", accessToken }));
+    }
+  }, [postTransfer, postTransferToUser]);
 
   const amount = mainUnitData?.data.mainUnitValue.mainUnit;
+  const unit = userProfile?.data.currentUser.unit;
 
   const amountData = role === "Admin" ? amount : unit;
 

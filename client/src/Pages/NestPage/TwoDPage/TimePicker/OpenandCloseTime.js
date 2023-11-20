@@ -14,11 +14,12 @@ import {
 import { selectlogInData } from "../../../../Feactures/apiSlice";
 import { Switch } from "antd";
 import NormalButton from "../../../../Component/NormalButton";
-import moment from "moment-timezone";
 
 import { useSelector, useDispatch } from "react-redux";
 
-function OpenandCloseTime() {
+function OpenandCloseTime({ subObj }) {
+  const { id, index } = subObj;
+
   const [openTime, setOpenTime] = useState(new Date());
   const [closeTime, setCloseTime] = useState(new Date());
   const [limitAmount, setLimitAmount] = useState(0);
@@ -42,16 +43,17 @@ function OpenandCloseTime() {
   }, [patchLotterySetting]);
 
   const currentAmount =
-    getLotterySetting?.data.showLotterySettingAll[0].limitAmount;
+    getLotterySetting?.data.showLotterySettingAll[index].limitAmount;
 
   const currentMainCompo =
-    getLotterySetting?.data.showLotterySettingAll[0].mainCompensation;
+    getLotterySetting?.data.showLotterySettingAll[index].mainCompensation;
 
   const currentData =
-    getLotterySetting && getLotterySetting.data.showLotterySettingAll[0];
+    getLotterySetting && getLotterySetting.data.showLotterySettingAll[index];
 
   const lotterySettingId =
-    getLotterySetting && getLotterySetting.data.showLotterySettingAll[0]._id;
+    getLotterySetting &&
+    getLotterySetting.data.showLotterySettingAll[index]._id;
 
   const patchData = {
     // startDate: moment(openTime.toString()).tz("Asia/Yangon").format(),
@@ -62,7 +64,7 @@ function OpenandCloseTime() {
     limitAmount:
       Number(limitAmount) === 0 ? currentAmount : Number(limitAmount),
     status,
-    mainCompensation: Number(giveZa),
+    mainCompensation: Number(giveZa) === 0 ? currentMainCompo : Number(giveZa),
   };
 
   const handlePost = () => {

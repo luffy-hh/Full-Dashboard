@@ -90,22 +90,6 @@ exports.signup = catchAsync(async (req, res, next) => {
         categoryStatus: categoriesObjArr,
       });
 
-      // const subCatObjArr = await Promise.all(
-      //   GameSubCategories.map(async (subCat) => {
-      //     const obj = await LotteryFilterSetting.findOne({
-      //       subCategoryId: subCat._id.toString(),
-      //     });
-
-      //     if (obj) {
-      //       const newObj = {
-      //         ...subCat.toObject(),
-      //         mainCompensation: obj.mainCompensation,
-      //       };
-      //       return newObj;
-      //     }
-      //     return;
-      //   })
-      // );
       for (const subCat of GameSubCategories) {
         const obj = await LotteryFilterSetting.findOne({
           subCategoryId: subCat._id,
@@ -116,7 +100,7 @@ exports.signup = catchAsync(async (req, res, next) => {
             ...subCat.toObject(),
             mainCompensation: obj.mainCompensation,
           };
-          console.log(newObj);
+          // console.log(newObj);
           subCatObjArr.push(newObj);
         }
       }

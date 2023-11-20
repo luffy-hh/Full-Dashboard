@@ -8,7 +8,7 @@ import {
 import { useSelector } from "react-redux";
 import styles from "./OneClose.module.css";
 
-function OneClose() {
+function OneClose({ subObj }) {
   const twoDQuery = useSelector(selectTwoDQuery);
   return (
     <section className={styles.one_close_container}>
@@ -22,7 +22,7 @@ function OneClose() {
       <div className={styles.serach_bar_container}>
         <Searchbar query={twoDQuery} setQuery={setTwoDQuery} />
       </div>
-      <DisableandEnable query={twoDQuery} />
+      <DisableandEnable query={twoDQuery} subObj={subObj} />
     </section>
   );
 }

@@ -107,6 +107,14 @@ export const postTransferUnit = createAsyncThunk(
   }
 );
 
+export const postTransferToUser = createAsyncThunk(
+  "data/postTransferToUser",
+  async ({ api, postData, accessToken }) => {
+    const data = await postDataWithToken(api, postData, accessToken);
+    return data;
+  }
+);
+
 export const fetchGetAllUnitTransfer = createAsyncThunk(
   "data/fetchGetAllUnitTransfer",
   async ({ api, accessToken }) => {
@@ -162,6 +170,23 @@ export const fetGetDownLineUser = createAsyncThunk(
     return data;
   }
 );
+
+export const fetGetUserProfile = createAsyncThunk(
+  "data/fetGetUserProfile",
+  async ({ api, accessToken }) => {
+    const data = await fetchDataWithToken(api, accessToken);
+    return data;
+  }
+);
+
+export const fetGetAgentUnitHistroy = createAsyncThunk(
+  "data/fetGetAgentUnitHistroy",
+  async ({ api, accessToken }) => {
+    const data = await fetchDataWithToken(api, accessToken);
+    return data;
+  }
+);
+
 const initialState = {
   logInData: {},
   currentLoginUser: "",
@@ -216,9 +241,19 @@ const initialState = {
   postMaster: {},
   postMasterStatus: "idle",
   postMasterError: null,
+
   postTransfer: {},
   postTransferStatus: "idle",
   postTransferError: null,
+
+  postTransferToUser: {},
+  postTransferToUserStatus: "idle",
+  postTransferToUserError: null,
+
+  userProfile: null,
+  userProfileStatus: "idle",
+  userProfileError: null,
+
   getUnitTransfer: null,
   getUnitTransferStatus: "idle",
   getUnitTransferError: null,
@@ -236,6 +271,10 @@ const initialState = {
   allCountsError: null,
   modalCopyText: false,
   copyId: "",
+
+  agentUnitHistory: null,
+  agentUnitHistoryStatus: "idle",
+  agentUnitHistoryError: null,
 };
 
 const dataSlice = createSlice({
@@ -513,6 +552,21 @@ const dataSlice = createSlice({
         state.postTransferError = action.error.message;
         console.log(state.postTransferError);
       })
+
+      //for post unit transfer From Agent to User
+      .addCase(postTransferToUser.pending, (state) => {
+        state.postTransferToUserStatus = "loading";
+      })
+      .addCase(postTransferToUser.fulfilled, (state, action) => {
+        state.postTransferToUserStatus = "succeeded";
+        state.postTransferToUser = action.payload;
+        console.log(state.postTransferToUser);
+      })
+      .addCase(postTransferToUser.rejected, (state, action) => {
+        state.postTransferToUserStatus = "failed";
+        state.postTransferToUserError = action.error.message;
+      })
+
       //for get unit transfer admin to user method store mainUnit arr
       .addCase(fetchGetAllUnitTransfer.pending, (state) => {
         state.getUnitTransferStatus = "loading";
@@ -567,6 +621,33 @@ const dataSlice = createSlice({
       .addCase(fetGetAllCounts.rejected, (state, action) => {
         state.allCountsStatus = "failed";
         state.allCountsError = action.error.message;
+      })
+
+      //GET UserProfile
+      .addCase(fetGetUserProfile.pending, (state) => {
+        state.userProfileStatus = "loading";
+      })
+      .addCase(fetGetUserProfile.fulfilled, (state, action) => {
+        state.userProfileStatus = "succeeded";
+
+        state.userProfile = action.payload;
+      })
+      .addCase(fetGetUserProfile.rejected, (state, action) => {
+        state.userProfileStatus = "failed";
+        state.userProfileError = action.error.message;
+      })
+
+      //GET Agent Unit History
+      .addCase(fetGetAgentUnitHistroy.pending, (state) => {
+        state.agentUnitHistoryStatus = "loading";
+      })
+      .addCase(fetGetAgentUnitHistroy.fulfilled, (state, action) => {
+        state.agentUnitHistoryStatus = "succeeded";
+        state.agentUnitHistory = action.payload;
+      })
+      .addCase(fetGetAgentUnitHistroy.rejected, (state, action) => {
+        state.agentUnitHistoryStatus = "failed";
+        state.agentUnitHistoryError = action.error.message;
       });
   },
 });
@@ -652,5 +733,12 @@ export const selectDownLineMaster = (state) => state.data.downLineMaster;
 export const selectDownLineAgent = (state) => state.data.downLineAgent;
 
 export const selectDownLineUser = (state) => state.data.downLineUser;
+export const selectPostTransferToUser = (state) =>
+  state.data.postTransferToUser;
+export const selectPostTransferToUserStatus = (state) =>
+  state.data.postTransferToUserStatus;
+
+export const selectUserProfile = (state) => state.data.userProfile;
+export const selectAgentUnitHistory = (state) => state.data.agentUnitHistory;
 
 export default dataSlice.reducer;

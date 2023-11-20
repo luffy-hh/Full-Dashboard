@@ -27,6 +27,7 @@ import {
   selectPostUserStatus,
   postAlluser,
   selectPostUser,
+  selectPostTransferToUser,
 } from "../../Feactures/apiSlice";
 
 import NormalButton from "../NormalButton";
@@ -50,6 +51,7 @@ function DownLineUser() {
   const userId = logInData.user._id;
   const showDownLineAgent = useSelector(selectShowDwonLineAgent);
   const postUser = useSelector(selectPostUser);
+  const postTransferToUser = useSelector(selectPostTransferToUser);
 
   const depositeAmount = useSelector(selectDepositeAmount);
   const withDrawAmount = useSelector(selectWithDrawAmount);
@@ -64,7 +66,7 @@ function DownLineUser() {
     dispatch(
       fetGetDownLineAgent({ api: `downlineUser/${userId}`, accessToken })
     );
-  }, [postTransfer, postUser]);
+  }, [postTransfer, postUser, postTransferToUser]);
 
   const userList = downLineAgent?.data.downlineObj;
 

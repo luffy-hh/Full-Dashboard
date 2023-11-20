@@ -9,5 +9,4 @@ router
   .route("/")
   .post(userController.protect, Sale2DController.create2DsaleDoc)
   .get(userController.protect, SaleHistoryController.getHistory);
-
 module.exports = router;

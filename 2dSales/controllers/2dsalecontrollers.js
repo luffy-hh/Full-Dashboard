@@ -7,6 +7,7 @@ const SaleHistories = require("../models/2dSaleHistoriesModel");
 const MainUnit = require("../../mainUnit/models/mainUnitModel");
 const moment = require("moment-timezone");
 const mongoose = require("mongoose");
+const Thai2DNumEvening = require("../../lottery_nuumbers/models/thai2DNumEveningModel");
 
 exports.create2DsaleDoc = async (req, res) => {
   try {
@@ -14,12 +15,17 @@ exports.create2DsaleDoc = async (req, res) => {
     const mainUnitId = mainUnitArr[0]._id;
     const currentSubCat = await GameSubCat.findById(req.body.subCatId);
     console.log(currentSubCat);
+    let All2DDependingOnSubCat = [];
+    if (currentSubCat.subCatName === "Thai 12:00 PM") {
+      All2DDependingOnSubCat = await Thai2DNum12AM.find({});
+    } else if (currentSubCat.subCatName === "Thai 4:30 PM") {
+      All2DDependingOnSubCat = await Thai2DNumEvening.find({});
+    }
     const selectedSetting = await lotterySetting.findOne({
       subCategoryId: currentSubCat._id,
     });
     console.log(selectedSetting);
     const mainUnitObj = await MainUnit.findById(mainUnitId);
-    const All2D12AM = await Thai2DNum12AM.find({});
     const currentTime = new Date();
     console.log(selectedSetting.startDate, selectedSetting.endDate);
     const startDate = new Date(selectedSetting.startDate);
@@ -34,7 +40,7 @@ exports.create2DsaleDoc = async (req, res) => {
     );
 
     const user = await User.findById(req.user.id);
-      console.log(user)
+    console.log(user);
     if (
       startDate.getTime() <= currentTime.getTime() &&
       currentTime.getTime() < endDate.getTime()
@@ -42,13 +48,17 @@ exports.create2DsaleDoc = async (req, res) => {
       const reqBody = req.body;
       // make an array for playableNumber
       const playedNumbers = reqBody.saleNumberArr.filter((sale) => {
-        let curNum = All2D12AM.find((num) => num.number === sale.number);
+        let curNum = All2DDependingOnSubCat.find(
+          (num) => num.number === sale.number
+        );
         return sale.amount <= curNum.lastAmount && sale;
       });
 
       // make an array for unplayableNumber
       const unPlayAbleNumbers = reqBody.saleNumberArr.filter((sale) => {
-        let curNum = All2D12AM.find((num) => num.number === sale.number);
+        let curNum = All2DDependingOnSubCat.find(
+          (num) => num.number === sale.number
+        );
         return sale.amount > curNum.lastAmount && sale;
       });
       // console.log(playedNumbers, unPlayAbleNumbers);
@@ -68,9 +78,9 @@ exports.create2DsaleDoc = async (req, res) => {
           mainUnit: mainUnitObj.mainUnit + totalSaleAmount,
         });
         const updatedUser = await User.findByIdAndUpdate(user.id, {
-          $inc:{unit: -totalSaleAmount},
+          $inc: { unit: -totalSaleAmount },
         });
-        console.log(updatedUser)
+        console.log(updatedUser);
         // Loop through the saleNumberArr and create Thai2DSale documents
         for (const sale of playedNumbers) {
           let number = sale.number;

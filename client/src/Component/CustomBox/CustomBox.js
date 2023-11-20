@@ -7,6 +7,8 @@ import {
   selectPostTransferStatus,
   postTransferUnit,
   selectlogInData,
+  selectPostTransferToUserStatus,
+  postTransferToUser,
 } from "../../Feactures/apiSlice";
 
 import styles from "./CustomBox.module.css";
@@ -17,7 +19,11 @@ function CustomBox({ title, amount, setAmount, descr, setDescr }) {
   const logInData = useSelector(selectlogInData);
   const dispatch = useDispatch();
   const postTransferStatus = useSelector(selectPostTransferStatus);
+
+  const postTransferToUserStatus = useSelector(selectPostTransferToUserStatus);
   const accessToken = logInData.token;
+  const currentUser = logInData.user.role;
+  console.log(currentUser);
   const condition = useSelector(selectCondition);
 
   const postDataDep = {
@@ -34,17 +40,29 @@ function CustomBox({ title, amount, setAmount, descr, setDescr }) {
     description: descr,
   };
 
-  const clickHandle = () => {
+  const postDataAgentDep = {
+    toId,
+    amount: Number(amount),
+    desc: descr,
+  };
+
+  const postDataAgentWith = {
+    toId,
+    amount: Number(amount),
+    desc: descr,
+  };
+
+  const addUnitFun = (api, postFun, status, postDataDep, postDataWith) => {
     if (condition === "DEP") {
       dispatch(
-        postTransferUnit({
-          api: "mainunitstransfer",
+        postFun({
+          api: api,
           postData: postDataDep,
           accessToken,
         })
       );
 
-      if (postTransferStatus) {
+      if (status) {
         dispatch(setModalShow(false));
         dispatch(setAmount(""));
         dispatch(setDescr(""));
@@ -52,16 +70,36 @@ function CustomBox({ title, amount, setAmount, descr, setDescr }) {
     } else {
       dispatch(
         postTransferUnit({
-          api: "mainunitstransfer",
+          api: api,
           postData: postDataWith,
           accessToken,
         })
       );
-      if (postTransferStatus) {
+      if (status) {
         dispatch(setModalShow(false));
         dispatch(setAmount(""));
         dispatch(setDescr(""));
       }
+    }
+  };
+
+  const clickHandle = () => {
+    if (currentUser === "Admin") {
+      addUnitFun(
+        "mainunitstransfer",
+        postTransferUnit,
+        postTransferStatus,
+        postDataDep,
+        postDataWith
+      );
+    } else if (currentUser === "Agent") {
+      addUnitFun(
+        "transferTo",
+        postTransferToUser,
+        postTransferToUserStatus,
+        postDataAgentDep,
+        postDataAgentWith
+      );
     }
   };
   return (

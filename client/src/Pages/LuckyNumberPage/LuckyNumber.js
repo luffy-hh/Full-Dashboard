@@ -51,8 +51,10 @@ function LuckyNumber() {
       <td>{d.subCatId.subCatName}</td>
       <td>{"Complete"}</td>
       <td className={styles.luky_date}>
-        <span>{new Date(d.date).toLocaleDateString()}</span>
-        <span>{"12:00 AM"}</span>
+        <span style={{ marginRight: "1.2rem" }}>
+          {new Date(d.date).toLocaleDateString()}
+        </span>
+        <span>{new Date(d.date).toLocaleTimeString()}</span>
       </td>
     </tr>
   ));
