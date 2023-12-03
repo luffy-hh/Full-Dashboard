@@ -11,6 +11,9 @@ const xss = require("xss-clean");
 const app = express();
 app.use(cors());
 
+// Attach Socket.io to the Express app
+app.io = require("socket.io")();
+
 const userRouter = require("./users/userRoutes");
 const userProfileRouter = require("./users/userProfileRoute");
 const downlineUser = require("./users/downlineUserRoutes");
@@ -48,7 +51,15 @@ const masterSubCatStatusAdmin = require("./category_status/routes/master_subcat_
 const agentCatStatusAdmin = require("./category_status/routes/agent_cat_status_routes");
 const agentSubCatStatusAdmin = require("./category_status/routes/agent_subcat_status_route");
 const agentSubCatComessionAdmin = require("./category_status/routes/agent_comession_rotes");
+
+// Shan
+const shanRoll = require("./shan/shan_role/routes");
+const shanRing = require("./shan/shan_ring/routes");
+
+// Transfer and Change
 const transferTo = require("./transition/routes/transitionsRoutes");
+
+const changeTo = require("./transition/routes/changeUnitRoutes");
 //Lottery Numbers
 const lottery2dRoutes = require("./lottery_nuumbers/routes/lottery2dRoutes");
 const lottery2dEveningRoutes = require("./lottery_nuumbers/routes/lottery2dEveningRoute");
@@ -94,7 +105,7 @@ app.use((req, res, next) => {
   next();
 });
 
-//Lottery - For Admin
+//Lottery - For Admin and User
 app.use("/api/v1/lottery2dthai12", lottery2dRoutes);
 app.use("/api/v1/lottery2dThai4:30", lottery2dEveningRoutes);
 
@@ -155,7 +166,7 @@ app.use("/api/v1/thai2dsale", lottery2dsaleRoute);
 // 2D lucky
 app.use("/api/v1/twoDLucky", twoDLuckyRoute);
 // 2D winners
-app.use("/api/v1/luckyWinners", luckyWinnerRoute);
+app.use("/api/v1/thai2DLuckyWinners", luckyWinnerRoute);
 
 //Game Cat and Sub Cat Status
 app.use("/api/v1/mastercatstatus", masterCatStatusAdmin);
@@ -166,8 +177,14 @@ app.use("/api/v1/agentsubcatstatus", agentSubCatStatusAdmin);
 
 app.use("/api/v1/agentsubcatcomession", agentSubCatComessionAdmin);
 
+// // Shan API
+app.use("/api/v1/shanroll", shanRoll);
+app.use("/api/v1/adminshanring", shanRing);
+
 // Transition
 app.use("/api/v1/transferTo", transferTo);
+
+app.use("/api/v1/changeTo", changeTo);
 // app.get("*", (req, res) => {
 //   res.sendFile(path.join(__dirname, "static/index.html"));
 // });

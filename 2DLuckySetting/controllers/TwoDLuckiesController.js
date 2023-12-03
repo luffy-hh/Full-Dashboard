@@ -6,6 +6,8 @@ const Thai2DSale = require("../../2dSales/models/2dsalemodels");
 const Thai2DNum12Am = require("../../lottery_nuumbers/models/thai2DNum12Models");
 const MainUnit = require("../../mainUnit/models/mainUnitModel");
 const { createLuckyWinner } = require("./LuckyWinnerController");
+const GameSubCat = require("../../gameCategories/models/gameSubCatModels")
+const Thai2DNumEvening = require('../../lottery_nuumbers/models/thai2DNumEveningModel')
 
 exports.createTwoDLucky = async (req, res, next) => {
   try {
@@ -17,8 +19,18 @@ exports.createTwoDLucky = async (req, res, next) => {
       date: currentDay,
     });
     console.log(newTwoDLucky);
-    if (newTwoDLucky) {
-      const docs = await Thai2DNum12Am.find({});
+    const currentSubCategory = await GameSubCat.findById(newTwoDLucky.subCatId)
+    let docs =[]
+    if (currentSubCategory.subCatName === "Thai 12:00 PM") {
+       docs = await Thai2DNum12Am.find({});
+      for (let doc of docs) {
+        doc.lastAmount = doc.limitAmount;
+        doc.totalAmount = 0;
+        doc.percentage = 0;
+        await doc.save();
+      }
+    }else if(currentSubCategory.subCatName === "Thai 4:30 PM"){
+       docs = await Thai2DNumEvening.find({});
       for (let doc of docs) {
         doc.lastAmount = doc.limitAmount;
         doc.totalAmount = 0;
@@ -29,9 +41,7 @@ exports.createTwoDLucky = async (req, res, next) => {
     const dailyPlayedObjOfEachSubCatArr = await Thai2DSale.find({
       subCatId: newTwoDLucky?.subCatId,
     });
-    const dailyPlayedObjDeletedSubCatArr = await Thai2DSale.deleteMany({
-      subCatId: newTwoDLucky?.subCatId,
-    });
+
     console.log(dailyPlayedObjOfEachSubCatArr);
     let winnerListArr = [];
     if (dailyPlayedObjOfEachSubCatArr.length > 0) {

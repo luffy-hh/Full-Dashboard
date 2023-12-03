@@ -3,7 +3,10 @@ const LotteryFilterSetting = require("../models/lotteryFilterSettingModels");
 const moment = require("moment-timezone");
 const Thai2DNum12AM = require("../../lottery_nuumbers/models/thai2DNum12Models");
 const Thai2DNumEvening = require("../../lottery_nuumbers/models/thai2DNumEveningModel");
-
+const MasterSubCatStatus = require("../../category_status/models/master_subCat_status_models");
+const GameSubCat = require("../../gameCategories/models/gameSubCatModels");
+const Thai3DNum = require("../../lottery_nuumbers/models/thai3DNumModels");
+const Thai2DSale = require("../../2dSales/models/2dsalemodels");
 // Create Lottery Setting
 exports.createLotterySetting = async (req, res) => {
   try {
@@ -11,10 +14,31 @@ exports.createLotterySetting = async (req, res) => {
     const currentTime = new Date();
     reqBody.startDate = currentTime;
     reqBody.endDate = currentTime;
-
+    const subCat = await GameSubCat.findById(req.body.subCategoryId);
     const newLotterySetting = await LotteryFilterSetting.create({
       ...reqBody,
+      subCategoryName: subCat.subCatName,
     });
+
+    let newSubCatStatus = {
+      ...subCat,
+      mainCompensation: newLotterySetting.mainCompensation,
+    };
+    async function updateDocuments() {
+      try {
+        await MasterSubCatStatus.updateMany(
+          {},
+          { $push: { subCatStatus: newSubCatStatus } }
+        );
+        console.log("New Sub cat status added successfully.");
+      } catch (error) {
+        console.log(
+          "There is an error in adding new sub cat status.",
+          error?.stack
+        );
+      }
+    }
+    updateDocuments();
 
     console.log(newLotterySetting);
 
@@ -66,6 +90,9 @@ exports.updateLotterySettingById = async (req, res) => {
         runValidators: true,
       }
     );
+    const dailyPlayedObjDeletedSubCatArr = await Thai2DSale.deleteMany({
+      subCatId: id,
+    });
     if (updateLotterySetting.subCategoryName === "Thai 12:00 PM") {
       await Thai2DNum12AM.updateMany({
         $set: {
@@ -80,8 +107,14 @@ exports.updateLotterySettingById = async (req, res) => {
           lastAmount: updateLotterySetting.limitAmount,
         },
       });
+    } else if (updateLotterySetting.subCategoryName === "Thai 3d Lottery") {
+      await Thai3DNum.updateMany({
+        $set: {
+          limitAmount: updateLotterySetting.limitAmount,
+          lastAmount: updateLotterySetting.limitAmount,
+        },
+      });
     }
-
     res.status(200).json({
       status: "Success",
       data: {

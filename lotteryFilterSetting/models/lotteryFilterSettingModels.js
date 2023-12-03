@@ -10,6 +10,7 @@ const lotterySettingSchema = new mongoose.Schema({
   },
   subCategoryName: {
     type: String,
+    required: true,
   },
   startDate: {
     type: Date,
