@@ -9,7 +9,7 @@ const jwt = require("jsonwebtoken");
 // Create Shan Play Ring From Admin
 exports.createShanRingFromAdmin = catchAsync(async (req, res) => {
   try {
-    const { userId, ring_name, shan_roll, description, status, game_round } = {
+    const { userId, ring_name, shan_roll, description } = {
       ...req.body,
     };
 

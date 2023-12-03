@@ -3,7 +3,8 @@
 }
 
 .dropdown {
-  display: flex;
+  display: flex !important;
+  flex-direction: row !important;
   justify-content: space-between;
   align-items: center;
   background-color: var(--blue-light);
@@ -11,7 +12,6 @@
   border-radius: 5px;
   color: var(--text-white);
   font-size: 1.6rem;
-
   user-select: none;
 }
 .dropdown_container ul {

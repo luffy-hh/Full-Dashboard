@@ -40,7 +40,7 @@ function ThaiTwoD12am() {
 
   useEffect(() => {
     dispatch(fetGetLuckyNoHistory({ api: "thai2dsale", accessToken }));
-    dispatch(fetGetLuckyWinner({ api: "luckyWinners", accessToken }));
+    dispatch(fetGetLuckyWinner({ api: "thai2DLuckyWinners", accessToken }));
   }, [selectText]);
 
   console.log(twoDReportHistory && twoDReportHistory);

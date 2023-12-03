@@ -66,7 +66,7 @@ function ToWithdrawRequests({ api, editApi, getUpLineFun, upLineData }) {
           <td>{d.amount}</td>
 
           <td>{d.fromId.userId} </td>
-          <td>{d.bankNameId.bankName}</td>
+          <td>{d?.bankNameId?.bankName}</td>
           <td>{d.recAccName}</td>
           <td>{d.recAcc}</td>
 

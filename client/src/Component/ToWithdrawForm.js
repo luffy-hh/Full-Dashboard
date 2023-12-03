@@ -39,7 +39,6 @@ function ToWithdrawForm() {
 
   const list = bankNameArr?.map((d) => (
     <li key={d._id} onClick={() => handleName(d._id, d.bankName)}>
-      {" "}
       {d.bankName}{" "}
     </li>
   ));

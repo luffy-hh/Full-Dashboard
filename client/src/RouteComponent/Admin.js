@@ -33,6 +33,8 @@ import AdminWithdrawHistory from "../Pages/ToWithdrawPage/AdminWithdraw/AdminWit
 import AdminWithdrawRequest from "../Pages/ToWithdrawPage/AdminWithdraw/AdminWithdrawRequest";
 import AdminDepositHistory from "../Pages/ToDepositPage/AdminDeposit/AdminDepositHistory";
 import AdminDepositRequest from "../Pages/ToDepositPage/AdminDeposit/AdminDepositRequest";
+import CreateRoll from "../Pages/ShanCard/CreateRoll/CreateRoll";
+import CreateTable from "../Pages/ShanCard/CreateTable/CreateTable";
 
 const admin = [
   { id: 0, path: "/admin", route: <Home /> },
@@ -65,6 +67,8 @@ const admin = [
 
   { id: 26, path: "towithdraw-request", route: <AdminWithdrawRequest /> },
   { id: 27, path: "towithdraw-history", route: <AdminWithdrawHistory /> },
+  { id: 39, path: "create-roll", route: <CreateRoll /> },
+  { id: 40, path: "create-table", route: <CreateTable /> },
 ];
 
 function Admin() {

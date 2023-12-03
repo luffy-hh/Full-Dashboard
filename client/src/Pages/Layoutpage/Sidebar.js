@@ -9,12 +9,10 @@ import { BsFillPersonFill } from "react-icons/bs";
 import { BsChevronRight } from "react-icons/bs";
 import { BsChevronDown } from "react-icons/bs";
 import { BsPeople } from "react-icons/bs";
-import { BsLifePreserver } from "react-icons/bs";
-import { BsFillDiscFill } from "react-icons/bs";
-import { BsFillDice5Fill } from "react-icons/bs";
+
 import { BsFillDpadFill } from "react-icons/bs";
-import { CgGames } from "react-icons/cg";
-import { BsCardImage } from "react-icons/bs";
+
+import { GiPokerHand } from "react-icons/gi";
 import { AiFillSetting } from "react-icons/ai";
 import { PiNumberSquareSevenBold } from "react-icons/pi";
 import { RiBankCardFill } from "react-icons/ri";
@@ -96,36 +94,21 @@ const sData = [
     ],
   },
   {
-    title: "Games",
+    title: "Shan Card",
     route: null,
-    icon: <CgGames />,
+    icon: <GiPokerHand />,
     iconRight: <BsChevronRight />,
     show: false,
     subNav: [
       {
-        title: "Slot",
-        route: "slot",
-        icon: <BsFillDiscFill />,
+        title: "Create Roll",
+        route: "create-roll",
+        icon: <GiPokerHand />,
       },
       {
-        title: "Casino",
-        route: "casino",
-        icon: <BsFillDice5Fill />,
-      },
-      {
-        title: "Lottery",
-        route: "lottery",
-        icon: <BsFillDpadFill />,
-      },
-      {
-        title: "Sport",
-        route: "sport",
-        icon: <BsLifePreserver />,
-      },
-      {
-        title: "Card",
-        route: "card",
-        icon: <BsCardImage />,
+        title: "Create Table",
+        route: "create-table",
+        icon: <GiPokerHand />,
       },
     ],
   },

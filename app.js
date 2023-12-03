@@ -50,7 +50,7 @@ const masterCatStatusAdmin = require("./category_status/routes/master_cat_status
 const masterSubCatStatusAdmin = require("./category_status/routes/master_subcat_status_routes");
 const agentCatStatusAdmin = require("./category_status/routes/agent_cat_status_routes");
 const agentSubCatStatusAdmin = require("./category_status/routes/agent_subcat_status_route");
-const agentSubCatComessionAdmin = require("./category_status/routes/agent_comession_rotes");
+//const agentSubCatComessionAdmin = require("./category_status/routes/agent_comession_rotes");
 
 // Shan
 const shanRoll = require("./shan/shan_role/routes");
@@ -175,7 +175,7 @@ app.use("/api/v1/mastersubcatstatus", masterSubCatStatusAdmin);
 app.use("/api/v1/agentcatstatus", agentCatStatusAdmin);
 app.use("/api/v1/agentsubcatstatus", agentSubCatStatusAdmin);
 
-app.use("/api/v1/agentsubcatcomession", agentSubCatComessionAdmin);
+//app.use("/api/v1/agentsubcatcomession", agentSubCatComessionAdmin);
 
 // // Shan API
 app.use("/api/v1/shanroll", shanRoll);
