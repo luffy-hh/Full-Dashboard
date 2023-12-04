@@ -51,7 +51,10 @@ const masterSubCatStatusAdmin = require("./category_status/routes/master_subcat_
 const agentCatStatusAdmin = require("./category_status/routes/agent_cat_status_routes");
 const agentSubCatStatusAdmin = require("./category_status/routes/agent_subcat_status_route");
 //const agentSubCatComessionAdmin = require("./category_status/routes/agent_comession_rotes");
-
+//3D
+const thai3DRouter = require("./3DSales&History/routes/3DSaleRoutes");
+const thai3DLuckyNumRouter = require("./3dLucky&Winner/routes/3DLuckyNumRoutes");
+const thai3DLuckyWinnerRouter = require("./3dLucky&Winner/routes/3DLuckyWinnerRoutes");
 // Shan
 const shanRoll = require("./shan/shan_role/routes");
 const shanRing = require("./shan/shan_ring/routes");
@@ -185,6 +188,11 @@ app.use("/api/v1/adminshanring", shanRing);
 app.use("/api/v1/transferTo", transferTo);
 
 app.use("/api/v1/changeTo", changeTo);
+
+// 3D APIS
+app.use("/api/v1/thai3D", thai3DRouter);
+app.use("/api/v1/thai3DLuckyNum", thai3DLuckyNumRouter);
+app.use("/api/v1/thai3DLuckyWinner", thai3DLuckyWinnerRouter);
 // app.get("*", (req, res) => {
 //   res.sendFile(path.join(__dirname, "static/index.html"));
 // });
