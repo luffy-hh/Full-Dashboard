@@ -28,10 +28,7 @@ function ShanGame() {
   const [result, setResult] = useState(false);
   const [show, setShow] = useState(false);
   const [cardHandling, setCardHandling] = useState(false);
-
-  const handleOpen = () => {
-    setShowAns(true);
-  };
+  const [btnShow, setBtnShow] = useState(false);
 
   const handleResult = () => {
     setShowAns(true);
@@ -46,17 +43,14 @@ function ShanGame() {
             cardHandling={cardHandling}
             counts={mainObj}
             setCardHandling={setCardHandling}
+            setBtnShow={setBtnShow}
           />
         )}
 
         {shanGameRing && <AllPlayer showAns={showAns} data={mainObj} />}
-        {showAns ? (
+        {btnShow && (
           <NormalButton className={styles.open} onClick={handleResult}>
             show result
-          </NormalButton>
-        ) : (
-          <NormalButton className={styles.open} onClick={handleOpen}>
-            Open
           </NormalButton>
         )}
       </div>

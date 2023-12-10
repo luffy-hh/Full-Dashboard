@@ -47,7 +47,7 @@ exports.createShanRingFromAdmin = catchAsync(async (req, res) => {
 
     // Create a new ShanPlayRing document
     const newPlayRing = new ShanPlayRing({
-      ring_name,
+      ring_name,banker_amount:shanRollObj.banker_amount,
       shan_roll,
       description,
       players: [{ userId: user_id, game_unit: playerGameUnit }],

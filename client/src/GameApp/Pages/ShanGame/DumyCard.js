@@ -86,7 +86,7 @@ const cardPosition = new Map([
   ],
 ]);
 
-function DumyCard({ cardHandling, counts, setCardHandling }) {
+function DumyCard({ cardHandling, counts, setCardHandling, setBtnShow }) {
   const cards = myArray.map((d, index) => (
     <img
       key={`cardNo${index}`}
@@ -124,6 +124,7 @@ function DumyCard({ cardHandling, counts, setCardHandling }) {
         indexCount++;
       } else {
         clearInterval(intervalId);
+        setBtnShow(true);
         // dragElement(dragable, dragzone);
         return;
       }

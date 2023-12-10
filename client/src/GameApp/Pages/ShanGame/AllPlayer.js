@@ -35,7 +35,7 @@ function AllPlayer({ showAns, data }) {
     <>
       {updateData?.map((d, index) => {
         if (updateData) {
-          if (index === 0 || index === updateData?.length - 1) {
+          if (index === 0 || index === 5) {
             return <PlayerTop data={d} showAns={showAns} />;
           } else {
             return <Players data={d} showAns={showAns} />;
