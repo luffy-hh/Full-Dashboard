@@ -51,7 +51,7 @@ exports.read2dAllNum = async (req, res) => {
 
 exports.updateSingle2DNum = async (req, res) => {
   try {
-    const id = req.params.id;
+    const id = req.body.id;
     const reqBody = req.body;
     console.log(id, reqBody);
 

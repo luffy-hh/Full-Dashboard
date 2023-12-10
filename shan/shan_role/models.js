@@ -19,7 +19,7 @@ const shanRollSchema = new mongoose.Schema({
   },
   per_amt: {
     type: Number,
-    required: [true, "Pleae Insert Percentage must be"],
+    required: [true, "Please Insert Percentage must be"],
   },
   img: {
     type: String,

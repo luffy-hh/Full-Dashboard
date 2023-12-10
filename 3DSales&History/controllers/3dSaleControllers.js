@@ -4,6 +4,7 @@ const lotterySetting = require("../../lotteryFilterSetting/models/lotteryFilterS
 const Thai3DNum = require("../../lottery_nuumbers/models/thai3DNumModels");
 const User = require("../../users/userModels");
 const Thai3DSale = require("../models/3dSaleModel");
+const mongoose = require("mongoose");
 const Thai3DSaleHistory = require("../models/3dSaleHistoriesModel");
 exports.create3DSaleDoc = async (req, res) => {
   try {
@@ -23,53 +24,54 @@ exports.create3DSaleDoc = async (req, res) => {
     //   .format();
     const endDate = new Date(selectedSetting.endDate);
     const user = await User.findById(req.user.id);
-    if(startDate.getTime() <= currentTime.getTime() &&
-        currentTime.getTime() < endDate.getTime()){
+    if (
+      startDate.getTime() <= currentTime.getTime() &&
+      currentTime.getTime() < endDate.getTime()
+    ) {
       const reqBody = req.body;
       // make an array for playableNumber
       const playedNumbers = reqBody.saleNumberArr.filter((sale) => {
-        let curNum = All2DDependingOnSubCat.find(
-            (num) => num.number === sale.number
-        );
+        let curNum = all3DNums.find((num) => num.number === sale.number);
         return sale.amount <= curNum.lastAmount && sale;
       });
 
       // make an array for unplayableNumber
       const unPlayAbleNumbers = reqBody.saleNumberArr.filter((sale) => {
-        let curNum = all3DNums.find(
-            (num) => num.number === sale.number
-        );
+        let curNum = all3DNums.find((num) => num.number === sale.number);
         return sale.amount > curNum.lastAmount && sale;
       });
 
       const totalSaleAmount = playedNumbers
-          .map((num) => num.amount)
-          .reduce((acr, cur) => Number(acr) + Number(cur), 0);
-      if(totalSaleAmount <= user.unit){
-        const updatedMainUnit = await MainUnit.findByIdAndUpdate(mainUnitId,{
-          $inc:{mainUnit : totalSaleAmount}
-        })
+        .map((num) => num.amount)
+        .reduce((acr, cur) => Number(acr) + Number(cur), 0);
+      if (totalSaleAmount <= user.unit) {
+        const updatedMainUnit = await MainUnit.findByIdAndUpdate(mainUnitId, {
+          $inc: { mainUnit: totalSaleAmount },
+        });
         const updatedUser = await User.findByIdAndUpdate(user.id, {
           $inc: { unit: -totalSaleAmount },
         });
-        for(const sale of playedNumbers){
+        for (const sale of playedNumbers) {
           let number = sale.number;
-          let updatedDocument = await Thai3DNum.findOne({number});
-          const obj ={
-            subCatId:reqBody.subCatId,
-            userId:user.id,
-            number:number,
-            amount :sale.amount
-          }
-          const newThai3DSale = new Thai3DSale({...obj})
-          await Thai3DSaleHistory.create({...obj});
+          let updatedDocument = await Thai3DNum.findOne({ number });
+          const obj = {
+            subCatId: reqBody.subCatId,
+            userId: user.id,
+            number: number,
+            amount: sale.amount,
+          };
+          const newThai3DSale = new Thai3DSale({ ...obj });
+          await Thai3DSaleHistory.create({ ...obj });
           // Save the new Thai3DSale document to the database
-          await newThai3DSale.save()
+          await newThai3DSale.save();
 
           // Calculate the total amount for this number
           const totalAmount = await Thai3DSale.aggregate([
             {
-              $match: { number: number,subCatId : reqBody.subCatId },
+              $match: {
+                number: number,
+                subCatId: new mongoose.Types.ObjectId(reqBody.subCatId),
+              },
             },
             {
               $group: {
@@ -78,18 +80,21 @@ exports.create3DSaleDoc = async (req, res) => {
               },
             },
           ]);
-          const updated3DNum = await Thai3DNum.findOneAndUpdate({number},{
-                $set: {
-                  totalAmount: totalAmount[0].totalAmount,
-                  lastAmount:
-                      updatedDocument.limitAmount - totalAmount[0].totalAmount,
-                  percentage:
-                      (totalAmount[0].totalAmount / updatedDocument.limitAmount) *
-                      100,
-                },
+
+          const updated3DNum = await Thai3DNum.findOneAndUpdate(
+            { number },
+            {
+              $set: {
+                totalAmount: totalAmount[0].totalAmount,
+                lastAmount:
+                  updatedDocument.limitAmount - totalAmount[0].totalAmount,
+                percentage:
+                  (totalAmount[0].totalAmount / updatedDocument.limitAmount) *
+                  100,
               },
-              { new: true }
-          )
+            },
+            { new: true }
+          );
         }
         if (unPlayAbleNumbers.length > 0) {
           const rejectNums = unPlayAbleNumbers.map((num) => num.number);
@@ -98,7 +103,7 @@ exports.create3DSaleDoc = async (req, res) => {
             unPlayAbleNumbers,
             playedNumbers,
             message:
-                "PlayedNumbers are the numbers that are played and unPlayAbleNumbers are rejected numbers by admin.",
+              "PlayedNumbers are the numbers that are played and unPlayAbleNumbers are rejected numbers by admin.",
           });
         } else {
           res.status(201).json({
@@ -107,17 +112,17 @@ exports.create3DSaleDoc = async (req, res) => {
             message: "playedNumbers are the numbers that are played.",
           });
         }
-      }else {
+      } else {
         res.status(201).json({
           status: "failed",
           message: "Insufficient Unit",
         });
       }
-    }else {
+    } else {
       res.status(200).json({
         status: "failed",
         message:
-            "You can't make this action at the moment. Please try again later.",
+          "You can't make this action at the moment. Please try again later.",
       });
     }
   } catch (error) {

@@ -84,7 +84,7 @@ exports.create2DsaleDoc = async (req, res) => {
         // Loop through the saleNumberArr and create Thai2DSale documents
         for (const sale of playedNumbers) {
           let number = sale.number;
-          let updatedDocument= {};
+          let updatedDocument = {};
 
           const obj = {
             subCatId: reqBody.subCatId,
@@ -100,7 +100,10 @@ exports.create2DsaleDoc = async (req, res) => {
           // Calculate the total amount for this number
           const totalAmount = await Thai2DSale.aggregate([
             {
-              $match: { number: number,subCatId : reqBody.subCatId },
+              $match: {
+                number: number,
+                subCatId: new mongoose.Types.ObjectId(reqBody.subCatId),
+              },
             },
             {
               $group: {
@@ -113,38 +116,37 @@ exports.create2DsaleDoc = async (req, res) => {
             updatedDocument = await Thai2DNum12AM.findOne({ number });
             // update each number with total amount
             const updatedMorning2D = await Thai2DNum12AM.findOneAndUpdate(
-                { number },
-                {
-                  $set: {
-                    totalAmount: totalAmount[0].totalAmount,
-                    lastAmount:
-                        updatedDocument.limitAmount - totalAmount[0].totalAmount,
-                    percentage:
-                        (totalAmount[0].totalAmount / updatedDocument.limitAmount) *
-                        100,
-                  },
+              { number },
+              {
+                $set: {
+                  totalAmount: totalAmount[0].totalAmount,
+                  lastAmount:
+                    updatedDocument.limitAmount - totalAmount[0].totalAmount,
+                  percentage:
+                    (totalAmount[0].totalAmount / updatedDocument.limitAmount) *
+                    100,
                 },
-                { new: true } // To return the updated document
+              },
+              { new: true } // To return the updated document
             );
           } else if (currentSubCat.subCatName === "Thai 4:30 PM") {
             updatedDocument = await Thai2DNumEvening.findOne({ number });
             // update each number with total amount
             const updatedEvening2D = await Thai2DNumEvening.findOneAndUpdate(
-                { number },
-                {
-                  $set: {
-                    totalAmount: totalAmount[0].totalAmount,
-                    lastAmount:
-                        updatedDocument.limitAmount - totalAmount[0].totalAmount,
-                    percentage:
-                        (totalAmount[0].totalAmount / updatedDocument.limitAmount) *
-                        100,
-                  },
+              { number },
+              {
+                $set: {
+                  totalAmount: totalAmount[0].totalAmount,
+                  lastAmount:
+                    updatedDocument.limitAmount - totalAmount[0].totalAmount,
+                  percentage:
+                    (totalAmount[0].totalAmount / updatedDocument.limitAmount) *
+                    100,
                 },
-                { new: true } // To return the updated document
+              },
+              { new: true } // To return the updated document
             );
           }
-
         }
         if (unPlayAbleNumbers.length > 0) {
           const rejectNums = unPlayAbleNumbers.map((num) => num.number);

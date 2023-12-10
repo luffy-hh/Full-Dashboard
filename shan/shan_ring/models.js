@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const shanPlayRingSchema = new mongoose.Schema({
   ring_name: {
     type: "String",
-    require: true,
+    required: true,
   },
   shan_roll: {
     type: mongoose.Schema.Types.ObjectId,
@@ -12,7 +12,7 @@ const shanPlayRingSchema = new mongoose.Schema({
   },
   banker_amount: {
     type: Number,
-    require: true,
+    required: true,
   },
   description: {
     type: String,
@@ -34,8 +34,8 @@ const shanPlayRingSchema = new mongoose.Schema({
       },
       player_roll: {
         type: String,
-        enum: ["banner", "player"],
-        default: "banner",
+        enum: ["banker", "player"],
+        default: "banker",
       },
       game_unit: {
         type: Number,

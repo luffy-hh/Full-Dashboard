@@ -34,6 +34,13 @@ exports.createShanRingFromAdmin = catchAsync(async (req, res) => {
         message: "Not Enough Game Unit For Banker Level",
       });
     }
+    if (shanRollObj.max_amount < playerGameUnit) {
+      return res.status(404).json({
+        status: "fail",
+        message:
+          "Your Game Unit Has exceed the Max Amount. Please Play in higher role! (OR) Reduce Your Game Unit and Try Again",
+      });
+    }
 
     const user_id = playerObj._id.toString();
 
@@ -93,6 +100,68 @@ exports.getShingRingByShanRoll = catchAsync(async (req, res) => {
     });
   }
 });
+
+// Enter Shan Ring
+exports.enterShanRing = catchAsync(async (req,res,next)=>{
+  try {
+      const currentUser = await User.findById( req.user.id)
+      const userSelectedRing = await ShanPlayRing.findById(req.body.ringId)
+      const roleOfCurrentRing = await ShanRoll.findById(userSelectedRing.shan_roll)
+      if(!userSelectedRing){
+        res.status(400).json({
+          status:'failed',
+          message:'The Ring You selected doesn\'t exist.'
+        })
+      }
+      if(userSelectedRing.players.length === 6){
+        res.status(400).json({
+          status:'failed',
+          message:"The ring you selected has been full."
+        })
+      }
+      if(currentUser.gameUnit < userSelectedRing.banker_amount && currentUser.gameUnit > roleOfCurrentRing.max_amount ){
+        res.status(400).json({
+          status:'failed',
+          message:'You can\'t join this ring . You don\'t have sufficient game unit (or) You have more game unit than the ring max amount.'
+        })
+      }
+      const newPlayerObject = {
+        userId: currentUser._id,
+        player_roll:"player",
+        game_unit:currentUser.gameUnit
+      }
+      const updatedRing = await ShanPlayRing.findByIdAndUpdate(req.body.ringId,{
+        $push:{players: newPlayerObject}
+      },{new:true});
+      res.status(200).json({
+        status:'succeed',
+        data:updatedRing,
+      })
+  }catch (e) {
+    res.json({
+      status:'failed',
+      message:`Error joining the Ring.`
+    })
+  }
+})
+
+// Exit from the ring
+exports.exitFromShanRing = catchAsync(async (req,res,next)=>{
+  try {
+    const updatedRing = await ShanPlayRing.findByIdAndUpdate(req.body.ringId,{
+      $pull:{players:{userId: req.user.id}}
+    },{new:true})
+    res.status(200).json({
+      status:'succeed',
+      data:updatedRing
+    })
+  }catch (e) {
+    res.status(500).json({
+      status:'failed',
+      message:'Something went wrong while exiting the ring.'
+    })
+  }
+})
 
 // // Read Bank Account Me
 // exports.getBankAccMe = catchAsync(async (req, res) => {

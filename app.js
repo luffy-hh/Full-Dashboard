@@ -12,7 +12,7 @@ const app = express();
 app.use(cors());
 
 // Attach Socket.io to the Express app
-app.io = require("socket.io")();
+// app.io = require("socket.io")();
 
 const userRouter = require("./users/userRoutes");
 const userProfileRouter = require("./users/userProfileRoute");
@@ -52,6 +52,7 @@ const agentCatStatusAdmin = require("./category_status/routes/agent_cat_status_r
 const agentSubCatStatusAdmin = require("./category_status/routes/agent_subcat_status_route");
 //const agentSubCatComessionAdmin = require("./category_status/routes/agent_comession_rotes");
 //3D
+const thai3DNumRouter = require("./lottery_nuumbers/routes/lottery3dRoute");
 const thai3DRouter = require("./3DSales&History/routes/3DSaleRoutes");
 const thai3DLuckyNumRouter = require("./3dLucky&Winner/routes/3DLuckyNumRoutes");
 const thai3DLuckyWinnerRouter = require("./3dLucky&Winner/routes/3DLuckyWinnerRoutes");
@@ -66,7 +67,8 @@ const changeTo = require("./transition/routes/changeUnitRoutes");
 //Lottery Numbers
 const lottery2dRoutes = require("./lottery_nuumbers/routes/lottery2dRoutes");
 const lottery2dEveningRoutes = require("./lottery_nuumbers/routes/lottery2dEveningRoute");
-
+// slot testing
+const slotTestRouter = require("./live-22/game-categories/routes");
 // Middleware
 // app.use(helmet());
 
@@ -182,7 +184,7 @@ app.use("/api/v1/agentsubcatstatus", agentSubCatStatusAdmin);
 
 // // Shan API
 app.use("/api/v1/shanroll", shanRoll);
-app.use("/api/v1/adminshanring", shanRing);
+app.use("/api/v1/shanring", shanRing);
 
 // Transition
 app.use("/api/v1/transferTo", transferTo);
@@ -190,9 +192,13 @@ app.use("/api/v1/transferTo", transferTo);
 app.use("/api/v1/changeTo", changeTo);
 
 // 3D APIS
+app.use("/api/v1/thai3DNumAll", thai3DNumRouter);
 app.use("/api/v1/thai3D", thai3DRouter);
 app.use("/api/v1/thai3DLuckyNum", thai3DLuckyNumRouter);
 app.use("/api/v1/thai3DLuckyWinner", thai3DLuckyWinnerRouter);
+
+// slot testing
+// app.use("/api/v1/slotTest", slotTestRouter);
 // app.get("*", (req, res) => {
 //   res.sendFile(path.join(__dirname, "static/index.html"));
 // });

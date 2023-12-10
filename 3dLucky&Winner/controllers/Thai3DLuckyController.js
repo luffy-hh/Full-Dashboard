@@ -4,11 +4,12 @@ const Thai3DSale = require("../../3DSales&History/models/3dSaleModel");
 const User = require("../../users/userModels");
 const MasterSubCatStatus = require("../../category_status/models/master_subCat_status_models");
 const Thai3DLuckyWinner = require("../models/Thai3DLuckyWinnerModel");
+const Thai3DNum = require("../../lottery_nuumbers/models/thai3DNumModels");
 exports.create3DLucky = async (req, res) => {
   try {
     const mainUnitArr = await MainUnit.find({});
     const mainUnitId = mainUnitArr[0]._id;
-    const currentDay = new Date.now();
+    const currentDay = new Date();
     const new3DLucky = await Thai3DLucky.create({
       ...req.body,
       date: currentDay,

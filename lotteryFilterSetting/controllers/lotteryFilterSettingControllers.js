@@ -7,6 +7,7 @@ const MasterSubCatStatus = require("../../category_status/models/master_subCat_s
 const GameSubCat = require("../../gameCategories/models/gameSubCatModels");
 const Thai3DNum = require("../../lottery_nuumbers/models/thai3DNumModels");
 const Thai2DSale = require("../../2dSales/models/2dsalemodels");
+const Thai3DSale = require("../../3DSales&History/models/3dSaleModel");
 // Create Lottery Setting
 exports.createLotterySetting = async (req, res) => {
   try {
@@ -90,9 +91,16 @@ exports.updateLotterySettingById = async (req, res) => {
         runValidators: true,
       }
     );
-    const dailyPlayedObjDeletedSubCatArr = await Thai2DSale.deleteMany({
-      subCatId: id,
-    });
+    if (updateLotterySetting.subCategoryName === "Thai 3d Lottery") {
+      const deleted3DWeekly = await Thai3DSale.deleteMany({
+        subCatId: id,
+      });
+    } else {
+      const dailyPlayedObjDeletedSubCatArr = await Thai2DSale.deleteMany({
+        subCatId: id,
+      });
+    }
+
     if (updateLotterySetting.subCategoryName === "Thai 12:00 PM") {
       await Thai2DNum12AM.updateMany({
         $set: {
