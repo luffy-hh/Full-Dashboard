@@ -12,7 +12,7 @@ import {
 
 import styles from "./CustomBox.module.css";
 
-function LuckyNoBox({ category, postFun, accessToken }) {
+function LuckyNoBox({ category, postFun, api, accessToken }) {
   const modalLucky = useSelector(selectModalLucky);
   const lukyCate = useSelector(selectLuckyCate);
   const luckyNo = useSelector(selectLuckyNo);
@@ -29,7 +29,7 @@ function LuckyNoBox({ category, postFun, accessToken }) {
   console.log(postData);
 
   const clickHandle = () => {
-    dispatch(postFun({ api: "twoDLucky", postData, accessToken: accessToken }));
+    dispatch(postFun({ api: api, postData, accessToken: accessToken }));
     dispatch(setModalLucky(false));
   };
 
@@ -51,7 +51,7 @@ function LuckyNoBox({ category, postFun, accessToken }) {
             value={lukyCate}
             onChange={(e) => dispatch(setLuckyCate(e.target.value))}
           >
-            <option value="">Choose 2D SubCategories</option>
+            <option value="">Choose SubCategories</option>
 
             {options}
           </select>

@@ -7,7 +7,6 @@ import {
 } from "../app/api";
 
 import allTwoDNumber from "../asset/2d.json";
-console.log(allTwoDNumber);
 
 export const fetGetAllTwoDNo = createAsyncThunk(
   "data/fetGetAllTwoDNo",
@@ -65,6 +64,14 @@ export const fetGetLuckyNoHistory = createAsyncThunk(
   }
 );
 
+export const fetGetThreeDLuckyNo = createAsyncThunk(
+  "data/fetGetThreeDLuckyNo",
+  async ({ api, accessToken }) => {
+    const data = await fetchDataWithToken(api, accessToken);
+    return data;
+  }
+);
+
 export const fetGetLuckNo = createAsyncThunk(
   "data/fetGetLuckNo",
   async ({ api, accessToken }) => {
@@ -83,6 +90,15 @@ export const fetGetLuckyWinner = createAsyncThunk(
 
 export const postLuckyNo = createAsyncThunk(
   "data/postLuckyNo",
+  async ({ api, postData, accessToken }) => {
+    const data = await postDataWithToken(api, postData, accessToken);
+    console.log(data);
+    return data;
+  }
+);
+
+export const postThreeDLuckyNo = createAsyncThunk(
+  "data/postThreeDLuckyNo",
   async ({ api, postData, accessToken }) => {
     const data = await postDataWithToken(api, postData, accessToken);
     console.log(data);
@@ -116,6 +132,7 @@ export const fetPatchMasterSubGameCat = createAsyncThunk(
 
 const initialState = {
   allTwoDNumber,
+
   allTwoDNo: {},
   allTwoDNoStatus: "idle",
   allTwoDNoError: null,
@@ -143,6 +160,10 @@ const initialState = {
   luckyNoStatus: "idle",
   luckyNoError: null,
 
+  threeDluckyNo: null,
+  threeDluckyNoStatus: "idle",
+  threeDluckyNoError: null,
+
   luckyNoData: null,
   luckyNoDataStatus: "idle",
   luckyNoDataError: null,
@@ -154,6 +175,10 @@ const initialState = {
   postLuckyNoData: {},
   postLuckyNoDataStatus: "idle",
   postLuckyNoDataError: null,
+
+  postThreeDLuckyNoData: {},
+  postThreeDLuckyNoDataStatus: "idle",
+  postThreeDLuckyNoDataError: null,
 
   patchCloseNo: {},
   patchCloseNoStatus: "idle",
@@ -167,6 +192,7 @@ const initialState = {
   patchMasterSubGameCatError: null,
 
   twoDReportHistory: null,
+  threeDReportHistory: null,
   twoDTable1History: null,
 
   subGameCatId: {},
@@ -310,6 +336,8 @@ const twoDapiSlice = createSlice({
       .addCase(fetGetLuckyNoHistory.fulfilled, (state, action) => {
         state.luckyNoStatus = "succeeded";
         state.luckyNo = action.payload;
+        state.threeDReportHistory = state.luckyNo.data;
+        console.log(state.luckyNo);
       })
       .addCase(fetGetLuckyNoHistory.rejected, (state, action) => {
         state.luckyNoStatus = "failed";
@@ -343,6 +371,20 @@ const twoDapiSlice = createSlice({
         state.luckyNoDataError = action.error.message;
       })
 
+      //Get lucky No for three d lucky number  page
+      .addCase(fetGetThreeDLuckyNo.pending, (state) => {
+        state.threeDluckyNoStatus = "loading";
+      })
+      .addCase(fetGetThreeDLuckyNo.fulfilled, (state, action) => {
+        state.threeDluckyNoStatus = "succeeded";
+        state.threeDluckyNo = action.payload;
+        console.log(state.postLuckyNoData);
+      })
+      .addCase(fetGetThreeDLuckyNo.rejected, (state, action) => {
+        state.threeDluckyNoStatus = "failed";
+        state.threeDluckyNoError = action.error.message;
+      })
+
       //post lucky No for lucky number  page
       .addCase(postLuckyNo.pending, (state) => {
         state.postLuckyNoDataStatus = "loading";
@@ -355,6 +397,20 @@ const twoDapiSlice = createSlice({
       .addCase(postLuckyNo.rejected, (state, action) => {
         state.postLuckyNoDataStatus = "failed";
         state.postLuckyNoDataError = action.error.message;
+      })
+
+      //post ThreeD lucky No
+      .addCase(postThreeDLuckyNo.pending, (state) => {
+        state.postThreeDLuckyNoDataStatus = "loading";
+      })
+      .addCase(postThreeDLuckyNo.fulfilled, (state, action) => {
+        state.postThreeDLuckyNoDataStatus = "succeeded";
+        state.postThreeDLuckyNoData = action.payload;
+        console.log(state.postThreeDLuckyNoData);
+      })
+      .addCase(postThreeDLuckyNo.rejected, (state, action) => {
+        state.postThreeDLuckyNoDataStatus = "failed";
+        state.postThreeDLuckyNoDataError = action.error.message;
       })
 
       //patch close No
@@ -443,6 +499,10 @@ export const selectPatchCloseNoStatus = (state) =>
 
 export const selectLuckyNoData = (state) => state.twoDapi.luckyNoData;
 
+export const selectThreeDLuckyNo = (state) => state.twoDapi.threeDluckyNo;
+export const selectPostThreeDLuckyNo = (state) =>
+  state.twoDapi.postThreeDLuckyNoData;
+
 export const selectPatchMasterGameCatCloseStatus = (state) =>
   state.twoDapi.patchMasterGameCatStatus;
 
@@ -453,5 +513,8 @@ export const selectTwoDTable1Histroy = (state) =>
 export const selectLuckyWinner = (state) => state.twoDapi.luckyWinner;
 
 export const selectSubGameCatId = (state) => state.twoDapi.subGameCatId;
+export const selectConditionLuckyNo = (state) => state.twoDapi.conditionLuckyNo;
+export const selectThreeDReportHistory = (state) =>
+  state.twoDapi.threeDReportHistory;
 
 export default twoDapiSlice.reducer;

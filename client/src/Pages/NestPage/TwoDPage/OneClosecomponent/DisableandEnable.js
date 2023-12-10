@@ -45,7 +45,7 @@ function DisableandEnable({ query, subObj }) {
 
   const accessToken = logInData.token;
 
-  const apiArr = ["lottery2dthai12", "lottery2dThai4:30"];
+  const apiArr = ["lottery2dthai12", "lottery2dThai4:30", "thai3DNumAll"]; //need 3d api
 
   useEffect(() => {
     dispatch(fetGetAllTwoDNo({ api: apiArr[subObj.index], accessToken }));

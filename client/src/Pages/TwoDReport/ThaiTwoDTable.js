@@ -17,11 +17,9 @@ function ThaiTwoDTable({ mainData, text }) {
     console.log("working", foundData);
 
     if (foundData) {
-      return { ...target, foundData };
+      return { ...target, foundData: foundData.map((d) => d.returnedAmount) };
     } // or handle the case when no match is found
   });
-
-  console.log(foundObjects);
 
   const list = foundObjects
     ?.sort((a, b) => a.number - b.number)
@@ -31,20 +29,17 @@ function ThaiTwoDTable({ mainData, text }) {
         <td>{d.number}</td>
         <td>{d.count}</td>
         <td>{d.amount}</td>
-        <td>
-          {d.foundData?.reduce((acc, curr) => acc + curr.returnedAmount, 0)}
-        </td>
+        <td>{d.foundData?.reduce((acc, curr) => acc + curr, 0)}</td>
         <td>
           {d.foundData.length >= 1
-            ? d.foundData?.reduce((acc, curr) => acc + curr.returnedAmount, 0) -
-              d.amount
+            ? d.foundData?.reduce((acc, curr) => acc + curr, 0) - d.amount
             : `${-d.amount}`}
         </td>
       </tr>
     ));
   return (
     <div className={`table_d_container hide_scroll ${styles.table1}`}>
-      {text === "Choose 2D Category" ? (
+      {text === "Choose Category" ? (
         ""
       ) : (
         <Tables thead={table1Data} tbody={list} />

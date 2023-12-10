@@ -61,7 +61,7 @@ function ThaiTable3({ mainData, text }) {
 
   return (
     <div className={`hide_scroll table_d_container ${styles.table3_report}`}>
-      {text === "Choose 2D Category" ? (
+      {text === "Choose Category" ? (
         ""
       ) : (
         <Tables thead={table3Data} tbody={list} />

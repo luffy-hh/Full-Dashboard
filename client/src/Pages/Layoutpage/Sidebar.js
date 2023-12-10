@@ -179,14 +179,14 @@ const sData = [
     show: false,
   },
   {
-    title: "2D Report",
+    title: "2D-3D Report",
     route: null,
     icon: <BiSolidReport />,
     iconRight: <BsChevronRight />,
     show: false,
     subNav: [
       {
-        title: "All 2D Report",
+        title: "All 2D-3D Report",
         route: "thai2D-12am",
         icon: <BsPeople />,
       },

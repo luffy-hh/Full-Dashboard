@@ -12,7 +12,7 @@ router
     shanRingController.createShanRingFromAdmin
   );
 router.route('/ringIn').patch(userController.protect,shanRingController.enterShanRing)
-router.route('ringOut').patch(userController.protect,shanRingController.exitFromShanRing)
+router.route('/ringOut').patch(userController.protect,shanRingController.exitFromShanRing)
 router
   .route("/:id")
   .get(userController.protect, shanRingController.getShingRingByShanRoll);

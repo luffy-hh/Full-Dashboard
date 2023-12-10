@@ -14,6 +14,7 @@ import {
   setFilterTwoDReportHistroy,
   selectTwoDReportHistory,
   fetGetLuckyWinner,
+  selectThreeDReportHistory,
 } from "../../Feactures/twoDapiSlice";
 import { selectlogInData } from "../../Feactures/apiSlice";
 import { setShowDropDown } from "../../Feactures/ShowHideSlice";
@@ -31,43 +32,72 @@ function ThaiTwoD12am() {
   const gameSubCat = useSelector(selectSubGameCat);
   const logInData = useSelector(selectlogInData);
   const accessToken = logInData.token;
-  const [selectText, setSelectText] = useState("Choose 2D Category");
+  const [selectText, setSelectText] = useState("Choose Category");
   const twoDReportHistory = useSelector(selectTwoDReportHistory);
+  const threeDReportHistory = useSelector(selectThreeDReportHistory);
 
   useEffect(() => {
     dispatch(fetGetSubGameCat({ api: "gamesubcat", accessToken }));
   }, []);
 
+  console.log(selectText);
   useEffect(() => {
-    dispatch(fetGetLuckyNoHistory({ api: "thai2dsale", accessToken }));
-    dispatch(fetGetLuckyWinner({ api: "thai2DLuckyWinners", accessToken }));
+    if (selectText.includes("3d")) {
+      console.log("3dapi");
+      dispatch(fetGetLuckyNoHistory({ api: "thai3D", accessToken }));
+      dispatch(fetGetLuckyWinner({ api: "thai3DLuckyWinner", accessToken }));
+    } else {
+      console.log("2dapi");
+      dispatch(fetGetLuckyNoHistory({ api: "thai2dsale", accessToken }));
+      dispatch(fetGetLuckyWinner({ api: "thai2DLuckyWinners", accessToken }));
+    }
   }, [selectText]);
 
-  console.log(twoDReportHistory && twoDReportHistory);
+  console.log(twoDReportHistory && twoDReportHistory, "history");
+
   const resultDict = {};
 
-  twoDReportHistory?.forEach((entry) => {
-    const { number, amount } = entry;
+  const calFun = (obj) => {
+    obj?.forEach((entry) => {
+      const { number, amount } = entry;
 
-    if (number in resultDict) {
-      resultDict[number].amount += amount;
-      resultDict[number].count += 1;
+      if (number in resultDict) {
+        resultDict[number].amount += amount;
+        resultDict[number].count += 1;
+      } else {
+        resultDict[number] = { amount, count: 1 };
+      }
+    });
+  };
+
+  const mainFun = () => {
+    if (selectText.includes("3d")) {
+      calFun(threeDReportHistory);
     } else {
-      resultDict[number] = { amount, count: 1 };
+      calFun(twoDReportHistory);
     }
-  });
+  };
+
+  mainFun();
 
   const resultList = Object.entries(resultDict).map(([number, values]) => ({
     number: number,
     ...values,
   }));
 
+  console.log(resultList);
+
   const gameSubCatArr = gameSubCat?.data.allSubGameCat;
 
   const handleData = (id, subName) => {
-    dispatch(setFilterTwoDReportHistroy(id));
-    setSelectText(subName);
-    dispatch(setShowDropDown());
+    if (selectText.includes("3d")) {
+      setSelectText(subName);
+      dispatch(setShowDropDown());
+    } else {
+      dispatch(setFilterTwoDReportHistroy(id));
+      setSelectText(subName);
+      dispatch(setShowDropDown());
+    }
   };
   const list = gameSubCatArr?.map((d) => (
     <li key={d._id} onClick={() => handleData(d._id, d.subCatName)}>
@@ -84,7 +114,14 @@ function ThaiTwoD12am() {
       </div>
       {table1 && <ThaiTwoDTable mainData={resultList} text={selectText} />}
       {table2 && <ThaiTwoDTable2 mainData={resultList} text={selectText} />}
-      {table3 && <ThaiTable3 mainData={twoDReportHistory} text={selectText} />}
+      {table3 && (
+        <ThaiTable3
+          mainData={
+            selectText.includes("3d") ? threeDReportHistory : twoDReportHistory
+          }
+          text={selectText}
+        />
+      )}
     </div>
   );
 }

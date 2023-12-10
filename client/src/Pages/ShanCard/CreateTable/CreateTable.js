@@ -83,7 +83,7 @@ function CreateTable() {
   const handlePost = (e) => {
     e.preventDefault();
 
-    dispatch(fetPostShanRing({ api: "adminshanring", postData, accessToken }));
+    dispatch(fetPostShanRing({ api: "shanring", postData, accessToken }));
   };
 
   return (

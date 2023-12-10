@@ -23,7 +23,7 @@ function LotterySetting() {
   const subGameCatArr = subGameCat?.data.allSubGameCat;
 
   const handleChange = (id, index) => {
-    navigate(`/admin/lottery2d`);
+    navigate(`/admin/lottery2dand3d`);
     dispatch(setSubGameCatId({ id: id, index: index }));
   };
 

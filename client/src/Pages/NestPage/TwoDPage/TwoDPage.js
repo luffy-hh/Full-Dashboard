@@ -23,7 +23,6 @@ function TwoDPage() {
     <Container className={styles.two_d_page}>
       <div className={styles.two_d_container}>
         <div className={styles.two_d_title}>
-          <h3>Edit 2D</h3>
           <h3>{filterArr[0]?.subCatName}</h3>
         </div>
 

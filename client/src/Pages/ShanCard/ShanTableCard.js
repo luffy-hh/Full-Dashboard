@@ -19,7 +19,7 @@ function ShanTableCard() {
   const rollIds = useSelector(selectRollIds);
 
   useEffect(() => {
-    dispatch(fetGetShanRing({ api: `adminshanring/${rollIds}`, accessToken }));
+    dispatch(fetGetShanRing({ api: `shanring/${rollIds}`, accessToken }));
   }, [rollIds]);
 
   const shanRingData = shanRing?.data.allShanRing;

@@ -47,7 +47,7 @@ const admin = [
   { id: 6, path: "allmaster", route: <AllMaster /> },
 
   { id: 7, path: "alladmins", route: <AllAdmin /> },
-  { id: 8, path: "lottery2d", route: <TwoDPage /> },
+  { id: 8, path: "lottery2dand3d", route: <TwoDPage /> },
   { id: 9, path: "luckynumber", route: <LuckyNumber /> },
   { id: 10, path: "bankCategory", route: <BankCategory /> },
   { id: 11, path: "bankType", route: <BankType /> },

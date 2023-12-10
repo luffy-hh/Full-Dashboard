@@ -1,0 +1,114 @@
+.shan_game {
+  max-width: 100rem;
+  height: 100vh;
+  background-color: var(--text-white);
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  flex-direction: column;
+}
+
+.shan_table {
+  background-image: url("../../../../public/shangame/table.png");
+  width: 75vw;
+  height: 60vh;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  position: relative;
+}
+
+.lady {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 13rem;
+  top: -8rem;
+}
+.dummy_cards {
+  position: absolute;
+  left: 50%;
+}
+
+.dummy_card_container {
+  position: absolute;
+}
+
+.cards_img {
+  width: 3rem;
+  position: absolute;
+  opacity: 0;
+  transition: all 0.4s;
+  z-index: 10;
+}
+
+.player {
+  position: absolute;
+}
+.user_box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.user_img {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  border: 5px solid var(--primary);
+  z-index: 3;
+}
+.userInfo,
+.userInfo_top {
+  background-color: var(--text);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  color: var(--primary);
+  border-radius: 5px;
+}
+
+.userInfo {
+  margin-top: -2rem;
+}
+.userInfo_top {
+  margin-bottom: -2rem;
+}
+.player_data {
+  font-size: 1.6rem;
+}
+
+.player_card {
+  display: flex;
+}
+
+.ans_card_container {
+  display: flex;
+}
+
+.ans_card {
+  width: 3rem;
+  height: 4rem;
+  background-color: var(--primary);
+  color: var(--text-white);
+  font-weight: 700;
+  font-size: 2.4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-left: 1px solid var(--text-white);
+}
+.open {
+  position: absolute;
+  padding: 8px 1.6rem;
+  background-color: var(--blue-light);
+  color: var(--text-white);
+  font-size: 1.6rem;
+  bottom: -5rem;
+  right: 0;
+}
+/* 14×896  */
