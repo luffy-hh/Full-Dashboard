@@ -4,7 +4,7 @@ import DumyAns from "./DumyAns";
 
 function Players({ data, showAns }) {
   return (
-    <div className={styles.player} style={data}>
+    <div className={styles.player} style={data?.position}>
       <div className={styles.player_card}>
         <div className={styles.user_box}>
           <img

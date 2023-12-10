@@ -4,6 +4,7 @@ import {
   postDataWithToken,
   postDataWithImg,
   patchDatas,
+  fetchData,
 } from "../app/api";
 
 export const fetPostShanRing = createAsyncThunk(
@@ -38,6 +39,15 @@ export const fetPostShanRoll = createAsyncThunk(
     return data;
   }
 );
+
+export const fetGetShanGameRing = createAsyncThunk(
+  "data/fetGetShanGameRing",
+  async (api) => {
+    const data = await fetchData(api);
+    return data;
+  }
+);
+
 const initialState = {
   showRoll: false,
   showRing: false,
@@ -58,6 +68,10 @@ const initialState = {
   shanRing: null,
   shanRingStatus: "idle",
   shanRingError: null,
+
+  shanGameRing: null,
+  shanGameRingStatus: false,
+  shanGameRingError: null,
 };
 
 const shan = createSlice({
@@ -133,6 +147,19 @@ const shan = createSlice({
         state.postShanRingStatus = "failed";
         state.postShanRingError = action.error.message;
         console.log(state.postShanRingError);
+      })
+
+      //For ShanGame Ring GET Method
+      .addCase(fetGetShanGameRing.pending, (state) => {
+        state.shanGameRingStatus = false;
+      })
+      .addCase(fetGetShanGameRing.fulfilled, (state, action) => {
+        state.shanGameRingStatus = true;
+        state.shanGameRing = action.payload;
+      })
+      .addCase(fetGetShanGameRing.rejected, (state, action) => {
+        state.shanGameRingStatus = false;
+        state.shanGameRingError = action.error.message;
       });
   },
 });
@@ -153,5 +180,7 @@ export const selectPostShanRingStatus = (state) =>
 export const selectPostShanRing = (state) => state.shan.postShanRing;
 
 export const selectShanRing = (state) => state.shan.shanRing;
+
+export const selectShanGameRing = (state) => state.shan.shanGameRing;
 
 export default shan.reducer;

@@ -10,7 +10,8 @@ router
     userController.protect,
     userController.restrictTo("Admin","User"),
     shanRingController.createShanRingFromAdmin
-  );
+  ).get(shanRingController.getAllRing);
+
 router.route('/ringIn').patch(userController.protect,shanRingController.enterShanRing)
 router.route('/ringOut').patch(userController.protect,shanRingController.exitFromShanRing)
 router

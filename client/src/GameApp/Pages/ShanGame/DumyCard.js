@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./ShanGame.module.css";
 
 const myArray = Array(18).fill("/shangame/playCard/PeterRiver.png");
@@ -14,6 +14,58 @@ const myArray = Array(18).fill("/shangame/playCard/PeterRiver.png");
 // ];
 
 const cardPosition = new Map([
+  [
+    2,
+    [
+      "translate(calc(75vw - 60vw), 0vh)",
+      "translate(calc(75vw - 45vw),20vh)",
+
+      "translate(calc(75vw - 58.5vw), 0vh)",
+      "translate(calc(75vw - 43.5vw), 20vh)",
+    ],
+  ],
+  [
+    3,
+    [
+      "translate(calc(75vw - 60vw), 0vh)",
+      "translate(calc(75vw - 45vw),20vh)",
+      "translate(calc(75vw - 55vw),50vh)",
+
+      "translate(calc(75vw - 58.5vw), 0vh)",
+      "translate(calc(75vw - 43.5vw), 20vh)",
+      "translate(calc(75vw - 53.5vw),50vh)",
+    ],
+  ],
+  [
+    4,
+    [
+      "translate(calc(75vw - 60vw), 0vh)",
+      "translate(calc(75vw - 45vw),20vh)",
+      "translate(calc(75vw - 55vw),50vh)",
+      "translate(-15vw,50vh)",
+
+      "translate(calc(75vw - 58.5vw), 0vh)",
+      "translate(calc(75vw - 43.5vw), 20vh)",
+      "translate(calc(75vw - 53.5vw),50vh)",
+      "translate(-13.5vw,50vh)",
+    ],
+  ],
+  [
+    5,
+    [
+      "translate(calc(75vw - 60vw), 0vh)",
+      "translate(calc(75vw - 45vw),20vh)",
+      "translate(calc(75vw - 55vw),50vh)",
+      "translate(-15vw,50vh)",
+      "translate(-32vw,20vh)",
+
+      "translate(calc(75vw - 58.5vw), 0vh)",
+      "translate(calc(75vw - 43.5vw), 20vh)",
+      "translate(calc(75vw - 53.5vw),50vh)",
+      "translate(-13.5vw,50vh)",
+      "translate(-30.5vw,20vh)",
+    ],
+  ],
   [
     6,
     [
@@ -34,7 +86,7 @@ const cardPosition = new Map([
   ],
 ]);
 
-function DumyCard() {
+function DumyCard({ cardHandling, counts, setCardHandling }) {
   const cards = myArray.map((d, index) => (
     <img
       key={`cardNo${index}`}
@@ -78,9 +130,20 @@ function DumyCard() {
     }, 500);
   };
 
-  setTimeout(() => {
-    autoCardHealding(cardPosition, 6);
-  }, 2000);
+  useEffect(() => {
+    cardHandling &&
+      counts[0].players.length >= 2 &&
+      autoCardHealding(cardPosition, counts[0].players.length);
+    console.log(cardHandling);
+  }, [cardHandling]);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setCardHandling(true);
+    }, 9000);
+
+    return () => clearTimeout(timeoutId);
+  }, []);
 
   // useEffect(() => {
   //   autoCardHealding(cardPosition, 6);

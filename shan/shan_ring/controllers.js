@@ -5,6 +5,7 @@ const catchAsync = require("../../utils/catchAsync");
 const User = require("../../users/userModels");
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
+const {all} = require("express/lib/application");
 
 // Create Shan Play Ring From Admin
 exports.createShanRingFromAdmin = catchAsync(async (req, res) => {
@@ -79,6 +80,22 @@ exports.createShanRingFromAdmin = catchAsync(async (req, res) => {
   }
 });
 
+// get all ring
+exports.getAllRing = catchAsync(async (req,res,next)=>{
+  try {
+    const allRings = await ShanPlayRing.find({})
+    res.status(200).json({
+      status:'succeed',
+      data:allRings
+    })
+  }catch (e) {
+    res.status(500).json({
+      status:'failed',
+      message:'Error While getting all rings'
+    })
+  }
+})
+
 // Read Shan Ring By Shan Roll
 exports.getShingRingByShanRoll = catchAsync(async (req, res) => {
   try {
@@ -113,30 +130,38 @@ exports.enterShanRing = catchAsync(async (req,res,next)=>{
           message:'The Ring You selected doesn\'t exist.'
         })
       }
-      if(userSelectedRing.players.length === 6){
-        res.status(400).json({
-          status:'failed',
-          message:"The ring you selected has been full."
-        })
-      }
-      if(currentUser.gameUnit < userSelectedRing.banker_amount && currentUser.gameUnit > roleOfCurrentRing.max_amount ){
-        res.status(400).json({
-          status:'failed',
-          message:'You can\'t join this ring . You don\'t have sufficient game unit (or) You have more game unit than the ring max amount.'
-        })
-      }
+    if(currentUser.gameUnit < userSelectedRing.banker_amount && currentUser.gameUnit > roleOfCurrentRing.max_amount ) {
+      res.status(400).json({
+        status: 'failed',
+        message: 'You can\'t join this ring . You don\'t have sufficient game unit (or) You have more game unit than the ring max amount.'
+      })
+    }
+    if (userSelectedRing.players.length === 6) {
+      res.status(400).json({
+        status: 'failed',
+        message: "The ring you selected has been full."
+      });
+    } else {
       const newPlayerObject = {
         userId: currentUser._id,
-        player_roll:"player",
-        game_unit:currentUser.gameUnit
+        player_roll: "player",
+        game_unit: currentUser.gameUnit
+      };
+
+      if (userSelectedRing.players.length < 6) {
+        userSelectedRing.players.push(newPlayerObject); // Add the new player to the players array
+        await userSelectedRing.save(); // Save the updated ring with the new player
+        res.status(200).json({
+          status: 'succeed',
+          data: userSelectedRing
+        });
+      } else {
+        res.status(400).json({
+          status: 'failed',
+          message: "The ring you selected has been full."
+        });
       }
-      const updatedRing = await ShanPlayRing.findByIdAndUpdate(req.body.ringId,{
-        $push:{players: newPlayerObject}
-      },{new:true});
-      res.status(200).json({
-        status:'succeed',
-        data:updatedRing,
-      })
+    }
   }catch (e) {
     res.json({
       status:'failed',

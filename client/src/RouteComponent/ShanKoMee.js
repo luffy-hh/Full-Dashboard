@@ -5,7 +5,9 @@ import ShanGame from "../GameApp/Pages/ShanGame/ShanGame";
 function ShanKoMee() {
   return (
     <Routes>
-      <Route path="/shankomee" element={<ShanGame />} />
+      <Route path="shankomee">
+        <Route path=":tableId" element={<ShanGame />} />
+      </Route>
     </Routes>
   );
 }
