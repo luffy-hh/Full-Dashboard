@@ -8,7 +8,7 @@ function PlayerTop({ data, showAns }) {
       <div className={styles.player_card}>
         <div>
           <div className={styles.userInfo_top}>
-            <p className={styles.player_data}>{data.player_roll}</p>
+            <p className={styles.player_data}>{data.userId.name}</p>
             <p className={styles.player_data}>{data.game_unit}K</p>
           </div>
           <div className={styles.user_box}>

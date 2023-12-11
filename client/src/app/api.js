@@ -1,4 +1,7 @@
-const BASE_URL = "https://gamevegas.online/api/v1/"; //
+// local api => "http://localhost:5000/api/v1/"
+// testing api => "https://gamevegas.online/api/v1/"
+// production api => "Still not come"
+const BASE_URL = "http://localhost:5000/api/v1/";
 
 export const fetchData = async (api) => {
   try {

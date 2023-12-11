@@ -1,0 +1,14 @@
+-	Admin						-	0 + 100000 + 10000000
+	-	User Name / Password
+	-	Unit	Create			=>	10000000 + 1000000
+							=>	Date / Time
+	-	Master Account Create
+		-	User Name
+		-	Password
+		-	game %
+
+
+-	Master
+-	Agent
+-	Affiliate Agent
+-	User

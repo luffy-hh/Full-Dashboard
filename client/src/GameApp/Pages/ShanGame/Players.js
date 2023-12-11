@@ -13,8 +13,8 @@ function Players({ data, showAns }) {
             alt="player3"
           />
           <div className={styles.userInfo}>
-            <p className={styles.player_data}>Aye Aye</p>
-            <p className={styles.player_data}>$ 59.4K</p>
+            <p className={styles.player_data}>{data.userId.name}</p>
+            <p className={styles.player_data}>{data.game_unit}</p>
           </div>
         </div>
         {showAns && <DumyAns top={"1rem"} />}

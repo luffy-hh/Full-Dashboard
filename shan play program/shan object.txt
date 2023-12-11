@@ -1,0 +1,328 @@
+ဖဲ	-	number
+	-	Type
+	-	value
+	-	name
+
+shan = [
+{
+type : "club"
+name : "A"
+value : 1
+},
+{
+type : "club"
+name : "2"
+value : 2
+},
+{
+type : "club"
+name : "3"
+value : 3
+},
+{
+type : "club"
+name : "4"
+value : 4
+},
+{
+type : "club"
+name : "5"
+value : 5
+},
+{
+type : "club"
+name : "6"
+value : 6
+},
+{
+type : "club"
+name : "7"
+value : 7
+},
+{
+type : "club"
+name : "8"
+value : 8
+},
+{
+type : "club"
+name : "9"
+value : 9
+},
+{
+type : "club"
+name : "10"
+value : 10
+},
+{
+type : "club"
+name : "jack"
+value : 10
+},
+{
+type : "club"
+name : "queen"
+value : 10
+},
+{
+type : "club-king"
+name : "king"
+value : 10
+},
+
+{
+type : "diamond"
+name : "A"
+value : 1
+},
+{
+type : "diamond"
+name : "2"
+value : 2
+},
+{
+type : "diamond"
+name : "3"
+value : 3
+},
+{
+type : "diamond"
+name : "4"
+value : 4
+},
+{
+type : "diamond"
+name : "5"
+value : 5
+},
+{
+type : "diamond"
+name : "6"
+value : 6
+},
+{
+type : "diamond"
+name : "7"
+value : 7
+},
+{
+type : "diamond"
+name : "8"
+value : 8
+},
+{
+type : "diamond"
+name : "9"
+value : 9
+},
+{
+type : "diamond"
+name : "10"
+value : 10
+},
+{
+type : "diamond"
+name : "jack"
+value : 10
+},
+{
+type : "diamond"
+name : "queen"
+value : 10
+},
+{
+type : "diamond"
+name : "king"
+value : 10
+},
+
+{
+type : "heart"
+name : "A"
+value : 1
+},
+{
+type : "heart"
+name : "2"
+value : 2
+},
+{
+type : "heart"
+name : "3"
+value : 3
+},
+{
+type : "heart"
+name : "4"
+value : 4
+},
+{
+type : "heart"
+name : "5"
+value : 5
+},
+{
+type : "heart"
+name : "6"
+value : 6
+},
+{
+type : "heart"
+name : "7"
+value : 7
+},
+{
+type : "heart"
+name : "8"
+value : 8
+},
+{
+type : "heart"
+name : "9"
+value : 9
+},
+{
+type : "heart"
+name : "10"
+value : 10
+},
+{
+type : "heart"
+name : "jack"
+value : 10
+},
+{
+type : "heart"
+name : "queen"
+value : 10
+},
+{
+type : "heart"
+name : "king"
+value : 10
+},
+
+{
+type : "spade"
+name : "A"
+value : 1
+},
+{
+type : "spade"
+name : "2"
+value : 2
+},
+{
+type : "spade"
+name : "3"
+value : 3
+},
+{
+type : "spade"
+name : "4"
+value : 4
+},
+{
+type : "spade"
+name : "5"
+value : 5
+},
+{
+type : "spade"
+name : "6"
+value : 6
+},
+{
+type : "spade"
+name : "7"
+value : 7
+},
+{
+type : "spade"
+name : "8"
+value : 8
+},
+{
+type : "spade"
+name : "9"
+value : 9
+},
+{
+type : "spade"
+name : "10"
+value : 10
+},
+{
+type : "spade"
+name : "jack"
+value : 10
+},
+{
+type : "spade"
+name : "queen"
+value : 10
+},
+{
+type : "spade"
+name : "king"
+value : 10
+},
+]
+
+
+users =[account1,account2,account3,account4,account5,account6,account7,account8,account9]
+
+account1 = {
+name : "user-1"
+amount : 30000,
+username : "account1@gmail.com",
+password : 12345678
+}
+account2 = {
+name : "user-2"
+amount : 30000,
+username : "account2@gmail.com",
+password : 12345678
+}
+account3 = {
+name : "user-3"
+amount : 30000,
+username : "account3@gmail.com",
+password : 12345678
+}
+account4 = {
+name : "user-4"
+amount : 30000,
+username : "account4@gmail.com",
+password : 12345678
+}
+account5 = {
+name : "user-5"
+amount : 30000,
+username : "account5@gmail.com",
+password : 12345678
+}
+account6 = {
+name : "user-6"
+amount : 30000,
+username : "account6@gmail.com",
+password : 12345678
+}
+account7 = {
+name : "user-7"
+amount : 30000,
+username : "account7@gmail.com",
+password : 12345678
+}
+account8 = {
+name : "user-8"
+amount : 30000,
+username : "account8@gmail.com",
+password : 12345678
+}
+account9 = {
+name : "user-9"
+amount : 30000,
+username : "account9@gmail.com",
+password : 12345678
+}

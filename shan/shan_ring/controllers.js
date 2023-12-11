@@ -83,7 +83,7 @@ exports.createShanRingFromAdmin = catchAsync(async (req, res) => {
 // get all ring
 exports.getAllRing = catchAsync(async (req,res,next)=>{
   try {
-    const allRings = await ShanPlayRing.find({})
+    const allRings = await ShanPlayRing.find({}).populate('players.userId', 'name')
     res.status(200).json({
       status:'succeed',
       data:allRings

@@ -19,8 +19,8 @@ const shanPlayRingSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["active", "in-active"],
-    default: "active",
+    enum: ["inactive", "active"],
+    default: "inactive",
   },
   game_round: {
     type: Number,
@@ -37,10 +37,19 @@ const shanPlayRingSchema = new mongoose.Schema({
         enum: ["banker", "player"],
         default: "banker",
       },
+      playingStatus:{
+        type:String,
+        enum:["playing","waiting"],
+        default:"waiting"
+      },
       game_unit: {
         type: Number,
         default: 0,
       },
+      finalResult:{
+        type:String,
+        enum:["win","lose"]
+      }
     },
   ],
 });
