@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ShowCard from "./ShowCard/ShowCard";
 import DragCard from "./Dragable/DragCard";
 
-function Players({ data, index, result, setResult }) {
+function Players({ data, index, result }) {
   const dispatch = useDispatch();
   const dragCardState = useSelector(selectDragCard);
   return (
@@ -37,7 +37,9 @@ function Players({ data, index, result, setResult }) {
         </div>
       </div>
       {result && <ShowCard index={index} data={data} />}
-      {index === 2 && dragCardState && <DragCard setResult={setResult} />}
+      {/* {index === 2 && dragCardState && (
+        <DragCard setResult={setResult} data={data} />
+      )} */}
     </div>
   );
 }

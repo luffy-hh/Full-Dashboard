@@ -57,6 +57,7 @@ const shanGame = {
   dragCard: false,
   pullCard: false,
   isBanker: false,
+  pullCardShow: false,
 };
 
 const initialState = {
@@ -136,6 +137,10 @@ const shan = createSlice({
 
     setPullCard: (state, action) => {
       state.shanGame.pullCard = action.payload;
+    },
+
+    setPullCardShow: (state, action) => {
+      state.shanGame.pullCardShow = action.payload;
     },
 
     setIsBanker: (state, action) => {
@@ -224,6 +229,7 @@ export const {
   setDragCard,
   setIsBanker,
   setPullCard,
+  setPullCardShow,
 } = shan.actions;
 
 // GAME STATE AND DATA========================================================
@@ -237,6 +243,7 @@ export const selectPlayerBetAmount = (state) =>
   state.shan.shanGame.playerBetAmount;
 export const selectDragCard = (state) => state.shan.shanGame.dragCard;
 export const selectPullCard = (state) => state.shan.shanGame.pullCard;
+export const selectPullCardShow = (state) => state.shan.shanGame.pullCardShow;
 export const selectIsBanker = (state) => state.shan.shanGame.isBanker;
 
 // GAME STATE AND DATA========================================================

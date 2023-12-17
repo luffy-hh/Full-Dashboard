@@ -12,15 +12,14 @@ import {
 } from "../../../Feactures/shan";
 import { useSelector, useDispatch } from "react-redux";
 import AllPlayer from "./AllPlayer";
-import PullCard from "./PullCard/PullCard";
 
 function ShanGame() {
   const { tableId } = useParams();
+  const randomNumber = Math.floor(Math.random() * 10) + 1;
 
   const dispatch = useDispatch();
   const shanGameRing = useSelector(selectShanGameRing);
   const bettingTime = useSelector(selectBettingTime);
-  const pullCard = useSelector(selectPullCard);
 
   useEffect(() => {
     dispatch(fetGetShanGameRing("shanRing"));
@@ -33,7 +32,7 @@ function ShanGame() {
 
   const [result, setResult] = useState(false);
   const [cardHandling, setCardHandling] = useState(false);
-
+  const [win, setWin] = useState(false);
   return (
     <div className={styles.shan_game}>
       <div className={styles.shan_table}>
@@ -44,11 +43,18 @@ function ShanGame() {
             cardHandling={cardHandling}
             counts={mainObj}
             setCardHandling={setCardHandling}
+            setResult={setResult}
+            number={randomNumber}
           />
         )}
 
         {shanGameRing && (
-          <AllPlayer data={mainObj} result={result} setResult={setResult} />
+          <AllPlayer
+            data={mainObj}
+            result={result}
+            setResult={setResult}
+            number={randomNumber}
+          />
         )}
       </div>
       {bettingTime && <BettingAmount />}

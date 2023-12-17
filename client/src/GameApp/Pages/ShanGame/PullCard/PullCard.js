@@ -1,17 +1,24 @@
 import React from "react";
 import NormalButton from "../../../../Component/NormalButton";
-import { selectIsBanker } from "../../../../Feactures/shan";
-import { useSelector } from "react-redux";
+import { selectIsBanker, setPullCardShow } from "../../../../Feactures/shan";
+import { useSelector, useDispatch } from "react-redux";
 import styles from "./PullCard.module.css";
 
-function PullCard() {
+function PullCard({ update }) {
   const isBanker = useSelector(selectIsBanker);
+  const dispatch = useDispatch();
+
   const pullCardFun = () => {
     let selectCard = document.getElementById(`dummy_cards_pull_img`);
     selectCard.style.opacity = "1";
     selectCard.style.transform = `translate(${75 - 53}vw, 49vh) rotate(10deg)`;
-
     selectCard.style.width = "5rem";
+    update();
+    dispatch(setPullCardShow(true));
+  };
+
+  const handleStop = () => {
+    dispatch(setPullCardShow(true));
   };
   return (
     <>
@@ -22,7 +29,9 @@ function PullCard() {
         </div>
       ) : (
         <div className={styles.btn_stop_pull}>
-          <NormalButton className={styles.stop_btn}>Stop</NormalButton>
+          <NormalButton className={styles.stop_btn} onClick={handleStop}>
+            Stop
+          </NormalButton>
           <NormalButton onClick={pullCardFun} className={styles.pull_btn}>
             Pull
           </NormalButton>

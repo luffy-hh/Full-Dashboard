@@ -1,5 +1,7 @@
 import React from "react";
 import styles from "./ShowCard.module.css";
+import { selectPullCardShow } from "../../../../Feactures/shan";
+import { useSelector } from "react-redux";
 
 const shan = [
   {
@@ -268,7 +270,7 @@ const shan = [
 ];
 
 function ShowCard({ index, data }) {
-  console.log(shan[data?.shan[0]].type);
+  const pullCardShow = useSelector(selectPullCardShow);
   return (
     <div className={`${styles.show_card} ${styles[`show_card_${index}`]}`}>
       <div className={styles.cards_box}>
@@ -280,8 +282,10 @@ function ShowCard({ index, data }) {
           src={`/shangame/Cards/${shan[data.shan[1]].type}.png`}
           className={styles.show_card_two}
         />
-        <p className={styles.win_lose}>{data.result}</p>
-        <p className={styles.speak}>{data.speakValue}</p>
+
+        {pullCardShow && <p className={styles.speak}>{data.speakValue}</p>}
+        {pullCardShow && <p className={styles.win_lose}>{data.result}</p>}
+        {!pullCardShow && <p className={styles.speak}>{data.speakValue} </p>}
       </div>
     </div>
   );

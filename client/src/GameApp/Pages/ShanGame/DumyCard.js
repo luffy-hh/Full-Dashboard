@@ -1,7 +1,11 @@
 import React, { useEffect } from "react";
 import styles from "./ShanGame.module.css";
 
-import { setBettingTime, setDragCard } from "../../../Feactures/shan";
+import {
+  setBettingTime,
+  setDragCard,
+  setPullCard,
+} from "../../../Feactures/shan";
 import { useDispatch } from "react-redux";
 const myArray = Array(12).fill("/shangame/playCard/PeterRiver.png");
 
@@ -88,8 +92,26 @@ const cardPosition = new Map([
   ],
 ]);
 
-function DumyCard({ cardHandling, counts, setCardHandling }) {
+function DumyCard({
+  cardHandling,
+  counts,
+  setCardHandling,
+  setResult,
+  number,
+}) {
   const dispatch = useDispatch();
+
+  const showAllCard = () => {
+    const cardAll = document.getElementById("dummy_cards_all");
+    cardAll.remove();
+  };
+
+  const handleShow = () => {
+    showAllCard();
+    setResult(true);
+    // dispatch(setDragCard(false));
+    dispatch(setPullCard(true));
+  };
   const cards = myArray.map((d, index) => (
     <img
       key={`cardNo${index}`}
@@ -127,9 +149,8 @@ function DumyCard({ cardHandling, counts, setCardHandling }) {
         indexCount++;
       } else {
         clearInterval(intervalId);
-        dispatch(setDragCard(true));
-
-        // dragElement(dragable, dragzone);
+        // dispatch(setDragCard(true));
+        handleShow();
 
         return;
       }
@@ -164,7 +185,7 @@ function DumyCard({ cardHandling, counts, setCardHandling }) {
         </div>
         <div id="dummy_cards_pull" className={styles.dummy_card_container}>
           <img
-            src="/shangame/Cards/Spade10.png"
+            src={`/shangame/Cards/Spade${number}.png`}
             className={styles.cards_img}
             id="dummy_cards_pull_img"
           />

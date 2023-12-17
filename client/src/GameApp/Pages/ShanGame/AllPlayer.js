@@ -1,9 +1,13 @@
 import React from "react";
 import PlayerTop from "./PlayerTop";
 import Players from "./Players";
+import PullCard from "./PullCard/PullCard";
+import { selectPullCard } from "../../../Feactures/shan";
+import { useSelector } from "react-redux";
 
-function AllPlayer({ data, result, setResult }) {
-  console.log(data && data, "from all");
+function AllPlayer({ data, result, setResult, number }) {
+  const pullCard = useSelector(selectPullCard);
+
   const accounts = data[0]?.players.map((item, index) => {
     if (index === 0) {
       return {
@@ -11,6 +15,7 @@ function AllPlayer({ data, result, setResult }) {
         position: { top: "-8rem", right: `calc(75vw - 65vw)` },
         shan: [],
         shanValue: [],
+
         shanFinalValue: 0,
       };
     } else if (index === 1) {
@@ -19,6 +24,7 @@ function AllPlayer({ data, result, setResult }) {
         position: { top: "7rem", right: `calc(75vw - 78vw)` },
         shan: [],
         shanValue: [],
+
         shanFinalValue: 0,
       };
     } else if (index === 2) {
@@ -27,6 +33,7 @@ function AllPlayer({ data, result, setResult }) {
         position: { bottom: "-7rem", right: `calc(75vw - 60vw)` },
         shan: [],
         shanValue: [],
+
         shanFinalValue: 0,
       };
     } else if (index === 3) {
@@ -35,6 +42,7 @@ function AllPlayer({ data, result, setResult }) {
         position: { bottom: "-7rem", left: `calc(75vw - 60vw)` },
         shan: [],
         shanValue: [],
+
         shanFinalValue: 0,
       };
     } else if (index === 4) {
@@ -51,7 +59,9 @@ function AllPlayer({ data, result, setResult }) {
         position: { top: "-8rem", left: `calc(75vw - 65vw)` },
         shan: [],
         shanValue: [],
+        pullValue: [],
         shanFinalValue: 0,
+        pullFinalValue: 0,
       };
     } else {
       return item;
@@ -347,10 +357,6 @@ function AllPlayer({ data, result, setResult }) {
   accounts.forEach((acc, i) => acc.shan.push(shanArray[i]));
   shanArray.splice(0, 9);
 
-  console.log(accounts);
-  console.log(shanArray);
-  console.log(accounts);
-
   accounts.forEach((acc) => acc.shanValue.push(shan[acc.shan[0]].value));
   accounts.forEach((acc) => acc.shanValue.push(shan[acc.shan[1]].value));
 
@@ -362,7 +368,6 @@ function AllPlayer({ data, result, setResult }) {
   accounts.forEach(
     (acc) => (acc.shanFinalValue = Number(acc.total.toString().slice(-1)))
   );
-  console.log("final", accounts);
 
   for (let i = 0; i < accounts.length; i++) {
     if (accounts[i].shanFinalValue === 0) {
@@ -377,7 +382,6 @@ function AllPlayer({ data, result, setResult }) {
   }
 
   const [bankerObject] = accounts.filter((acc) => acc.player_roll === "banker");
-  console.log(bankerObject);
 
   for (let i = 0; i < accounts.length; i++) {
     if (accounts[i].hasOwnProperty("banker")) {
@@ -390,7 +394,42 @@ function AllPlayer({ data, result, setResult }) {
     }
   }
 
-  console.log(accounts, "account");
+  //after action
+
+  const update = () => {
+    accounts[2].total += number;
+
+    accounts.forEach(
+      (acc) => (acc.shanFinalValue = Number(acc.total.toString().slice(-1)))
+    );
+
+    for (let i = 0; i < accounts.length; i++) {
+      if (accounts[i].shanFinalValue === 0) {
+        accounts[i].speakValue = "Buu";
+      } else if (accounts[i].shanFinalValue === 8) {
+        accounts[i].speakValue = "8 Doo";
+      } else if (accounts[i].shanFinalValue === 9) {
+        accounts[i].speakValue = "9 Doo";
+      } else {
+        accounts[i].speakValue = accounts[i].shanFinalValue;
+      }
+    }
+
+    const [bankerObject] = accounts.filter(
+      (acc) => acc.player_roll === "banker"
+    );
+
+    for (let i = 0; i < accounts.length; i++) {
+      if (accounts[i].hasOwnProperty("banker")) {
+        continue;
+      }
+      if (accounts[i].shanFinalValue >= bankerObject.shanFinalValue) {
+        accounts[i].result = "Win";
+      } else {
+        accounts[i].result = "Lose";
+      }
+    }
+  };
 
   return (
     <>
@@ -412,7 +451,6 @@ function AllPlayer({ data, result, setResult }) {
                 data={d}
                 index={index}
                 result={result}
-                setResult={setResult}
               />
             );
           }
@@ -420,6 +458,8 @@ function AllPlayer({ data, result, setResult }) {
           return;
         }
       })}
+
+      {pullCard && <PullCard update={update} />}
     </>
   );
 }
