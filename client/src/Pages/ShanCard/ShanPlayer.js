@@ -15,6 +15,7 @@ function ShanPlayer({ players }) {
     <div
       className={styles.shan_player}
       style={{ top: position[i].ver, left: position[i].hor }}
+      key={`shan_player${i}`}
     >
       <div className={styles.shan_player_name}>
         <img className={styles.profile} src="/img/Shan/Profile.png" />

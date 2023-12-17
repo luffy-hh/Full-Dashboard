@@ -12,12 +12,12 @@ function Dropdown({ width, title, list }) {
   const dispatch = useDispatch();
   return (
     <section className={styles.dropdown_container} style={{ width: width }}>
-      <div className={styles.dropdown}>
+      <div
+        className={styles.dropdown}
+        onClick={() => dispatch(setShowDropDown())}
+      >
         <span>{title}</span>
-        <span
-          className={styles.dropdown_icon}
-          onClick={() => dispatch(setShowDropDown())}
-        >
+        <span className={styles.dropdown_icon}>
           <AiFillCaretDown />
         </span>
       </div>

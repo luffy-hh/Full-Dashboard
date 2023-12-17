@@ -1,0 +1,74 @@
+.show_card {
+  position: absolute;
+}
+
+.cards_box {
+  display: flex;
+  position: relative;
+}
+
+.show_card_0 {
+  top: 10vh;
+  left: -5vw;
+}
+
+.show_card_1 {
+  top: 0vh;
+  right: 5vw;
+}
+
+.show_card_2 {
+  bottom: 10vh;
+  left: 5vw;
+}
+
+.show_card_3 {
+  bottom: 10vh;
+  left: 5vw;
+}
+
+.show_card_4 {
+  bottom: 10vh;
+  left: 5vw;
+}
+
+.show_card_5 {
+  top: 10vh;
+  left: 8vw;
+}
+
+.cards_box img {
+  width: 5rem;
+}
+
+.show_card_one {
+  rotate: -10deg;
+}
+
+.show_card_two {
+  margin-left: -3rem;
+  rotate: 5deg;
+  z-index: 2;
+}
+
+.win_lose {
+  font-size: 2rem;
+  z-index: 100;
+  color: var(--primary);
+  font-weight: 600;
+  position: absolute;
+  bottom: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.speak {
+  font-size: 1.8rem;
+  z-index: 100;
+  color: var(--blue);
+  font-weight: 500;
+  position: absolute;
+  left: 30%;
+  top: 20%;
+  transform: translateX(-30%);
+}

@@ -15,8 +15,13 @@ import {
 } from "../../Feactures/twoDapiSlice";
 import styles from "./LuckyNumber.module.css";
 import LuckyNoBox from "../../Component/CustomBox/LuckyNoBox";
+import BackTo from "../../Component/BackIcon/BackTo";
 
-function ThreeDLuckyNo() {
+function ThreeDLuckyNo({
+  setLuckyNoShow,
+  setLuckyTwoDShow,
+  setLucyThreeDShow,
+}) {
   const luckyNoHead = useSelector(selectThreeDLuckyNoHead);
   const dispatch = useDispatch();
   const luckyNoData = useSelector(selectThreeDLuckyNo);
@@ -55,6 +60,11 @@ function ThreeDLuckyNo() {
       />
       <div className={`box_shadow ${styles.lucky_number_container}`}>
         <Container className={styles.lucky_number_header}>
+          <BackTo
+            setLuckyNoShow={setLuckyNoShow}
+            setLuckyTwoDShow={setLuckyTwoDShow}
+            setLucyThreeDShow={setLucyThreeDShow}
+          />
           <p>3D LuckyNumber</p>
           <NormalButton
             onClick={() => dispatch(setModalLucky(true))}

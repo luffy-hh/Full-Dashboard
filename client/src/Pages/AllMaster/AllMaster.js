@@ -26,6 +26,7 @@ import {
   selectPostMasterStatus,
   fetchPostAllMaster,
   selectPostTransfer,
+  setPostMaster,
 } from "../../Feactures/apiSlice";
 import NormalButton from "../../Component/NormalButton";
 import Container from "../../Component/Container";
@@ -76,6 +77,11 @@ function AllMaster() {
       />
     );
 
+  const handleCreate = () => {
+    dispatch(masterFun());
+    dispatch(setPostMaster());
+  };
+
   return (
     <div className={styles.allusesPage}>
       {showMaster ? (
@@ -85,7 +91,7 @@ function AllMaster() {
               <p>Member</p>
               <Searchbar query={masterQuery} setQuery={setMasterQuery} />
               <NormalButton
-                onClick={() => dispatch(masterFun())}
+                onClick={handleCreate}
                 className={styles.add_new_btn}
               >
                 Create Master
@@ -111,6 +117,7 @@ function AllMaster() {
           postFun={fetchPostAllMaster}
           status={selectPostMasterStatus}
           upLineData={null}
+          postAllUser={postMaster}
         />
       )}
     </div>

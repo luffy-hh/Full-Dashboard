@@ -6,10 +6,19 @@ import GameLayout from "../GameApp/Pages/Layout/GameLayout";
 import GameUserLogin from "../GameApp/Pages/LoginPage/GameUserLogin";
 
 function Game() {
-  const [showform, setShowForm] = useState(true);
+  const [showform, setShowForm] = useState(false);
   return (
     <Routes>
-      <Route path="/" element={showform ? <GameLayout /> : <GameUserLogin />}>
+      <Route
+        path="/"
+        element={
+          showform ? (
+            <GameLayout />
+          ) : (
+            <GameUserLogin setShowForm={setShowForm} />
+          )
+        }
+      >
         <Route index element={<GameHome />} />
         <Route path="twothree" element={<GameTwoD />} />
       </Route>

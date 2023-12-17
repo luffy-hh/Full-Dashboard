@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./GameForm.module.css";
 import NormalButton from "../../../Component/NormalButton";
 
-function GameLoginForm({ changeForm }) {
+function GameLoginForm({ changeForm, setShowForm }) {
   return (
     <form
       style={{
@@ -30,7 +30,12 @@ function GameLoginForm({ changeForm }) {
         <label htmlFor="password">Pasword</label>
         <input id="password" type="email" />
       </div>
-      <NormalButton className={styles.game_login_btn}>Log In</NormalButton>
+      <NormalButton
+        className={styles.game_login_btn}
+        onClick={() => setShowForm(true)}
+      >
+        Log In
+      </NormalButton>
       <p
         onClick={() => changeForm()}
         className={`${styles.alreaytext} ${styles.create}`}

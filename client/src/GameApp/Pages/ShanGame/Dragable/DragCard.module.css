@@ -1,0 +1,54 @@
+.modal {
+  position: absolute;
+  width: 80vw;
+  background-image: linear-gradient(
+    to bottom,
+    rgba(15, 23, 42, 0.514),
+    rgb(15, 23, 42)
+  );
+  height: 80vh;
+  top: -50vh;
+  left: -50vw;
+
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  z-index: 10;
+  border-radius: 9px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card_box {
+  display: flex;
+  position: relative;
+}
+.front_card_one,
+.back_card_one,
+.front_card_two {
+  width: 15rem;
+  height: 23rem;
+}
+
+.front_card_two {
+  position: absolute;
+  left: 5rem;
+  display: none;
+}
+
+.dragable {
+  width: 15rem;
+  height: 23rem;
+  position: absolute;
+  z-index: 9;
+  transition: border-color 1s, box-shadow 0.2s;
+}
+
+.dragable .dragzone {
+  width: 80px;
+  height: 120px;
+  cursor: move;
+  z-index: 10;
+}
+.back_card_one {
+  position: absolute;
+}

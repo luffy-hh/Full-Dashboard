@@ -41,6 +41,7 @@ function ThaiTwoD12am() {
   }, []);
 
   console.log(selectText);
+
   useEffect(() => {
     if (selectText.includes("3d")) {
       console.log("3dapi");

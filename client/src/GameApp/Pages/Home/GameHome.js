@@ -12,7 +12,7 @@ function GameHome() {
       }}
       className={styles.home_page}
     >
-      {/* <GameBurmesCaur burmesData={burmesData} /> */}
+      <h1>I am home</h1>
     </div>
   );
 }

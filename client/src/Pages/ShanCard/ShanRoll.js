@@ -23,7 +23,7 @@ function ShanRoll() {
   const shanRollData = shanRoll?.data.allShanRoll;
 
   const list = shanRollData?.map((d) => (
-    <div className={styles.shan_roll_card}>
+    <div key={d._id} className={styles.shan_roll_card}>
       <img src="/img/diamond.jpg" alt="grade_photo" />
       <div className={styles.shan_roll_description}>
         <p>{d.description}</p>

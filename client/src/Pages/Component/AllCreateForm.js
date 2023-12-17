@@ -8,9 +8,19 @@ import Button from "../../Component/Button";
 import styles from "./AllCreateForm.module.css";
 import CancelHot from "../../GameApp/Comoponent/HotNumber/CancelHot";
 import CopyText from "../../Component/CopyText/CopyText";
+import Error from "../../Component/ErrorandSuccess/Error";
+import Success from "../../Component/ErrorandSuccess/Success";
 import Dropdown from "../../Component/Dropdown/Dropdown";
 
-function AllCreateForm({ hideFun, data, role, postFun, status, upLineData }) {
+function AllCreateForm({
+  hideFun,
+  data,
+  role,
+  postFun,
+  status,
+  upLineData,
+  postAllUser,
+}) {
   const logInData = useSelector(selectlogInData);
   const showRole = role === "User" ? "Select Agent List" : "Select Master List";
   const [name, setName] = useState("");
@@ -95,7 +105,6 @@ function AllCreateForm({ hideFun, data, role, postFun, status, upLineData }) {
   const postHandle = (e, postFun) => {
     e.preventDefault();
     dispatch(postFun({ api: "user/signup", postData }));
-
     setCopyPass(password);
     setName("");
     setPassword("");
@@ -109,25 +118,17 @@ function AllCreateForm({ hideFun, data, role, postFun, status, upLineData }) {
       <Container className={styles.master_form_container}>
         <form className={styles.master_form}>
           <Container className={styles.master_form_grid}>
+            {postAllUser.status === "success" && (
+              <Success message={"Account created successfully"} />
+            )}
+
+            {postAllUser.status === "fail" && (
+              <Error message={postAllUser.message.message} />
+            )}
+
             {addAgentOrMaster && (
               <Container className={styles.option_form}>
-                {/* <select
-                  value={uplineId}
-                  onChange={(e) => setUpLineId(e.target.value)}
-                >
-                  {role === "User" && (
-                    <option value="">Select Agent List</option>
-                  )}
-                  {role === "Agent" && (
-                    <option value="">Select Master List</option>
-                  )}
-                  {optionList}
-                </select> */}
-                <Dropdown
-                  width={"40rem"}
-                  title={selectName}
-                  list={optionList}
-                />
+                <Dropdown width={"100%"} title={selectName} list={optionList} />
               </Container>
             )}
 

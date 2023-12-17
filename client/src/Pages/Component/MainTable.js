@@ -11,6 +11,7 @@ import styles from "./AllusersTable.module.css";
 import UserDetailBox from "../../Component/CustomBox/UserDetail/UserDetailBox";
 import NormalButton from "../../Component/NormalButton";
 import { Link } from "react-router-dom";
+import CopyID from "../../Component/CopyText/CopyID";
 
 function MainTable({ data, dataArr, query, downLine }) {
   const admin = data === "admin";
@@ -44,7 +45,7 @@ function MainTable({ data, dataArr, query, downLine }) {
               {d.name}
             </span>
           </td>
-          <td>{d.userId}</td>
+          <CopyID id={d.userId} />
           {admin ? null : <td>{d.unit}</td>}
           {downLine && (
             <td>

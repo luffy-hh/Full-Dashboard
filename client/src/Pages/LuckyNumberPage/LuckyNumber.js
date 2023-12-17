@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -6,6 +6,15 @@ import {
   selectAllTwoDArr,
   fetGetSubGameCat,
 } from "../../Feactures/twoDapiSlice";
+
+import {
+  selectLuckyTwoDShow,
+  selectLuckyNoShow,
+  selectLuckyThreeDShow,
+  setLucyThreeDShow,
+  setLuckyTwoDShow,
+  setLuckyNoShow,
+} from "../../Feactures/adminTwodSlice";
 
 import { selectlogInData } from "../../Feactures/apiSlice";
 
@@ -15,14 +24,13 @@ import TwoDLuckyNo from "./TwoDLuckyNo";
 import ThreeDLuckyNo from "./ThreeDLuckyNo";
 
 function LuckyNumber() {
-  const [show, setShow] = useState(false);
-  const [threeDshow, setThreeDShow] = useState(false);
-  const [twoDShow, setTwoDShow] = useState(false);
-
   const dispatch = useDispatch();
   const logInData = useSelector(selectlogInData);
   const accessToken = logInData.token;
   const allTwoDArr = useSelector(selectAllTwoDArr);
+  const luckyNoShow = useSelector(selectLuckyNoShow);
+  const luckyTwoDShow = useSelector(selectLuckyTwoDShow);
+  const luckyThreeDShow = useSelector(selectLuckyThreeDShow);
 
   useEffect(() => {
     dispatch(fetGetGameCat({ api: "gamecat", accessToken }));
@@ -31,17 +39,28 @@ function LuckyNumber() {
 
   return (
     <div className="page_style">
-      {!show && (
+      {!luckyNoShow && (
         <LuckyNoCategory
-          show={show}
-          setShow={setShow}
-          setThreeDShow={setThreeDShow}
-          setTwoDShow={setTwoDShow}
+          setLuckyNoShow={setLuckyNoShow}
+          setLuckyTwoDShow={setLuckyTwoDShow}
+          setLucyThreeDShow={setLucyThreeDShow}
           allDArr={allTwoDArr}
         />
       )}
-      {twoDShow && <TwoDLuckyNo />}
-      {threeDshow && <ThreeDLuckyNo />}
+      {luckyTwoDShow && (
+        <TwoDLuckyNo
+          setLuckyNoShow={setLuckyNoShow}
+          setLuckyTwoDShow={setLuckyTwoDShow}
+          setLucyThreeDShow={setLucyThreeDShow}
+        />
+      )}
+      {luckyThreeDShow && (
+        <ThreeDLuckyNo
+          setLuckyNoShow={setLuckyNoShow}
+          setLuckyTwoDShow={setLuckyTwoDShow}
+          setLucyThreeDShow={setLucyThreeDShow}
+        />
+      )}
     </div>
   );
 }

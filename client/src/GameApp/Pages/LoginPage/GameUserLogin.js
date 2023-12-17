@@ -4,7 +4,7 @@ import Container from "../../../Component/Container";
 import GameSignUp from "./GameSignUp";
 import GameLoginForm from "./GameLoginForm";
 
-function GameUserLogin() {
+function GameUserLogin({ setShowForm }) {
   const [showSignup, setShowSignup] = useState(true);
 
   const changeForm = () => {
@@ -23,9 +23,9 @@ function GameUserLogin() {
         }}
       >
         {showSignup ? (
-          <GameSignUp changeForm={changeForm} />
+          <GameSignUp changeForm={changeForm} setShowForm={setShowForm} />
         ) : (
-          <GameLoginForm changeForm={changeForm} />
+          <GameLoginForm changeForm={changeForm} setShowForm={setShowForm} />
         )}
       </div>
     </Container>

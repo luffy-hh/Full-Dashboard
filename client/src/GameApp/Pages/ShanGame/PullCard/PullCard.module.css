@@ -1,0 +1,23 @@
+.btn_stop_pull {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.stop_btn,
+.pull_btn {
+  padding: 8px 1.6rem;
+  font-size: 1.6rem;
+  color: var(--text-white);
+}
+
+.stop_btn {
+  background-color: var(--red-light);
+}
+
+.pull_btn {
+  background-color: var(--green-light);
+}

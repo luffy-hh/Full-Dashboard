@@ -1,8 +1,9 @@
-aside {
+.admin_aside {
+  position: fixed;
   width: 28rem;
   background-color: #1f2937;
   height: 95vh;
-  position: fixed;
+
   overflow-y: auto;
   overflow-x: hidden;
   padding-bottom: 3.2rem;

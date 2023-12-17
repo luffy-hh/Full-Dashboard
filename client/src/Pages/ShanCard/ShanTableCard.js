@@ -23,11 +23,12 @@ function ShanTableCard() {
   }, [rollIds]);
 
   const shanRingData = shanRing?.data.allShanRing;
+  console.log(shanRing && shanRing);
   return (
     <div className={styles.shan_ring_container}>
       {shanRingData &&
         shanRingData.map((d) => (
-          <div className={styles.shan_ring_box}>
+          <div className={styles.shan_ring_box} key={d._id}>
             <div className={styles.shan_ring}>
               <ShanPlayer players={d.players} />
               <p className={styles.ring_name}>{d.ring_name}</p>

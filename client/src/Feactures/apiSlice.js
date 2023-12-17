@@ -320,6 +320,18 @@ const dataSlice = createSlice({
         d._id === action.payload ? { ...d, status: !d.status } : d
       );
     },
+
+    setPostUser: (state) => {
+      state.postUser = {};
+    },
+
+    setPostAgent: (state) => {
+      state.postAgent = {};
+    },
+
+    setPostMaster: (state) => {
+      state.postMaster = {};
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -495,7 +507,9 @@ const dataSlice = createSlice({
         state.postUserStatus = "succeeded";
         state.postUser = action.payload;
 
-        if (state.postUser.status === "Success") {
+        console.log(state.postUser);
+
+        if (state.postUser.status === "success") {
           state.modalCopyText = true;
           state.copyId = state.postUser.data.user.userId;
         }
@@ -514,9 +528,9 @@ const dataSlice = createSlice({
 
         state.postAgent = action.payload;
 
-        if (state.postAgentStatus === "succeeded") {
+        if (state.postAgent.status === "success") {
           state.modalCopyText = true;
-          state.copyId = state.postAgent?.data.user.userId;
+          state.copyId = state.postAgent.data.user.userId;
         }
       })
       .addCase(fetchPostAllAgent.rejected, (state, action) => {
@@ -531,8 +545,11 @@ const dataSlice = createSlice({
       .addCase(fetchPostAllMaster.fulfilled, (state, action) => {
         state.postMasterStatus = "succeeded";
         state.postMaster = action.payload;
-        state.modalCopyText = true;
-        state.copyId = state.postMaster.data.user.userId;
+
+        if (state.postMaster.status === "success") {
+          state.modalCopyText = true;
+          state.copyId = state.postMaster.data.user.userId;
+        }
       })
       .addCase(fetchPostAllMaster.rejected, (state, action) => {
         state.postMasterStatus = "failed";
@@ -660,6 +677,9 @@ export const {
   setFilterMasterSubGameCat,
   closeMasterSubGameCat,
   setModalCopyText,
+  setPostAgent,
+  setPostMaster,
+  setPostUser,
 } = dataSlice.actions;
 
 //logINDATA

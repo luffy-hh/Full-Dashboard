@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { act } from "react-dom/test-utils";
 
 const twodHead = [
   { text: "ထိပ်စီးနံပါတ်ဂဏန်း", active: false, id: 1 },
@@ -46,6 +47,10 @@ const initialState = {
 
   lukyCate: "",
   lukyNo: "",
+
+  luckyNoShow: false,
+  luckyTwoDShow: false,
+  luckyThreeDShow: false,
 };
 
 const adminTwodSlice = createSlice({
@@ -75,6 +80,18 @@ const adminTwodSlice = createSlice({
     setLuckyNo: (state, action) => {
       state.lukyNo = action.payload;
     },
+
+    setLuckyNoShow: (state, action) => {
+      state.luckyNoShow = action.payload;
+    },
+
+    setLuckyTwoDShow: (state, action) => {
+      state.luckyTwoDShow = action.payload;
+    },
+
+    setLucyThreeDShow: (state, action) => {
+      state.luckyThreeDShow = action.payload;
+    },
   },
 });
 
@@ -83,6 +100,9 @@ export const {
   changeTwoDReportHade,
   setLuckyCate,
   setLuckyNo,
+  setLuckyNoShow,
+  setLuckyTwoDShow,
+  setLucyThreeDShow,
 } = adminTwodSlice.actions;
 
 export const selectTwoDHead = (state) => state.adminTwoD.allTwodData.twodHead;
@@ -98,6 +118,10 @@ export const selectLuckyNo = (state) => state.adminTwoD.lukyNo;
 export const selectLuckyNoHead = (state) => state.adminTwoD.luckyNoHead;
 export const selectThreeDLuckyNoHead = (state) =>
   state.adminTwoD.threeDLuckyNoHead;
+
+export const selectLuckyNoShow = (state) => state.adminTwoD.luckyNoShow;
+export const selectLuckyTwoDShow = (state) => state.adminTwoD.luckyTwoDShow;
+export const selectLuckyThreeDShow = (state) => state.adminTwoD.luckyThreeDShow;
 
 export default adminTwodSlice.reducer;
 

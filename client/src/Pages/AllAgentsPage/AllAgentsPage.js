@@ -35,6 +35,7 @@ import {
   selectForMasterList,
   selectPostTransfer,
   fetchGetAllMaster,
+  setPostAgent,
 } from "../../Feactures/apiSlice";
 
 function AllAgentsPage() {
@@ -84,6 +85,11 @@ function AllAgentsPage() {
       />
     );
 
+  const handleCreate = () => {
+    dispatch(agentFun());
+    dispatch(setPostAgent());
+  };
+
   return (
     <div className={styles.allusesPage}>
       {agent ? (
@@ -93,7 +99,7 @@ function AllAgentsPage() {
               <p>Member</p>
               <Searchbar query={agentQuery} setQuery={setAgentQuery} />
               <NormalButton
-                onClick={() => dispatch(agentFun())}
+                onClick={handleCreate}
                 className={styles.add_new_btn}
               >
                 Create Agent
@@ -118,6 +124,7 @@ function AllAgentsPage() {
           postFun={fetchPostAllAgent}
           status={selectPostAgentStatus}
           upLineData={masterList}
+          postAllUser={postAgent}
         />
       )}
     </div>

@@ -6,7 +6,7 @@ const data = [
   { id: 1, logo: "/img/Nav/MenuButtomW.png" },
   { id: 2, logo: "/img/Nav/BackButtomW.png" },
   { id: 3, logo: "/img/Nav/SettinButtomW.png" },
-  { id: 2, logo: "/img/Nav/TransationButtomW.png" },
+  { id: 4, logo: "/img/Nav/TransationButtomW.png" },
 ];
 
 function GameNavbar() {

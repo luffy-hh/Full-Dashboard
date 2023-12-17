@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styles from "./ShanGame.module.css";
-import NormalButton from "../../../Component/NormalButton";
-const myArray = Array(18).fill("/shangame/playCard/PeterRiver.png");
+
+import { setBettingTime, setDragCard } from "../../../Feactures/shan";
+import { useDispatch } from "react-redux";
+const myArray = Array(12).fill("/shangame/playCard/PeterRiver.png");
 
 // const userPost = [
 //   { top: "-8rem", right: `calc(75vw - 65vw)` },
@@ -86,14 +88,8 @@ const cardPosition = new Map([
   ],
 ]);
 
-function DumyCard({
-  cardHandling,
-  counts,
-  setCardHandling,
-  setBtnShow,
-  btnShow,
-  setResult,
-}) {
+function DumyCard({ cardHandling, counts, setCardHandling }) {
+  const dispatch = useDispatch();
   const cards = myArray.map((d, index) => (
     <img
       key={`cardNo${index}`}
@@ -131,64 +127,49 @@ function DumyCard({
         indexCount++;
       } else {
         clearInterval(intervalId);
-        setBtnShow(true);
+        dispatch(setDragCard(true));
+
         // dragElement(dragable, dragzone);
+
         return;
       }
     }, 500);
-  };
-
-  const showAllCard = (arr) => {
-    for (let i = 0; i < arr * 2; i++) {
-      const elements = document.getElementById(`dummy_card${i}`);
-
-      //inset real deck cards==== this is example
-      if (i < arr) {
-        elements.src = "/shangame/Cards/Club1.png";
-        elements.style.width = "5rem";
-        elements.style.height = "8rem";
-      } else {
-        elements.src = "/shangame/Cards/Diamond1.png";
-        elements.style.width = "5rem";
-        elements.style.height = "8rem";
-      }
-    }
   };
 
   useEffect(() => {
     cardHandling &&
       counts[0].players.length >= 2 &&
       autoCardHealding(cardPosition, counts[0].players.length);
+
+    // //testing
+    // false &&
+    //   counts[0].players.length >= 2 &&
+    //   autoCardHealding(cardPosition, counts[0].players.length);
   }, [cardHandling]);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setCardHandling(true);
-    }, 4000);
+      dispatch(setBettingTime(false));
+    }, 10000);
 
     return () => clearTimeout(timeoutId);
   }, []);
 
-  // useEffect(() => {
-  //   autoCardHealding(cardPosition, 6);
-  // }, []);
-
-  const handleShow = () => {
-    showAllCard(counts[0].players.length);
-    setResult(true);
-    setBtnShow(false);
-  };
-
   return (
     <>
       <div className={styles.dummy_cards}>
-        <div className={styles.dummy_card_container}>{cards}</div>
+        <div id="dummy_cards_all" className={styles.dummy_card_container}>
+          {cards}
+        </div>
+        <div id="dummy_cards_pull" className={styles.dummy_card_container}>
+          <img
+            src="/shangame/Cards/Spade10.png"
+            className={styles.cards_img}
+            id="dummy_cards_pull_img"
+          />
+        </div>
       </div>
-      {btnShow && (
-        <NormalButton className={styles.open} onClick={() => handleShow()}>
-          Show Result
-        </NormalButton>
-      )}
     </>
   );
 }

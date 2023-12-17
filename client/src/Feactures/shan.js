@@ -11,7 +11,7 @@ export const fetPostShanRing = createAsyncThunk(
   "data/fetPostShanRing",
   async ({ api, postData, accessToken }) => {
     const data = await postDataWithToken(api, postData, accessToken);
-    console.log(data);
+
     return data;
   }
 );
@@ -48,7 +48,19 @@ export const fetGetShanGameRing = createAsyncThunk(
   }
 );
 
+const shanGame = {
+  betRangeShow: false,
+  betRangeAmount: 0,
+  waitPlayer: true,
+  bettingTime: true,
+  playerBetAmount: null,
+  dragCard: false,
+  pullCard: false,
+  isBanker: false,
+};
+
 const initialState = {
+  shanGame,
   showRoll: false,
   showRing: false,
   rollIds: "",
@@ -92,6 +104,42 @@ const shan = createSlice({
 
     setRollIds: (state, action) => {
       state.rollIds = action.payload;
+    },
+
+    setBetRangeShow: (state, action) => {
+      state.shanGame.betRangeShow = action.payload;
+    },
+
+    setBetRangeAmount: (state, action) => {
+      state.shanGame.betRangeAmount = action.payload;
+    },
+
+    setPostShanRing: (state) => {
+      state.postShanRing = {};
+    },
+
+    setBettingTime: (state, action) => {
+      state.shanGame.bettingTime = action.payload;
+    },
+
+    setWaitPlayer: (state, action) => {
+      state.shanGame.waitPlayer = action.payload;
+    },
+
+    setPlayerBetAmount: (state, action) => {
+      state.shanGame.playerBetAmount = action.payload;
+    },
+
+    setDragCard: (state, action) => {
+      state.shanGame.dragCard = action.payload;
+    },
+
+    setPullCard: (state, action) => {
+      state.shanGame.pullCard = action.payload;
+    },
+
+    setIsBanker: (state, action) => {
+      state.shanGame.isBanker = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -146,7 +194,6 @@ const shan = createSlice({
       .addCase(fetPostShanRing.rejected, (state, action) => {
         state.postShanRingStatus = "failed";
         state.postShanRingError = action.error.message;
-        console.log(state.postShanRingError);
       })
 
       //For ShanGame Ring GET Method
@@ -164,7 +211,35 @@ const shan = createSlice({
   },
 });
 
-export const { setShowRoll, setShowRing, setRollIds } = shan.actions;
+export const {
+  setShowRoll,
+  setShowRing,
+  setRollIds,
+  setBetRangeShow,
+  setBetRangeAmount,
+  setPostShanRing,
+  setWaitPlayer,
+  setBettingTime,
+  setPlayerBetAmount,
+  setDragCard,
+  setIsBanker,
+  setPullCard,
+} = shan.actions;
+
+// GAME STATE AND DATA========================================================
+export const selectBetRangeShow = (state) => state.shan.shanGame.betRangeShow;
+export const selectBetRangeAmount = (state) =>
+  state.shan.shanGame.betRangeAmount;
+
+export const selectWaitPlayer = (state) => state.shan.shanGame.waitPlayer;
+export const selectBettingTime = (state) => state.shan.shanGame.bettingTime;
+export const selectPlayerBetAmount = (state) =>
+  state.shan.shanGame.playerBetAmount;
+export const selectDragCard = (state) => state.shan.shanGame.dragCard;
+export const selectPullCard = (state) => state.shan.shanGame.pullCard;
+export const selectIsBanker = (state) => state.shan.shanGame.isBanker;
+
+// GAME STATE AND DATA========================================================
 
 export const selectShowRoll = (state) => state.shan.showRoll;
 export const selectShowRing = (state) => state.shan.showRing;
@@ -178,6 +253,7 @@ export const selectPostShanRollStatus = (state) =>
 export const selectPostShanRingStatus = (state) =>
   state.shan.postShanRingStatus;
 export const selectPostShanRing = (state) => state.shan.postShanRing;
+export const selectPostShanRingError = (state) => state.shan.postShanRingError;
 
 export const selectShanRing = (state) => state.shan.shanRing;
 

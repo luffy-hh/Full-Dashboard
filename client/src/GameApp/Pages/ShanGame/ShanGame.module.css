@@ -51,6 +51,7 @@
 .player {
   position: absolute;
 }
+
 .user_box {
   display: flex;
   flex-direction: column;
@@ -58,36 +59,39 @@
   justify-content: center;
 }
 
+.user_img_box {
+  position: relative;
+}
+
 .user_img {
   width: 6rem;
   height: 6rem;
   border-radius: 50%;
-  border: 5px solid var(--primary);
-  z-index: 3;
+  border: 2px solid var(--blue);
 }
 .userInfo,
 .userInfo_top {
   background-color: rgba(55, 65, 81, 0.8);
-  padding: 1rem;
-  padding-left: 2rem;
-  padding-right: 2rem;
+  padding: 5px 0;
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
-  color: var(--primary);
+  gap: 5px;
+  width: 10rem;
+  justify-content: center;
+  align-items: center;
+
   border-radius: 5px;
 }
 
-.userInfo {
-  margin-top: -2rem;
-  padding-top: 2rem;
+.player_data_name {
+  font-size: 1.4rem;
+  color: #d1d5db;
 }
-.userInfo_top {
-  margin-bottom: -2rem;
-  padding-bottom: 2rem;
-}
-.player_data {
-  font-size: 1.6rem;
+
+.player_data_price {
+  font-weight: 600;
+  font-size: 1.4rem;
+  color: var(--primary);
 }
 
 .player_card {
@@ -135,9 +139,33 @@
   width: 5rem;
 }
 
-.win_lose {
-  font-size: 2rem;
-  z-index: 100;
-  color: var(--primary);
-  font-weight: 600;
+/* Betting Amount */
+.betting_amount {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 5rem;
+  padding: 0 1.2rem;
+}
+
+.btn_bet {
+  padding: 8px 1.6rem;
+  background-color: var(--blue-light);
+  color: var(--text-white);
+  font-weight: 500;
+}
+.left_bet_btn {
+  display: flex;
+  gap: 1.2rem;
+}
+
+.btn_max {
+  padding: 8px 1.6rem;
+  width: 9rem;
+  background-color: var(--primary);
+  color: var(--text-white);
+  font-weight: 500;
 }

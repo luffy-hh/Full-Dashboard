@@ -139,6 +139,21 @@ const sData = [
     show: false,
   },
   {
+    title: "2D-3D Report",
+    route: null,
+    icon: <BiSolidReport />,
+    iconRight: <BsChevronRight />,
+    show: false,
+    subNav: [
+      {
+        title: "All 2D-3D Report",
+        route: "thai2D-12am",
+        icon: <BsPeople />,
+      },
+    ],
+  },
+
+  {
     title: "Bank",
     route: null,
     icon: <RiBankCardFill />,
@@ -178,20 +193,7 @@ const sData = [
     icon: <BsFillGridFill />,
     show: false,
   },
-  {
-    title: "2D-3D Report",
-    route: null,
-    icon: <BiSolidReport />,
-    iconRight: <BsChevronRight />,
-    show: false,
-    subNav: [
-      {
-        title: "All 2D-3D Report",
-        route: "thai2D-12am",
-        icon: <BsPeople />,
-      },
-    ],
-  },
+
   {
     title: "Win/Lose Report",
     route: null,
@@ -474,7 +476,7 @@ function Sidebar() {
   };
 
   return (
-    <aside>
+    <aside className={styles.admin_aside}>
       <ul className={styles.sidebar_main}>
         {data.map((d) => (
           <li key={d.title}>

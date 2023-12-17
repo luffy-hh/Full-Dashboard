@@ -1,0 +1,5 @@
+.copy_icon {
+  color: var(--green-light);
+  margin-left: 2rem;
+  cursor: pointer;
+}

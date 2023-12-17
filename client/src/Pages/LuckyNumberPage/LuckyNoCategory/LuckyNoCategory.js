@@ -8,24 +8,25 @@ import { useDispatch } from "react-redux";
 import styles from "./LuckyNoCategory.module.css";
 
 function LuckyNoCategory({
-  show,
-  setShow,
-  setThreeDShow,
-  setTwoDShow,
+  setLuckyNoShow,
+  setLuckyTwoDShow,
+  setLucyThreeDShow,
   allDArr,
 }) {
   const dispatch = useDispatch();
 
   const handleClick = (id, catName) => {
     if (catName === "2D Lottries") {
-      setShow(!show);
+      dispatch(setLuckyNoShow(true));
+
       dispatch(setFilterTwoDArr({ id: id }));
-      setTwoDShow(true);
+      dispatch(setLuckyTwoDShow(true));
+      dispatch(setLucyThreeDShow(false));
     } else {
-      setShow(!show);
+      dispatch(setLuckyNoShow(true));
       dispatch(setFilterTwoDArr({ id: id }));
-      setThreeDShow(true);
-      setTwoDShow(false);
+      dispatch(setLuckyTwoDShow(false));
+      dispatch(setLucyThreeDShow(true));
     }
   };
 

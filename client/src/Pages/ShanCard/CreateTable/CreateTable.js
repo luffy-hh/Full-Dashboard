@@ -10,12 +10,15 @@ import {
   fetGetShanRoll,
   selectShanRoll,
   fetPostShanRing,
-  selectPostShanRingStatus,
+  selectPostShanRing,
   setRollIds,
+  setPostShanRing,
 } from "../../../Feactures/shan";
 import { selectlogInData } from "../../../Feactures/apiSlice";
 import styles from "../CreateShanForm.module.css";
 import ShanTableCard from "../ShanTableCard";
+import Error from "../../../Component/ErrorandSuccess/Error";
+import Success from "../../../Component/ErrorandSuccess/Success";
 
 function CreateTable() {
   const dispatch = useDispatch();
@@ -24,7 +27,7 @@ function CreateTable() {
   const logInData = useSelector(selectlogInData);
   const accessToken = logInData.token;
   const shanRoll = useSelector(selectShanRoll);
-  const postShanRingStatus = useSelector(selectPostShanRingStatus);
+  const shanRing = useSelector(selectPostShanRing);
 
   const [roll, setRoll] = useState("Choose Roll Name");
   const [rollId, setRollId] = useState("");
@@ -80,11 +83,23 @@ function CreateTable() {
     banker_amount: bankerAmount,
   };
 
+  const handleCreateShanRing = () => {
+    dispatch(setPostShanRing());
+    dispatch(setShowRing(true));
+  };
+
+  const handleCancel = () => {
+    dispatch(setPostShanRing());
+    dispatch(setShowRing(false));
+  };
+
   const handlePost = (e) => {
     e.preventDefault();
 
     dispatch(fetPostShanRing({ api: "shanring", postData, accessToken }));
   };
+
+  console.log(shanRing);
 
   return (
     <div className="page_style" style={{ position: "relative" }}>
@@ -95,14 +110,14 @@ function CreateTable() {
         ) : null}
         {!showRing ? (
           <NormalButton
-            onClick={() => dispatch(setShowRing(true))}
+            onClick={handleCreateShanRing}
             className={`btn_hover ${styles.create_btn}`}
           >
             Create Shan Ring
           </NormalButton>
         ) : (
           <NormalButton
-            onClick={() => dispatch(setShowRing(false))}
+            onClick={handleCancel}
             className={`btn_hover ${styles.cancel_btn}`}
           >
             Cancel
@@ -120,6 +135,13 @@ function CreateTable() {
             className={styles.shan_form}
             onSubmit={(event) => handlePost(event)}
           >
+            {shanRing?.status === "fail" && (
+              <Error message={shanRing?.message} />
+            )}
+
+            {shanRing?.status === "success" && (
+              <Success message={"SuccessFully Created Table"} />
+            )}
             <Dropdown width={"100%"} title={roll} list={list} />
 
             {inputList}

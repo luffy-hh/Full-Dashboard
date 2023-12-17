@@ -20,6 +20,7 @@ import {
   selectPostTransfer,
   selectForAgentList,
   fetchGetAllAgent,
+  setPostUser,
 } from "../../Feactures/apiSlice";
 import {
   selectAllUserQuery,
@@ -87,8 +88,10 @@ function AllUsers() {
       />
     );
 
-  console.log(withDrawAmount);
-  console.log(depositeAmount);
+  const handleCreate = () => {
+    dispatch(setPostUser());
+    dispatch(userFun());
+  };
 
   return (
     <div className={styles.allusesPage}>
@@ -100,7 +103,7 @@ function AllUsers() {
               <Searchbar query={allUserQuery} setQuery={setAllUserQuery} />
               <NormalButton
                 className={styles.add_new_btn}
-                onClick={() => dispatch(userFun())}
+                onClick={handleCreate}
               >
                 Create User
               </NormalButton>
@@ -126,6 +129,7 @@ function AllUsers() {
           postFun={postAlluser}
           status={selectPostUserStatus}
           upLineData={agentList}
+          postAllUser={postUser}
         />
       )}
     </div>
