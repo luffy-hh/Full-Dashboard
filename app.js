@@ -70,6 +70,7 @@ const lottery2dEveningRoutes = require("./lottery_nuumbers/routes/lottery2dEveni
 //Infinity Game
 const infinityGameCreatePlayer = require("./infinity_games/create_player/createPlayerRoutes");
 const infinityGetGameList = require("./infinity_games/game_list/gamelistRoutes");
+const infinityGameLogin = require("./infinity_games/game_login/gameLoginRoutes");
 // Middleware
 // app.use(helmet());
 
@@ -195,6 +196,7 @@ app.use("/api/v1/changeTo", changeTo);
 // Infinity game
 app.use("/api/v1/infinity", infinityGameCreatePlayer);
 app.use("/api/v1/infinity", infinityGetGameList);
+app.use("/api/v1/infinity", infinityGameLogin);
 
 // 3D APIS
 app.use("/api/v1/thai3DNumAll", thai3DNumRouter);
