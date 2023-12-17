@@ -8,6 +8,10 @@
   align-items: center;
   margin: 0 auto;
   flex-direction: column;
+  background-image: url("../../../../public/shangame/background.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
 }
 
 .shan_table {
@@ -64,7 +68,9 @@
 .userInfo,
 .userInfo_top {
   background-color: rgba(55, 65, 81, 0.8);
-  padding: 2rem;
+  padding: 1rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
@@ -74,9 +80,11 @@
 
 .userInfo {
   margin-top: -2rem;
+  padding-top: 2rem;
 }
 .userInfo_top {
   margin-bottom: -2rem;
+  padding-bottom: 2rem;
 }
 .player_data {
   font-size: 1.6rem;
@@ -89,10 +97,19 @@
 .ans_card_container {
   display: flex;
   gap: 5px;
+  flex-direction: column;
+  align-items: center;
+}
+.ans_card_container div {
+  display: flex;
+  gap: 5px;
+}
+.ans_card_container p {
+  color: var(--primary);
 }
 
 .ans_card {
-  width: 3rem;
+  width: 3.5rem;
   height: 4rem;
   background-color: var(--primary);
   color: var(--text-white);
@@ -114,3 +131,13 @@
   right: 0;
 }
 /* 14×896  */
+.show_result_card img {
+  width: 5rem;
+}
+
+.win_lose {
+  font-size: 2rem;
+  z-index: 100;
+  color: var(--primary);
+  font-weight: 600;
+}

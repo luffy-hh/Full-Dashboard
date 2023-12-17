@@ -1,8 +1,7 @@
 import React from "react";
 import styles from "./ShanGame.module.css";
-import DumyAns from "./DumyAns";
 
-function PlayerTop({ data, showAns }) {
+function PlayerTop({ data, showAns, result }) {
   return (
     <div className={styles.player} style={data?.position}>
       <div className={styles.player_card}>
@@ -17,9 +16,9 @@ function PlayerTop({ data, showAns }) {
               src="/shangame/user/user3.jpg"
               alt="player3"
             />
+            {result && <p className={styles.win_lose}>Win</p>}
           </div>
         </div>
-        {showAns && <DumyAns top={"5rem"} />}
       </div>
     </div>
   );

@@ -188,6 +188,18 @@ exports.exitFromShanRing = catchAsync(async (req,res,next)=>{
   }
 })
 
+// Start playing cards
+exports.startPlayingCards = catchAsync( async (req,res)=>{
+  try {
+    
+  }catch (e) {
+    res.status(500).json({
+      status:'failed',
+      message:e.message
+    })
+  }
+})
+
 // // Read Bank Account Me
 // exports.getBankAccMe = catchAsync(async (req, res) => {
 //   try {

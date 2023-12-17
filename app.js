@@ -11,8 +11,7 @@ const xss = require("xss-clean");
 const app = express();
 app.use(cors());
 
-// Attach Socket.io to the Express app
-// app.io = require("socket.io")();
+
 
 const userRouter = require("./users/userRoutes");
 const userProfileRouter = require("./users/userProfileRoute");
@@ -59,16 +58,18 @@ const thai3DLuckyWinnerRouter = require("./3dLucky&Winner/routes/3DLuckyWinnerRo
 // Shan
 const shanRoll = require("./shan/shan_role/routes");
 const shanRing = require("./shan/shan_ring/routes");
+const shanPlay = require('./shan/shan_play/routes')
 
 // Transfer and Change
 const transferTo = require("./transition/routes/transitionsRoutes");
-
 const changeTo = require("./transition/routes/changeUnitRoutes");
 //Lottery Numbers
 const lottery2dRoutes = require("./lottery_nuumbers/routes/lottery2dRoutes");
 const lottery2dEveningRoutes = require("./lottery_nuumbers/routes/lottery2dEveningRoute");
-// slot testing
-const slotTestRouter = require("./live-22/game-categories/routes");
+
+//Infinity Game
+const infinityGameCreatePlayer = require("./infinity_games/create_player/createPlayerRoutes");
+const infinityGetGameList = require("./infinity_games/game_list/gamelistRoutes");
 // Middleware
 // app.use(helmet());
 
@@ -185,11 +186,15 @@ app.use("/api/v1/agentsubcatstatus", agentSubCatStatusAdmin);
 // // Shan API
 app.use("/api/v1/shanroll", shanRoll);
 app.use("/api/v1/shanring", shanRing);
+app.use("/api/v1/shanPlay",shanPlay)
 
 // Transition
 app.use("/api/v1/transferTo", transferTo);
-
 app.use("/api/v1/changeTo", changeTo);
+
+// Infinity game
+app.use("/api/v1/infinity", infinityGameCreatePlayer);
+app.use("/api/v1/infinity", infinityGetGameList);
 
 // 3D APIS
 app.use("/api/v1/thai3DNumAll", thai3DNumRouter);

@@ -2,6 +2,7 @@ const express = require("express");
 const shanRingController = require("./controllers");
 const userController = require("../../users/userControllers");
 
+
 const router = express.Router();
 // Read All User Roles and Creat User Role
 router
@@ -14,6 +15,7 @@ router
 
 router.route('/ringIn').patch(userController.protect,shanRingController.enterShanRing)
 router.route('/ringOut').patch(userController.protect,shanRingController.exitFromShanRing)
+router.route('/playingCards').post(userController.protect,shanRingController.startPlayingCards)
 router
   .route("/:id")
   .get(userController.protect, shanRingController.getShingRingByShanRoll);

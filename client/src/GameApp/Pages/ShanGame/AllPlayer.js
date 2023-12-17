@@ -2,7 +2,7 @@ import React from "react";
 import PlayerTop from "./PlayerTop";
 import Players from "./Players";
 
-function AllPlayer({ showAns, data }) {
+function AllPlayer({ showAns, data, result }) {
   console.log(data && data, "from all");
   const updateData = data[0]?.players.map((item, index) => {
     if (index === 0) {
@@ -36,9 +36,23 @@ function AllPlayer({ showAns, data }) {
       {updateData?.map((d, index) => {
         if (updateData) {
           if (index === 0 || index === 5) {
-            return <PlayerTop data={d} showAns={showAns} />;
+            return (
+              <PlayerTop
+                key={`player_${index}`}
+                data={d}
+                showAns={showAns}
+                result={result}
+              />
+            );
           } else {
-            return <Players data={d} showAns={showAns} />;
+            return (
+              <Players
+                key={`player_${index}`}
+                data={d}
+                showAns={showAns}
+                result={result}
+              />
+            );
           }
         } else {
           return;

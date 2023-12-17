@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./ShanGame.module.css";
 import DumyCard from "./DumyCard";
-import NormalButton from "../../../Component/NormalButton";
+
 import { useParams } from "react-router-dom";
 import {
   selectShanGameRing,
@@ -21,6 +21,7 @@ function ShanGame() {
   }, []);
 
   console.log(shanGameRing && shanGameRing);
+
   const mainObj = shanGameRing?.data.filter((d) => d._id === tableId);
   console.log(mainObj);
 
@@ -30,28 +31,24 @@ function ShanGame() {
   const [cardHandling, setCardHandling] = useState(false);
   const [btnShow, setBtnShow] = useState(false);
 
-  const handleResult = () => {
-    setShowAns(true);
-  };
   return (
     <div className={styles.shan_game}>
       <div className={styles.shan_table}>
         <img src="/shangame/lady/Girl.png" alt="lady" className={styles.lady} />
 
-        {!showAns && (
+        {shanGameRing && (
           <DumyCard
             cardHandling={cardHandling}
             counts={mainObj}
             setCardHandling={setCardHandling}
             setBtnShow={setBtnShow}
+            btnShow={btnShow}
+            setResult={setResult}
           />
         )}
 
-        {shanGameRing && <AllPlayer showAns={showAns} data={mainObj} />}
-        {btnShow && (
-          <NormalButton className={styles.open} onClick={handleResult}>
-            show result
-          </NormalButton>
+        {shanGameRing && (
+          <AllPlayer showAns={showAns} data={mainObj} result={result} />
         )}
       </div>
     </div>
