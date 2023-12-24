@@ -43,17 +43,26 @@ exports.updateGameSubCatStatus = async (req, res) => {
   try {
     const masterId = req.params.id;
     const subCatIdToUpdate = req.body.subCatIdToUpdate;
-    const statusVal = req.body.status;
-
+    console.log(req.body)
+    let update= {}
+    if(req.body?.status !== null){
+      update['subCatStatus.$.status']= req.body.status
+    }
+    // Check if mainCompensation is not null and add it to the update object
+    if (req.body?.mainCompensation !== null) {
+      update["subCatStatus.$.mainCompensation"] = req.body.mainCompensation;
+    }
+    // Check if comession is not null and add it to the update object
+    if (req.body?.comession !== null) {
+      update["subCatStatus.$.comession"] = req.body.comession;
+    }
     const updatedDoc = await MasterSubCatStatus.findOneAndUpdate(
       {
         master_id: masterId,
-        "subCatStatus.catName_id": subCatIdToUpdate,
+        "subCatStatus._id": subCatIdToUpdate,
       },
       {
-        $set: {
-          "subCatStatus.$.status": statusVal,
-        },
+        $set: update,
       },
       { new: true }
     );

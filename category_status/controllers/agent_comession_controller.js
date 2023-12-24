@@ -1,4 +1,5 @@
 const AgentSubCatComession = require("../models/agent_comession_models");
+const MasterSubCatStatus = require("../models/master_subCat_status_models");
 
 // Create Game Category
 // exports.createGameCat = async (req, res) => {
@@ -43,7 +44,14 @@ exports.updateGameSubCatComession = async (req, res) => {
   try {
     const masterId = req.body.masterId;
     const subCatIdToUpdate = req.body.subCatIdToUpdate;
-    const statusVal = req.body.status;
+    let update = {}
+    if(req.body?.status !== null){
+      update['subCatStatus.$.status']= req.body.status
+    }
+    if(req.body?.comession !== null){
+      update["subCatStatus.$.comession"] = req.body.comession
+    }
+
 
     const updatedDoc = await MasterSubCatStatus.findOneAndUpdate(
       {
@@ -51,9 +59,7 @@ exports.updateGameSubCatComession = async (req, res) => {
         "subCatStatus.catName_id": subCatIdToUpdate,
       },
       {
-        $set: {
-          "subCatStatus.$.status": statusVal,
-        },
+        $set: update,
       },
       { new: true }
     );

@@ -27,6 +27,9 @@ const shanRollSchema = new mongoose.Schema({
   description: {
     type: String,
   },
+  endpoint: {
+    type: String,
+  },
   status: {
     type: Boolean,
     default: true,

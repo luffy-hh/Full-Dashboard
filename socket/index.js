@@ -1,13 +1,13 @@
-const User = require('../users/userModels')
 const ShanPlayRing = require("../shan/shan_ring/models");
-const {FETCH_RING_INFO} = require("../shanGame/actions");
+const ShanRoll = require("../shan/shan_role/models");
+const { FETCH_ALL_ROWS, ROW_ID, ALL_TABLES } = require("../shanGame/actions");
 
-
-const rings = await ShanPlayRing.find({})
-const players = rings.map(ring=> ring.players)
-const init = (socket,io)=>{
-    socket.on(FETCH_RING_INFO,async (token)=>{
-        let user;
-
-    })
-}
+exports.init = async (socket, io) => {
+  console.log("socket user Id : " + socket.id);
+  socket.emit(FETCH_ALL_ROWS, await ShanRoll.find());
+  socket.on(ROW_ID, async (data) => {
+    console.log(data);
+    const allTable = await ShanPlayRing.find({ shan_roll: data.rowId });
+    socket.emit(ALL_TABLES, allTable);
+  });
+};
