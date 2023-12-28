@@ -17,8 +17,17 @@ const MasterSubCatStatus = require("../category_status/models/master_subCat_stat
 const LotteryFilterSetting = require("../lotteryFilterSetting/models/lotteryFilterSettingModels");
 const AgentComession = require("../category_status/models/agent_comession_models");
 
-const signToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
+const signToken = (user) => {
+  let data = {
+    id: user._id,
+    name: user.name,
+    userId: user.userId,
+    email: user.email,
+    role: user.role,
+    uplineId: user.uplineId,
+    downlineId: user.downlineId,
+  };
+  return jwt.sign(data, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 };
@@ -30,7 +39,7 @@ const generateRandomUserId = () => {
 };
 
 const createSendToken = (user, statusCode, res) => {
-  const token = signToken(user._id);
+  const token = signToken(user);
 
   const cookieOption = {
     expires: new Date(
@@ -139,7 +148,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     }
 
     // Generate a JWT token
-    const token = signToken(newUser._id);
+    const token = signToken(newUser);
 
     // Exclude the password field from the response
     newUser.password = undefined;
@@ -183,7 +192,7 @@ exports.login = catchAsync(async (req, res, next) => {
 
     // ၃. အပေါ်နှစ်ခုမှန်ရင် JWT ကို Client ဘက်ကိုပို့
 
-    const token = signToken(user._id);
+    const token = signToken(user);
     const formattedLoginTime = moment(user.loginTime)
       .tz("Asia/Yangon")
       .format();
