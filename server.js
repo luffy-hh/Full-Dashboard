@@ -27,16 +27,7 @@ const userProto = grpc.loadPackageDefinition(packageDefinition);
 
 async function findUser(call, callback) {
   let userId = call.request.userId;
-  // let user_data = await callbackService.getUserBalance(userId)
-  const user = await User.findOne({ userId: userId });
-  let user_data = {
-    // id: user.id,
-    userId:user.userId,
-    role:user.role,
-    unit:user.unit,
-    gameUnit:user.gameUnit,
-    promotionUnit:user.promotionUnit,
-}
+  let user_data = await callbackService.getUserBalance(userId)
   if(user_data) {
       callback(null, user_data);
   }

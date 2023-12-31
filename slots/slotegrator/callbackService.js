@@ -1,9 +1,9 @@
 const User = require("../../users/userModels");
 
 exports.getUserBalance= async(userId)=>{
-    const user = await User.findOne({ userId: 367321 });
+    const user = await User.findOne({ userId: userId });
     let user_data = {
-        id: 888,
+        id: 445,
         userId:user.userId,
         role:user.role,
         unit:user.unit,
