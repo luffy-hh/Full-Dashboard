@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+service Users {
+  rpc Find (UserId) returns (UserData) {}
+}
+
+message UserId {
+  uint32 id = 1;
+}
+
+message UserData {
+  uint32 id = 1;
+  uint32 userId = 2;
+  string role = 3;
+  uint32 unit = 4;
+  uint32 gameUnit = 5;
+  uint32 promotionUnit = 6;
+}

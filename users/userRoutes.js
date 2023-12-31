@@ -8,6 +8,7 @@ router.route("/signup").post(userController.signup);
 //User Login
 router.post("/login", userController.login);
 
+router.get("/test",userController.test)
 // Forget Password
 router.post(
   "/forgotPassword",

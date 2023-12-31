@@ -17,6 +17,8 @@ const MasterSubCatStatus = require("../category_status/models/master_subCat_stat
 const LotteryFilterSetting = require("../lotteryFilterSetting/models/lotteryFilterSettingModels");
 const AgentComession = require("../category_status/models/agent_comession_models");
 
+const callbackService = require("../slots/slotegrator/callbackService");
+
 const signToken = (user) => {
   let data = {
     id: user._id,
@@ -211,6 +213,11 @@ exports.login = catchAsync(async (req, res, next) => {
     });
   }
 });
+
+exports.test = async(req,res)=>{
+  let user = await callbackService.getUserBalance(367321)
+  return res.send(user)
+}
 
 exports.protect = catchAsync(async (req, res, next) => {
   // 1. Request လုပ်တဲ့ Client မှာ Token ရှိ/မရှိ စစ်ပါတယ်။
