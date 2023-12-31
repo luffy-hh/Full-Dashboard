@@ -5,7 +5,7 @@ service Users {
 }
 
 message UserId {
-  uint32 id = 1;
+  uint32 userId = 1;
 }
 
 message UserData {
