@@ -9,6 +9,7 @@ import { selectlogInData } from "../../Feactures/apiSlice";
 import {
   fetPostBankAcc,
   selectPostBankAccStatus,
+  selectPostBankAcc,
 } from "../../Feactures/bankApiSlice";
 import { setShowDropDown } from "../../Feactures/ShowHideSlice";
 import styles from "./CustomBox.module.css";
@@ -27,6 +28,7 @@ function BankAccBox({ bankName }) {
   const logInData = useSelector(selectlogInData);
   const accessToken = logInData.token;
   const postBankAccStatus = useSelector(selectPostBankAccStatus);
+  const postBankAcc = useSelector(selectPostBankAcc);
 
   const hadnleData = (id, name) => {
     dispatch(setShowDropDown());
@@ -41,16 +43,22 @@ function BankAccBox({ bankName }) {
   formData.append("description", description);
   formData.append("img", logo);
 
+  const handleCancel = () => {
+    dispatch(setModalBankAcc(false));
+    dispatch(setModalBankAcc(false));
+    setLogo(null);
+    setDescription("");
+    setAccountName("");
+    setAccountNo("");
+    setBankNameData("");
+    setSelectBankName("Select Bank Name");
+  };
+
   const handlePost = () => {
-    dispatch(fetPostBankAcc({ api: "bankAcc", formData, accessToken }));
-    if (postBankAccStatus === "succeeded") {
-      dispatch(setModalBankAcc(false));
-      setLogo(null);
-      setDescription("");
-      setAccountName("");
-      setAccountNo("");
-      setBankNameData("");
-      setSelectBankName("Select Bank Name");
+    if (bankNameData && accountName && accountNo && description && logo) {
+      dispatch(fetPostBankAcc({ api: "bankAcc", formData, accessToken }));
+    } else {
+      alert("Fill All The Input Field");
     }
   };
 
@@ -60,14 +68,14 @@ function BankAccBox({ bankName }) {
     </li>
   ));
 
-  console.log(bankNameData);
+  console.log(postBankAcc);
 
   return (
     <Modal
       title="Create Bank Account"
       open={modalBankAcc}
       onOk={() => handlePost()}
-      onCancel={() => dispatch(setModalBankAcc(false))}
+      onCancel={handleCancel}
       cancelButtonProps={{ style: { display: "none" } }}
       width={700}
       okText={postBankAccStatus === "loading" ? "Loading" : "Submit"}

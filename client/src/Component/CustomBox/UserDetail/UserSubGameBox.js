@@ -20,9 +20,10 @@ function UserSubGameBox({ masterId }) {
   const logInData = useSelector(selectlogInData);
   const accessToken = logInData.token;
   console.log(subGameArr, "from modal");
-  const onEditSubGame = (id, status, catId) => {
+
+  const onEditSubGame = (id, status) => {
     const patchData = {
-      subCatIdToUpdate: catId,
+      subCatIdToUpdate: id,
       status: !status,
     };
     dispatch(
@@ -43,8 +44,9 @@ function UserSubGameBox({ masterId }) {
       }`}
     >
       <span>{d.subCatName}</span>
+
       <Switch
-        onChange={() => onEditSubGame(d._id, d.status, d.catName_id)}
+        onChange={() => onEditSubGame(d._id, d.status)}
         checked={d.status}
       />
     </div>

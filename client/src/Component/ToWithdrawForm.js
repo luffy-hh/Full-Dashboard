@@ -6,12 +6,16 @@ import {
   fetGetBankNameUpline,
   fetPostWithdraw,
   selectPostWithdrawStatus,
+  selectPostWithdraw,
+  setPostWithdraw,
 } from "../Feactures/bankApiSlice";
 import Dropdown from "../Component/Dropdown/Dropdown";
 import { selectlogInData } from "../Feactures/apiSlice";
 import { setShowDropDown } from "../Feactures/ShowHideSlice";
 import styles from "./ToDepositWithdraw.module.css";
 import { useSelector, useDispatch } from "react-redux";
+import Error from "./ErrorandSuccess/Error";
+import Success from "./ErrorandSuccess/Success";
 
 function ToWithdrawForm() {
   const [bankName, setBankName] = useState("Choose Bank Name");
@@ -24,9 +28,11 @@ function ToWithdrawForm() {
   const bankNameUpline = useSelector(selectBankNameUpline);
   const dispatch = useDispatch();
   const postWithdrawStatus = useSelector(selectPostWithdrawStatus);
+  const postWithdraw = useSelector(selectPostWithdraw);
 
   useEffect(() => {
     dispatch(fetGetBankNameUpline({ api: "bankNameUpline", accessToken }));
+    dispatch(setPostWithdraw());
   }, []);
 
   const bankNameArr = bankNameUpline?.data.allBankName;
@@ -65,6 +71,12 @@ function ToWithdrawForm() {
       </div>
 
       <form className={styles.depo_with_form} onSubmit={(e) => handlePost(e)}>
+        {postWithdraw.status === "fail" && (
+          <Error message={"Something is Wrong"} />
+        )}
+        {postWithdraw.status === "success" && (
+          <Success message={"Withdrwal Successful"} />
+        )}
         <div>
           <label>Select Bank Name</label>
           {bankNameArr && <Dropdown title={bankName} list={list} />}{" "}

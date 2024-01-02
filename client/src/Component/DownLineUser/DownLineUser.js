@@ -28,6 +28,7 @@ import {
   postAlluser,
   selectPostUser,
   selectPostTransferToUser,
+  setPostUser,
 } from "../../Feactures/apiSlice";
 
 import NormalButton from "../NormalButton";
@@ -68,6 +69,11 @@ function DownLineUser() {
     );
   }, [postTransfer, postUser, postTransferToUser]);
 
+  const handleCreate = () => {
+    dispatch(setPostUser());
+    dispatch(setDownLineAgent());
+  };
+
   const userList = downLineAgent?.data.downlineObj;
 
   const modalComponent =
@@ -98,10 +104,10 @@ function DownLineUser() {
               <p>Member</p>
               <Searchbar query={userQuery} setQuery={setAllUserQuery} />
               <NormalButton
-                onClick={() => dispatch(setDownLineAgent())}
+                onClick={handleCreate}
                 className={styles.add_new_btn}
               >
-                Create Agent
+                Create User
               </NormalButton>
             </Container>
           </div>
@@ -122,6 +128,7 @@ function DownLineUser() {
           role="User"
           postFun={postAlluser}
           status={selectPostUserStatus}
+          postObj={postUser}
         />
       )}
     </div>

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
-const gameCategorySchema = new mongoose.Schema({
-  cat_name: {
+const infinityPlayerSchema = new mongoose.Schema({
+  playerId: {
     type: String,
     required: [true, "Please Add Game Category Name"],
   },
@@ -9,8 +9,12 @@ const gameCategorySchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  infinityUnit: {
+    type: Number,
+    default: 0,
+  },
 });
 
-const GameCategory = mongoose.model("GameCategory", gameCategorySchema);
+const InfinityPlayer = mongoose.model("InfinityPlayer", infinityPlayerSchema);
 
-module.exports = GameCategory;
+module.exports = InfinityPlayer;

@@ -5,11 +5,14 @@ import {
   fetPostDeposit,
   selectPostDepositStatus,
   setShowDepoForm,
+  selectPostDeposit,
 } from "../Feactures/bankApiSlice";
 import { selectlogInData } from "../Feactures/apiSlice";
+import Error from "./ErrorandSuccess/Error";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./ToDepositWithdraw.module.css";
 import CancelHot from "../GameApp/Comoponent/HotNumber/CancelHot";
+import Success from "./ErrorandSuccess/Success";
 function ToDepositAndWithdrawForm() {
   const [amount, setAmount] = useState("");
   const [tax, setTax] = useState("");
@@ -19,6 +22,7 @@ function ToDepositAndWithdrawForm() {
   const accessToken = logInData.token;
   const postDepositStatus = useSelector(selectPostDepositStatus);
   const bankNameId = useSelector(selectBankNameId); //auto select from account
+  const postDeposit = useSelector(selectPostDeposit);
 
   const dispatch = useDispatch();
   console.log("testingbankId", bankNameId);
@@ -30,20 +34,11 @@ function ToDepositAndWithdrawForm() {
     toAcc: accountTo,
   };
 
-  console.log(postData);
-
   const handlePost = (e) => {
     e.preventDefault();
     dispatch(fetPostDeposit({ api: "deposit", postData, accessToken }));
-
-    if (postDepositStatus === "succeeded") {
-      console.log("hello");
-      setAmount("");
-      setTax("");
-      setFromAcc("");
-      setAccountTo("");
-    }
   };
+
   return (
     <>
       <CancelHot hideFun={setShowDepoForm} top={"1"} right={"7"} />
@@ -54,6 +49,12 @@ function ToDepositAndWithdrawForm() {
         </div>
 
         <form className={styles.depo_with_form} onSubmit={(e) => handlePost(e)}>
+          {postDeposit.status === "fail" && (
+            <Error message={"Something is Wrong"} />
+          )}
+          {postDeposit.status === "success" && (
+            <Success message={"Deposite Successful"} />
+          )}
           <div>
             <label>From Account</label>
             <input

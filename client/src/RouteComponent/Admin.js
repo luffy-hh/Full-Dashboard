@@ -35,6 +35,7 @@ import AdminDepositHistory from "../Pages/ToDepositPage/AdminDeposit/AdminDeposi
 import AdminDepositRequest from "../Pages/ToDepositPage/AdminDeposit/AdminDepositRequest";
 import CreateRoll from "../Pages/ShanCard/CreateRoll/CreateRoll";
 import CreateTable from "../Pages/ShanCard/CreateTable/CreateTable";
+import UserDetailBox from "../Component/CustomBox/UserDetail/UserDetailBox";
 
 const admin = [
   { id: 0, path: "/admin", route: <Home /> },
@@ -45,6 +46,7 @@ const admin = [
 
   { id: 5, path: "allaffiliateagents", route: <AllAffiliateAgents /> },
   { id: 6, path: "allmaster", route: <AllMaster /> },
+  { id: 41, path: "allmaster/:id", route: <UserDetailBox /> },
 
   { id: 7, path: "alladmins", route: <AllAdmin /> },
   { id: 8, path: "lottery2dand3d", route: <TwoDPage /> },

@@ -2,13 +2,22 @@ import React, { useState } from "react";
 import Container from "../../Component/Container";
 import { selectlogInData } from "../../Feactures/apiSlice";
 import { useDispatch, useSelector } from "react-redux";
+import Error from "../../Component/ErrorandSuccess/Error";
 
 import Button from "../../Component/Button";
 import styles from "./AllCreateForm.module.css";
 import CancelHot from "../../GameApp/Comoponent/HotNumber/CancelHot";
 import CopyText from "../../Component/CopyText/CopyText";
+import Success from "../../Component/ErrorandSuccess/Success";
 
-function AllDownLineCreateForm({ hideFun, data, role, postFun, status }) {
+function AllDownLineCreateForm({
+  hideFun,
+  data,
+  role,
+  postFun,
+  status,
+  postObj,
+}) {
   const logInData = useSelector(selectlogInData);
 
   const [name, setName] = useState("");
@@ -74,8 +83,6 @@ function AllDownLineCreateForm({ hideFun, data, role, postFun, status }) {
     uplineId: uplineId,
   };
 
-  console.log(postData);
-
   const postHandle = (e, postFun) => {
     e.preventDefault();
     dispatch(postFun({ api: "user/signup", postData }));
@@ -88,12 +95,22 @@ function AllDownLineCreateForm({ hideFun, data, role, postFun, status }) {
     setUpLineId("");
   };
 
+  console.log(postObj);
+
   return (
     <>
       <CopyText password={copyPass} />
       <Container className={styles.master_form_container}>
         <form className={styles.master_form}>
-          <Container className={styles.master_form_grid}>{dataList}</Container>
+          <Container className={styles.master_form_grid}>
+            {postObj.status === "success" && (
+              <Success message={"Account created successfully"} />
+            )}
+            {postObj.status === "fail" && (
+              <Error message={postObj.message.message} />
+            )}
+            {dataList}
+          </Container>
           <Container className={styles.master_btn_container}>
             <Button
               onClick={(e) => postHandle(e, postFun)}

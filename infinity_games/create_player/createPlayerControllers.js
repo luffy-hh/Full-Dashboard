@@ -1,6 +1,7 @@
 const axios = require("axios");
 const crypto = require("crypto");
 const User = require("../../users/userModels");
+const InfinityPlayer = require("./createPlayerModles");
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
 
@@ -30,8 +31,6 @@ exports.createPlayerController = async (req, res) => {
     functionName + requestDateTime + operatorId + secretKey + playerId;
   const signature = generateMD5Hash(stringToHash);
 
-  console.log(signature);
-
   const requestData = {
     OperatorId: operatorId,
     RequestDateTime: requestDateTime,
@@ -39,12 +38,29 @@ exports.createPlayerController = async (req, res) => {
     PlayerId: playerId,
   };
 
-  axios
-    .post(apiUrl, requestData)
-    .then((response) => {
+  try {
+    const response = await axios.post(apiUrl, requestData);
+
+    if (
+      response.data.Status === 200 &&
+      response.data.Description === "Success"
+    ) {
+      // Create a new user in your InfinityUser schema
+      const newInfinityUser = new InfinityPlayer({
+        playerId: playerId,
+      });
+
+      await newInfinityUser.save();
+
+      res.json({
+        success: true,
+        data: response.data,
+        createdUser: newInfinityUser,
+      });
+    } else {
       res.json({ success: true, data: response.data });
-    })
-    .catch((error) => {
-      res.status(500).json({ success: false, error: error.message });
-    });
+    }
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
 };

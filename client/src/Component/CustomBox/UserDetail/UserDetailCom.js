@@ -1,21 +1,32 @@
 import React from "react";
 import Tables from "../../Tables";
 import { selectUserDetailComHead } from "../../../Feactures/AllUserPageSlice";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import styles from "../CustomBox.module.css";
 import NormalButton from "../../NormalButton";
+import { setModalEditCom, setCommisionId } from "../../../Feactures/modalSlice";
+import EditCommisionBox from "./EditCommisionBox";
 
-function UserDetailCom({ gameSubGame }) {
+function UserDetailCom({ gameSubGame, masterId, accessToken }) {
   const userDetailHead = useSelector(selectUserDetailComHead);
+  const dispatch = useDispatch();
+
+  const handleEdit = (id) => {
+    dispatch(setModalEditCom(true));
+    dispatch(setCommisionId(id));
+  };
 
   const tbodyList = gameSubGame?.map((d) => (
-    <tr className="table_d_tbody_tr">
+    <tr className="table_d_tbody_tr" key={d._id}>
       <td> {d.subCatName}</td>
 
       <td>{d.comession}</td>
       <td>{d.mainCompensation}</td>
       <td>
-        <NormalButton className={`btn_hover ${styles.user_com_edit}`}>
+        <NormalButton
+          onClick={() => handleEdit(d)}
+          className={`btn_hover ${styles.user_com_edit}`}
+        >
           Edit
         </NormalButton>
       </td>
@@ -29,6 +40,8 @@ function UserDetailCom({ gameSubGame }) {
       >
         <Tables thead={userDetailHead} tbody={tbodyList} />
       </div>
+
+      <EditCommisionBox masterId={masterId} accessToken={accessToken} />
     </section>
   );
 }

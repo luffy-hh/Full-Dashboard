@@ -517,4 +517,7 @@ export const selectConditionLuckyNo = (state) => state.twoDapi.conditionLuckyNo;
 export const selectThreeDReportHistory = (state) =>
   state.twoDapi.threeDReportHistory;
 
+export const selectPatchMasterSubGameCat = (state) =>
+  state.twoDapi.patchMasterSubGameCat;
+
 export default twoDapiSlice.reducer;

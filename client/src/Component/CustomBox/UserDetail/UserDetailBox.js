@@ -1,59 +1,63 @@
 import React, { useEffect } from "react";
-import { Modal } from "antd";
-import {
-  selectModalUserDetail,
-  setModalUserDetail,
-  selectUserDetailData,
-} from "../../../Feactures/modalSlice";
-import {
-  selectAgentLayoutShow,
-  selectlogInData,
-} from "../../../Feactures/apiSlice";
+import { useParams } from "react-router-dom";
+import { selectUserDetailData } from "../../../Feactures/modalSlice";
+import { selectlogInData } from "../../../Feactures/apiSlice";
 import {
   selectMasterGameCat,
   selectMasterSubGameCat,
   fetchGetMasterGameCat,
   fetchGetMasterSubGameCat,
+  filterCommisionUser,
+  selectCommisionUser,
+  selectFilterMasterSubGame,
 } from "../../../Feactures/apiSlice";
+
 import { useSelector, useDispatch } from "react-redux";
 import UserDetailGameCat from "./UserDetailGameCat";
+import { selectEditCommision } from "../../../Feactures/apiSlice";
 
 import styles from "../CustomBox.module.css";
 import UserSubGameBox from "./UserSubGameBox";
 import UserDetailCom from "./UserDetailCom";
 
-function UserDetailBox({ isMaster }) {
-  const modal = useSelector(selectModalUserDetail);
-  const userDetailData = useSelector(selectUserDetailData);
-  const masterSubGameCat = useSelector(selectMasterSubGameCat);
-  const dispatch = useDispatch();
-  const checkMaster = isMaster === "master";
-  const masterGameCat = useSelector(selectMasterGameCat);
+function UserDetailBox() {
+  const { id } = useParams();
+  const editCommision = useSelector(selectEditCommision);
 
-  const logInData = useSelector(selectlogInData);
-  const accessToken = logInData.token;
-
-  console.log(userDetailData._id);
+  useEffect(() => {
+    dispatch(filterCommisionUser(id));
+  }, []);
 
   useEffect(() => {
     dispatch(
       fetchGetMasterGameCat({
         api: "mastercatstatus",
-        idData: userDetailData._id,
+        idData: id,
         accessToken,
       })
     );
   }, []);
 
+  const masterSubGameCat = useSelector(selectMasterSubGameCat);
+  const dispatch = useDispatch();
+
+  const masterGameCat = useSelector(selectMasterGameCat);
+  const commisionUser = useSelector(selectCommisionUser);
+  const checkMaster = commisionUser?.role === "Master";
+  const filterMasterSubGameCat = useSelector(selectFilterMasterSubGame);
+
+  const logInData = useSelector(selectlogInData);
+  const accessToken = logInData.token;
+
   useEffect(() => {
     dispatch(
       fetchGetMasterSubGameCat({
         api: "mastersubcatstatus",
-        idData: userDetailData._id,
+        idData: id,
         accessToken,
       })
     );
-  }, []);
+  }, [editCommision]);
 
   const masterGameArr = masterGameCat?.data.allGameCatStatus.categoryStatus;
   const masterSubGameArr =
@@ -61,17 +65,9 @@ function UserDetailBox({ isMaster }) {
   console.log(masterSubGameArr && masterSubGameArr);
 
   return (
-    <>
-      <Modal
-        open={modal}
-        onOk={() => dispatch(setModalUserDetail(false))}
-        onCancel={() => dispatch(setModalUserDetail(false))}
-        cancelButtonProps={{ style: { display: "none" } }}
-        width={1100}
-        okText={"Save"}
-        className="modalStyle"
-      >
-        <section>
+    <div className="page_style">
+      <section>
+        {commisionUser && (
           <div className={styles.user_detail_header}>
             <img
               className={styles.user_detail_profile}
@@ -81,36 +77,41 @@ function UserDetailBox({ isMaster }) {
             <div className={styles.user_info_box}>
               <p>
                 <span className={styles.user_detail_info}>Name</span>
-                <span>{userDetailData?.name}</span>
+                <span>{commisionUser[0]?.name}</span>
               </p>
               <p>
                 <span className={styles.user_detail_info}>
-                  {userDetailData?.role} ID
+                  {commisionUser[0]?.role} ID
                 </span>
-                <span>{userDetailData?.userId}</span>
+                <span>{commisionUser[0]?.userId}</span>
               </p>
               <p>
                 <span className={styles.user_detail_info}>Unit</span>
-                <span>{userDetailData?.unit}</span>
+                <span>{commisionUser[0]?.unit}</span>
               </p>
               {checkMaster ? null : (
                 <p>
                   <span className={styles.user_detail_info}>Agent Name</span>
-                  <span>{userDetailData?.uplineId}</span>
+                  <span>{commisionUser[0]?.uplineId}</span>
                 </p>
               )}
             </div>
           </div>
-          <UserDetailGameCat
-            data={masterGameArr}
-            masterId={userDetailData._id}
-          />
+        )}
+        <UserDetailGameCat
+          data={masterGameArr}
+          masterId={id}
+          subGameArr={masterSubGameArr}
+        />
 
-          <UserDetailCom gameSubGame={masterSubGameArr} />
-        </section>
-        <UserSubGameBox masterId={userDetailData._id} />
-      </Modal>
-    </>
+        <UserDetailCom
+          gameSubGame={masterSubGameArr}
+          masterId={id}
+          accessToken={accessToken}
+        />
+      </section>
+      <UserSubGameBox masterId={id} />
+    </div>
   );
 }
 

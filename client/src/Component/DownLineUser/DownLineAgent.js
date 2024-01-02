@@ -7,29 +7,20 @@ import {
   fetGetDownLineMaster,
   selectlogInData,
 } from "../../Feactures/apiSlice";
-import {
-  selectDepositeAmount,
-  selectWithDrawAmount,
-  selectCondition,
-  selectDescr,
-  setWithDrawAmount,
-  setAmount,
-  setDescr,
-} from "../../Feactures/modalSlice";
+
 import { setAgentQuery, selectAgentQuery } from "../../Feactures/ShowHideSlice";
 import { selectAgentData } from "../../Feactures/AllUserPageSlice";
 import {
-  selectPostTransfer,
   fetchPostAllAgent,
   selectPostAgentStatus,
   selectPostAgent,
+  setPostAgent,
 } from "../../Feactures/apiSlice";
 import NormalButton from "../NormalButton";
 import {
   selectShowDownLineMaster,
   setDownLineMaster,
 } from "../../Feactures/ShowHideSlice";
-import CustomBox from "../CustomBox/CustomBox";
 
 import Container from "../Container";
 import Searchbar from "../Searchbar/Searchbar";
@@ -46,12 +37,6 @@ function DownLineAgent() {
   const showDownLineMaster = useSelector(selectShowDownLineMaster);
   const postAgent = useSelector(selectPostAgent);
 
-  const depositeAmount = useSelector(selectDepositeAmount);
-  const withDrawAmount = useSelector(selectWithDrawAmount);
-  const condition = useSelector(selectCondition);
-  const postTransfer = useSelector(selectPostTransfer);
-  const descr = useSelector(selectDescr);
-
   const agentData = useSelector(selectAgentData);
   const agentQuery = useSelector(selectAgentQuery);
 
@@ -59,28 +44,14 @@ function DownLineAgent() {
     dispatch(
       fetGetDownLineMaster({ api: `downlineUser/${userId}`, accessToken })
     );
-  }, [postTransfer, postAgent]);
+  }, [postAgent]);
+
+  const handleCreate = () => {
+    dispatch(setDownLineMaster());
+    dispatch(setPostAgent());
+  };
 
   const agentList = downLineMaster?.data.downlineObj;
-
-  const modalComponent =
-    condition === "DEP" ? (
-      <CustomBox
-        title="Deposite Unit"
-        amount={depositeAmount}
-        setAmount={setAmount}
-        descr={descr}
-        setDescr={setDescr}
-      />
-    ) : (
-      <CustomBox
-        title="Withdraw Unit"
-        amount={withDrawAmount}
-        setAmount={setWithDrawAmount}
-        descr={descr}
-        setDescr={setDescr}
-      />
-    );
 
   return (
     <div className="page_style" style={{ overflow: "hidden" }}>
@@ -91,7 +62,7 @@ function DownLineAgent() {
               <p>Member</p>
               <Searchbar query={agentQuery} setQuery={setAgentQuery} />
               <NormalButton
-                onClick={() => dispatch(setDownLineMaster())}
+                onClick={handleCreate}
                 className={styles.add_new_btn}
               >
                 Create Agent
@@ -106,7 +77,6 @@ function DownLineAgent() {
               downLine={true}
             />
           )}
-          {modalComponent}
         </div>
       ) : (
         <AllDownLineCreateForm
@@ -115,6 +85,7 @@ function DownLineAgent() {
           role="Agent"
           postFun={fetchPostAllAgent}
           status={selectPostAgentStatus}
+          postObj={postAgent}
         />
       )}
     </div>

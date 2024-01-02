@@ -44,19 +44,19 @@ exports.gameDeposit = async (req, res) => {
     ReferenceId: refId,
   };
 
-  // const updateUnit = 0;
-  // const otherGameUnit = amount;
+  const updateUnit = 0;
+  const otherGameUnit = amount;
 
-  // const userUpdate = await User.findByIdAndUpdate(
-  //   currentUserId,
-  //   {
-  //     $set: {
-  //       unit: updateUnit,
-  //       otherGameUnit: otherGameUnit,
-  //     },
-  //   },
-  //   { new: true }
-  // );
+  const userUpdate = await User.findByIdAndUpdate(
+    currentUserId,
+    {
+      $set: {
+        unit: updateUnit,
+        otherGameUnit: otherGameUnit,
+      },
+    },
+    { new: true }
+  );
 
   axios
     .post(apiUrl, requestData)
@@ -64,7 +64,7 @@ exports.gameDeposit = async (req, res) => {
       res.json({
         success: true,
         data: {
-          // userUpdate: userUpdate,
+          userUpdate: userUpdate,
           responseData: response.data,
         },
       });

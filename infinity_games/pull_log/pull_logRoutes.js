@@ -1,10 +1,10 @@
 const express = require("express");
-const gameWithdarwControllers = require("./gameWithdarwControllers");
+const pullLogController = require("./pull_logConrollers");
 const userController = require("../../users/userControllers");
 
 const router = express.Router();
 router
-  .route("/Withdraw")
-  .post(userController.protect, gameWithdarwControllers.gameWithdraw);
+  .route("/PullLog")
+  .post(userController.protect, pullLogController.gamePullLog);
 
 module.exports = router;

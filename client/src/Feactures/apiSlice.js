@@ -31,6 +31,14 @@ export const fetchPatchMainUnit = createAsyncThunk(
   }
 );
 
+export const fetchPatchCommision = createAsyncThunk(
+  "data/fetchPatchCommision",
+  async ({ api, patchData, accessToken }) => {
+    const data = await patchDatas(api, patchData, accessToken);
+    return data;
+  }
+);
+
 export const fetchGetMainUnitHistory = createAsyncThunk(
   "data/fetchGetMainUnitHistory",
   async ({ api, accessToken }) => {
@@ -275,6 +283,12 @@ const initialState = {
   agentUnitHistory: null,
   agentUnitHistoryStatus: "idle",
   agentUnitHistoryError: null,
+
+  editCommision: {},
+  editCommisionStatus: "idle",
+  editCommisionError: null,
+
+  commisionUser: {},
 };
 
 const dataSlice = createSlice({
@@ -309,10 +323,7 @@ const dataSlice = createSlice({
     },
 
     setFilterMasterSubGameCat: (state, action) => {
-      state.filterMasterSubGameCat = state.filterMasterSubGameCat.filter(
-        (d) => d.catName_id === action.payload
-      );
-      console.log(state.filterMasterSubGameCat);
+      state.filterMasterSubGameCat = action.payload;
     },
 
     closeMasterSubGameCat: (state, action) => {
@@ -331,6 +342,12 @@ const dataSlice = createSlice({
 
     setPostMaster: (state) => {
       state.postMaster = {};
+    },
+
+    filterCommisionUser: (state, action) => {
+      state.commisionUser = state.forMasterList?.filter(
+        (d) => d._id === action.payload
+      );
     },
   },
   extraReducers: (builder) => {
@@ -426,7 +443,6 @@ const dataSlice = createSlice({
         state.masterStatus = "succeeded";
         state.master = action.payload;
         state.forMasterList = state.master.data.userAll;
-        console.log(state.master);
       })
       .addCase(fetchGetAllMaster.rejected, (state, action) => {
         state.masterStatus = "failed";
@@ -604,6 +620,8 @@ const dataSlice = createSlice({
       .addCase(fetchGetMasterGameCat.fulfilled, (state, action) => {
         state.masterGameCatStatus = "succeeded";
         state.masterGameCat = action.payload;
+
+        console.log(state.masterGameCat, "mainobj");
       })
       .addCase(fetchGetMasterGameCat.rejected, (state, action) => {
         state.masterGameCatStatus = "failed";
@@ -620,7 +638,7 @@ const dataSlice = createSlice({
         state.filterMasterSubGameCat =
           state.masterSubGameCat.data.allGameSubCatStatus.subCatStatus;
 
-        console.log(state.masterSubGameCat, "master subgameCat");
+        console.log(state.filterMasterSubGameCat, "filter subgameCat");
       })
       .addCase(fetchGetMasterSubGameCat.rejected, (state, action) => {
         state.masterSubGameCatStatus = "failed";
@@ -665,6 +683,19 @@ const dataSlice = createSlice({
       .addCase(fetGetAgentUnitHistroy.rejected, (state, action) => {
         state.agentUnitHistoryStatus = "failed";
         state.agentUnitHistoryError = action.error.message;
+      })
+
+      //For patch Commision
+      .addCase(fetchPatchCommision.pending, (state) => {
+        state.editCommisionStatus = "loading";
+      })
+      .addCase(fetchPatchCommision.fulfilled, (state, action) => {
+        state.editCommisionStatus = "succeeded";
+        state.editCommision = action.payload;
+      })
+      .addCase(fetchPatchCommision.rejected, (state, action) => {
+        state.editCommisionStatus = "failed";
+        state.editCommisionError = action.error.message;
       });
   },
 });
@@ -680,6 +711,7 @@ export const {
   setPostAgent,
   setPostMaster,
   setPostUser,
+  filterCommisionUser,
 } = dataSlice.actions;
 
 //logINDATA
@@ -760,5 +792,11 @@ export const selectPostTransferToUserStatus = (state) =>
 
 export const selectUserProfile = (state) => state.data.userProfile;
 export const selectAgentUnitHistory = (state) => state.data.agentUnitHistory;
+
+export const selectEditCommision = (state) => state.data.editCommision;
+export const selectEditCommisionStatus = (state) =>
+  state.data.editCommisionStatus;
+
+export const selectCommisionUser = (state) => state.data.commisionUser;
 
 export default dataSlice.reducer;

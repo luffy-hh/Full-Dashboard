@@ -42,8 +42,10 @@ function AllusersFun({ data, toId, user }) {
   };
 
   const handleActive = () => {
-    dispatch(setModalActive(true));
-    dispatch(setUserObj(user));
+    // dispatch(setModalActive(true));
+    // dispatch(setUserObj(user));
+
+    alert("This function is not avaliable");
   };
 
   const userFunBtn = [

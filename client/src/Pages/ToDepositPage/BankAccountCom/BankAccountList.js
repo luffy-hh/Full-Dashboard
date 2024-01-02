@@ -4,6 +4,7 @@ import styles from "../ToDeposit.module.css";
 import {
   setShowDepoForm,
   setBankNameIds,
+  setPostDeposit,
 } from "../../../Feactures/bankApiSlice";
 import { useDispatch } from "react-redux";
 import { BiSolidCopy } from "react-icons/bi";
@@ -22,6 +23,7 @@ function BankAccountList({ bankAccList }) {
     console.log(id);
     dispatch(setShowDepoForm());
     dispatch(setBankNameIds(id));
+    dispatch(setPostDeposit());
   };
 
   const list = bankAccList?.map((d) => (

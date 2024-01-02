@@ -47,7 +47,7 @@ const masterCatStatusAdmin = require("./category_status/routes/master_cat_status
 const masterSubCatStatusAdmin = require("./category_status/routes/master_subcat_status_routes");
 const agentCatStatusAdmin = require("./category_status/routes/agent_cat_status_routes");
 const agentSubCatStatusAdmin = require("./category_status/routes/agent_subcat_status_route");
-//const agentSubCatComessionAdmin = require("./category_status/routes/agent_comession_rotes");
+const agentSubCatComessionAdmin = require("./category_status/routes/agent_comession_rotes");
 //3D
 const thai3DNumRouter = require("./lottery_nuumbers/routes/lottery3dRoute");
 const thai3DRouter = require("./3DSales&History/routes/3DSaleRoutes");
@@ -65,12 +65,17 @@ const changeTo = require("./transition/routes/changeUnitRoutes");
 const lottery2dRoutes = require("./lottery_nuumbers/routes/lottery2dRoutes");
 const lottery2dEveningRoutes = require("./lottery_nuumbers/routes/lottery2dEveningRoute");
 
+//GameSoft
+const gameSoftGetBalance = require("./game_soft/get_balance/getBalanceRoutes");
 //Infinity Game
-const infinityGameCreatePlayer = require("./infinity_games/create_player/createPlayerRoutes");
-const infinityGetGameList = require("./infinity_games/game_list/gamelistRoutes");
-const infinityGameLogin = require("./infinity_games/game_login/gameLoginRoutes");
-const infinityGameDeposit = require("./infinity_games/game_deposit/gameDepositRoutes");
-const infinityGameCheckBalance = require("./infinity_games/check_balance/checkBalanceRoutes");
+// const infinityGameCreatePlayer = require("./infinity_games/create_player/createPlayerRoutes");
+// const infinityGetGameList = require("./infinity_games/game_list/gamelistRoutes");
+// const infinityGameLogin = require("./infinity_games/game_login/gameLoginRoutes");
+// const infinityGameDeposit = require("./infinity_games/game_deposit/gameDepositRoutes");
+// const infinityGameCheckBalance = require("./infinity_games/check_balance/checkBalanceRoutes");
+// const infinityGameWithdraw = require("./infinity_games/game_withdraw/gameWithdrawRoutes");
+// const infinityGamePullLog = require("./infinity_games/pull_log/pull_logRoutes");
+// const infinityGameCheckPlayer = require("./infinity_games/infinity_check_user/infinityCheckUserRoutes");
 // Middleware
 // app.use(helmet());
 
@@ -193,18 +198,23 @@ app.use("/api/v1/shanPlay", shanPlay);
 app.use("/api/v1/transferTo", transferTo);
 app.use("/api/v1/changeTo", changeTo);
 
-// Infinity game
-app.use("/api/v1/infinity", infinityGameCreatePlayer);
-app.use("/api/v1/infinity", infinityGetGameList);
-app.use("/api/v1/infinity", infinityGameLogin);
-app.use("/api/v1/infinity", infinityGameDeposit);
-app.use("/api/v1/infinity", infinityGameCheckBalance);
+// // Infinity game
+// app.use("/api/v1/infinity", infinityGameCreatePlayer);
+// app.use("/api/v1/infinity", infinityGetGameList);
+// app.use("/api/v1/infinity", infinityGameLogin);
+// app.use("/api/v1/infinity", infinityGameDeposit);
+// app.use("/api/v1/infinity", infinityGameWithdraw);
+// app.use("/api/v1/infinity", infinityGameCheckBalance);
+// app.use("/api/v1/infinity", infinityGamePullLog);
+// app.use("/api/v1/infinity", infinityGameCheckPlayer);
 // 3D APIS
 app.use("/api/v1/thai3DNumAll", thai3DNumRouter);
 app.use("/api/v1/thai3D", thai3DRouter);
 app.use("/api/v1/thai3DLuckyNum", thai3DLuckyNumRouter);
 app.use("/api/v1/thai3DLuckyWinner", thai3DLuckyWinnerRouter);
 
+// GameSoft API
+app.use("/api/v1/gamesoft", gameSoftGetBalance);
 // slot testing
 // app.use("/api/v1/slotTest", slotTestRouter);
 // app.get("*", (req, res) => {

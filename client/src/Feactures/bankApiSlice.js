@@ -248,7 +248,7 @@ const initialState = {
   bankAcc: null,
   bankAccStatus: "idle",
   bankAccError: null,
-  postBankAcc: null,
+  postBankAcc: {},
   postBankAccStatus: "idle",
   postBankAccError: null,
   bankAnnounc: null,
@@ -337,6 +337,14 @@ const bankApiSlice = createSlice({
 
     setBankNameIds: (state, action) => {
       state.toDeposite.bankNameId = action.payload;
+    },
+
+    setPostDeposit: (state) => {
+      state.postDeposit = {};
+    },
+
+    setPostWithdraw: (state) => {
+      state.postWithdraw = {};
     },
   },
   extraReducers: (builder) => {
@@ -705,8 +713,13 @@ const bankApiSlice = createSlice({
   },
 });
 
-export const { setShowName, setShowDepoForm, setBankNameIds } =
-  bankApiSlice.actions;
+export const {
+  setShowName,
+  setShowDepoForm,
+  setBankNameIds,
+  setPostWithdraw,
+  setPostDeposit,
+} = bankApiSlice.actions;
 
 export const selectBankCat = (state) => state.bank.bankCat;
 export const selectPostBankCat = (state) => state.bank.postBankCat;

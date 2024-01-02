@@ -11,15 +11,15 @@ import { setModalMasterSubGame } from "../../../Feactures/modalSlice";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "../CustomBox.module.css";
 
-function UserDetailGameCat({ data, masterId }) {
+function UserDetailGameCat({ data, masterId, subGameArr }) {
   const dispatch = useDispatch();
   const logInData = useSelector(selectlogInData);
   const accessToken = logInData.token;
 
-  const subHanlde = (id) => {
+  const subHanlde = (catName) => {
+    const filterData = subGameArr?.filter((d) => d.catName === catName);
+    dispatch(setFilterMasterSubGameCat(filterData));
     dispatch(setModalMasterSubGame(true));
-
-    dispatch(setFilterMasterSubGameCat({ id: id }));
   };
 
   const closeGameHandle = (id, status) => {
@@ -45,8 +45,8 @@ function UserDetailGameCat({ data, masterId }) {
         d.status ? "color_green" : "color_red"
       }`}
     >
-      <span style={{ cursor: "pointer" }} onClick={() => subHanlde(d.cat_id)}>
-        {d.cat_name}{" "}
+      <span style={{ cursor: "pointer" }} onClick={() => subHanlde(d.cat_name)}>
+        {d.cat_name}
       </span>
       <Switch
         checked={d.status}

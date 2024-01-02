@@ -76,6 +76,7 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  otherGameUnit: { type: Number, default: 0 },
   userLevel: String,
   status: {
     type: Boolean,

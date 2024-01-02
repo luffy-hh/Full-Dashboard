@@ -13,6 +13,13 @@ const Thai3DLuckySchema = mongoose.Schema({
         type: Date,
         required: [true, "Date must be add for Lucky Out"],
     },
+    otherCompensationNumberArray:[
+        {
+            otherNumber:{
+                type : String,
+            }
+        }
+    ]
 });
 
 const Thai3DLucky = mongoose.model('Thai3DLucky',Thai3DLuckySchema)
