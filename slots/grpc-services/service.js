@@ -16,6 +16,7 @@ exports.findUser = async (call, callback) => {
 exports.betSlotegrator = async (call, callback) => {
   let userId = call.request.userId;
   let bet_amount = call.request.bet_amount;
+  let aggregator_transaction_id = call.request.aggregator_transaction_id;
 
   let user_data = await callbackService.getUserBalance(userId);
   let user_balance = user_data.gameUnit;
