@@ -125,13 +125,12 @@ const adminData = [
 
   getItem("Game Setting", null, <AiFillSetting />, [
     getItem("Game Categories", "game-categories", <AiFillSetting />),
-    getItem("Lottery", "lotterysetting", <BsFillDpadFill />),
   ]),
 
-  getItem("Lucky Number", "luckynumber", <PiNumberSquareSevenBold />),
-
   getItem("2D-3D Report", null, <BiSolidReport />, [
+    getItem("Lucky Number", "luckynumber", <PiNumberSquareSevenBold />),
     getItem("All 2D-3D Report", "thai2D-12am", <BsPeople />),
+    getItem("2D-3D Lottery Setting", "lotterysetting", <BsFillDpadFill />),
   ]),
 
   getItem("Bank", null, <RiBankCardFill />, [

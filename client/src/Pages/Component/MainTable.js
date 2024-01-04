@@ -57,7 +57,7 @@ function MainTable({ data, dataArr, query, downLine }) {
       <table className={"table_d box_shadow"}>
         <thead>
           <tr>
-            <th style={{ minWidth: "7rem" }}>No</th>
+            <th style={{ minWidth: "5rem" }}>No</th>
             <th style={{ minWidth: "20rem" }}>Name</th>
             <th style={{ minWidth: "10rem" }}>UserID</th>
             {admin ? null : <th style={{ minWidth: "20rem" }}>Balance</th>}

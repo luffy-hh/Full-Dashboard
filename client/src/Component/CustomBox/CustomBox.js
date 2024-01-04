@@ -125,7 +125,7 @@ function CustomBox({ title, amount, setAmount, descr, setDescr }) {
 
   return (
     <>
-      <CustomBoxSucc afterAmount={postTransfer?.data.userUnitUpdate.unit} />
+      <CustomBoxSucc afterAmount={postTransfer?.data?.userUnitUpdate.unit} />
       <Modal
         title={title}
         centered
