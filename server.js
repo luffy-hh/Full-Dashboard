@@ -5,6 +5,8 @@ const app = require("./app");
 const socketIo = require("socket.io");
 const gameSocket = require("./socket/index");
 
+require("./slots/grpc-services/grpc")
+
 mongoose
   .connect(process.env.DATABASE_LOCAL, {
     useNewUrlParser: true,
@@ -13,6 +15,7 @@ mongoose
   .then(() => console.log("DB Connection Success"));
 
 const port = process.env.PORT || 3000;
-const server = app.listen(port, () => console.log("Listen Now", port));
-const io = socketIo(server);
+const http_server = app.listen(port, () => console.log("Listen Now", port));
+const io = socketIo(http_server);
 io.on("connection", (socket) => gameSocket.init(socket, io));
+
