@@ -9,10 +9,10 @@ service Slotegrator {
 message SlotegratorRequest {
   uint32 userId = 1;
   uint32 amount = 2;
-  string aggregator_transaction_id = 3;
+  string aggregatorTransactionId = 3;
 }
 
 message SlotegratorResponse {
-  uint32 current_balance = 1;
-  string transaction_id = 2;
+  uint32 balance = 1;
+  string transactionId = 2;
 }

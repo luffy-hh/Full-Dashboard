@@ -17,7 +17,7 @@ exports.findUser = async (call, callback) => {
 exports.betSlotegrator = async (call, callback) => {
   let userId = call.request.userId;
   let bet_amount = call.request.amount;
-  let aggregator_transaction_id = call.request.aggregator_transaction_id;
+  let aggregator_transaction_id = call.request.aggregatorTransactionId;
 
   let user_data = await callbackService.getUserBalance(userId);
   let user_balance = user_data.unit;
@@ -27,18 +27,20 @@ exports.betSlotegrator = async (call, callback) => {
         error_description: "Not enough money to continue playing",
     });
   }
-  let transaction = await TransactionRecord.findById(aggregator_transaction_id)
+  let transaction = await TransactionRecord.findOne({additional_info:aggregator_transaction_id})
+
   if(transaction){
-    callback(null, {
+    let data = {
       balance: user_balance,
-      transaction_id:transaction.id
-    });
+      transactionId:transaction.id
+    }
+    callback(null, data);
   }
   else{
-    let {current_balance,transaction_id} = await callbackService.betSlot(userId, bet_amount);
+    let {balance,transaction_id} = await callbackService.betSlot(userId, bet_amount);
     callback(null, {
-      balance: current_balance,
-      transaction_id:transaction_id
+      balance: balance,
+      transactionId:transaction_id
     });
   }
 };
@@ -46,20 +48,20 @@ exports.betSlotegrator = async (call, callback) => {
 exports.winSlotegrator = async (call, callback) => {
   let userId = call.request.userId;
   let win_amount = call.request.amount;
-  let aggregator_transaction_id = call.request.aggregator_transaction_id;
-  let transaction = await TransactionRecord.findById(aggregator_transaction_id)
+  let aggregator_transaction_id = call.request.aggregatorTransactionId;
+  let transaction = await TransactionRecord.findOne({additional_info:aggregator_transaction_id})
 
   if(transaction){
     callback(null, {
       balance: transaction.after_amt,
-      transaction_id:transaction.id
+      transactionId:transaction.id
     });
   }
   else{
-    let {current_balance,transaction_id} = await callbackService.winSlot(userId, win_amount);
+    let {balance,transaction_id} = await callbackService.winSlot(userId, win_amount);
     callback(null, {
-      balance: current_balance,
-      transaction_id:transaction_id
+      balance: balance,
+      transactionId:transaction_id
     });
   }
 
@@ -69,8 +71,9 @@ exports.winSlotegrator = async (call, callback) => {
 exports.refundSlotegrator = async (call, callback) => {
   let userId = call.request.userId;
   let refund_amount = call.request.amount;
-  let aggregator_transaction_id = call.request.aggregator_transaction_id;
-  let transaction = await TransactionRecord.findById(aggregator_transaction_id)
+  let aggregator_transaction_id = call.request.aggregatorTransactionId;
+  let transaction = await TransactionRecord.findOne({additional_info:aggregator_transaction_id})
+  
   if(transaction){
     callback(null, {
       balance: transaction.after_amt,
@@ -78,10 +81,10 @@ exports.refundSlotegrator = async (call, callback) => {
     });
   }
   else{
-    let {current_balance,transaction_id} = await callbackService.refundSlot(userId, refund_amount);
+    let {balance,transaction_id} = await callbackService.refundSlot(userId, refund_amount);
     callback(null, {
-      balance: current_balance,
-      transaction_id:transaction_id
+      balance: balance,
+      transactionId:transaction_id
     });
   }
 

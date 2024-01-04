@@ -1,3 +1,4 @@
+const TransactionRecord = require("../../transaction-record/transactionRecordModel");
 const User = require("../../users/userModels");
 
 exports.getUserBalance= async(userId)=>{
@@ -18,7 +19,7 @@ exports.getUserBalance= async(userId)=>{
 //when player trying to make a bet.
 exports.betSlot = async(userId,bet_amount)=>{
     //reduce user's balance, send ag commission ,etc...
-    let user = await User.findOneAndUpdate({userId:userId},{$inc:{unit:-bet_amount}});
+    let user = await User.findOneAndUpdate({userId:userId},{$inc:{unit:-bet_amount}},{new:true});
     let transaction = await TransactionRecord.create({
         user_id:user._id,
         before_amt:user.unit+bet_amount,
@@ -27,9 +28,8 @@ exports.betSlot = async(userId,bet_amount)=>{
         type:'slot-bet',
         status:'Out'
     });
-    console.log('transaction',transaction.id)
     return {
-        current_balance:user.unit,
+        balance:user.unit,
         transaction_id:transaction.id
     }
 }
@@ -37,7 +37,7 @@ exports.betSlot = async(userId,bet_amount)=>{
 //when player win in a game
 exports.winSlot = async(userId,win_amount)=>{
     //increase user's balance, record transaction,etc...
-    let user = await User.findOneAndUpdate({userId:userId},{$inc:{unit:win_amount}});
+    let user = await User.findOneAndUpdate({userId:userId},{$inc:{unit:win_amount}},{new:true});
     let transaction = await TransactionRecord.create({
         user_id:user._id,
         before_amt:user.unit-win_amount,
@@ -47,7 +47,7 @@ exports.winSlot = async(userId,win_amount)=>{
         status:'In'
     });
     return {
-        current_balance:user.unit,
+        balance:user.unit,
         transaction_id:transaction.id
     }
 }
@@ -55,7 +55,7 @@ exports.winSlot = async(userId,win_amount)=>{
 //Refund is a cash back in case bet problems.
 exports.refundSlot = async(userId,refund_amount)=>{
     //increase user's balance, record transaction,etc...
-    let user = await User.findOneAndUpdate({userId:userId},{$inc:{unit:refund_amount}});
+    let user = await User.findOneAndUpdate({userId:userId},{$inc:{unit:refund_amount}},{new:true});
     let transaction = await TransactionRecord.create({
         user_id:user._id,
         before_amt:user.unit-refund_amount,
@@ -65,7 +65,7 @@ exports.refundSlot = async(userId,refund_amount)=>{
         status:'In'
     });
     return {
-        current_balance:user.unit,
+        balance:user.unit,
         transaction_id:transaction.id
     }
 }
