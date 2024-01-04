@@ -18,8 +18,9 @@ exports.getUserBalance= async(userId)=>{
 //when player trying to make a bet.
 exports.betSlot = async(userId,bet_amount)=>{
     //reduce user's balance, send ag commission ,etc...
+    let user = await User.findOneAndUpdate({userId:userId},{$inc:{unit:-bet_amount}});
     return {
-        current_balance:10000,
+        current_balance:user.unit,
         transaction_id:'XXXXXXXXX'
     }
 }
@@ -27,8 +28,9 @@ exports.betSlot = async(userId,bet_amount)=>{
 //when player win in a game
 exports.winSlot = async(userId,win_amount)=>{
     //increase user's balance, record transaction,etc...
+    let user = await User.findOneAndUpdate({userId:userId},{$inc:{unit:win_amount}});
     return {
-        current_balance:10000,
+        current_balance:user.unit,
         transaction_id:'XXXXXXXXX'
     }
 }
@@ -36,8 +38,9 @@ exports.winSlot = async(userId,win_amount)=>{
 //Refund is a cash back in case bet problems.
 exports.refund = async(userId,refund_amount)=>{
     //increase user's balance, record transaction,etc...
+    let user = await User.findOneAndUpdate({userId:userId},{$inc:{unit:refund_amount}});
     return {
-        current_balance:10000,
+        current_balance:user.unit,
         transaction_id:'XXXXXXXXX'
     }
 }
