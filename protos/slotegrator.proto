@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+service Slotegrator {
+  rpc Bet (SlotegratorRequest) returns (SlotegratorResponse) {}
+  rpc Win (SlotegratorRequest) returns (SlotegratorResponse) {}
+  rpc Refund (SlotegratorRequest) returns (SlotegratorResponse) {}
+}
+
+message SlotegratorRequest {
+  uint32 userId = 1;
+  uint32 amount = 2;
+  string aggregator_transaction_id = 3;
+}
+
+message SlotegratorResponse {
+  uint32 current_balance = 1;
+  string transaction_id = 2;
+}
