@@ -25,6 +25,7 @@ const modalShowHide = {
   modalMasterSubGame: false,
   modalBankAcc: false,
   modalEditCom: false,
+  modalSucc: false,
 };
 
 const initialState = {
@@ -34,6 +35,7 @@ const initialState = {
   userDetailData: null,
   closeNoData: null,
   commisionId: "",
+  beforeAmt: null,
 };
 const modalSlice = createSlice({
   name: "modal",
@@ -107,6 +109,10 @@ const modalSlice = createSlice({
       state.modalShowHide.modalReport = action.payload;
     },
 
+    setModalSucc: (state, action) => {
+      state.modalShowHide.modalSucc = action.payload;
+    },
+
     setModalChangePassword: (state, action) => {
       state.modalShowHide.modalChangePassword = action.payload;
     },
@@ -131,6 +137,10 @@ const modalSlice = createSlice({
 
     setCommisionId: (state, action) => {
       state.commisionId = action.payload;
+    },
+
+    setBeforeAmt: (state, action) => {
+      state.beforeAmt = action.payload;
     },
   },
 });
@@ -161,6 +171,8 @@ export const {
   setModalBankAcc,
   setModalEditCom,
   setCommisionId,
+  setModalSucc,
+  setBeforeAmt,
 } = modalSlice.actions;
 export const selectModalShow = (state) => state.modal.modalShowHide.modalShow;
 export const selectUserId = (state) => state.modal.depositeToUser.userId;
@@ -213,6 +225,9 @@ export const selectModalBankAcc = (state) =>
 export const selectModalEditCom = (state) =>
   state.modal.modalShowHide.modalEditCom;
 
+export const selectModalSucc = (state) => state.modal.modalShowHide.modalSucc;
+
 export const selectCommisionId = (state) => state.modal.commisionId;
+export const selectBeforeAmt = (state) => state.modal.beforeAmt;
 
 export default modalSlice.reducer;

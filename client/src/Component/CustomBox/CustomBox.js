@@ -1,5 +1,9 @@
-import React from "react";
-import { selectModalShow, setModalShow } from "../../Feactures/modalSlice";
+import React, { useState } from "react";
+import {
+  selectModalShow,
+  setModalShow,
+  setModalSucc,
+} from "../../Feactures/modalSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { Modal } from "antd";
 import { selectUserId, selectCondition } from "../../Feactures/modalSlice";
@@ -9,9 +13,12 @@ import {
   selectlogInData,
   selectPostTransferToUserStatus,
   postTransferToUser,
+  selectPostTransfer,
 } from "../../Feactures/apiSlice";
 
 import styles from "./CustomBox.module.css";
+import Error from "../ErrorandSuccess/Error";
+import CustomBoxSucc from "./CustomBoxSucc";
 
 function CustomBox({ title, amount, setAmount, descr, setDescr }) {
   const modalShow = useSelector(selectModalShow);
@@ -19,6 +26,8 @@ function CustomBox({ title, amount, setAmount, descr, setDescr }) {
   const logInData = useSelector(selectlogInData);
   const dispatch = useDispatch();
   const postTransferStatus = useSelector(selectPostTransferStatus);
+  const [error, setError] = useState(false);
+  const postTransfer = useSelector(selectPostTransfer);
 
   const postTransferToUserStatus = useSelector(selectPostTransferToUserStatus);
   const accessToken = logInData.token;
@@ -53,33 +62,39 @@ function CustomBox({ title, amount, setAmount, descr, setDescr }) {
   };
 
   const addUnitFun = (api, postFun, status, postDataDep, postDataWith) => {
-    if (condition === "DEP") {
-      dispatch(
-        postFun({
-          api: api,
-          postData: postDataDep,
-          accessToken,
-        })
-      );
+    if (amount && descr) {
+      if (condition === "DEP") {
+        dispatch(
+          postFun({
+            api: api,
+            postData: postDataDep,
+            accessToken,
+          })
+        );
 
-      if (status) {
-        dispatch(setModalShow(false));
-        dispatch(setAmount(""));
-        dispatch(setDescr(""));
+        if (status) {
+          dispatch(setModalShow(false));
+          dispatch(setAmount(""));
+          dispatch(setDescr(""));
+        }
+      } else {
+        dispatch(
+          postTransferUnit({
+            api: api,
+            postData: postDataWith,
+            accessToken,
+          })
+        );
+        if (status) {
+          dispatch(setModalShow(false));
+          dispatch(setAmount(""));
+          dispatch(setDescr(""));
+        }
       }
+      setError(false);
+      dispatch(setModalSucc(true));
     } else {
-      dispatch(
-        postTransferUnit({
-          api: api,
-          postData: postDataWith,
-          accessToken,
-        })
-      );
-      if (status) {
-        dispatch(setModalShow(false));
-        dispatch(setAmount(""));
-        dispatch(setDescr(""));
-      }
+      setError(true);
     }
   };
 
@@ -102,20 +117,28 @@ function CustomBox({ title, amount, setAmount, descr, setDescr }) {
       );
     }
   };
+
+  const cancelFun = () => {
+    dispatch(setModalShow(false));
+    setError(false);
+  };
+
   return (
     <>
+      <CustomBoxSucc afterAmount={postTransfer?.data.userUnitUpdate.unit} />
       <Modal
         title={title}
         centered
         open={modalShow}
         onOk={clickHandle}
-        onCancel={() => dispatch(setModalShow(false))}
+        onCancel={() => cancelFun()}
         cancelButtonProps={{ style: { display: "none" } }}
         width={700}
         okText={postTransferStatus === "loading" ? "Saving" : "Save"}
         className="modalStyle"
       >
         <div className={styles.form_style}>
+          {error && <Error message={"Fill All The Field"} />}
           <div className={styles.form}>
             <label>Description</label>
             <input

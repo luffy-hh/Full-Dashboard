@@ -1,10 +1,7 @@
 import React from "react";
 import AllusersFun from "./AllusersFun";
-import {
-  setUserDetailData,
-  selectUserDetailData,
-} from "../../Feactures/modalSlice";
-import { useDispatch, useSelector } from "react-redux";
+
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
 import styles from "./AllusersTable.module.css";
@@ -45,7 +42,9 @@ function MainTable({ data, dataArr, query, downLine }) {
               </NormalButton>
             </td>
           )}
-          {!downLine && <AllusersFun data={data} toId={d._id} user={d} />}
+          {!downLine && (
+            <AllusersFun data={data} toId={d._id} beforeAmt={d.unit} />
+          )}
           <td>{d.status ? "Active" : "InActive"}</td>
           <td className="table_d_lastTime">
             <span>{new Date(d.loginTime).toLocaleDateString()}</span>

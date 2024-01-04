@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import classes from "./Login.module.css";
@@ -9,6 +9,7 @@ function Form() {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const logInStatus = useSelector(selectlogInStatus);
+
   const postData = { userId: email, password };
 
   const loginHandle = (e) => {
@@ -24,6 +25,7 @@ function Form() {
     <div className={classes.loginLogo}>
       <h1>Logo</h1>
       <p>Welcome Back!</p>
+
       <form className={classes.loginFrom} onSubmit={(e) => loginHandle(e)}>
         <input
           type="text"

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "antd";
 
@@ -29,8 +29,12 @@ function LuckyNoBox({ category, postFun, api, accessToken }) {
   console.log(postData);
 
   const clickHandle = () => {
-    dispatch(postFun({ api: api, postData, accessToken: accessToken }));
-    dispatch(setModalLucky(false));
+    if (luckyNo && lukyCate) {
+      dispatch(postFun({ api: api, postData, accessToken: accessToken }));
+      dispatch(setModalLucky(false));
+    } else {
+      return null;
+    }
   };
 
   return (
