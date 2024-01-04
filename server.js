@@ -5,6 +5,8 @@ const app = require("./app");
 const socketIo = require("socket.io");
 const gameSocket = require("./socket/index");
 
+require("./slots/grpc-services/grpc")
+
 mongoose
   .connect(process.env.DATABASE_LOCAL, {
     useNewUrlParser: true,
@@ -17,30 +19,3 @@ const http_server = app.listen(port, () => console.log("Listen Now", port));
 const io = socketIo(http_server);
 io.on("connection", (socket) => gameSocket.init(socket, io));
 
-
-const grpc = require('@grpc/grpc-js');
-const protoLoader = require('@grpc/proto-loader');
-const callbackService = require('./slots/slotegrator/callbackService');
-const User = require("./users/userModels");
-const packageDefinition = protoLoader.loadSync('./protos/users.proto');
-const userProto = grpc.loadPackageDefinition(packageDefinition);
-
-async function findUser(call, callback) {
-  let userId = call.request.userId;
-  let user_data = await callbackService.getUserBalance(userId)
-  if(user_data) {
-      callback(null, user_data);
-  }
-  else {
-      callback({
-          message: 'User not found',
-          code: grpc.status.INVALID_ARGUMENT
-      });
-  }
-}
-
-const server = new grpc.Server();
-server.addService(userProto.Users.service, { find: findUser });
-server.bindAsync('0.0.0.0:50071', grpc.ServerCredentials.createInsecure(), () => {
-  server.start();
-});
