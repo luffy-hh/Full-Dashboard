@@ -12,13 +12,13 @@ exports.transferMainUnitfun = async (req, res) => {
     const currentMyanmarTime = moment().format("YYYY-MM-DD HH:mm:ss");
 
     // Admin Data
-    const adminId = "652828b555d62366ddb1bc4c";
+
     const adminObj = await User.findById(req.user.id);
     const adminName = adminObj.name;
 
     // Admin Unit Data
-    const mainUnitId = "6527d1074eb2bfc53e025c9d";
-    const mainUnitObj = await MainUnit.findById(mainUnitId);
+    const mainUnitArr = await MainUnit.find();
+    const mainUnitObj = await MainUnit.findById(mainUnitArr[0]._id);
     const mainUnit = mainUnitObj.mainUnit;
 
     // User Data
