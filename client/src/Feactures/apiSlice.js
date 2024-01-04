@@ -323,7 +323,10 @@ const dataSlice = createSlice({
     },
 
     setFilterMasterSubGameCat: (state, action) => {
-      state.filterMasterSubGameCat = action.payload;
+      state.filterMasterSubGameCat =
+        state.masterSubGameCat.data.allGameSubCatStatus.subCatStatus.filter(
+          (d) => d.catName === action.payload
+        );
     },
 
     closeMasterSubGameCat: (state, action) => {
@@ -357,7 +360,7 @@ const dataSlice = createSlice({
         state.logInStatus = "loading";
       })
       .addCase(fetchPostLogin.fulfilled, (state, action) => {
-        state.status = "succeeded";
+        state.logInStatus = "succeeded";
         state.logInData = action.payload;
         state.currentLoginUser = state.logInData.user.role;
         state.currentUserId = state.logInData.user.userId;
@@ -712,6 +715,7 @@ export const {
   setPostMaster,
   setPostUser,
   filterCommisionUser,
+  setAgentLayoutShow,
 } = dataSlice.actions;
 
 //logINDATA

@@ -84,20 +84,21 @@ a {
   font-size: 1.8rem;
   padding: 1rem 1.2rem;
 }
-::-webkit-scrollbar {
+
+/* ::-webkit-scrollbar {
   width: 10px;
   height: 100px;
-  /* Width of the entire scrollbar */
+  
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: var(--blue-light); /* Color of the draggable part */
-  border-radius: 10px; /* Rounded corners */
+  background-color: var(--blue-light); 
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #f1f1f1; /* Color of the track */
-}
+  background-color: #f1f1f1; 
+} */
 
 .hide_scroll::-webkit-scrollbar {
   display: none;
@@ -166,6 +167,7 @@ a {
   width: 100vw;
   padding: 2.4rem 3.2rem;
   margin-left: 28rem;
+  border-radius: 8px 0 8px 0;
   min-height: 100vh;
 }
 
@@ -200,4 +202,11 @@ a {
 }
 .color_green {
   background-color: var(--green-light);
+}
+
+.ant-menu {
+  font-size: 1.6rem;
+}
+.ant-menu-item {
+  font-size: 1.4rem !important;
 }

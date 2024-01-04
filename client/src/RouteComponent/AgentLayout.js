@@ -38,6 +38,7 @@ const agent = [
 
 function AgentLayout() {
   const agentLayoutShow = useSelector(selectAgentLayoutShow);
+  console.log(agentLayoutShow);
   return (
     <Routes>
       <Route path="/agent" element={agentLayoutShow ? <Layout /> : <Login />}>

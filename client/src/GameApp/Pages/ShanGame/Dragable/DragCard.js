@@ -1,6 +1,12 @@
 import React, { useEffect } from "react";
-import { setDragCard, setPullCard } from "../../../../Feactures/shan";
-import { useDispatch } from "react-redux";
+import {
+  setDragCard,
+  setPullCard,
+  selectDragCard,
+  setResult,
+} from "../../../../Feactures/shan";
+
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./DragCard.module.css";
 const shan = [
   {
@@ -268,8 +274,9 @@ const shan = [
   },
 ];
 
-function DragCard({ setResult, data }) {
+function DragCard({ data }) {
   const dispatch = useDispatch();
+  const dragCardState = useSelector(selectDragCard);
 
   useEffect(() => {
     const frontCardOne = document.getElementById("front_card_one");
@@ -346,7 +353,7 @@ function DragCard({ setResult, data }) {
 
   const handleShow = () => {
     showAllCard();
-    setResult(true);
+    dispatch(setResult(true));
     dispatch(setDragCard(false));
     dispatch(setPullCard(true));
   };
