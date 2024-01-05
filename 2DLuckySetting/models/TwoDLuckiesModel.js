@@ -8,6 +8,7 @@ const TwoDLuckySchema = mongoose.Schema({
   number: {
     type: String,
     required: true,
+    match: [/^\d{2}$/, 'number must have length of 2']
   },
   date: {
     type: Date,

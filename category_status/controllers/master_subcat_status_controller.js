@@ -45,8 +45,13 @@ exports.updateGameSubCatStatus = async (req, res) => {
     const subCatIdToUpdate = req.body.subCatIdToUpdate;
     console.log(req.body)
     let update= {}
+    // check if status in request is not null and add it to update object
     if(req.body?.status !== null){
       update['subCatStatus.$.status']= req.body.status
+    }
+    // check if otherCompensation in request is not null and add it to update object
+    if(req.body?.otherCompensation !== null){
+      update['subCatStatus.$.otherCompensation'] = req.body.otherCompensation
     }
     // Check if mainCompensation is not null and add it to the update object
     if (req.body?.mainCompensation !== null) {

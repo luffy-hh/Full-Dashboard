@@ -26,7 +26,12 @@ const masterSubCatStatusSchema = new mongoose.Schema({
         default: 0,
       },
       mainCompensation: {
-        type: Number,default:0,
+        type: Number,
+        default: 0,
+      },
+      otherCompensation: {
+        type: Number,
+        default: 0,
       },
       status: {
         type: Boolean,

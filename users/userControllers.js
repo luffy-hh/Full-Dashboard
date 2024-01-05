@@ -110,6 +110,7 @@ exports.signup = catchAsync(async (req, res, next) => {
           const newObj = {
             ...subCat.toObject(),
             mainCompensation: obj.mainCompensation,
+            otherCompensation: obj.otherCompensation
           };
           // console.log(newObj);
           subCatObjArr.push(newObj);
@@ -353,11 +354,9 @@ exports.getProfile = async (req, res) => {
 // Profile
 exports.updateProfile = async (req, res) => {
   try {
-    const token = req.headers.authorization.split(" ")[1];
-    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
     const updateObj = req.body;
 
-    const updateUser = await User.findByIdAndUpdate(decoded.id, updateObj, {
+    const updateUser = await User.findByIdAndUpdate(req.params.id, updateObj, {
       new: true,
     });
     console.log(updateUser);
@@ -377,9 +376,7 @@ exports.updateProfile = async (req, res) => {
 
 exports.forgetPassword = catchAsync(async (req, res, next) => {
   // 1. Get user's email
-  const token = req.headers.authorization.split(" ")[1];
-  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-  const user = await User.findById(decoded.id);
+  const user = await User.findById(req.user.id);
 
   if (!user) {
     return next(new AppError("User not found", 404));
@@ -473,6 +470,34 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   createSendToken(user, 200, res);
 });
 
+// update password from upline
+exports.updatePasswordFromUpline = catchAsync(async (req, res, next) => {
+  // 1) Get user from collection
+  try {
+    const updateObj = req.body
+    const user = await User.findOne({_id:req.params.id});
+    if(!user){
+      res.status(400).json({
+        status:'failed',
+        message:'The user is not existed or not valid'
+      })
+    }
+    for (let field in updateObj) {
+      user[field] = updateObj[field];
+    }
+    const updateUser = await user.save()
+    res.status(200).json({
+      status:'succeed',
+      updateUser
+    })
+  }catch (e) {
+    res.status(500).json({
+      status:"failed",
+      message:e.message
+    })
+  }
+
+});
 // Read All User By Role
 exports.getAllUserByRole = async (req, res) => {
   try {

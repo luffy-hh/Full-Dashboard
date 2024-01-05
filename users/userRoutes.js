@@ -46,7 +46,9 @@ router
     userController.restrictTo("Admin"),
     userController.getUsersAll
   );
-
+router.route('/:id')
+    .patch(userController.protect,userController.restrictTo("Admin","Master","Agent"),userController.updateProfile)
+    .put(userController.protect,userController.restrictTo("Admin","Master","Agent"),userController.updatePasswordFromUpline)
 // router
 //   .route("/user/master")
 //   .patch(
