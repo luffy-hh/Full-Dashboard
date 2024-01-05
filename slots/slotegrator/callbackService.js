@@ -1,3 +1,4 @@
+const TransactionRecord = require("../../transaction-record/transactionRecordModel");
 const User = require("../../users/userModels");
 
 exports.getUserBalance= async(userId)=>{
@@ -18,29 +19,53 @@ exports.getUserBalance= async(userId)=>{
 //when player trying to make a bet.
 exports.betSlot = async(userId,bet_amount)=>{
     //reduce user's balance, send ag commission ,etc...
-    let user = await User.findOneAndUpdate({userId:userId},{$inc:{unit:-bet_amount}});
+    let user = await User.findOneAndUpdate({userId:userId},{$inc:{unit:-bet_amount}},{new:true});
+    let transaction = await TransactionRecord.create({
+        user_id:user._id,
+        before_amt:user.unit+bet_amount,
+        action_amt:bet_amount,
+        after_amt:user.unit,
+        type:'slot-bet',
+        status:'Out'
+    });
     return {
-        current_balance:user.unit,
-        transaction_id:'XXXXXXXXX'
+        balance:user.unit,
+        transaction_id:transaction.id
     }
 }
 
 //when player win in a game
 exports.winSlot = async(userId,win_amount)=>{
     //increase user's balance, record transaction,etc...
-    let user = await User.findOneAndUpdate({userId:userId},{$inc:{unit:win_amount}});
+    let user = await User.findOneAndUpdate({userId:userId},{$inc:{unit:win_amount}},{new:true});
+    let transaction = await TransactionRecord.create({
+        user_id:user._id,
+        before_amt:user.unit-win_amount,
+        action_amt:win_amount,
+        after_amt:user.unit,
+        type:'slot-win',
+        status:'In'
+    });
     return {
-        current_balance:user.unit,
-        transaction_id:'XXXXXXXXX'
+        balance:user.unit,
+        transaction_id:transaction.id
     }
 }
 
 //Refund is a cash back in case bet problems.
-exports.refund = async(userId,refund_amount)=>{
+exports.refundSlot = async(userId,refund_amount)=>{
     //increase user's balance, record transaction,etc...
-    let user = await User.findOneAndUpdate({userId:userId},{$inc:{unit:refund_amount}});
+    let user = await User.findOneAndUpdate({userId:userId},{$inc:{unit:refund_amount}},{new:true});
+    let transaction = await TransactionRecord.create({
+        user_id:user._id,
+        before_amt:user.unit-refund_amount,
+        action_amt:refund_amount,
+        after_amt:user.unit,
+        type:'slot-refund',
+        status:'In'
+    });
     return {
-        current_balance:user.unit,
-        transaction_id:'XXXXXXXXX'
+        balance:user.unit,
+        transaction_id:transaction.id
     }
 }
