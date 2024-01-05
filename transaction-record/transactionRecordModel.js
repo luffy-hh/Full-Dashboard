@@ -27,7 +27,6 @@ const TransactionRecordSchema = mongoose.Schema(
     },
     additional_info:{
       type: String,
-      require: false
     }
   },
   { timestamps: true }
