@@ -25,6 +25,10 @@ const TransactionRecordSchema = mongoose.Schema(
       type: String,
       enum: ["In", "Out"],
     },
+    additional_info:{
+      type: String,
+      require: false
+    }
   },
   { timestamps: true }
 );
