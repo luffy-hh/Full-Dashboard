@@ -6,6 +6,7 @@ import MasterReport from "../Pages/WinLoseReport/MasterReport";
 import UserReport from "../Pages/WinLoseReport/UserReport";
 import UserReportTable from "../Pages/WinLoseReport/Component/UserReportTable";
 import AllAgentsPage from "../Pages/AllAgentsPage/AllAgentsPage";
+import UnitTransferTo from "../Pages/UnitTransferTo/UnitTransferTo";
 
 import ToWithdraw from "../Pages/ToWithdrawPage/ToWithdraw";
 
@@ -39,6 +40,7 @@ const master = [
   { id: 27, path: "towithdraw-history", route: <MasterWithdrawHistory /> },
   { id: 31, path: "down_line_agent", route: <DownLineAgent /> },
   { id: 32, path: "down_line_agent/:userId", route: <DownLineAllUser /> },
+  { id: 41, path: "unitTransferTo", route: <UnitTransferTo /> },
 ];
 
 function MasterLayout() {

@@ -12,6 +12,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./ToDeposit.module.css";
 import BankAccountList from "./BankAccountCom/BankAccountList";
+import { selectCollapsed } from "../../Feactures/modalSlice";
 
 function ToDeposit() {
   const dispatch = useDispatch();
@@ -22,6 +23,7 @@ function ToDeposit() {
   const bankAccUpline = useSelector(selectBankAccUpline);
 
   const showDepoForm = useSelector(selectShowDepoForm);
+  const collapsed = useSelector(selectCollapsed);
 
   useEffect(() => {
     dispatch(fetGetBankAnnounc({ api: "bankAnnounc", accessToken }));
@@ -33,7 +35,10 @@ function ToDeposit() {
   const bankAccUplineArr = bankAccUpline?.data.allBankAcc;
 
   return (
-    <div className="page_style" style={{ position: "relative" }}>
+    <div
+      className={collapsed ? "page_style_coll" : "page_style"}
+      style={{ position: "relative" }}
+    >
       {!showDepoForm ? (
         <div className={`box_shadow ${styles.account_head}`}>
           <p className={styles.account}>AccountID {currentUserId}</p>
@@ -41,8 +46,8 @@ function ToDeposit() {
           <div className={styles.account_alret}>
             <div>
               <span style={{ fontSize: "2rem" }}>
-                <AiFillNotification />{" "}
-              </span>{" "}
+                <AiFillNotification />
+              </span>
               {bankText?.description_deposit}
             </div>
             <div>

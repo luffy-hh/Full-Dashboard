@@ -9,6 +9,8 @@ import {
   selectpatchMainUnitData,
 } from "../../Feactures/apiSlice";
 
+import { selectCollapsed } from "../../Feactures/modalSlice";
+
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./UnitHistory.module.css";
 
@@ -20,6 +22,7 @@ function UnitHistory() {
 
   const patchMainUnitData = useSelector(selectpatchMainUnitData);
   const logInData = useSelector(selectlogInData);
+  const collapsed = useSelector(selectCollapsed);
 
   const accessToken = logInData.token;
 
@@ -33,7 +36,9 @@ function UnitHistory() {
     mainUnitHistoryStatus === "succeeded" &&
     mainUnitHistory?.data.mainUnitHistories;
   return (
-    <div className={styles.unitHistoryPage}>
+    <div
+      className={collapsed ? styles.unit_history_coll : styles.unitHistoryPage}
+    >
       <div className={styles.unitHistory_container}>
         <div className={styles.unit_history_header}>
           <h3>Create UnitHistory</h3>

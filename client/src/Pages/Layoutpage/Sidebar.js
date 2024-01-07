@@ -6,7 +6,7 @@ import { BsPersonCircle } from "react-icons/bs";
 import { BsFillPersonLinesFill } from "react-icons/bs";
 import { BsFillPersonPlusFill } from "react-icons/bs";
 import { BsFillPersonFill } from "react-icons/bs";
-
+import { AiOutlineLogout } from "react-icons/ai";
 import { BsPeople } from "react-icons/bs";
 
 import { BsFillDpadFill } from "react-icons/bs";
@@ -20,6 +20,7 @@ import { BiSolidReport } from "react-icons/bi";
 import { RiLuggageDepositFill } from "react-icons/ri";
 import { BiMoneyWithdraw } from "react-icons/bi";
 import { ImHistory } from "react-icons/im";
+import { selectCollapsed } from "../../Feactures/modalSlice";
 
 import { MdRequestQuote } from "react-icons/md";
 import NormalButton from "../../Component/NormalButton";
@@ -57,6 +58,8 @@ const agentData = [
   getItem("User", null, <BsPersonCircle />, [
     getItem("All Users", "down_line_user", <BsPeople />),
   ]),
+
+  getItem("Fast Transfer", "unitTransferTo", <BsFillGridFill />),
   getItem("Bank", null, <RiBankCardFill />, [
     getItem("Bank Account", "bankAcc", <BiDollarCircle />),
   ]),
@@ -80,6 +83,8 @@ const masterData = [
   getItem("User", null, <BsPersonCircle />, [
     getItem("All Agent", "down_line_agent", <BsPeople />),
   ]),
+
+  getItem("Fast Transfer", "unitTransferTo", <BsFillGridFill />),
   getItem("Bank", null, <RiBankCardFill />, [
     getItem("Bank Account", "bankAcc", <BiDollarCircle />),
   ]),
@@ -117,6 +122,8 @@ const adminData = [
     getItem("All Master", "allmaster", <BsPeople />),
     getItem("All Admin", "alladmins", <BsPeople />),
   ]),
+
+  getItem("Fast Transfer", "unitTransferTo", <BsFillGridFill />),
 
   getItem("Shan Card", null, <GiPokerHand />, [
     getItem("Create Roll", "create-roll", <GiPokerHand />),
@@ -157,9 +164,11 @@ const adminData = [
 function Sidebar() {
   const navigate = useNavigate();
   const currentLoginUser = useSelector(selectcurrentLoginUser);
+  const collapsed = useSelector(selectCollapsed);
   const dispatch = useDispatch();
 
   const [data, setData] = useState([]);
+
   useEffect(() => {
     currentLoginUser !== "" &&
       ((currentLoginUser === "Admin" && setData(adminData)) ||
@@ -178,19 +187,29 @@ function Sidebar() {
   };
 
   return (
-    <aside className={styles.admin_aside}>
+    <aside
+      className={styles.admin_aside}
+      style={{ width: collapsed ? "80px" : "280px" }}
+    >
       <Menu
         onClick={({ label, key }) => navigate(key)}
         defaultSelectedKeys={["1"]}
         defaultOpenKeys={["sub1"]}
         mode="inline"
         theme="dark"
+        inlineCollapsed={collapsed}
         items={data}
       />
 
-      <NormalButton className={styles.logout_btn} onClick={() => logOutFun()}>
-        LogOut
-      </NormalButton>
+      {collapsed ? (
+        <div className={styles.log_out_style} onClick={() => logOutFun()}>
+          <AiOutlineLogout />
+        </div>
+      ) : (
+        <NormalButton className={styles.logout_btn} onClick={() => logOutFun()}>
+          LogOut
+        </NormalButton>
+      )}
     </aside>
   );
 }

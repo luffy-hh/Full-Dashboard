@@ -1,12 +1,22 @@
-.all_admin_page {
+.all_admin_page,
+.all_admin_coll {
   background-color: var(--blue-white);
   color: var(--text);
   width: 100vw;
   padding: 2.4rem 3.2rem;
-  margin-left: 28rem;
+
   min-height: 100vh;
   overflow: hidden;
 }
+
+.all_admin_page {
+  margin-left: 28rem;
+}
+
+.all_admin_coll {
+  margin-left: 8rem;
+}
+
 .all_admin_container {
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   background-color: var(--text-white);

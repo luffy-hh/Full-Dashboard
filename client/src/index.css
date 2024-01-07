@@ -79,10 +79,14 @@ a {
 
 .input {
   outline: none;
-  border: none;
+  border: 1px solid #888;
   border-radius: 8px;
   font-size: 1.8rem;
   padding: 1rem 1.2rem;
+}
+
+.input:focus {
+  border: 1px solid var(--blue-light);
 }
 
 /* ::-webkit-scrollbar {
@@ -161,14 +165,22 @@ a {
   border-radius: 8px;
 }
 
-.page_style {
+.page_style,
+.page_style_coll {
   background-color: var(--blue-white);
   color: var(--text);
   width: 100vw;
   padding: 2.4rem 3.2rem;
-  margin-left: 28rem;
-  border-radius: 8px 0 8px 0;
+
   min-height: 100vh;
+}
+
+.page_style {
+  margin-left: 28rem;
+}
+
+.page_style_coll {
+  margin-left: 8rem;
 }
 
 .modalStyle {
@@ -209,4 +221,8 @@ a {
 }
 .ant-menu-item {
   font-size: 1.4rem !important;
+}
+
+.ban_user {
+  opacity: 0.5;
 }

@@ -27,6 +27,7 @@ import {
   fetchPostAllMaster,
   selectPostTransfer,
   setPostMaster,
+  selectBanUser,
 } from "../../Feactures/apiSlice";
 import NormalButton from "../../Component/NormalButton";
 import Container from "../../Component/Container";
@@ -34,6 +35,7 @@ import { masterDatas } from "../../Feactures/AllUserPageSlice";
 import styles from "../AllUsersPage/AllUsers.module.css";
 import Searchbar from "../../Component/Searchbar/Searchbar";
 import CustomBox from "../../Component/CustomBox/CustomBox";
+import { selectCollapsed } from "../../Feactures/modalSlice";
 
 function AllMaster() {
   const showMaster = useSelector(masterBool);
@@ -48,13 +50,15 @@ function AllMaster() {
   const depositeAmount = useSelector(selectDepositeAmount);
   const withDrawAmount = useSelector(selectWithDrawAmount);
   const condition = useSelector(selectCondition);
+  const collapsed = useSelector(selectCollapsed);
 
   const accessToken = logInData.token;
   const dispatch = useDispatch();
+  const banUser = useSelector(selectBanUser);
 
   useEffect(() => {
-    dispatch(fetchGetAllMaster({ api: "user/Master", accessToken }));
-  }, [postMaster, postTransfer]);
+    dispatch(fetchGetAllMaster({ api: "user?role=Master", accessToken }));
+  }, [postMaster, postTransfer, banUser]);
 
   const allmasterArr = master?.data.userAll;
 
@@ -83,7 +87,7 @@ function AllMaster() {
   };
 
   return (
-    <div className={styles.allusesPage}>
+    <div className={collapsed ? styles.alluser_coll : styles.allusesPage}>
       {showMaster ? (
         <div>
           <div className={`box_shadow ${styles.allusers_container}`}>

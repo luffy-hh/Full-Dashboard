@@ -66,6 +66,29 @@ export const patchDatas = async (api, patchData, accessToken) => {
   }
 };
 
+export const putDatas = async (api, patchData, accessToken) => {
+  try {
+    const response = await fetch(`${BASE_URL}${api}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify(patchData), // The data you want to update
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw new Error("Something went wrong while making the PATCH request");
+  }
+};
+
 export const fetchDataWithToken = async (api, accessToken) => {
   try {
     const response = await fetch(`${BASE_URL}${api}`, {

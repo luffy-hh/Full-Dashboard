@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { selectTodepositHeadHistory } from "../../Feactures/AllUserPageSlice";
 
+import { selectCollapsed } from "../../Feactures/modalSlice";
+
 // import { selectWithdraw, fetGetwithdraw } from "../../Feactures/bankApiSlice";
 import { selectUpLineOrDownLine } from "../../Feactures/AllUserPageSlice";
 import { setShowDropDown } from "../../Feactures/ShowHideSlice";
@@ -25,6 +27,7 @@ function ToDepositHistory({
   const dispatch = useDispatch();
   const [isUpline, setUpLine] = useState(uplineOrDownLine);
   const [selectName, setSelectName] = useState("From UpLine");
+  const collapsed = useSelector(selectCollapsed);
 
   const depositHistory = useSelector(history);
 
@@ -92,7 +95,10 @@ function ToDepositHistory({
   ));
 
   return (
-    <div className="page_style" style={{ overflow: "hidden" }}>
+    <div
+      className={collapsed ? "page_style_coll" : "page_style"}
+      style={{ overflow: "hidden" }}
+    >
       <div className={`box_shadow ${styles.deposit_title}`}>
         <p>To Deposit History</p>
         {role === "Admin" ? (

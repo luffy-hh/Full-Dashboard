@@ -11,6 +11,7 @@ import styles from "./Home.module.css";
 import BarChart from "./ChartForAdmin/BarChart";
 import DohnutChart from "./ChartForAdmin/DohnutChart";
 import AllAmountByGame from "./AllamountbyGame/AllAmountByGame";
+import { selectCollapsed } from "../../Feactures/modalSlice";
 
 const dashUser = [
   { id: 1, user: "Master", total: "280" },
@@ -24,6 +25,7 @@ function Home() {
   const logInData = useSelector(selectlogInData);
   const allCounts = useSelector(selectAllCounts);
   const accessToken = logInData.token;
+  const collapsed = useSelector(selectCollapsed);
 
   useEffect(() => {
     dispatch(fetGetAllCounts({ api: "userCounts", accessToken }));
@@ -64,7 +66,10 @@ function Home() {
   });
 
   return (
-    <div style={{ backgroundColor: "#111827" }} className="page_style">
+    <div
+      style={{ backgroundColor: "#111827" }}
+      className={collapsed ? "page_style_coll" : "page_style"}
+    >
       <ul className={styles.dash_all_user}>
         <li>
           <div className={styles.dash_user}>

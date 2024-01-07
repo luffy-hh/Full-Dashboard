@@ -23,6 +23,7 @@ import ThaiTwoDTable from "./ThaiTwoDTable";
 import ThaiTable3 from "./ThaiTable3";
 import ThaiTwoDTable2 from "./ThaiTwoDTable2";
 import Dropdown from "../../Component/Dropdown/Dropdown";
+import { selectCollapsed } from "../../Feactures/modalSlice";
 
 function ThaiTwoD12am() {
   const table1 = useSelector(showTable1);
@@ -35,6 +36,7 @@ function ThaiTwoD12am() {
   const [selectText, setSelectText] = useState("Choose Category");
   const twoDReportHistory = useSelector(selectTwoDReportHistory);
   const threeDReportHistory = useSelector(selectThreeDReportHistory);
+  const collapsed = useSelector(selectCollapsed);
 
   useEffect(() => {
     dispatch(fetGetSubGameCat({ api: "gamesubcat", accessToken }));
@@ -107,7 +109,10 @@ function ThaiTwoD12am() {
   ));
 
   return (
-    <div className="page_style" style={{ overflow: "hidden" }}>
+    <div
+      className={collapsed ? "page_style_coll" : "page_style"}
+      style={{ overflow: "hidden" }}
+    >
       <div className={`box_shadow ${styles.two_d_head_container}`}>
         <ThaiTwoDHeader />
         <p>{selectText}</p>

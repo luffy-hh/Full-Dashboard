@@ -1,10 +1,18 @@
-.createUnitPage {
+.createUnitPage,
+.createUnit_coll {
   color: var(--text);
   width: 100vw;
   background-color: var(--blue-white);
   padding: 2.4rem 3.2rem;
-  width: 100vw;
+  height: 100vh;
+}
+
+.createUnitPage {
   margin-left: 28rem;
+}
+
+.createUnit_coll {
+  margin-left: 8rem;
 }
 
 .create_uint_page_container {
@@ -12,7 +20,6 @@
   background-color: var(--text-white);
   border-radius: 8px;
   padding: 2.4rem;
-  height: 100vh;
 }
 
 .form_container {

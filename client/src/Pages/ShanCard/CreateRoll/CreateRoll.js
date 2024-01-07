@@ -10,6 +10,7 @@ import {
   fetPostShanRoll,
   selectPostShanRollStatus,
 } from "../../../Feactures/shan";
+import { selectCollapsed } from "../../../Feactures/modalSlice";
 
 function CreateRoll() {
   const showRoll = useSelector(selectShowRoll);
@@ -17,6 +18,7 @@ function CreateRoll() {
   const logInData = useSelector(selectlogInData);
   const accessToken = logInData.token;
   const postShanRollStatus = useSelector(selectPostShanRollStatus);
+  const collapsed = useSelector(selectCollapsed);
 
   const [name, setName] = useState("");
   const [maxAmount, setMaxAmount] = useState("");
@@ -65,7 +67,10 @@ function CreateRoll() {
   };
 
   return (
-    <div className="page_style" style={{ position: "relative" }}>
+    <div
+      className={collapsed ? "page_style_coll" : "page_style"}
+      style={{ position: "relative" }}
+    >
       <div className={styles.shan_header}>
         <p>Shan Roll</p>
         {!showRoll ? (

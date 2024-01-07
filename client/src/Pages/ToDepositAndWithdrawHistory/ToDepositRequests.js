@@ -10,6 +10,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectlogInData } from "../../Feactures/apiSlice";
 import Tables from "../../Component/Tables";
 import styles from "./ToDepositHistory.module.css";
+import { selectCollapsed } from "../../Feactures/modalSlice";
 
 function ToDepositRequest({ api, editApi, getUpLineFun, upLineData }) {
   const todepositeHead = useSelector(selectToDepositHeadReq);
@@ -20,6 +21,7 @@ function ToDepositRequest({ api, editApi, getUpLineFun, upLineData }) {
   // const patchWithdrawStatus = useSelector(selectPatchWithdrawStatus);
 
   const patchDeposit = useSelector(selectPatchDeposit);
+  const collapsed = useSelector(selectCollapsed);
 
   const dispatch = useDispatch();
   const withDrawUpLine = useSelector(upLineData);
@@ -101,7 +103,10 @@ function ToDepositRequest({ api, editApi, getUpLineFun, upLineData }) {
   ));
 
   return (
-    <div className="page_style" style={{ overflow: "hidden" }}>
+    <div
+      className={collapsed ? "page_style_coll" : "page_style"}
+      style={{ overflow: "hidden" }}
+    >
       <div className={`box_shadow ${styles.deposit_title}`}>
         To Deosit Request
       </div>

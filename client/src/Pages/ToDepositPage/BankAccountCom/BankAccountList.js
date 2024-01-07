@@ -1,11 +1,11 @@
 import React from "react";
-
 import styles from "../ToDeposit.module.css";
 import {
   setShowDepoForm,
   setBankNameIds,
   setPostDeposit,
 } from "../../../Feactures/bankApiSlice";
+
 import { useDispatch } from "react-redux";
 import { BiSolidCopy } from "react-icons/bi";
 
@@ -16,7 +16,7 @@ function BankAccountList({ bankAccList }) {
     const copyContent = document.getElementById("account_no");
     const textToCopy = copyContent.innerText;
     navigator.clipboard.writeText(textToCopy);
-    alert("Succeeded Copy Account No");
+    alert("Account Number Copied");
   };
 
   const handleAccount = (id) => {
@@ -47,10 +47,12 @@ function BankAccountList({ bankAccList }) {
     </li>
   ));
   return (
-    <div className={styles.bank_acc_list}>
-      <p>All Bank Account List</p>
-      <ul className={styles.bank_acc}> {list}</ul>
-    </div>
+    <>
+      <div className={styles.bank_acc_list}>
+        <p>All Bank Account List</p>
+        <ul className={styles.bank_acc}> {list}</ul>
+      </div>
+    </>
   );
 }
 

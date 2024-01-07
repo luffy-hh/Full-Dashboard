@@ -9,6 +9,7 @@ import {
   selectClickSubName,
   selectFilterSubGameArr,
 } from "../../Feactures/twoDapiSlice";
+import { selectCollapsed } from "../../Feactures/modalSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import GameList from "./GameList";
@@ -19,6 +20,7 @@ function GameCategories() {
   const filterSubGameArr = useSelector(selectFilterSubGameArr);
 
   const clickSubName = useSelector(selectClickSubName);
+  const collapsed = useSelector(selectCollapsed);
 
   const logInData = useSelector(selectlogInData);
   const accessToken = logInData.token;
@@ -37,7 +39,7 @@ function GameCategories() {
   return (
     <>
       {<SubGameCatBox title={clickSubName} />}
-      <div className="page_style">
+      <div className={collapsed ? "page_style_coll" : "page_style"}>
         <span className={styles.game_title}>Game Categories</span>
 
         {<GameList category={gameCatArr} activeFun={closeGameCat} />}

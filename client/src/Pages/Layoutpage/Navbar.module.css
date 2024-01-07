@@ -2,11 +2,13 @@
   width: 100vw;
   height: 7rem;
   background-color: #1f2937;
+
   color: #fff;
   position: sticky;
   top: 0;
   z-index: 999;
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  border-bottom: 2px solid var(--text-white);
 }
 .navHead {
   list-style: none;
@@ -15,10 +17,9 @@
   align-items: center;
   gap: 1.2rem;
   height: 7rem;
-  padding-right: 3.2rem;
+  padding: 0 2.4rem;
 }
 .myadmin {
-  background-color: #1f2937;
   height: 7rem;
   display: flex;
   align-items: center;
@@ -31,14 +32,25 @@
 /* 
 main Unit btn  */
 
-.main_unit_btn {
+.main_unit_btn,
+.menu_btn {
   border: none;
   outline: none;
-  padding: 1.2rem 2.4rem;
+
   background-color: var(--blue-light);
-  font-size: 1.6rem;
+
   color: var(--text-white);
   transition: all 0.3s;
+}
+
+.main_unit_btn {
+  padding: 1.2rem 2.4rem;
+  font-size: 1.6rem;
+}
+
+.menu_btn {
+  font-size: 2rem;
+  padding: 5px 1.6rem;
 }
 .main_unit_btn:hover {
   background-color: var(--blue);

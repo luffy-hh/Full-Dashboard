@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { setModalAccDepo } from "../../Feactures/modalSlice";
+import { setModalAccDepo, selectCollapsed } from "../../Feactures/modalSlice";
 import Tables from "../../Component/Tables";
 import {
   fetGetBankType,
@@ -25,6 +25,7 @@ function BankName() {
   const postBankName = useSelector(selectPostBankName);
   const bankName = useSelector(selectBankName);
   const bankNameHead = useSelector(selectBankNameHead);
+  const collapse = useSelector(selectCollapsed);
 
   useEffect(() => {
     dispatch(fetGetBankType({ api: "banktype", accessToken }));
@@ -55,7 +56,11 @@ function BankName() {
   return (
     <>
       <DepositeAccBox bankNameArr={bankTypeArr} />
-      <div className={`page_style ${styles.deposite_page}`}>
+      <div
+        className={`${collapse ? "page_style_coll" : "page_style"} ${
+          styles.deposite_page
+        }`}
+      >
         <div className={`box_shadow ${styles.deposite_container}`}>
           <p>Deposite Name </p>
           <NormalButton

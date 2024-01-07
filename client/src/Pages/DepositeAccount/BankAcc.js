@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import NormalButton from "../../Component/NormalButton";
 import { useDispatch, useSelector } from "react-redux";
-import { setModalBankAcc } from "../../Feactures/modalSlice";
+import { setModalBankAcc, selectCollapsed } from "../../Feactures/modalSlice";
 import { selectlogInData } from "../../Feactures/apiSlice";
 import {
   fetGetBankName,
@@ -26,6 +26,7 @@ function BankAcc() {
   const postBankAcc = useSelector(selectPostBankAcc);
   const bankName = useSelector(selectBankName);
   const bankAccHead = useSelector(selectBankAccHead);
+  const collapse = useSelector(selectCollapsed);
 
   useEffect(() => {
     dispatch(fetGetBankName({ api: "bankName", accessToken }));
@@ -56,7 +57,9 @@ function BankAcc() {
     <>
       <BankAccBox bankName={bankNameArr} />
       <div
-        className={`page_style ${styles.deposite_page}`}
+        className={`${collapse ? "page_style_coll" : "page_style"} ${
+          styles.deposite_page
+        }`}
         style={{ overflow: "hidden" }}
       >
         <div className={`box_shadow ${styles.deposite_container}`}>

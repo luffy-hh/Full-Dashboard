@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   selectModalBankAcc,
   setModalBankAcc,
+  setModalError,
 } from "../../Feactures/modalSlice";
 import { selectlogInData } from "../../Feactures/apiSlice";
 import {
@@ -15,6 +16,7 @@ import { setShowDropDown } from "../../Feactures/ShowHideSlice";
 import styles from "./CustomBox.module.css";
 import Dropdown from "../Dropdown/Dropdown";
 import UploadImg from "../UploadImg/UploadImg";
+import CustomBoxError from "./CustomBoxError";
 
 function BankAccBox({ bankName }) {
   const dispatch = useDispatch();
@@ -45,7 +47,7 @@ function BankAccBox({ bankName }) {
 
   const handleCancel = () => {
     dispatch(setModalBankAcc(false));
-    dispatch(setModalBankAcc(false));
+
     setLogo(null);
     setDescription("");
     setAccountName("");
@@ -58,7 +60,8 @@ function BankAccBox({ bankName }) {
     if (bankNameData && accountName && accountNo && description && logo) {
       dispatch(fetPostBankAcc({ api: "bankAcc", formData, accessToken }));
     } else {
-      alert("Fill All The Input Field");
+      dispatch(setModalError(true));
+      dispatch(setModalBankAcc(false));
     }
   };
 
@@ -71,54 +74,60 @@ function BankAccBox({ bankName }) {
   console.log(postBankAcc);
 
   return (
-    <Modal
-      title="Create Bank Account"
-      open={modalBankAcc}
-      onOk={() => handlePost()}
-      onCancel={handleCancel}
-      cancelButtonProps={{ style: { display: "none" } }}
-      width={700}
-      okText={postBankAccStatus === "loading" ? "Loading" : "Submit"}
-      className="modalStyle"
-    >
-      <form className={styles.bank_input}>
-        <div>
-          <label>Bank Name</label>
+    <>
+      <CustomBoxError
+        message={"Error Fill All The Field!"}
+        closeFun={setModalBankAcc}
+      />
+      <Modal
+        title="Create Bank Account"
+        open={modalBankAcc}
+        onOk={() => handlePost()}
+        onCancel={handleCancel}
+        cancelButtonProps={{ style: { display: "none" } }}
+        width={700}
+        okText={postBankAccStatus === "loading" ? "Loading" : "Submit"}
+        className="modalStyle"
+      >
+        <form className={styles.bank_input}>
+          <div>
+            <label>Bank Name</label>
 
-          <Dropdown width={"30rem"} title={selectBankName} list={bankList} />
-        </div>
+            <Dropdown width={"30rem"} title={selectBankName} list={bankList} />
+          </div>
 
-        <div>
-          <label>Bank Account Name</label>
-          <input
-            type="text"
-            value={accountName}
-            onChange={(e) => setAccountName(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Bank Account No</label>
-          <input
-            type="text"
-            value={accountNo}
-            onChange={(e) => setAccountNo(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Description</label>
-          <input
-            type="text"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </div>
+          <div>
+            <label>Bank Account Name</label>
+            <input
+              type="text"
+              value={accountName}
+              onChange={(e) => setAccountName(e.target.value)}
+            />
+          </div>
+          <div>
+            <label>Bank Account No</label>
+            <input
+              type="text"
+              value={accountNo}
+              onChange={(e) => setAccountNo(e.target.value)}
+            />
+          </div>
+          <div>
+            <label>Description</label>
+            <input
+              type="text"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
 
-        <div>
-          <label>Logo</label>
-          <UploadImg setFile={setLogo} />
-        </div>
-      </form>
-    </Modal>
+          <div>
+            <label>Logo</label>
+            <UploadImg setFile={setLogo} />
+          </div>
+        </form>
+      </Modal>
+    </>
   );
 }
 

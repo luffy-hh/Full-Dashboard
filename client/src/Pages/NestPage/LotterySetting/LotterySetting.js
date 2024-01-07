@@ -8,6 +8,7 @@ import {
 } from "../../../Feactures/twoDapiSlice";
 import { selectlogInData } from "../../../Feactures/apiSlice";
 import styles from "./LotterySetting.module.css";
+import { selectCollapsed } from "../../../Feactures/modalSlice";
 
 function LotterySetting() {
   const dispatch = useDispatch();
@@ -15,6 +16,7 @@ function LotterySetting() {
   const accessToken = logInData.token;
   const subGameCat = useSelector(selectSubGameCat);
   const navigate = useNavigate();
+  const collapsed = useSelector(selectCollapsed);
 
   useEffect(() => {
     dispatch(fetGetSubGameCat({ api: "gamesubcat", accessToken }));
@@ -37,7 +39,7 @@ function LotterySetting() {
     </div>
   ));
   return (
-    <div className="page_style">
+    <div className={collapsed ? "page_style_coll" : "page_style"}>
       <div className={`box_shadow ${styles.lottery_setting_container}`}>
         {lottery}
       </div>

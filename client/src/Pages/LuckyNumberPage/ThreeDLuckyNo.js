@@ -57,6 +57,7 @@ function ThreeDLuckyNo({
         postFun={postThreeDLuckyNo}
         api="thai3DLuckyNum"
         accessToken={accessToken}
+        lottery="3D"
       />
       <div className={`box_shadow ${styles.lucky_number_container}`}>
         <Container className={styles.lucky_number_header}>

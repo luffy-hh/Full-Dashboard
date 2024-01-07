@@ -12,6 +12,7 @@ import {
   selectCondition,
   setDescr,
   selectDescr,
+  selectCollapsed,
 } from "../../Feactures/modalSlice";
 import CustomBox from "../../Component/CustomBox/CustomBox";
 import {
@@ -36,6 +37,7 @@ import {
   selectPostTransfer,
   fetchGetAllMaster,
   setPostAgent,
+  selectBanUser,
 } from "../../Feactures/apiSlice";
 
 function AllAgentsPage() {
@@ -55,13 +57,15 @@ function AllAgentsPage() {
   const condition = useSelector(selectCondition);
   const postTransfer = useSelector(selectPostTransfer);
   const descr = useSelector(selectDescr);
+  const collapsed = useSelector(selectCollapsed);
+  const banUser = useSelector(selectBanUser);
 
   useEffect(() => {
-    dispatch(fetchGetAllAgent({ api: "user/Agent", accessToken }));
-  }, [postAgent, postTransfer]);
+    dispatch(fetchGetAllAgent({ api: "user?role=Agent", accessToken }));
+  }, [postAgent, postTransfer, banUser]);
 
   useEffect(() => {
-    dispatch(fetchGetAllMaster({ api: "user/Master", accessToken }));
+    dispatch(fetchGetAllMaster({ api: "user?role=Master", accessToken }));
   }, []);
 
   const agentArr = agents?.data.userAll;
@@ -91,7 +95,7 @@ function AllAgentsPage() {
   };
 
   return (
-    <div className={styles.allusesPage}>
+    <div className={collapsed ? styles.alluser_coll : styles.allusesPage}>
       {agent ? (
         <div>
           <div className={`box_shadow ${styles.allusers_container}`}>

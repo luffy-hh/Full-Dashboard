@@ -8,6 +8,8 @@ import {
   selectlogInData,
 } from "../../Feactures/apiSlice";
 
+import { selectCollapsed } from "../../Feactures/modalSlice";
+
 import { setAgentQuery, selectAgentQuery } from "../../Feactures/ShowHideSlice";
 import { selectAgentData } from "../../Feactures/AllUserPageSlice";
 import {
@@ -15,6 +17,7 @@ import {
   selectPostAgentStatus,
   selectPostAgent,
   setPostAgent,
+  selectBanUser,
 } from "../../Feactures/apiSlice";
 import NormalButton from "../NormalButton";
 import {
@@ -36,15 +39,17 @@ function DownLineAgent() {
   const userId = logInData.user._id;
   const showDownLineMaster = useSelector(selectShowDownLineMaster);
   const postAgent = useSelector(selectPostAgent);
+  const banUser = useSelector(selectBanUser);
 
   const agentData = useSelector(selectAgentData);
   const agentQuery = useSelector(selectAgentQuery);
+  const collapsed = useSelector(selectCollapsed);
 
   useEffect(() => {
     dispatch(
       fetGetDownLineMaster({ api: `downlineUser/${userId}`, accessToken })
     );
-  }, [postAgent]);
+  }, [postAgent, banUser]);
 
   const handleCreate = () => {
     dispatch(setDownLineMaster());
@@ -54,7 +59,10 @@ function DownLineAgent() {
   const agentList = downLineMaster?.data.downlineObj;
 
   return (
-    <div className="page_style" style={{ overflow: "hidden" }}>
+    <div
+      className={collapsed ? "page_style_coll" : "page_style"}
+      style={{ overflow: "hidden" }}
+    >
       {showDownLineMaster ? (
         <div>
           <div className={`box_shadow ${styles.allusers_container}`}>

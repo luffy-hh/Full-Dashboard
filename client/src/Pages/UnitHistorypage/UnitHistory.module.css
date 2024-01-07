@@ -1,11 +1,18 @@
-.unitHistoryPage {
+.unitHistoryPage,
+.unit_history_coll {
   background-color: var(--blue-white);
   width: 100%;
   padding: 2.4rem 3.2rem 9.6rem;
   color: var(--text);
+}
+
+.unitHistoryPage {
   margin-left: 28rem;
 }
 
+.unit_history_coll {
+  margin-left: 8rem;
+}
 .unitHistory_container {
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   background-color: var(--text-white);
@@ -56,10 +63,10 @@
 .unit_history_table_style:nth-child(even) {
   background-color: #dddddd;
 }
-.color_green{
+.color_green {
   color: var(--green-light);
 }
 
-.color_red{
+.color_red {
   color: var(--red-light);
 }

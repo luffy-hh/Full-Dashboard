@@ -3,6 +3,7 @@ import {
   fetchDataWithID,
   postDatas,
   patchDatas,
+  putDatas,
   fetchDataWithToken,
   postDataWithToken,
 } from "../app/api";
@@ -195,6 +196,30 @@ export const fetGetAgentUnitHistroy = createAsyncThunk(
   }
 );
 
+export const fetchPatchUserActive = createAsyncThunk(
+  "data/fetchPatchUserActive",
+  async ({ api, patchData, accessToken }) => {
+    const data = await patchDatas(api, patchData, accessToken);
+    return data;
+  }
+);
+
+export const fetchPutChangePassword = createAsyncThunk(
+  "data/fetchPutChangePassword",
+  async ({ api, patchData, accessToken }) => {
+    const data = await putDatas(api, patchData, accessToken);
+    return data;
+  }
+);
+
+export const fetGetUserWithId = createAsyncThunk(
+  "data/fetGetUserWithId",
+  async ({ api, accessToken }) => {
+    const data = await fetchDataWithToken(api, accessToken);
+    return data;
+  }
+);
+
 const initialState = {
   logInData: {},
   currentLoginUser: "",
@@ -250,7 +275,7 @@ const initialState = {
   postMasterStatus: "idle",
   postMasterError: null,
 
-  postTransfer: {},
+  postTransfer: null,
   postTransferStatus: "idle",
   postTransferError: null,
 
@@ -289,6 +314,18 @@ const initialState = {
   editCommisionError: null,
 
   commisionUser: {},
+
+  banUser: {},
+  banUserStatus: "idle",
+  banUserError: null,
+
+  changePassword: {},
+  changePasswordStatus: "idle",
+  changePasswordError: null,
+
+  userWithId: null,
+  userWithIdStatus: "idle",
+  userWithIdError: null,
 };
 
 const dataSlice = createSlice({
@@ -345,6 +382,10 @@ const dataSlice = createSlice({
 
     setPostMaster: (state) => {
       state.postMaster = {};
+    },
+
+    setChangePassword: (state) => {
+      state.changePassword = {};
     },
 
     filterCommisionUser: (state, action) => {
@@ -699,6 +740,45 @@ const dataSlice = createSlice({
       .addCase(fetchPatchCommision.rejected, (state, action) => {
         state.editCommisionStatus = "failed";
         state.editCommisionError = action.error.message;
+      })
+
+      //fetchPatchUserActive
+      .addCase(fetchPatchUserActive.pending, (state) => {
+        state.banUserStatus = "loading";
+      })
+      .addCase(fetchPatchUserActive.fulfilled, (state, action) => {
+        state.banUserStatus = "succeeded";
+        state.banUser = action.payload;
+      })
+      .addCase(fetchPatchUserActive.rejected, (state, action) => {
+        state.banUserStatus = "failed";
+        state.banUserError = action.error.message;
+      })
+
+      //fetchPatchChangePassword
+      .addCase(fetchPutChangePassword.pending, (state) => {
+        state.changePasswordStatus = "loading";
+      })
+      .addCase(fetchPutChangePassword.fulfilled, (state, action) => {
+        state.changePasswordStatus = "succeeded";
+        state.changePassword = action.payload;
+      })
+      .addCase(fetchPutChangePassword.rejected, (state, action) => {
+        state.changePasswordStatus = "failed";
+        state.changePasswordError = action.error.message;
+      })
+
+      //fetGetUserWithId
+      .addCase(fetGetUserWithId.pending, (state) => {
+        state.userWithIdStatus = "loading";
+      })
+      .addCase(fetGetUserWithId.fulfilled, (state, action) => {
+        state.userWithIdStatus = "succeeded";
+        state.userWithId = action.payload;
+      })
+      .addCase(fetGetUserWithId.rejected, (state, action) => {
+        state.userWithIdStatus = "failed";
+        state.userWithIdError = action.error.message;
       });
   },
 });
@@ -716,6 +796,7 @@ export const {
   setPostUser,
   filterCommisionUser,
   setAgentLayoutShow,
+  setChangePassword,
 } = dataSlice.actions;
 
 //logINDATA
@@ -802,5 +883,10 @@ export const selectEditCommisionStatus = (state) =>
   state.data.editCommisionStatus;
 
 export const selectCommisionUser = (state) => state.data.commisionUser;
+
+export const selectBanUser = (state) => state.data.banUser;
+export const selectChnagePassword = (state) => state.data.changePassword;
+export const selectUserWithId = (state) => state.data.userWithId;
+export const selectUserWithIdStatus = (state) => state.data.userWithIdStatus;
 
 export default dataSlice.reducer;

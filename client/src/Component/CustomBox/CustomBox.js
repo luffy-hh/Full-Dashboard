@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {
   selectModalShow,
   setModalShow,
-  setModalSucc,
+  setCurrentUnit,
 } from "../../Feactures/modalSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { Modal } from "antd";
@@ -18,7 +18,7 @@ import {
 
 import styles from "./CustomBox.module.css";
 import Error from "../ErrorandSuccess/Error";
-import CustomBoxSucc from "./CustomBoxSucc";
+import ErrorandSucc from "./ErrorandSucc";
 
 function CustomBox({ title, amount, setAmount, descr, setDescr }) {
   const modalShow = useSelector(selectModalShow);
@@ -27,6 +27,7 @@ function CustomBox({ title, amount, setAmount, descr, setDescr }) {
   const dispatch = useDispatch();
   const postTransferStatus = useSelector(selectPostTransferStatus);
   const [error, setError] = useState(false);
+  const [showStatus, setShowStatus] = useState(false);
   const postTransfer = useSelector(selectPostTransfer);
 
   const postTransferToUserStatus = useSelector(selectPostTransferToUserStatus);
@@ -34,6 +35,8 @@ function CustomBox({ title, amount, setAmount, descr, setDescr }) {
   const currentUser = logInData.user.role;
   console.log(currentUser);
   const condition = useSelector(selectCondition);
+
+  console.log(postTransfer);
 
   const postDataDep = {
     transferUnit: Number(amount),
@@ -73,59 +76,64 @@ function CustomBox({ title, amount, setAmount, descr, setDescr }) {
         );
 
         if (status) {
-          dispatch(setModalShow(false));
+          dispatch(setCurrentUnit(amount));
           dispatch(setAmount(""));
           dispatch(setDescr(""));
         }
       } else {
         dispatch(
-          postTransferUnit({
+          postFun({
             api: api,
             postData: postDataWith,
             accessToken,
           })
         );
         if (status) {
-          dispatch(setModalShow(false));
+          dispatch(setCurrentUnit(amount));
           dispatch(setAmount(""));
           dispatch(setDescr(""));
         }
       }
       setError(false);
-      dispatch(setModalSucc(true));
+      setShowStatus(true);
     } else {
       setError(true);
     }
   };
 
   const clickHandle = () => {
-    if (currentUser === "Admin") {
-      addUnitFun(
-        "mainunitstransfer",
-        postTransferUnit,
-        postTransferStatus,
-        postDataDep,
-        postDataWith
-      );
-    } else if (currentUser === "Agent") {
-      addUnitFun(
-        "transferTo",
-        postTransferToUser,
-        postTransferToUserStatus,
-        postDataAgentDep,
-        postDataAgentWith
-      );
+    if (showStatus) {
+      dispatch(setModalShow(false));
+      setShowStatus(false);
+    } else {
+      if (currentUser === "Admin") {
+        addUnitFun(
+          "mainunitstransfer",
+          postTransferUnit,
+          postTransferStatus,
+          postDataDep,
+          postDataWith
+        );
+      } else if (currentUser === "Agent") {
+        addUnitFun(
+          "transferTo",
+          postTransferUnit,
+          postTransferStatus,
+          postDataAgentDep,
+          postDataAgentWith
+        );
+      }
     }
   };
 
   const cancelFun = () => {
     dispatch(setModalShow(false));
     setError(false);
+    setShowStatus(false);
   };
 
   return (
     <>
-      <CustomBoxSucc afterAmount={postTransfer?.data?.userUnitUpdate.unit} />
       <Modal
         title={title}
         centered
@@ -137,25 +145,35 @@ function CustomBox({ title, amount, setAmount, descr, setDescr }) {
         okText={postTransferStatus === "loading" ? "Saving" : "Save"}
         className="modalStyle"
       >
-        <div className={styles.form_style}>
-          {error && <Error message={"Fill All The Field"} />}
-          <div className={styles.form}>
-            <label>Description</label>
-            <input
-              type="text"
-              value={descr}
-              onChange={(e) => dispatch(setDescr(e.target.value))}
+        {showStatus ? (
+          postTransfer && (
+            <ErrorandSucc
+              status={postTransfer}
+              loading={postTransferStatus}
+              condition={condition}
             />
+          )
+        ) : (
+          <div className={styles.form_style}>
+            {error && <Error message={"Fill All The Field"} />}
+            <div className={styles.form}>
+              <label>Unit</label>
+              <input
+                type="number"
+                value={amount}
+                onChange={(e) => dispatch(setAmount(e.target.value))}
+              />
+            </div>
+            <div className={styles.form}>
+              <label>Description</label>
+              <input
+                type="text"
+                value={descr}
+                onChange={(e) => dispatch(setDescr(e.target.value))}
+              />
+            </div>
           </div>
-          <div className={styles.form}>
-            <label>Unit</label>
-            <input
-              type="number"
-              value={amount}
-              onChange={(e) => dispatch(setAmount(e.target.value))}
-            />
-          </div>
-        </div>
+        )}
       </Modal>
     </>
   );

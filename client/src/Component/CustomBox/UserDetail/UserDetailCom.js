@@ -22,6 +22,7 @@ function UserDetailCom({ gameSubGame, masterId, accessToken }) {
 
       <td>{d.comession}</td>
       <td>{d.mainCompensation}</td>
+      <td>{d.otherCompensation}</td>
       <td>
         <NormalButton
           onClick={() => handleEdit(d)}

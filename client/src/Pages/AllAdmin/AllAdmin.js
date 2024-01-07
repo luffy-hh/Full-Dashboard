@@ -12,6 +12,7 @@ import {
   fetchGetAlladmin,
   selectlogInData,
 } from "../../Feactures/apiSlice";
+import { selectCollapsed } from "../../Feactures/modalSlice";
 
 import styles from "./AllAdmin.module.css";
 
@@ -23,17 +24,18 @@ function AllAdmin() {
   const logInData = useSelector(selectlogInData);
   const data = useSelector(adminDatas);
   const accessToken = logInData.token;
+  const collapsed = useSelector(selectCollapsed);
 
   const succeeded = allAdminStatus === "succeeded";
 
   useEffect(() => {
-    dispatch(fetchGetAlladmin({ api: "user/Admin", accessToken }));
+    dispatch(fetchGetAlladmin({ api: "user?role=Admin", accessToken }));
   }, []);
 
   const adminArr = allAdmin?.data.userAll;
 
   return (
-    <div className={styles.all_admin_page}>
+    <div className={collapsed ? styles.all_admin_coll : styles.all_admin_page}>
       {adminshow ? (
         <div>
           <div className={styles.all_admin_container}>

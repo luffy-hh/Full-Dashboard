@@ -19,8 +19,9 @@ function EditCommisionBox({ masterId, accessToken }) {
   const dispatch = useDispatch();
   const commisionId = useSelector(selectCommisionId);
 
-  const [commision, setCommision] = useState(0);
-  const [mainComposition, setMainComposition] = useState(0);
+  const [commision, setCommision] = useState("");
+  const [mainComposition, setMainComposition] = useState("");
+  const [otherCom, setOtherCom] = useState("");
 
   const editCommision = useSelector(selectEditCommision);
   const editCommisionStatus = useSelector(selectEditCommisionStatus);
@@ -31,6 +32,7 @@ function EditCommisionBox({ masterId, accessToken }) {
     comession: Number(commision),
     mainCompensation: Number(mainComposition),
     subCatIdToUpdate: commisionId._id,
+    otherCompensation: Number(otherCom),
   };
 
   const handlePost = () => {
@@ -45,6 +47,7 @@ function EditCommisionBox({ masterId, accessToken }) {
     if (editCommision.status === "Success") {
       setCommision("");
       setMainComposition("");
+      setOtherCom("");
       dispatch(setModalEditCom(false));
     }
   };
@@ -69,11 +72,19 @@ function EditCommisionBox({ masterId, accessToken }) {
           />
         </div>
         <div>
-          <label>MainComposition</label>
+          <label>MainCompensation</label>
           <input
             type="text"
             value={mainComposition}
             onChange={(e) => setMainComposition(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>Other Compensation</label>
+          <input
+            type="text"
+            value={otherCom}
+            onChange={(e) => setOtherCom(e.target.value)}
           />
         </div>
       </form>

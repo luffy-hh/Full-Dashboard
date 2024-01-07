@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import NormalButton from "../../Component/NormalButton";
-
+import { selectCollapsed } from "../../Feactures/modalSlice";
 import {
   fetGetBankAnnounc,
   selectBankAnnounc,
@@ -17,6 +17,7 @@ function DepositeRule() {
   const dispatch = useDispatch();
 
   const logInData = useSelector(selectlogInData);
+  const collapse = useSelector(selectCollapsed);
   const accessToken = logInData.token;
   const bankAnnounc = useSelector(selectBankAnnounc);
   const patchBankAnnouncStatus = useSelector(selectPatchBankAnnouncStatus);
@@ -64,7 +65,7 @@ function DepositeRule() {
   return (
     <>
       {bankAnnounc && (
-        <div className="page_style">
+        <div className={collapse ? "page_style_coll" : "page_style"}>
           <div className={styles.doposite_container}>
             <div className={`box_shadow ${styles.deop_rule_box}`}>
               <p>Deposite Rule</p>

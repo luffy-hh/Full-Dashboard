@@ -17,7 +17,7 @@ const modalShowHide = {
   modalAccDepo: false,
   modalUserDetail: false,
   modalGameAction: false,
-  modalDetail: false,
+  modalLog: false,
   modalReport: false,
   modalActive: false,
   modalChangePassword: false,
@@ -26,6 +26,9 @@ const modalShowHide = {
   modalBankAcc: false,
   modalEditCom: false,
   modalSucc: false,
+  modalError: false,
+  collapsed: false,
+  modalSecretCode: false,
 };
 
 const initialState = {
@@ -36,6 +39,7 @@ const initialState = {
   closeNoData: null,
   commisionId: "",
   beforeAmt: null,
+  currentUnit: "",
 };
 const modalSlice = createSlice({
   name: "modal",
@@ -97,8 +101,12 @@ const modalSlice = createSlice({
       state.modalShowHide.modalActive = action.payload;
     },
 
-    setModalDetail: (state, action) => {
-      state.modalShowHide.modalDetail = action.payload;
+    setModalSecretCode: (state, action) => {
+      state.modalShowHide.modalSecretCode = action.payload;
+    },
+
+    setModalLog: (state, action) => {
+      state.modalShowHide.modalLog = action.payload;
     },
 
     setModalEditCom: (state, action) => {
@@ -109,12 +117,20 @@ const modalSlice = createSlice({
       state.modalShowHide.modalReport = action.payload;
     },
 
+    setModalError: (state, action) => {
+      state.modalShowHide.modalError = action.payload;
+    },
+
     setModalSucc: (state, action) => {
       state.modalShowHide.modalSucc = action.payload;
     },
 
     setModalChangePassword: (state, action) => {
       state.modalShowHide.modalChangePassword = action.payload;
+    },
+
+    setCollapsed: (state) => {
+      state.modalShowHide.collapsed = !state.modalShowHide.collapsed;
     },
 
     setModalBankAcc: (state, action) => {
@@ -142,6 +158,9 @@ const modalSlice = createSlice({
     setBeforeAmt: (state, action) => {
       state.beforeAmt = action.payload;
     },
+    setCurrentUnit: (state, action) => {
+      state.currentUnit = action.payload;
+    },
   },
 });
 
@@ -158,7 +177,7 @@ export const {
   setModalAccDepo,
   setModalUserDetail,
   setUserDetailData,
-  setModalDetail,
+  setModalLog,
   setModalGameAction,
   setModalReport,
   setModalChangePassword,
@@ -173,6 +192,10 @@ export const {
   setCommisionId,
   setModalSucc,
   setBeforeAmt,
+  setModalError,
+  setCollapsed,
+  setModalSecretCode,
+  setCurrentUnit,
 } = modalSlice.actions;
 export const selectModalShow = (state) => state.modal.modalShowHide.modalShow;
 export const selectUserId = (state) => state.modal.depositeToUser.userId;
@@ -197,8 +220,7 @@ export const selectModalUserDetail = (state) =>
 export const selectUserDetailData = (state) => state.modal.userDetailData;
 export const selectModalGameAction = (state) =>
   state.modal.modalShowHide.modalGameAction;
-export const selectModalDetail = (state) =>
-  state.modal.modalShowHide.modalDetail;
+export const selectModalLog = (state) => state.modal.modalShowHide.modalLog;
 
 export const selectModalReport = (state) =>
   state.modal.modalShowHide.modalReport;
@@ -226,8 +248,14 @@ export const selectModalEditCom = (state) =>
   state.modal.modalShowHide.modalEditCom;
 
 export const selectModalSucc = (state) => state.modal.modalShowHide.modalSucc;
+export const selectModalError = (state) => state.modal.modalShowHide.modalError;
+
+export const selectCollapsed = (state) => state.modal.modalShowHide.collapsed;
 
 export const selectCommisionId = (state) => state.modal.commisionId;
 export const selectBeforeAmt = (state) => state.modal.beforeAmt;
+export const selectCurrentUnit = (state) => state.modal.currentUnit;
+export const selectModalSecretCode = (state) =>
+  state.modal.modalShowHide.modalSecretCode;
 
 export default modalSlice.reducer;

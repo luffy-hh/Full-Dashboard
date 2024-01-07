@@ -9,6 +9,7 @@ function CopyID({ id }) {
     const textToCopy = copyContent.innerText;
 
     navigator.clipboard.writeText(textToCopy);
+
     success();
   };
 
@@ -27,7 +28,7 @@ function CopyID({ id }) {
       <td className={styles.copy_id_td}>
         <span id="textToCopy">{id}</span>
 
-        <span className={styles.copy_icon} onClick={handleCopy}>
+        <span className={styles.copy_icon} onClick={() => handleCopy()}>
           <FaCopy />
         </span>
       </td>

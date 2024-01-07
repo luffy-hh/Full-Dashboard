@@ -15,6 +15,7 @@ import {
   setLuckyTwoDShow,
   setLuckyNoShow,
 } from "../../Feactures/adminTwodSlice";
+import { selectCollapsed } from "../../Feactures/modalSlice";
 
 import { selectlogInData } from "../../Feactures/apiSlice";
 
@@ -31,6 +32,7 @@ function LuckyNumber() {
   const luckyNoShow = useSelector(selectLuckyNoShow);
   const luckyTwoDShow = useSelector(selectLuckyTwoDShow);
   const luckyThreeDShow = useSelector(selectLuckyThreeDShow);
+  const collapsed = useSelector(selectCollapsed);
 
   useEffect(() => {
     dispatch(fetGetGameCat({ api: "gamecat", accessToken }));
@@ -38,7 +40,7 @@ function LuckyNumber() {
   }, []);
 
   return (
-    <div className="page_style">
+    <div className={collapsed ? "page_style_coll" : "page_style"}>
       {!luckyNoShow && (
         <LuckyNoCategory
           setLuckyNoShow={setLuckyNoShow}

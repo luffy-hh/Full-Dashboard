@@ -65,6 +65,8 @@ const changeTo = require("./transition/routes/changeUnitRoutes");
 const lottery2dRoutes = require("./lottery_nuumbers/routes/lottery2dRoutes");
 const lottery2dEveningRoutes = require("./lottery_nuumbers/routes/lottery2dEveningRoute");
 
+// App Things
+const appThingsRouter = require('./app_things/appThingsRoute')
 //GameSoft
 const gameSoftGetBalance = require("./game_soft/get_balance/getBalanceRoutes");
 //Infinity Game
@@ -198,6 +200,8 @@ app.use("/api/v1/shanPlay", shanPlay);
 app.use("/api/v1/transferTo", transferTo);
 app.use("/api/v1/changeTo", changeTo);
 
+// App Things
+app.use("/api/v1/things", appThingsRouter)
 // // Infinity game
 // app.use("/api/v1/infinity", infinityGameCreatePlayer);
 // app.use("/api/v1/infinity", infinityGetGameList);

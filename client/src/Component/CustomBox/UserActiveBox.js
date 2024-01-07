@@ -1,6 +1,10 @@
 import React from "react";
-import styles from "./CustomBox.module.css";
 import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchPatchUserActive,
+  selectBanUser,
+  selectlogInData,
+} from "../../Feactures/apiSlice";
 import {
   selectModalActive,
   setModalActive,
@@ -12,10 +16,24 @@ function UserActiveBox() {
   const modalActive = useSelector(selectModalActive);
   const userObj = useSelector(selectUserObj);
   const dispatch = useDispatch();
+  const logInData = useSelector(selectlogInData);
+  const accessToken = logInData.token;
+  const banUser = useSelector(selectBanUser);
 
+  const patchData = { status: !userObj?.status };
+  console.log(patchData);
   const handleActive = () => {
+    dispatch(
+      fetchPatchUserActive({
+        api: `user/${userObj?._id}`,
+        patchData,
+        accessToken,
+      })
+    );
     dispatch(setModalActive(false));
   };
+
+  console.log(banUser);
 
   return (
     <>
@@ -28,10 +46,21 @@ function UserActiveBox() {
         okText={"Save"}
         className="modalStyle"
       >
-        <div style={{ fontSize: "2rem" }}>
-          Are you sure to ban this user
-          <span style={{ color: "#4ade80" }}>{userObj?.name}</span> No API
-        </div>
+        {userObj?.status ? (
+          <div style={{ fontSize: "2rem" }}>
+            Are you sure to ban this user
+            <span style={{ color: "#4ade80", marginLeft: "10px" }}>
+              {userObj?.name}
+            </span>
+          </div>
+        ) : (
+          <div style={{ fontSize: "2rem" }}>
+            Are you sure to unban this user
+            <span style={{ color: "#4ade80", marginLeft: "10px" }}>
+              {userObj?.name}
+            </span>
+          </div>
+        )}
       </Modal>
     </>
   );

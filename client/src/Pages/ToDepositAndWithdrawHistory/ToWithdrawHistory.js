@@ -9,6 +9,7 @@ import { selectlogInData } from "../../Feactures/apiSlice";
 import Tables from "../../Component/Tables";
 import styles from "./ToDepositHistory.module.css";
 import Dropdown from "../../Component/Dropdown/Dropdown";
+import { selectCollapsed } from "../../Feactures/modalSlice";
 
 function ToWithdrawHistory({
   api,
@@ -25,6 +26,7 @@ function ToWithdrawHistory({
   const dispatch = useDispatch();
   const [isUpline, setUpLine] = useState(uplineOrDownLine);
   const [selectName, setSelectName] = useState("From UpLine");
+  const collapsed = useSelector(selectCollapsed);
 
   const withDrawHistory = useSelector(history);
 
@@ -91,7 +93,10 @@ function ToWithdrawHistory({
   ));
 
   return (
-    <div className="page_style" style={{ overflow: "hidden" }}>
+    <div
+      className={collapsed ? "page_style_coll" : "page_style"}
+      style={{ overflow: "hidden" }}
+    >
       <div className={`box_shadow ${styles.deposit_title}`}>
         <p>To Withdraw History</p>
         {role === "Admin" ? (

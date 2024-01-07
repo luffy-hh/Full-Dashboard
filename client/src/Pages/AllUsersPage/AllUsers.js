@@ -6,7 +6,7 @@ import Container from "../../Component/Container";
 import { userBool } from "../../Feactures/ShowHideSlice";
 import { userFun } from "../../Feactures/ShowHideSlice";
 import AllCreateForm from "../Component/AllCreateForm";
-import { userDatas } from "../../Feactures/AllUserPageSlice";
+import { selectBankAccHead, userDatas } from "../../Feactures/AllUserPageSlice";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
@@ -21,6 +21,7 @@ import {
   selectForAgentList,
   fetchGetAllAgent,
   setPostUser,
+  selectBanUser,
 } from "../../Feactures/apiSlice";
 import {
   selectAllUserQuery,
@@ -35,11 +36,12 @@ import {
   setDescr,
   selectDescr,
   selectCondition,
+  selectCollapsed,
 } from "../../Feactures/modalSlice";
 import styles from "./AllUsers.module.css";
 import Searchbar from "../../Component/Searchbar/Searchbar";
 import CustomBox from "../../Component/CustomBox/CustomBox";
-import UserActiveBox from "../../Component/CustomBox/UserActiveBox";
+
 function AllUsers() {
   const showForm = useSelector(userBool);
   const dispatch = useDispatch();
@@ -56,15 +58,16 @@ function AllUsers() {
   const withDrawAmount = useSelector(selectWithDrawAmount);
   const descr = useSelector(selectDescr);
   const agentList = useSelector(selectForAgentList);
-
+  const collapsed = useSelector(selectCollapsed);
   const accessToken = logInData.token;
+  const banUser = useSelector(selectBanUser);
 
   useEffect(() => {
-    dispatch(fetchGetAlluser({ api: "user/User", accessToken }));
-  }, [postUser, postTransfer]);
+    dispatch(fetchGetAlluser({ api: "user?role=User", accessToken }));
+  }, [postUser, postTransfer, banUser]);
 
   useEffect(() => {
-    dispatch(fetchGetAllAgent({ api: "user/Agent", accessToken }));
+    dispatch(fetchGetAllAgent({ api: "user?role=Agent", accessToken }));
   }, []);
 
   const allUserArr = allUser?.data.userAll;
@@ -94,7 +97,7 @@ function AllUsers() {
   };
 
   return (
-    <div className={styles.allusesPage}>
+    <div className={collapsed ? styles.alluser_coll : styles.allusesPage}>
       {showForm ? (
         <div>
           <div className={`box_shadow ${styles.allusers_container}`}>
@@ -119,7 +122,6 @@ function AllUsers() {
           )}
 
           {modalComponent}
-          <UserActiveBox />
         </div>
       ) : (
         <AllCreateForm

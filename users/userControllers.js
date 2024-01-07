@@ -18,6 +18,8 @@ const LotteryFilterSetting = require("../lotteryFilterSetting/models/lotteryFilt
 const AgentComession = require("../category_status/models/agent_comession_models");
 
 const callbackService = require("../slots/slotegrator/callbackService");
+const Withdrawl = require("../withdrawl/models/withdrawlModels");
+const Deposit = require("../deposit/modals/depositModels");
 
 const signToken = (user) => {
   let data = {
@@ -181,13 +183,18 @@ exports.login = catchAsync(async (req, res, next) => {
     if (!userId || !password) {
       return next(new AppError("Please Provide userId and Password", 400));
     }
+    const user = await User.findOne({userId});
+    console.log(user)
 
+    if (!user.status) {
+      return next(new AppError("You have been blocked", 400));
+    }
     // ၂. ရှိတယ်ဆိုရင် Password ကိုတိုက်စစ်ပြီး User က လက်ရှိ သုံးနေ / မသုံးနေကို စစ်
 
-    const user = await User.findOneAndUpdate(
+    const updatedUser = await User.findOneAndUpdate(
       { userId },
       { loginTime: moment(currentMyanmarTime).tz("Asia/Yangon").format() }
-    ).select("-__v +password -email");
+    ).select('-password');
     // console.log(user);
     if (!user || !(await user.correctPassword(password, user.password))) {
       return next(new AppError("Incorrect userId or Password", 400));
@@ -195,15 +202,15 @@ exports.login = catchAsync(async (req, res, next) => {
 
     // ၃. အပေါ်နှစ်ခုမှန်ရင် JWT ကို Client ဘက်ကိုပို့
 
-    const token = signToken(user);
-    const formattedLoginTime = moment(user.loginTime)
+    const token = signToken(updatedUser);
+    const formattedLoginTime = moment(updatedUser.loginTime)
       .tz("Asia/Yangon")
       .format();
     res.status(200).json({
-      stauts: "Success",
+      status: "Success",
       token,
       user: {
-        ...user.toObject(),
+        ...updatedUser.toObject(),
         loginTime: formattedLoginTime,
       },
     });
@@ -498,6 +505,22 @@ exports.updatePasswordFromUpline = catchAsync(async (req, res, next) => {
   }
 
 });
+
+// // get all deposit and withdrawal for a user
+// exports.getDepAndWithHistoryForEachUser = catchAsync(async (req,res,next)=>{
+//   try {
+//       const withdrawalForSpecificUser = await Withdrawl.find({fromId: req.params.id})
+//       const depositForSpecificUser = await Deposit.find({fromId: req.params.id})
+//       const allLogs = [...withdrawalForSpecificUser,...depositForSpecificUser]
+//      res.status(200).json({
+//        status:'succeed',
+//        allLogs
+//      })
+//   }catch (e) {
+//     new AppError("Something Went Wrong", 500)
+//   }
+// })
+
 // Read All User By Role
 exports.getAllUserByRole = async (req, res) => {
   try {

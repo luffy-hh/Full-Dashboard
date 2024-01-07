@@ -36,6 +36,7 @@ import AdminDepositRequest from "../Pages/ToDepositPage/AdminDeposit/AdminDeposi
 import CreateRoll from "../Pages/ShanCard/CreateRoll/CreateRoll";
 import CreateTable from "../Pages/ShanCard/CreateTable/CreateTable";
 import UserDetailBox from "../Component/CustomBox/UserDetail/UserDetailBox";
+import UnitTransferTo from "../Pages/UnitTransferTo/UnitTransferTo";
 
 const admin = [
   { id: 0, path: "/admin", route: <Home /> },
@@ -71,6 +72,7 @@ const admin = [
   { id: 27, path: "towithdraw-history", route: <AdminWithdrawHistory /> },
   { id: 39, path: "create-roll", route: <CreateRoll /> },
   { id: 40, path: "create-table", route: <CreateTable /> },
+  { id: 41, path: "unitTransferTo", route: <UnitTransferTo /> },
 ];
 
 function Admin() {

@@ -19,6 +19,7 @@ import styles from "../CreateShanForm.module.css";
 import ShanTableCard from "../ShanTableCard";
 import Error from "../../../Component/ErrorandSuccess/Error";
 import Success from "../../../Component/ErrorandSuccess/Success";
+import { selectCollapsed } from "../../../Feactures/modalSlice";
 
 function CreateTable() {
   const dispatch = useDispatch();
@@ -28,6 +29,7 @@ function CreateTable() {
   const accessToken = logInData.token;
   const shanRoll = useSelector(selectShanRoll);
   const shanRing = useSelector(selectPostShanRing);
+  const collapsed = useSelector(selectCollapsed);
 
   const [roll, setRoll] = useState("Choose Roll Name");
   const [rollId, setRollId] = useState("");
@@ -102,7 +104,10 @@ function CreateTable() {
   console.log(shanRing);
 
   return (
-    <div className="page_style" style={{ position: "relative" }}>
+    <div
+      className={collapsed ? "page_style_coll" : "page_style"}
+      style={{ position: "relative" }}
+    >
       <div className={styles.shan_header}>
         <p>Shan Ring</p>
         {!showRing ? (

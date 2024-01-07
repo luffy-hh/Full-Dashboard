@@ -53,6 +53,7 @@ function TwoDLuckyNo({ setLuckyNoShow, setLuckyTwoDShow, setLucyThreeDShow }) {
         postFun={postLuckyNo}
         api="twoDLucky"
         accessToken={accessToken}
+        lottery=""
       />
       <div className={`box_shadow ${styles.lucky_number_container}`}>
         <Container className={styles.lucky_number_header}>

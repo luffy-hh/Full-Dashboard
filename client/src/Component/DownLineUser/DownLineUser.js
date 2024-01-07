@@ -29,6 +29,7 @@ import {
   selectPostUser,
   selectPostTransferToUser,
   setPostUser,
+  selectBanUser,
 } from "../../Feactures/apiSlice";
 
 import NormalButton from "../NormalButton";
@@ -43,6 +44,7 @@ import Searchbar from "../Searchbar/Searchbar";
 import AllusersTable from "../../Pages/Component/AllusersTable";
 import styles from "../../Pages/AllUsersPage/AllUsers.module.css";
 import AllDownLineCreateForm from "../../Pages/Component/AllDownLineCreateForm";
+import { selectCollapsed } from "../../Feactures/modalSlice";
 
 function DownLineUser() {
   const dispatch = useDispatch();
@@ -52,6 +54,7 @@ function DownLineUser() {
   const userId = logInData.user._id;
   const showDownLineAgent = useSelector(selectShowDwonLineAgent);
   const postUser = useSelector(selectPostUser);
+  const banUser = useSelector(selectBanUser);
   const postTransferToUser = useSelector(selectPostTransferToUser);
 
   const depositeAmount = useSelector(selectDepositeAmount);
@@ -59,6 +62,7 @@ function DownLineUser() {
   const condition = useSelector(selectCondition);
   const postTransfer = useSelector(selectPostTransfer);
   const descr = useSelector(selectDescr);
+  const collapsed = useSelector(selectCollapsed);
 
   const userData = useSelector(userDatas);
   const userQuery = useSelector(selectAllUserQuery);
@@ -67,7 +71,7 @@ function DownLineUser() {
     dispatch(
       fetGetDownLineAgent({ api: `downlineUser/${userId}`, accessToken })
     );
-  }, [postTransfer, postUser, postTransferToUser]);
+  }, [postTransfer, postUser, banUser]);
 
   const handleCreate = () => {
     dispatch(setPostUser());
@@ -96,7 +100,10 @@ function DownLineUser() {
     );
 
   return (
-    <div className="page_style" style={{ overflow: "hidden" }}>
+    <div
+      className={collapsed ? "page_style_coll" : "page_style"}
+      style={{ overflow: "hidden" }}
+    >
       {showDownLineAgent ? (
         <div>
           <div className={`box_shadow ${styles.allusers_container}`}>
@@ -116,7 +123,7 @@ function DownLineUser() {
               data="agent"
               dataArr={userList}
               query={userQuery}
-              downLine={false}
+              downLine={true}
             />
           )}
           {modalComponent}

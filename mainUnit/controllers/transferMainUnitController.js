@@ -18,7 +18,8 @@ exports.transferMainUnitfun = async (req, res) => {
 
     // Admin Unit Data
     const mainUnitArr = await MainUnit.find();
-    const mainUnitObj = await MainUnit.findById(mainUnitArr[0]._id);
+    const mainUnitId = mainUnitArr[0]._id;
+    const mainUnitObj = await MainUnit.findById(mainUnitId);
     const mainUnit = mainUnitObj.mainUnit;
 
     // User Data
@@ -47,7 +48,7 @@ exports.transferMainUnitfun = async (req, res) => {
         transferAmt: transferUnit,
         beforeUnitAmt: Number(mainUnit),
         afterUnitAmt: afterUnitAmt,
-        fromId: adminId,
+        fromId: req.user.id,
         fromName: adminName,
         toId: userId,
         toName: userName,
@@ -87,7 +88,7 @@ exports.transferMainUnitfun = async (req, res) => {
           transferAmt: transferUnit,
           beforeUnitAmt: mainUnit,
           afterUnitAmt: afterUnitAmt,
-          fromId: adminId,
+          fromId: req.user.id,
           fromName: adminName,
           toId: userId,
           toName: userName,

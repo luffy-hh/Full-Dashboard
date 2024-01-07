@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { setModalDifDepo } from "../../Feactures/modalSlice";
+import { setModalDifDepo, selectCollapsed } from "../../Feactures/modalSlice";
 import { useDispatch, useSelector } from "react-redux";
 import NormalButton from "../../Component/NormalButton";
 import DifferentDepositeBox from "../../Component/CustomBox/DifferentDepositeBox";
@@ -25,6 +25,7 @@ function BankType() {
   const bankType = useSelector(selectBankType);
   const postBankType = useSelector(selectPostBankType);
   const bankTypeHead = useSelector(selectBankTypeHead);
+  const collapse = useSelector(selectCollapsed);
 
   useEffect(() => {
     dispatch(fetGetBankCat({ api: "bankcat", accessToken }));
@@ -49,7 +50,7 @@ function BankType() {
   return (
     <>
       <DifferentDepositeBox allBankArr={allBankCat} />
-      <div className="page_style">
+      <div className={collapse ? "page_style_coll" : "page_style"}>
         <div className={`box_shadow ${styles.deposite_container}`}>
           <p>Bank Type</p>
           <NormalButton

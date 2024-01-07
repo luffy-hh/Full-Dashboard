@@ -12,7 +12,17 @@ const userDetailComHead = [
   "SubGameCategory",
   "Commasion",
   "MainCompensation",
+  "Other Compensation",
   "Edit",
+];
+
+const logHead = [
+  "Date Time",
+  "Type",
+  "From Id",
+  "To Id",
+  "Before Balance",
+  "After Balance",
 ];
 
 const agentData = [
@@ -124,7 +134,7 @@ const donwlineUserHead = [
   "Name",
   "UserId",
   "Balance",
-
+  "Function",
   "Status",
   "Last Login Time",
 ];
@@ -170,6 +180,7 @@ const initialState = {
   toWithdrawHeadRequset,
   upLineOrDownLine,
   todepositHeadHistory,
+  logHead,
 };
 
 const AllUserPageSlice = createSlice({
@@ -228,6 +239,8 @@ export const selectBankNameHead = (state) => state.userPageData.bankNameHead;
 export const selectBankAccHead = (state) => state.userPageData.bankAccHead;
 export const selectUpLineOrDownLine = (state) =>
   state.userPageData.upLineOrDownLine;
+
+export const selectLogHead = (state) => state.userPageData.logHead;
 
 export const selectTodepositHeadHistory = (state) =>
   state.userPageData.todepositHeadHistory;

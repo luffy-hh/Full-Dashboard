@@ -6,6 +6,6 @@ const router = express.Router();
 
 router
   .route("/:id")
-  .patch(userController.protect, withdrawController.updateWithdarw);
+  .patch(userController.protect, withdrawController.updateWithDrawalFromAdmin);
 
 module.exports = router;

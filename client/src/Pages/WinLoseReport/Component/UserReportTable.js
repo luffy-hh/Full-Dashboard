@@ -9,11 +9,13 @@ import {
   selectUserDetailHead,
 } from "../../../Feactures/winOrLoseSlice";
 import { useSelector } from "react-redux";
+import { selectCollapsed } from "../../../Feactures/modalSlice";
 
 function UserReportTable() {
   const { userId } = useParams();
   const userDetail = useSelector(selectUserDetail);
   const userDetailHead = useSelector(selectUserDetailHead);
+  const collapsed = useSelector(selectCollapsed);
 
   const filterUserDetail = userDetail.filter((d) => d.userID === userId);
 
@@ -44,7 +46,10 @@ function UserReportTable() {
   ));
 
   return (
-    <div className="page_style" style={{ overflow: "hidden" }}>
+    <div
+      className={collapsed ? "page_style_coll" : "page_style"}
+      style={{ overflow: "hidden" }}
+    >
       <div className={`box_shadow ${styles.user_report_table_detail}`}>
         <h3>{userId} Win/Lose Detail Report</h3>
         <ReportDate />

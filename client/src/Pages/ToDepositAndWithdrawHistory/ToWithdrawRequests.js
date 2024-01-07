@@ -10,6 +10,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectlogInData } from "../../Feactures/apiSlice";
 import Tables from "../../Component/Tables";
 import styles from "./ToDepositHistory.module.css";
+import { selectCollapsed } from "../../Feactures/modalSlice";
 
 function ToWithdrawRequests({ api, editApi, getUpLineFun, upLineData }) {
   const todepositeHead = useSelector(selectToWithdrawHeadRequset);
@@ -19,6 +20,7 @@ function ToWithdrawRequests({ api, editApi, getUpLineFun, upLineData }) {
   // const patchWithdrawStatus = useSelector(selectPatchWithdrawStatus);
 
   const patchWithdraw = useSelector(selectPatchWithdraw);
+  const collapsed = useSelector(selectCollapsed);
 
   const dispatch = useDispatch();
   const withDrawUpLine = useSelector(upLineData);
@@ -28,9 +30,11 @@ function ToWithdrawRequests({ api, editApi, getUpLineFun, upLineData }) {
   }, [patchWithdraw]);
 
   const withDrawArr = withDrawUpLine?.data.getAllShwoWithdraw;
-  console.log(withDrawArr && withDrawArr);
+
+  console.log(patchWithdraw);
 
   const handleAccept = (id, amount) => {
+    console.log(id);
     dispatch(
       fetPatchWithDraw({
         api: `${editApi}/${id}`, //withdarwAdmin is for admin comfirm btn
@@ -38,7 +42,6 @@ function ToWithdrawRequests({ api, editApi, getUpLineFun, upLineData }) {
         accessToken,
       })
     );
-    console.log("working");
   };
 
   const handleCancel = (id, amount) => {
@@ -56,7 +59,7 @@ function ToWithdrawRequests({ api, editApi, getUpLineFun, upLineData }) {
     <>
       {d.status === "Panding" && (
         <tr
-          key={`withdraw_${i}`}
+          key={`withdraw_request${i}`}
           style={{
             borderBottom: "1px solid #a8a29e",
           }}
@@ -98,7 +101,10 @@ function ToWithdrawRequests({ api, editApi, getUpLineFun, upLineData }) {
   ));
 
   return (
-    <div className="page_style" style={{ overflow: "hidden" }}>
+    <div
+      className={collapsed ? "page_style_coll" : "page_style"}
+      style={{ overflow: "hidden" }}
+    >
       <div className={`box_shadow ${styles.deposit_title}`}>
         To Withdraw Request
       </div>

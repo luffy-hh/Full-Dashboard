@@ -1,4 +1,6 @@
 import React from "react";
+import { selectCollapsed } from "../../Feactures/modalSlice";
+import { useSelector } from "react-redux";
 
 import styles from "./UnitHistoryTransfer.module.css";
 
@@ -8,8 +10,14 @@ function UnitHistoryTransferCom({ list }) {
   // ).getMilliseconds;
   // console.log(sortList);
 
+  const collapsed = useSelector(selectCollapsed);
+
   return (
-    <div className={`page_style ${styles.unit_transfer_page}`}>
+    <div
+      className={`${collapsed ? "page_style_coll" : "page_style"} ${
+        styles.unit_transfer_page
+      }`}
+    >
       <p className={`${styles.transfer_title} box_shadow`}>
         Unit Transfer History
       </p>
