@@ -262,10 +262,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   // 3. Token မှန်တယ်ဆိုရင်တောင် Token ပိုင်ရှင် User က ရှိနေသေးတာ ဟုတ်/မဟုတ် ကိုစစ်ပါတယ်။
   const currentUser = await User.findById(decoded.id);
 
-  if (
-    !currentUser ||
-    req.cookies.sessionIdentifier !== currentUser.sessionIdentifier
-  ) {
+  if (!currentUser) {
     return next(new AppError("Invalid session. Please log in again.", 401));
   }
 
