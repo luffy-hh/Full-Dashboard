@@ -32,15 +32,15 @@ exports.betSlotegrator = async (call, callback) => {
   if(transaction){
     let data = {
       balance: user_balance,
-      transactionId:transaction.id
+      transaction:transaction
     }
     callback(null, data);
   }
   else{
-    let {balance,transaction_id} = await callbackService.betSlot(userId, bet_amount);
+    let {balance,transaction} = await callbackService.betSlot(userId, bet_amount);
     callback(null, {
       balance: balance,
-      transactionId:transaction_id
+      transaction:transaction
     });
   }
 };
@@ -54,14 +54,14 @@ exports.winSlotegrator = async (call, callback) => {
   if(transaction){
     callback(null, {
       balance: transaction.after_amt,
-      transactionId:transaction.id
+      transaction:transaction
     });
   }
   else{
-    let {balance,transaction_id} = await callbackService.winSlot(userId, win_amount);
+    let {balance,transaction} = await callbackService.winSlot(userId, win_amount);
     callback(null, {
       balance: balance,
-      transactionId:transaction_id
+      transaction:transaction
     });
   }
 
@@ -81,10 +81,10 @@ exports.refundSlotegrator = async (call, callback) => {
     });
   }
   else{
-    let {balance,transaction_id} = await callbackService.refundSlot(userId, refund_amount);
+    let {balance,transaction} = await callbackService.refundSlot(userId, refund_amount);
     callback(null, {
       balance: balance,
-      transactionId:transaction_id
+      transaction:transaction
     });
   }
 
