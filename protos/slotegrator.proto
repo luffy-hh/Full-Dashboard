@@ -4,6 +4,7 @@ service Slotegrator {
   rpc Bet (SlotegratorRequest) returns (SlotegratorResponse) {}
   rpc Win (SlotegratorRequest) returns (SlotegratorResponse) {}
   rpc Refund (SlotegratorRequest) returns (SlotegratorResponse) {}
+  rpc Rollback (SlotegratorRequest) returns (SlotegratorResponse) {}
 }
 
 message SlotegratorRequest {
@@ -14,5 +15,15 @@ message SlotegratorRequest {
 
 message SlotegratorResponse {
   uint32 balance = 1;
-  string transactionId = 2;
+  Transaction transaction = 2;
+}
+
+message Transaction {
+  uint32 user_id =1;
+  int32 before_amt =2;
+  int32 action_amt=3;
+  int32 after_amt=4;
+  string type=5;
+  string status=6;
+  string additional_info=7;
 }

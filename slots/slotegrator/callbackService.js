@@ -30,7 +30,7 @@ exports.betSlot = async(userId,bet_amount)=>{
     });
     return {
         balance:user.unit,
-        transaction_id:transaction.id
+        transaction:transaction
     }
 }
 
@@ -48,7 +48,7 @@ exports.winSlot = async(userId,win_amount)=>{
     });
     return {
         balance:user.unit,
-        transaction_id:transaction.id
+        transaction:transaction
     }
 }
 
@@ -66,6 +66,6 @@ exports.refundSlot = async(userId,refund_amount)=>{
     });
     return {
         balance:user.unit,
-        transaction_id:transaction.id
+        transaction:transaction
     }
 }

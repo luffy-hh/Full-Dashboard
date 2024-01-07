@@ -77,7 +77,7 @@ exports.refundSlotegrator = async (call, callback) => {
   if(transaction){
     callback(null, {
       balance: transaction.after_amt,
-      transaction_id:transaction.id
+      transaction:transaction
     });
   }
   else{
