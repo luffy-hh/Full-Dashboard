@@ -155,14 +155,24 @@ exports.signup = catchAsync(async (req, res, next) => {
     // Generate a JWT token
     const token = signToken(newUser);
 
+    const sessionIdentifier = crypto.randomBytes(16).toString("hex");
+
     // Exclude the password field from the response
-    newUser.password = undefined;
+    const sessionAddedUser = await User.findByIdAndUpdate(
+      newUser._id,
+      {
+        $set: { sessionIdentifier: sessionIdentifier },
+      },
+      { new: true }
+    ).select("-password");
+
+    createSendToken(sessionAddedUser, 201, res, sessionIdentifier);
 
     res.status(201).json({
       status: "success",
       token,
       data: {
-        user: newUser,
+        user: sessionAddedUser,
       },
     });
   } catch (err) {
@@ -191,15 +201,20 @@ exports.login = catchAsync(async (req, res, next) => {
     }
     // ၂. ရှိတယ်ဆိုရင် Password ကိုတိုက်စစ်ပြီး User က လက်ရှိ သုံးနေ / မသုံးနေကို စစ်
 
-    const updatedUser = await User.findOneAndUpdate(
-      { userId },
-      { loginTime: moment(currentMyanmarTime).tz("Asia/Yangon").format() }
-    ).select("-password");
     // console.log(user);
     if (!user || !(await user.correctPassword(password, user.password))) {
       return next(new AppError("Incorrect userId or Password", 400));
     }
-
+    const sessionIdentifier = crypto.randomBytes(16).toString("hex");
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: user._id },
+      {
+        $set: {
+          loginTime: moment(currentMyanmarTime).tz("Asia/Yangon").format(),
+          sessionIdentifier: sessionIdentifier,
+        },
+      }
+    );
     // ၃. အပေါ်နှစ်ခုမှန်ရင် JWT ကို Client ဘက်ကိုပို့
 
     const token = signToken(updatedUser);
@@ -247,10 +262,11 @@ exports.protect = catchAsync(async (req, res, next) => {
   // 3. Token မှန်တယ်ဆိုရင်တောင် Token ပိုင်ရှင် User က ရှိနေသေးတာ ဟုတ်/မဟုတ် ကိုစစ်ပါတယ်။
   const currentUser = await User.findById(decoded.id);
 
-  if (!currentUser) {
-    return next(
-      new AppError("The user belonging to this token does not exist.", 401)
-    );
+  if (
+    !currentUser ||
+    req.cookies.sessionIdentifier !== currentUser.sessionIdentifier
+  ) {
+    return next(new AppError("Invalid session. Please log in again.", 401));
   }
 
   // 4. Token ယူပြီးမှ User က Password ချိန်းလိုက်တဲ့အခြေအနေကိုလဲ စစ်ထားဖို့လိုပါတယ်။
@@ -265,6 +281,35 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   req.user = currentUser;
   next();
+});
+
+exports.logout = catchAsync(async (req, res, next) => {
+  try {
+    // Get the user ID from the decoded token
+    const userId = req.user._id;
+
+    // Find the user by ID and clear the session identifier
+    const user = await User.findByIdAndUpdate(userId, {
+      sessionIdentifier: undefined,
+    });
+
+    if (!user) {
+      return next(new AppError("User not found", 404));
+    }
+
+    // Clear the session identifier cookie
+    res.clearCookie("sessionIdentifier");
+
+    res.status(200).json({
+      status: "Success",
+      message: "Logged out successfully",
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: "fail",
+      message: err,
+    });
+  }
 });
 
 exports.restrictTo = (...roles) => {

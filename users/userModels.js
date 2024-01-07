@@ -85,6 +85,8 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: () => moment().tz("Asia/Yangon").format(),
   },
+  sessionIdentifier: String,
+  isLoggedIn: { type: Boolean, default: false },
   passwordChangedAt: Date,
   passwordResetToken: String,
   passwordResetExipre: Date,
