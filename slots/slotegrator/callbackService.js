@@ -16,7 +16,7 @@ exports.getUserBalance = async (userId) => {
 };
 
 //when player trying to make a bet.
-exports.betSlot = async (userId, bet_amount) => {
+exports.betSlot = async (userId, bet_amount,aggregator_transaction_id) => {
   //reduce user's balance, send ag commission ,etc...
   let user = await User.findOneAndUpdate(
     { userId: userId },
@@ -30,6 +30,7 @@ exports.betSlot = async (userId, bet_amount) => {
     after_amt: user.unit,
     type: "slot-bet",
     status: "Out",
+    additional_info:aggregator_transaction_id
   });
   return {
     balance: helper.decimal(user.unit, 4),
@@ -38,7 +39,7 @@ exports.betSlot = async (userId, bet_amount) => {
 };
 
 //when player win in a game
-exports.winSlot = async (userId, win_amount) => {
+exports.winSlot = async (userId, win_amount,aggregator_transaction_id) => {
   //increase user's balance, record transaction,etc...
   let user = await User.findOneAndUpdate(
     { userId: userId },
@@ -52,6 +53,7 @@ exports.winSlot = async (userId, win_amount) => {
     after_amt: user.unit,
     type: "slot-win",
     status: "In",
+    additional_info:aggregator_transaction_id,
   });
   return {
     balance: helper.decimal(user.unit, 4),
@@ -60,7 +62,7 @@ exports.winSlot = async (userId, win_amount) => {
 };
 
 //Refund is a cash back in case bet problems.
-exports.refundSlot = async (userId, refund_amount) => {
+exports.refundSlot = async (userId, refund_amount,aggregator_transaction_id) => {
   //increase user's balance, record transaction,etc...
   let user = await User.findOneAndUpdate(
     { userId: userId },
@@ -74,6 +76,7 @@ exports.refundSlot = async (userId, refund_amount) => {
     after_amt: user.unit,
     type: "slot-refund",
     status: "In",
+    additional_info:aggregator_transaction_id,
   });
   return {
     balance: helper.decimal(user.unit, 4),
