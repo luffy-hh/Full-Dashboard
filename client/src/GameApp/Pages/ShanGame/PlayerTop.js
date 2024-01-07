@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./ShanGame.module.css";
 import UserBetIcon from "./UserBetIcon/UserBetIcon";
 import Banker from "./UserBetIcon/Banker";
 import ShowCard from "./ShowCard/ShowCard";
-
-function PlayerTop({ data, index, result }) {
+import { selectResult } from "../../../Feactures/shan";
+import { useSelector } from "react-redux";
+function PlayerTop({ data, index }) {
+  const result = useSelector(selectResult);
   return (
     <div className={styles.player} style={data?.position}>
       <div className={styles.player_card}>

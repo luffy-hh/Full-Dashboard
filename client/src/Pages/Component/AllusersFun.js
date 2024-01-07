@@ -7,6 +7,7 @@ import {
   setCondition,
   setModalActive,
   setUserObj,
+  setBeforeAmt,
 } from "../../Feactures/modalSlice";
 import { useDispatch } from "react-redux";
 import { MdAdd } from "react-icons/md";
@@ -24,17 +25,19 @@ const adminData = [
   { icon: <BsLockFill />, text: "Active" },
 ];
 
-function AllusersFun({ data, toId, user }) {
+function AllusersFun({ data, toId, beforeAmt }) {
   const handleDepo = (text) => {
     dispatch(setModalShow(true));
     dispatch(setUserId(toId));
     dispatch(setCondition(text));
+    dispatch(setBeforeAmt(beforeAmt));
   };
 
   const handleWithdraw = (text) => {
     dispatch(setModalShow(true));
     dispatch(setUserId(toId));
     dispatch(setCondition(text));
+    dispatch(setBeforeAmt(beforeAmt));
   };
 
   const handleAction = () => {

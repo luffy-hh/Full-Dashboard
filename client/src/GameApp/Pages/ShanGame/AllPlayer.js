@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import PlayerTop from "./PlayerTop";
 import Players from "./Players";
 import PullCard from "./PullCard/PullCard";
 import { selectPullCard } from "../../../Feactures/shan";
 import { useSelector } from "react-redux";
 
-function AllPlayer({ data, result, setResult, number }) {
+function AllPlayer({ data, number }) {
   const pullCard = useSelector(selectPullCard);
 
   const accounts = data[0]?.players.map((item, index) => {
@@ -436,23 +436,9 @@ function AllPlayer({ data, result, setResult, number }) {
       {accounts?.map((d, index) => {
         if (accounts) {
           if (index === 0 || index === 5) {
-            return (
-              <PlayerTop
-                key={`player_${index}`}
-                data={d}
-                index={index}
-                result={result}
-              />
-            );
+            return <PlayerTop key={`player_${index}`} data={d} index={index} />;
           } else {
-            return (
-              <Players
-                key={`player_${index}`}
-                data={d}
-                index={index}
-                result={result}
-              />
-            );
+            return <Players key={`player_${index}`} data={d} index={index} />;
           }
         } else {
           return;

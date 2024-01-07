@@ -1,5 +1,5 @@
 .modal {
-  position: absolute;
+  position: fixed;
   width: 80vw;
   background-image: linear-gradient(
     to bottom,
@@ -7,15 +7,23 @@
     rgb(15, 23, 42)
   );
   height: 80vh;
-  top: -50vh;
-  left: -50vw;
-
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   z-index: 10;
   border-radius: 9px;
   display: flex;
   justify-content: center;
   align-items: center;
+  opacity: 1;
+  transition: all 0.3s;
+}
+
+.modal_hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .card_box {

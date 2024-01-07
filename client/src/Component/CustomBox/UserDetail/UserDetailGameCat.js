@@ -17,8 +17,7 @@ function UserDetailGameCat({ data, masterId, subGameArr }) {
   const accessToken = logInData.token;
 
   const subHanlde = (catName) => {
-    const filterData = subGameArr?.filter((d) => d.catName === catName);
-    dispatch(setFilterMasterSubGameCat(filterData));
+    dispatch(setFilterMasterSubGameCat(catName));
     dispatch(setModalMasterSubGame(true));
   };
 

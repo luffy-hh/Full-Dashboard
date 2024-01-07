@@ -32,8 +32,13 @@ function UnitHistoryTransfer() {
         <span> {new Date(d.transferDate).toLocaleTimeString()}</span>
       </td>
       <td>{d.beforeUnitAmt}</td>
-      <td style={{ color: d.status === "in" ? "#22c55e" : "#ef4444" }}>
-        {d.transferAmt}
+      <td>
+        <span
+          className={styles.increase_decrease}
+          style={{ backgroundColor: d.status === "in" ? "#22c55e" : "#ef4444" }}
+        >
+          {d.transferAmt}
+        </span>
       </td>
       <td>{d.afterUnitAmt}</td>
       <td>{d.fromName}</td>

@@ -96,22 +96,11 @@ function DumyCard({
   cardHandling,
   counts,
   setCardHandling,
-  setResult,
+
   number,
 }) {
   const dispatch = useDispatch();
 
-  const showAllCard = () => {
-    const cardAll = document.getElementById("dummy_cards_all");
-    cardAll.remove();
-  };
-
-  const handleShow = () => {
-    showAllCard();
-    setResult(true);
-    // dispatch(setDragCard(false));
-    dispatch(setPullCard(true));
-  };
   const cards = myArray.map((d, index) => (
     <img
       key={`cardNo${index}`}
@@ -149,8 +138,8 @@ function DumyCard({
         indexCount++;
       } else {
         clearInterval(intervalId);
-        // dispatch(setDragCard(true));
-        handleShow();
+        dispatch(setDragCard(true));
+        // handleShow();
 
         return;
       }

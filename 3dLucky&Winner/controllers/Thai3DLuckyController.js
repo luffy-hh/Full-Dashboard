@@ -5,6 +5,7 @@ const User = require("../../users/userModels");
 const MasterSubCatStatus = require("../../category_status/models/master_subCat_status_models");
 const Thai3DLuckyWinner = require("../models/Thai3DLuckyWinnerModel");
 const Thai3DNum = require("../../lottery_nuumbers/models/thai3DNumModels");
+const {createTransactionRecord} = require("../../transaction-record/transactionRecordController");
 exports.create3DLucky = async (req, res) => {
   try {
     const mainUnitArr = await MainUnit.find({});
@@ -52,6 +53,14 @@ exports.create3DLucky = async (req, res) => {
             returnedAmount,
             date: currentDay,
           };
+          const transactionObj = {
+            user_id: user.id,
+            before_amt: user.unit,
+            action_amt: play.amount,
+            after_amt: user.unit + returnedAmount,
+            type: '3d-win',
+            status:'In'
+          }
 
           const winnerObj = await Thai3DLuckyWinner.create(obj);
           const updatedUser = await User.findByIdAndUpdate(winnerObj.userId, {
@@ -60,6 +69,7 @@ exports.create3DLucky = async (req, res) => {
           const updatedMainUnit = await MainUnit.findByIdAndUpdate(mainUnitId, {
             $inc: { mainUnit: -winnerObj.returnedAmount },
           });
+          const newTransactionRecord = createTransactionRecord(transactionObj)
           winnerListArr.push(winnerObj);
         }
       }

@@ -8,6 +8,7 @@ const Thai3DLuckySchema = mongoose.Schema({
     number: {
         type: String,
         required: true,
+        match: [/^\d{3}$/, 'number must have length of 3'],
     },
     date: {
         type: Date,
@@ -17,6 +18,7 @@ const Thai3DLuckySchema = mongoose.Schema({
         {
             otherNumber:{
                 type : String,
+                match: [/^\d{3}$/, 'number must have length of 3'],
             }
         }
     ]

@@ -21,7 +21,7 @@ function Login() {
         <div
           className={classes.loginBack}
           aria-label="background-photo"
-          style={{ backgroundImage: 'url("img/login/login.jpg")' }}
+          style={{ backgroundImage: `url("/img/login/login.jpg")` }}
         ></div>
       </div>
     </div>

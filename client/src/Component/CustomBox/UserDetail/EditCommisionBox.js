@@ -50,7 +50,7 @@ function EditCommisionBox({ masterId, accessToken }) {
   };
   return (
     <Modal
-      title="Edit Commision"
+      title={`Edit ${commisionId.subCatName}`}
       open={modalEditCom}
       onOk={() => handlePost()}
       onCancel={() => dispatch(setModalEditCom(false))}

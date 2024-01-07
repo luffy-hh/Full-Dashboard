@@ -23,16 +23,15 @@ function ShanGame() {
 
   useEffect(() => {
     dispatch(fetGetShanGameRing("shanRing"));
-  }, []);
+  }, [dispatch]);
 
   console.log(shanGameRing && shanGameRing);
 
   const mainObj = shanGameRing?.data.filter((d) => d._id === tableId);
   console.log(mainObj);
 
-  const [result, setResult] = useState(false);
   const [cardHandling, setCardHandling] = useState(false);
-  const [win, setWin] = useState(false);
+
   return (
     <div className={styles.shan_game}>
       <div className={styles.shan_table}>
@@ -43,19 +42,11 @@ function ShanGame() {
             cardHandling={cardHandling}
             counts={mainObj}
             setCardHandling={setCardHandling}
-            setResult={setResult}
             number={randomNumber}
           />
         )}
 
-        {shanGameRing && (
-          <AllPlayer
-            data={mainObj}
-            result={result}
-            setResult={setResult}
-            number={randomNumber}
-          />
-        )}
+        {shanGameRing && <AllPlayer data={mainObj} number={randomNumber} />}
       </div>
       {bettingTime && <BettingAmount />}
     </div>
