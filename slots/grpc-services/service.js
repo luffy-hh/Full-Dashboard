@@ -1,5 +1,6 @@
 const TransactionRecord = require("../../transaction-record/transactionRecordModel");
 const callbackService = require("../slotegrator/callbackService");
+const helper = require("../../utils/helper");
 
 exports.findUser = async (call, callback) => {
   let userId = call.request.userId;
@@ -32,7 +33,7 @@ exports.betSlotegrator = async (call, callback) => {
   if(transaction){
     let data = {
       balance: transaction.after_amt,
-      transaction:transaction
+      transaction:helper.convertTransactionMsg(transaction)
     }
     callback(null, data);
   }
@@ -40,7 +41,7 @@ exports.betSlotegrator = async (call, callback) => {
     let {balance,transaction} = await callbackService.betSlot(userId, bet_amount,aggregator_transaction_id);
     callback(null, {
       balance: balance,
-      transaction:transaction
+      transaction:helper.convertTransactionMsg(transaction)
     });
   }
 };
@@ -54,14 +55,14 @@ exports.winSlotegrator = async (call, callback) => {
   if(transaction){
     callback(null, {
       balance: transaction.after_amt,
-      transaction:transaction
+      transaction:helper.convertTransactionMsg(transaction)
     });
   }
   else{
     let {balance,transaction} = await callbackService.winSlot(userId, win_amount,aggregator_transaction_id);
     callback(null, {
       balance: balance,
-      transaction:transaction
+      transaction:helper.convertTransactionMsg(transaction)
     });
   }
 
@@ -77,14 +78,14 @@ exports.refundSlotegrator = async (call, callback) => {
   if(transaction){
     callback(null, {
       balance: transaction.after_amt,
-      transaction:transaction
+      transaction:helper.convertTransactionMsg(transaction)
     });
   }
   else{
     let {balance,transaction} = await callbackService.refundSlot(userId, refund_amount,aggregator_transaction_id);
     callback(null, {
       balance: balance,
-      transaction:transaction
+      transaction:helper.convertTransactionMsg(transaction)
     });
   }
 

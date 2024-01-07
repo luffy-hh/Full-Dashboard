@@ -34,7 +34,7 @@ exports.betSlot = async (userId, bet_amount,aggregator_transaction_id) => {
   });
   return {
     balance: helper.decimal(user.unit, 4),
-    transaction: helper.convertTransactionMsg(transaction),
+    transaction: transaction,
   };
 };
 
@@ -57,7 +57,7 @@ exports.winSlot = async (userId, win_amount,aggregator_transaction_id) => {
   });
   return {
     balance: helper.decimal(user.unit, 4),
-    transaction: helper.convertTransactionMsg(transaction),
+    transaction: transaction,
   };
 };
 
@@ -80,6 +80,6 @@ exports.refundSlot = async (userId, refund_amount,aggregator_transaction_id) => 
   });
   return {
     balance: helper.decimal(user.unit, 4),
-    transaction: helper.convertTransactionMsg(transaction),
+    transaction: transaction,
   };
 };
