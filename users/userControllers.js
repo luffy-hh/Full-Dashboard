@@ -112,7 +112,7 @@ exports.signup = catchAsync(async (req, res, next) => {
           const newObj = {
             ...subCat.toObject(),
             mainCompensation: obj.mainCompensation,
-            otherCompensation: obj.otherCompensation
+            otherCompensation: obj.otherCompensation,
           };
           // console.log(newObj);
           subCatObjArr.push(newObj);
@@ -183,8 +183,8 @@ exports.login = catchAsync(async (req, res, next) => {
     if (!userId || !password) {
       return next(new AppError("Please Provide userId and Password", 400));
     }
-    const user = await User.findOne({userId});
-    console.log(user)
+    const user = await User.findOne({ userId });
+    console.log(user);
 
     if (!user.status) {
       return next(new AppError("You have been blocked", 400));
@@ -194,7 +194,7 @@ exports.login = catchAsync(async (req, res, next) => {
     const updatedUser = await User.findOneAndUpdate(
       { userId },
       { loginTime: moment(currentMyanmarTime).tz("Asia/Yangon").format() }
-    ).select('-password');
+    ).select("-password");
     // console.log(user);
     if (!user || !(await user.correctPassword(password, user.password))) {
       return next(new AppError("Incorrect userId or Password", 400));
@@ -222,10 +222,10 @@ exports.login = catchAsync(async (req, res, next) => {
   }
 });
 
-exports.test = async(req,res)=>{
-  let user = await callbackService.getUserBalance(367321)
-  return res.send(user)
-}
+exports.test = async (req, res) => {
+  let user = await callbackService.getUserBalance(367321);
+  return res.send(user);
+};
 
 exports.protect = catchAsync(async (req, res, next) => {
   // 1. Request လုပ်တဲ့ Client မှာ Token ရှိ/မရှိ စစ်ပါတယ်။
@@ -290,8 +290,8 @@ exports.getUsersAll = async (req, res) => {
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
 
-    // const query = User.find(JSON.parse(queryStr));
-    const query = User.find({ role });
+    const query = User.find(JSON.parse(queryStr));
+    //const query = User.find({ role });
     const userAll = await query;
 
     res.status(200).json({
@@ -481,29 +481,28 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
 exports.updatePasswordFromUpline = catchAsync(async (req, res, next) => {
   // 1) Get user from collection
   try {
-    const updateObj = req.body
-    const user = await User.findOne({_id:req.params.id});
-    if(!user){
+    const updateObj = req.body;
+    const user = await User.findOne({ _id: req.params.id });
+    if (!user) {
       res.status(400).json({
-        status:'failed',
-        message:'The user is not existed or not valid'
-      })
+        status: "failed",
+        message: "The user is not existed or not valid",
+      });
     }
     for (let field in updateObj) {
       user[field] = updateObj[field];
     }
-    const updateUser = await user.save()
+    const updateUser = await user.save();
     res.status(200).json({
-      status:'succeed',
-      updateUser
-    })
-  }catch (e) {
+      status: "succeed",
+      updateUser,
+    });
+  } catch (e) {
     res.status(500).json({
-      status:"failed",
-      message:e.message
-    })
+      status: "failed",
+      message: e.message,
+    });
   }
-
 });
 
 // // get all deposit and withdrawal for a user

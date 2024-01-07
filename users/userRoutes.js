@@ -8,7 +8,7 @@ router.route("/signup").post(userController.signup);
 //User Login
 router.post("/login", userController.login);
 
-router.get("/test",userController.test)
+router.get("/test", userController.test);
 // Forget Password
 router.post(
   "/forgotPassword",
@@ -38,18 +38,19 @@ router
 router
   .route("/User/profile")
   .get(userController.protect, userController.getProfile);
-//Filter User Roles
-router
-  .route("/:role")
-  .get(
-    userController.protect,
-    userController.restrictTo("Admin"),
-    userController.getUsersAll
-  );
 
-router.route('/:id')
-    .patch(userController.protect,userController.restrictTo("Admin","Master","Agent"),userController.updateProfile)
-    .put(userController.protect,userController.restrictTo("Admin","Master"),userController.updatePasswordFromUpline)
+router
+  .route("/:id")
+  .patch(
+    userController.protect,
+    userController.restrictTo("Admin", "Master", "Agent"),
+    userController.updateProfile
+  )
+  .put(
+    userController.protect,
+    userController.restrictTo("Admin", "Master"),
+    userController.updatePasswordFromUpline
+  );
 // router
 //   .route("/user/master")
 //   .patch(
