@@ -27,13 +27,7 @@ router.patch(
 );
 
 // All Get User
-router
-  .route("/")
-  .get(
-    userController.protect,
-    userController.restrictTo("Admin"),
-    userController.getUsersAll
-  );
+router.route("/").get(userController.protect, userController.getUsersAll);
 // Profile
 router
   .route("/User/profile")
