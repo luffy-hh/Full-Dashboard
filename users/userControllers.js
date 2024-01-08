@@ -332,11 +332,11 @@ exports.getUsersAll = async (req, res) => {
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
     let query;
-    if (req.user.role === "Admin") {
-      query = User.find(JSON.parse(queryStr)).select(
-        "-password -loginTime -__v -sessionIdentifier"
-      );
-    }
+
+    query = User.find(JSON.parse(queryStr)).select(
+      "-password -loginTime -__v -sessionIdentifier"
+    );
+
     //const query = User.find({ role });
     const userAll = await query;
 
