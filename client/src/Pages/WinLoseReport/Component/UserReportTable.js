@@ -25,21 +25,22 @@ function UserReportTable() {
 
   const tableData = filterUserDetail.map((d, i) => (
     <tr className={styles.win_lose_color} key={`userDeatil_${i}`}>
-      <td>{d.betTime}</td>
-      <td>{d.resultTime}</td>
+      {/* <td>{d.betTime}</td>
+      <td>{d.resultTime}</td> */}
       <td>{d.userID}</td>
-      <td>{d.GameCode}</td>
+      {/* <td>{d.GameCode}</td> */}
       <td>{d.GameName}</td>
       <td>{d.Category}</td>
       <td>{d.subCategory}</td>
-      <td>{d.bBalance}</td>
+      {/* <td>{d.bBalance}</td> */}
+      <td>10</td>
       <td>{d.bet}</td>
       <td>{d.win}</td>
       <td>{d.winLose}</td>
-      <td>{d.aBalance}</td>
+      {/* <td>{d.aBalance}</td>
       <td>{d.status}</td>
       <td>{d.detail}</td>
-      <td>{d.description}</td>
+      <td>{d.description}</td> */}
     </tr>
   ));
 
