@@ -51,10 +51,10 @@ function AllReportMainTable({ selectReport, selectUser, page }) {
         <td>{d.bet}</td>
         <td>{d.totalWin}</td>
         <td>{d.pWinLose}</td>
-        <td>{d.agent}</td>
+        {/* <td>{d.agent}</td>
         <td>{d.agentWinLose}</td>
         <td>{d.com}</td>
-        <td>{d.rtp}</td>
+        <td>{d.rtp}</td> */}
       </tr>
       {d?.action &&
         d.gameCat.map((d, i) => (
