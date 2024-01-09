@@ -80,7 +80,7 @@ function LuckyNoBox({ category, postFun, api, accessToken, lottery }) {
             <input
               value={otherConpensation}
               onChange={(e) => setOtherConpensation(e.target.value)}
-              placeholder="Enter other Compensation"
+              placeholder="Enter other Compensation (eg. 300, 400, 555)"
             />
           )}
         </div>

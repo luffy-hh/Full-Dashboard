@@ -36,7 +36,7 @@ function CustomBox({ title, amount, setAmount, descr, setDescr }) {
   console.log(currentUser);
   const condition = useSelector(selectCondition);
 
-  console.log(postTransfer);
+  console.log(condition);
 
   const postDataDep = {
     transferUnit: Number(amount),

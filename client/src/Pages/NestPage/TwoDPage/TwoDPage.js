@@ -12,15 +12,20 @@ import {
   selectSubGameCatId,
 } from "../../../Feactures/twoDapiSlice";
 
+import { selectCollapsed } from "../../../Feactures/modalSlice";
+
 function TwoDPage() {
   const twoDHead = useSelector(selectTwoDHead);
   const subGameCat = useSelector(selectSubGameCat);
   const subGameCatId = useSelector(selectSubGameCatId);
   const subGameCatArr = subGameCat?.data.allSubGameCat;
+  const collapse = useSelector(selectCollapsed);
   const filterArr = subGameCatArr?.filter((d) => d._id === subGameCatId.id);
 
   return (
-    <Container className={styles.two_d_page}>
+    <Container
+      className={collapse ? styles.two_d_page_coll : styles.two_d_page}
+    >
       <div className={styles.two_d_container}>
         <div className={styles.two_d_title}>
           <h3>{filterArr[0]?.subCatName}</h3>

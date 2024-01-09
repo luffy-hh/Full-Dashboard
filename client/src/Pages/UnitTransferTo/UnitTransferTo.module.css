@@ -49,3 +49,10 @@
 .submit_btn {
   width: 30rem;
 }
+
+.success {
+  margin-top: 1.2rem;
+  color: var(--green-dark);
+  font-size: 1.8rem;
+  display: block;
+}

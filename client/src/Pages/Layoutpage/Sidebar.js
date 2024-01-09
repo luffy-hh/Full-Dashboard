@@ -21,6 +21,7 @@ import { RiLuggageDepositFill } from "react-icons/ri";
 import { BiMoneyWithdraw } from "react-icons/bi";
 import { ImHistory } from "react-icons/im";
 import { selectCollapsed } from "../../Feactures/modalSlice";
+import { FaDirections } from "react-icons/fa";
 
 import { MdRequestQuote } from "react-icons/md";
 import NormalButton from "../../Component/NormalButton";
@@ -59,7 +60,7 @@ const agentData = [
     getItem("All Users", "down_line_user", <BsPeople />),
   ]),
 
-  getItem("Fast Transfer", "unitTransferTo", <BsFillGridFill />),
+  getItem("Fast Transfer", "unitTransferTo", <FaDirections />),
   getItem("Bank", null, <RiBankCardFill />, [
     getItem("Bank Account", "bankAcc", <BiDollarCircle />),
   ]),
@@ -84,7 +85,7 @@ const masterData = [
     getItem("All Agent", "down_line_agent", <BsPeople />),
   ]),
 
-  getItem("Fast Transfer", "unitTransferTo", <BsFillGridFill />),
+  getItem("Fast Transfer", "unitTransferTo", <FaDirections />),
   getItem("Bank", null, <RiBankCardFill />, [
     getItem("Bank Account", "bankAcc", <BiDollarCircle />),
   ]),
@@ -122,8 +123,6 @@ const adminData = [
     getItem("All Master", "allmaster", <BsPeople />),
     getItem("All Admin", "alladmins", <BsPeople />),
   ]),
-
-  getItem("Fast Transfer", "unitTransferTo", <BsFillGridFill />),
 
   getItem("Shan Card", null, <GiPokerHand />, [
     getItem("Create Roll", "create-roll", <GiPokerHand />),

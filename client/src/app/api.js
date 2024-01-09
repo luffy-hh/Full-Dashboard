@@ -1,9 +1,18 @@
 const BASE_URL = "https://gamevegas.online/api/v1/"; //
-const BASE_URL_SLOT = "http://localhost:8000/"
-
+const SLOT_URL = "https://napi.ar7mm.com/api/";
 export const fetchData = async (api) => {
   try {
     const response = await fetch(`${BASE_URL}${api}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error("Error fetching data");
+  }
+};
+
+export const fetchDataSlot = async (api) => {
+  try {
+    const response = await fetch(`${SLOT_URL}${api}`);
     const data = await response.json();
     return data;
   } catch (error) {

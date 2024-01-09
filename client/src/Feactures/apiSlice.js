@@ -124,6 +124,14 @@ export const postTransferToUser = createAsyncThunk(
   }
 );
 
+export const postFastTransferTo = createAsyncThunk(
+  "data/postFastTransferTo",
+  async ({ api, postData, accessToken }) => {
+    const data = await postDataWithToken(api, postData, accessToken);
+    return data;
+  }
+);
+
 export const fetchGetAllUnitTransfer = createAsyncThunk(
   "data/fetchGetAllUnitTransfer",
   async ({ api, accessToken }) => {
@@ -282,6 +290,10 @@ const initialState = {
   postTransferToUser: {},
   postTransferToUserStatus: "idle",
   postTransferToUserError: null,
+
+  postFastTransferTo: {},
+  postFastTransferToStatus: "idle",
+  postFastTransferToError: null,
 
   userProfile: null,
   userProfileStatus: "idle",
@@ -644,6 +656,19 @@ const dataSlice = createSlice({
         state.postTransferToUserError = action.error.message;
       })
 
+      //for post unit transfer From Agent to User
+      .addCase(postFastTransferTo.pending, (state) => {
+        state.postFastTransferToStatus = "loading";
+      })
+      .addCase(postFastTransferTo.fulfilled, (state, action) => {
+        state.postFastTransferToStatus = "succeeded";
+        state.postFastTransferTo = action.payload;
+      })
+      .addCase(postFastTransferTo.rejected, (state, action) => {
+        state.postFastTransferToStatus = "failed";
+        state.postFastTransferToError = action.error.message;
+      })
+
       //for get unit transfer admin to user method store mainUnit arr
       .addCase(fetchGetAllUnitTransfer.pending, (state) => {
         state.getUnitTransferStatus = "loading";
@@ -888,5 +913,10 @@ export const selectBanUser = (state) => state.data.banUser;
 export const selectChnagePassword = (state) => state.data.changePassword;
 export const selectUserWithId = (state) => state.data.userWithId;
 export const selectUserWithIdStatus = (state) => state.data.userWithIdStatus;
+
+export const selectPostFastTransferTo = (state) =>
+  state.data.postFastTransferTo;
+export const selectPostFastTransferToStatus = (state) =>
+  state.data.postFastTransferToStatus;
 
 export default dataSlice.reducer;

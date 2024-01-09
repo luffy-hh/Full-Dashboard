@@ -19,40 +19,42 @@ function ErrorandSucc({ status, loading, condition }) {
   return (
     <>
       {loading === "loading" && <Spinner />}
-      {condition === "DEP" ? (
-        status?.status === "success" ? (
-          <div className={styles.box_succ}>
-            <img
-              className={styles.logo_succ}
-              src="https://cdn3.iconfinder.com/data/icons/social-messaging-ui-color-line/254000/172-512.png"
-            />
-            <p className={styles.succ_text}>Succeded!</p>
-            <div className={styles.amount_box}>
-              <p>
-                BeforeAmount
-                <span className={styles.amount_bold}>{beforeAmt}</span>
-              </p>
-              <p>
-                Unit <span className={styles.amount_bold}>{amount}</span>
-              </p>
-              <p>
-                After Amount
-                <span className={styles.amount_bold}>
-                  {beforeAmt + Number(amount)}
-                </span>
-              </p>
-            </div>
+
+      {condition === "DEP" && status?.status === "success" && (
+        <div className={styles.box_succ}>
+          <img
+            className={styles.logo_succ}
+            src="https://cdn3.iconfinder.com/data/icons/social-messaging-ui-color-line/254000/172-512.png"
+          />
+          <p className={styles.succ_text}>Succeded!</p>
+          <div className={styles.amount_box}>
+            <p>
+              BeforeAmount
+              <span className={styles.amount_bold}>{beforeAmt}</span>
+            </p>
+            <p>
+              Unit <span className={styles.amount_bold}>{amount}</span>
+            </p>
+            <p>
+              After Amount
+              <span className={styles.amount_bold}>
+                {beforeAmt + Number(amount)}
+              </span>
+            </p>
           </div>
-        ) : (
-          <div className={styles.box_succ}>
-            <img
-              className={styles.logo_succ}
-              src="https://cdn0.iconfinder.com/data/icons/shift-interfaces/32/Error-512.png"
-            />
-            <p className={styles.error_text}>{status?.message}</p>
-          </div>
-        )
-      ) : status === "succeeded" ? (
+        </div>
+      )}
+      {condition === "DEP" && status?.status === "fail" && (
+        <div className={styles.box_succ}>
+          <img
+            className={styles.logo_succ}
+            src="https://cdn0.iconfinder.com/data/icons/shift-interfaces/32/Error-512.png"
+          />
+          <p className={styles.error_text}>{status?.message}</p>
+        </div>
+      )}
+
+      {condition === "WDL" && status?.status === "success" && (
         <div className={styles.box_succ}>
           <img
             className={styles.logo_succ}
@@ -75,7 +77,9 @@ function ErrorandSucc({ status, loading, condition }) {
             </p>
           </div>
         </div>
-      ) : (
+      )}
+
+      {condition === "WDL" && status?.status === "fail" && (
         <div className={styles.box_succ}>
           <img
             className={styles.logo_succ}
