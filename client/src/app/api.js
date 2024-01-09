@@ -1,5 +1,5 @@
 const BASE_URL = "https://gamevegas.online/api/v1/"; //
-const BASE_URL_SLOT = "http://localhost:8000/"
+const BASE_URL_SLOT = "http://localhost:8000/";
 
 export const fetchData = async (api) => {
   try {

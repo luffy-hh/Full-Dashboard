@@ -4,7 +4,9 @@ const catchAsync = require("../../utils/catchAsync");
 const User = require("../../users/userModels");
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
-const {createTransactionRecord} = require("../../transaction-record/transactionRecordController");
+const {
+  createTransactionRecord,
+} = require("../../transaction-record/transactionRecordController");
 
 // Transfer Unit
 exports.transferUnit = catchAsync(async (req, res) => {
@@ -115,51 +117,70 @@ exports.transferHistory = catchAsync(async (req, res) => {
 // transfer unit with userId (not database id)
 // access private
 // Url api/v1/transferTo/:id
-exports.transferUnitWithUserId = catchAsync(async (req,res,next)=>{
+exports.transferUnitWithUserId = catchAsync(async (req, res, next) => {
   try {
-    const user = await User.findOne({userId: req.params.id})
-    if(user){
-      if(req.body.amount <= req.user.unit){
-        const sendUser = await User.findOne({_id:req.user.id})
+    const user = await User.findOne({ userId: req.params.id });
+    if (user) {
+      if (req.body.amount <= req.user.unit) {
+        const sendUser = await User.findOne({ _id: req.user.id });
 
-        const sentUser = await User.findByIdAndUpdate(req.user.id,{$inc:{unit: -req.body.amount}},{new:true})
+        const sentUser = await User.findByIdAndUpdate(
+          req.user.id,
+          { $inc: { unit: -req.body.amount } },
+          { new: true }
+        ).select(
+          "-password -__v -sessionIdentifier -loginTime -passwordChangedAt"
+        );
         const transactionSenderObj = {
           user_id: sentUser._id,
           before_amt: sendUser.unit,
           after_amt: sentUser.unit,
           action_amt: req.body.amount,
-          type: 'send to other',
-          status:'Out'
-        }
-        const newSenderRecord = createTransactionRecord(transactionSenderObj)
-        const receiveUser = await User.findOne({userId: req.params.id})
+          type: "send to other",
+          status: "Out",
+        };
+        const newSenderRecord = createTransactionRecord(transactionSenderObj);
+        const receiveUser = await User.findOne({ userId: req.params.id });
 
-        const receivedUser =await User.findByIdAndUpdate(receiveUser._id,{$inc:{unit: req.body.amount}},{new:true})
+        const receivedUser = await User.findByIdAndUpdate(
+          receiveUser._id,
+          { $inc: { unit: req.body.amount } },
+          { new: true }
+        ).select(
+          "-password -__v -sessionIdentifier -loginTime -passwordChangedAt"
+        );
         const transactionReceiverObj = {
           user_id: receiveUser._id,
           sender_id: sendUser._id,
           before_amt: receiveUser.unit,
           action_amt: req.body.amount,
           after_amt: receivedUser.unit,
-          type: 'receive from other',
-          status: "In"
-        }
-        const newReceiverRecord = createTransactionRecord(transactionReceiverObj)
+          type: "receive from other",
+          status: "In",
+        };
+        const newReceiverRecord = createTransactionRecord(
+          transactionReceiverObj
+        );
         res.status(200).json({
-          status:'succeed',
+          status: "succeed",
           sentUser,
-          receivedUser
-        })
-      }else{
-        next(new AppError('You balance is insufficient for this action.Please Top Up!',400))
+          receivedUser,
+        });
+      } else {
+        next(
+          new AppError(
+            "You balance is insufficient for this action.Please Top Up!",
+            400
+          )
+        );
       }
-    }else{
+    } else {
       res.status(400).json({
-        status:'failed',
-        message: 'The userId you entered is not valid or not existed'
-      })
+        status: "failed",
+        message: "The userId you entered is not valid or not existed",
+      });
     }
-  }catch (e) {
-   next( new AppError(e.message, 500))
+  } catch (e) {
+    next(new AppError(e.message, 500));
   }
-})
+});

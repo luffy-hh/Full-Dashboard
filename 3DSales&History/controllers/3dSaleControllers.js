@@ -6,7 +6,9 @@ const User = require("../../users/userModels");
 const Thai3DSale = require("../models/3dSaleModel");
 const mongoose = require("mongoose");
 const Thai3DSaleHistory = require("../models/3dSaleHistoriesModel");
-const {createTransactionRecord} = require("../../transaction-record/transactionRecordController");
+const {
+  createTransactionRecord,
+} = require("../../transaction-record/transactionRecordController");
 exports.create3DSaleDoc = async (req, res) => {
   try {
     const mainUnitArr = await MainUnit.find({});
@@ -45,7 +47,7 @@ exports.create3DSaleDoc = async (req, res) => {
       const totalSaleAmount = playedNumbers
         .map((num) => num.amount)
         .reduce((acr, cur) => Number(acr) + Number(cur), 0);
-      if (totalSaleAmount <= user.unit){
+      if (totalSaleAmount <= user.unit) {
         for (const sale of playedNumbers) {
           let number = sale.number;
           let updatedDocument = await Thai3DNum.findOne({ number });
@@ -55,19 +57,19 @@ exports.create3DSaleDoc = async (req, res) => {
             number: number,
             amount: sale.amount,
           };
-          const transactionObj ={
+          const transactionObj = {
             user_id: user.id,
             before_amt: user.unit,
             action_amt: sale.amount,
             after_amt: user.unit - sale.amount,
-            type: '3d-play',
-            status: 'Out'
-          }
-          const newThai3DSale = new Thai3DSale({ ...obj });
+            type: "3d-play",
+            status: "Out",
+          };
+          const newThai3DSale = new Thai3DSale({ ...threeSaleObj });
           await Thai3DSaleHistory.create(threeSaleObj);
           // Save the new Thai3DSale document to the database
           await newThai3DSale.save();
-          const newTransactionRecord = createTransactionRecord(transactionObj)
+          const newTransactionRecord = createTransactionRecord(transactionObj);
 
           // Calculate the total amount for this number
           const totalAmount = await Thai3DSale.aggregate([
@@ -103,23 +105,30 @@ exports.create3DSaleDoc = async (req, res) => {
         const updatedMainUnit = await MainUnit.findByIdAndUpdate(mainUnitId, {
           $inc: { mainUnit: totalSaleAmount },
         });
-        const updatedUser = await User.findByIdAndUpdate(user.id, {
-          $inc: { unit: -totalSaleAmount },
-        },{new: true});
+        const updatedUser = await User.findByIdAndUpdate(
+          user.id,
+          {
+            $inc: { unit: -totalSaleAmount },
+          },
+          { new: true }
+        );
         if (unPlayAbleNumbers.length > 0) {
           const rejectNums = unPlayAbleNumbers.map((num) => num.number);
           res.status(201).json({
             status: "success",
             unPlayAbleNumbers,
             playedNumbers,
-            message:
-              "PlayedNumbers are the numbers that are played and unPlayAbleNumbers are rejected numbers by admin.",
+            message: `You have palyed ${
+              unPlayAbleNumbers.length + playedNumbers.length
+            } Numbers. But  ${
+              unPlayAbleNumbers.length
+            } Numbers can't be played. `,
           });
         } else {
           res.status(201).json({
             status: "success",
             playedNumbers,
-            message: "playedNumbers are the numbers that are played.",
+            message: "You Have Played all Selected Numbers",
           });
         }
       } else {
