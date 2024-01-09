@@ -32,14 +32,36 @@ function LuckyNoBox({ category, postFun, api, accessToken, lottery }) {
   ));
 
   const postData = { number: luckyNo, subCatId: lukyCate };
+  const threeDPostData = {
+    number: luckyNo,
+    subCatId: lukyCate,
+    otherNumber: otherConpensation.split(","),
+  };
+  console.log(lottery);
 
   const clickHandle = () => {
-    if (luckyNo && lukyCate) {
-      dispatch(postFun({ api: api, postData, accessToken: accessToken }));
-      dispatch(setModalLucky(false));
+    if (lottery === "2D") {
+      if (luckyNo && lukyCate) {
+        dispatch(postFun({ api: api, postData, accessToken: accessToken }));
+        dispatch(setModalLucky(false));
+      } else {
+        dispatch(setModalError(true));
+        dispatch(setModalLucky(false));
+      }
     } else {
-      dispatch(setModalError(true));
-      dispatch(setModalLucky(false));
+      if (luckyNo && lukyCate) {
+        dispatch(
+          postFun({
+            api: api,
+            postData: threeDPostData,
+            accessToken: accessToken,
+          })
+        );
+        dispatch(setModalLucky(false));
+      } else {
+        dispatch(setModalError(true));
+        dispatch(setModalLucky(false));
+      }
     }
   };
 
