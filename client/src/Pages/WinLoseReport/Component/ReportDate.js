@@ -19,10 +19,13 @@ const chnageDateFormat = (data) => {
 };
 
 function ReportDate({ condition, id }) {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [userID, setUserID] = useState("");
+  const [type, setType] = useState("");
   const dispatch = useDispatch();
+
+  console.log(startDate);
 
   const startOnChange = (date) => {
     setStartDate(chnageDateFormat(new Date(date).toLocaleDateString()));
@@ -35,24 +38,26 @@ function ReportDate({ condition, id }) {
   const handleDate = (e) => {
     e.preventDefault();
 
-    if (startDate && endDate) {
-      if (condition === "alluser") {
-        dispatch(
-          fetchSlotAllUser(
-            `slotegrator/users/reports?start_date=${startDate}&end_date=${endDate}${
-              userID ? `&userId=${userID}` : ""
-            } `
-          )
-        );
-      } else {
-        dispatch(
-          fetchSlotUserDetail(
-            `slotegrator/users/reports-detail?userId=${id}&start_date=${startDate}&end_date=${endDate}`
-          )
-        );
-      }
+    if (condition === "alluser") {
+      dispatch(
+        fetchSlotAllUser(
+          `slotegrator/users/reports?${
+            startDate ? `start_date=${startDate}&` : ""
+          }${endDate ? `end_date=${endDate}&` : ""}${
+            userID ? `userId=${userID}` : ""
+          }`
+        )
+      );
     } else {
-      alert("Fill Start Date and End Date Correctly!");
+      dispatch(
+        fetchSlotUserDetail(
+          `slotegrator/users/reports-detail?userId=${id}&${
+            startDate ? `start_date=${startDate}&` : ""
+          }${endDate ? `end_date=${endDate}&` : ""}${
+            type ? `search=${type}` : ""
+          }`
+        )
+      );
     }
   };
 
@@ -74,7 +79,7 @@ function ReportDate({ condition, id }) {
           style={{ width: "20rem" }}
         />
       </div>
-      {condition === "userAll" && (
+      {condition === "alluser" ? (
         <div>
           <label>ID</label>
           <input
@@ -83,6 +88,17 @@ function ReportDate({ condition, id }) {
             value={userID}
             onChange={(e) => setUserID(e.target.value)}
             placeholder="User Id"
+          />
+        </div>
+      ) : (
+        <div>
+          <label>Type</label>
+          <input
+            className={styles.input_id}
+            type="text"
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+            placeholder="Game Type"
           />
         </div>
       )}
