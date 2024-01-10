@@ -21,10 +21,14 @@ const agentReport = [
 ];
 
 const userReport = [
-  "User ID",
+  "User Name",
   "Total Bet",
   "Total Win",
   "Player Win/Lose",
+  "Agent Win/Lose",
+  "User Commision",
+  "Company",
+  "RTP",
 ];
 
 const chartData = [
@@ -47,30 +51,6 @@ const chartGameData = [
   { game: "2D", win: 70000000 },
 ];
 
-const user = [
-  {
-    id: 1,
-    name: "Ar1111",
-    bet: 20000,
-    totalWin: 100000,
-    pWinLose: 200000,
-    agentWinLose: 10000,
-    agent: 200000,
-    com: 100000,
-    rtp: "34%",
-  },
-  {
-    id: 1,
-    name: "Ar2222",
-    bet: 20000,
-    totalWin: 100000,
-    pWinLose: 200000,
-    agentWinLose: 10000,
-    agent: 200000,
-    com: 100000,
-    rtp: "34%",
-  },
-];
 const agentUser = [
   {
     id: 1,
@@ -143,59 +123,33 @@ const agentUser = [
 ];
 
 const userDetailHead = [
-  // "Bet Time",
-  // "Result Time",
+  "Bet Time",
+  "Result Time",
+  "User Id",
+  "Game Code",
+  "Game Name",
+  "Category",
+  "SubCategory",
+  "Before Balance",
+  "Bet",
+  "Win",
+  "Win/Lose",
+  "After Balance",
+  "Status",
+  "Detail",
+  "Count",
+  "Description",
+];
+
+const userMiddleHead = [
   "User ID",
-  // "Game Code",
   "Game",
   "Type",
   "Provider",
-  // "Before Balance",
   "Total Bet Count",
   "Total Bet Amount",
   "Total Win Amount",
   "Win/Lose",
-  // "After Balance",
-  // "Status",
-  // "Detail",
-  // "Description",
-];
-
-const userDetail = [
-  {
-    betTime: "2023/10/14 18:18:37",
-    resultTime: "2023/10/14 18:30:37",
-    userID: "Ar1111",
-    GameCode: "sport11",
-    GameName: "sport11",
-    Category: "slot",
-    subCategory: "Pragmatic",
-    bBalance: 5000,
-    bet: 100,
-    win: 1100,
-    winLose: 1000,
-    aBalance: 3000,
-    status: "Bet",
-    detail: "pragmatic.com",
-    description: "slot",
-  },
-  {
-    betTime: "2023/10/14 18:18:37",
-    resultTime: "2023/10/14 18:30:37",
-    userID: "Ar2222",
-    GameCode: "sport11",
-    GameName: "sport11",
-    Category: "slot",
-    subCategory: "Pragmatic",
-    bBalance: 5000,
-    bet: 100,
-    win: 1100,
-    winLose: 1000,
-    aBalance: 3000,
-    status: "Bet",
-    detail: "pragmatic.com",
-    description: "slot",
-  },
 ];
 
 const initialState = {
@@ -203,9 +157,8 @@ const initialState = {
   agentUser,
   days,
   userReport,
-  user,
-  userDetail,
   userDetailHead,
+  userMiddleHead,
   chartData,
   chartChoose: "",
   chartGameData,
@@ -231,11 +184,11 @@ export const selectAgentReport = (state) => state.winOrLose.agentReport;
 export const selectAgentUser = (state) => state.winOrLose.agentUser;
 export const selectDays = (state) => state.winOrLose.days;
 export const selectUserReport = (state) => state.winOrLose.userReport;
-export const selectUser = (state) => state.winOrLose.user;
-export const selectUserDetail = (state) => state.winOrLose.userDetail;
+
 export const selectUserDetailHead = (state) => state.winOrLose.userDetailHead;
 export const selectChartData = (state) => state.winOrLose.chartData;
 export const selectChartChoose = (state) => state.winOrLose.chartChoose;
 export const selectChartGameData = (state) => state.winOrLose.chartGameData;
+export const selectUserMiddleHead = (state) => state.winOrLose.userMiddleHead;
 
 export default winOrLoseSlice.reducer;

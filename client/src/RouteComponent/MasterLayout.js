@@ -9,7 +9,7 @@ import AllAgentsPage from "../Pages/AllAgentsPage/AllAgentsPage";
 import UnitTransferTo from "../Pages/UnitTransferTo/UnitTransferTo";
 
 import ToWithdraw from "../Pages/ToWithdrawPage/ToWithdraw";
-
+import MiddleReportTable from "../Pages/WinLoseReport/Component/MiddleReportTable";
 import ToDeposit from "../Pages/ToDepositPage/ToDeposit";
 
 import { Routes, Route } from "react-router-dom";
@@ -31,7 +31,8 @@ const master = [
   { id: 14, path: "bankAcc", route: <BankAcc /> },
   { id: 19, path: "master-report", route: <MasterReport /> },
   { id: 20, path: "user-report", route: <UserReport /> },
-  { id: 21, path: "user-report/:userId", route: <UserReportTable /> },
+  { id: 21, path: "user-report/:userId", route: <MiddleReportTable /> },
+  { id: 1, path: "user-report/:userId/:count", route: <UserReportTable /> },
   { id: 22, path: "todeposit", route: <ToDeposit /> },
   { id: 23, path: "todeposit-request", route: <MasterDepositRequest /> },
   { id: 25, path: "todeposit-history", route: <MasterDepositHistory /> },

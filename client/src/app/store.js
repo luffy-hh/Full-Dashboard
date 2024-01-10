@@ -9,6 +9,7 @@ import modalReducer from "../Feactures/modalSlice";
 import winOrLoseReducer from "../Feactures/winOrLoseSlice";
 import bankApiReducer from "../Feactures/bankApiSlice";
 import shanReducer from "../Feactures/shan";
+import slotReducer from "../Feactures/slotSlice";
 export const store = configureStore({
   reducer: {
     shows: ShowHideReducer,
@@ -21,5 +22,6 @@ export const store = configureStore({
     winOrLose: winOrLoseReducer,
     bank: bankApiReducer,
     shan: shanReducer,
+    slot: slotReducer,
   },
 });

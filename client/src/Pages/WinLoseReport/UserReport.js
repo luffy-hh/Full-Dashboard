@@ -1,24 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReportTable from "./Component/ReportTable";
-import { selectUserReport, selectUser } from "../../Feactures/winOrLoseSlice";
-import { useSelector } from "react-redux";
+import { selectUserReport } from "../../Feactures/winOrLoseSlice";
+
 import { selectCollapsed } from "../../Feactures/modalSlice";
+
+import { useSelector, useDispatch } from "react-redux";
 
 function UserReport() {
   const userReport = useSelector(selectUserReport);
-  const user = useSelector(selectUser);
+
   const collapsed = useSelector(selectCollapsed);
+
   return (
     <div
       style={{ overflow: "hidden" }}
       className={collapsed ? "page_style_coll" : "page_style"}
     >
-      <ReportTable
-        selectReport={userReport}
-        selectUser={user}
-        title="User Win/Lose Report"
-        page="user"
-      />
+      <ReportTable selectReport={userReport} title="User Win/Lose Report" />
     </div>
   );
 }

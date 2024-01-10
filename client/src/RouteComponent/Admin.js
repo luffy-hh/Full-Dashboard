@@ -37,6 +37,7 @@ import CreateRoll from "../Pages/ShanCard/CreateRoll/CreateRoll";
 import CreateTable from "../Pages/ShanCard/CreateTable/CreateTable";
 import UserDetailBox from "../Component/CustomBox/UserDetail/UserDetailBox";
 import UnitTransferTo from "../Pages/UnitTransferTo/UnitTransferTo";
+import MiddleReportTable from "../Pages/WinLoseReport/Component/MiddleReportTable";
 
 const admin = [
   { id: 0, path: "/admin", route: <Home /> },
@@ -64,7 +65,9 @@ const admin = [
   { id: 18, path: "thai2D-12am", route: <ThaiTwoD12am /> },
   { id: 19, path: "master-report", route: <MasterReport /> },
   { id: 20, path: "user-report", route: <UserReport /> },
-  { id: 21, path: "user-report/:userId", route: <UserReportTable /> },
+  { id: 21, path: "user-report/:userId", route: <MiddleReportTable /> },
+  { id: 41, path: "user-report/:userId/:count", route: <UserReportTable /> },
+
   { id: 28, path: "todeposit-history", route: <AdminDepositHistory /> },
   { id: 29, path: "todeposit-request", route: <AdminDepositRequest /> },
 
@@ -72,7 +75,6 @@ const admin = [
   { id: 27, path: "towithdraw-history", route: <AdminWithdrawHistory /> },
   { id: 39, path: "create-roll", route: <CreateRoll /> },
   { id: 40, path: "create-table", route: <CreateTable /> },
-  { id: 41, path: "unitTransferTo", route: <UnitTransferTo /> },
 ];
 
 function Admin() {

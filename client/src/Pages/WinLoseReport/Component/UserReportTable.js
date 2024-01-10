@@ -1,23 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import ReportDate from "./ReportDate";
 import ReportGameCat from "./ReportGameCat";
 import { useParams } from "react-router-dom";
 import styles from "./ReportTable.module.css";
-import {
-  selectUserDetail,
-  selectUserDetailHead,
-} from "../../../Feactures/winOrLoseSlice";
-import { useSelector } from "react-redux";
+import { selectUserDetailHead } from "../../../Feactures/winOrLoseSlice";
+
 import { selectCollapsed } from "../../../Feactures/modalSlice";
 
+import { useDispatch, useSelector } from "react-redux";
+import Spinner from "../../../Component/Spinner/Spinner";
+
 function UserReportTable() {
-  const { userId } = useParams();
-  const userDetail = useSelector(selectUserDetail);
+  const { count } = useParams();
+
   const userDetailHead = useSelector(selectUserDetailHead);
   const collapsed = useSelector(selectCollapsed);
+  const dispatch = useDispatch();
 
-  const filterUserDetail = userDetail.filter((d) => d.userID === userId);
+  // useEffect(() => {
+  //   dispatch();
+  // }, []);
 
   const tableHeader = userDetailHead.map((d, i) => (
     <th key={`userHead${i}`} style={{ minWidth: "20rem" }}>
@@ -25,26 +28,26 @@ function UserReportTable() {
     </th>
   ));
 
-  const tableData = filterUserDetail.map((d, i) => (
-    <tr className={styles.win_lose_color} key={`userDeatil_${i}`}>
-      {/* <td>{d.betTime}</td>
-      <td>{d.resultTime}</td> */}
-      <td>{d.userID}</td>
-      {/* <td>{d.GameCode}</td> */}
-      <td>{d.GameName}</td>
-      <td>{d.Category}</td>
-      <td>{d.subCategory}</td>
-      {/* <td>{d.bBalance}</td> */}
-      <td>10</td>
-      <td>{d.bet}</td>
-      <td>{d.win}</td>
-      <td>{d.winLose}</td>
-      {/* <td>{d.aBalance}</td>
-      <td>{d.status}</td>
-      <td>{d.detail}</td>
-      <td>{d.description}</td> */}
-    </tr>
-  ));
+  // const tableData = userDetail?.data.map((d, i) => (
+  //   <tr className={styles.win_lose_color} key={`userDeatil_${i}`}>
+  //     <td>{"no data"}</td>
+  //     <td>{"no data"}</td>
+  //     <td>{d.player_id}</td>
+  //     <td>{"no date"}</td>
+  //     <td>{d.game_name}</td>
+  //     <td>{d.game_type}</td>
+  //     <td>{d.game_provider_name}</td>
+  //     <td>{"no data"}</td>
+  //     <td>{d.total_bet}</td>
+  //     <td>{d.total_win}</td>
+  //     <td>{d.total_win - d.total_bet}</td>
+  //     <td>{"no data"}</td>
+  //     <td>{"no data"}</td>
+  //     <td>{"no data"}</td>
+  //     <td>{d.total_bet_count}</td>
+  //     <td>{d.game_name}</td>
+  //   </tr>
+  // ));
 
   return (
     <div
@@ -52,7 +55,7 @@ function UserReportTable() {
       style={{ overflow: "hidden" }}
     >
       <div className={`box_shadow ${styles.user_report_table_detail}`}>
-        <h3>{userId} Win/Lose Detail Report</h3>
+        <h3>{count} Win/Lose Detail Report</h3>
         <ReportDate />
         <ReportGameCat />
       </div>
@@ -64,7 +67,7 @@ function UserReportTable() {
           <thead>
             <tr>{tableHeader}</tr>
           </thead>
-          <tbody>{tableData}</tbody>
+          {/* <tbody>{tableData}</tbody> */}
         </table>
       </section>
     </div>

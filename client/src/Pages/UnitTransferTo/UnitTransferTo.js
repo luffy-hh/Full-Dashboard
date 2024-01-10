@@ -14,6 +14,11 @@ import styles from "./UnitTransferTo.module.css";
 import NormalButton from "../../Component/NormalButton";
 import SecretCodeBox from "../../Component/CustomBox/SecretCodeBox";
 import { setModalSecretCode } from "../../Feactures/modalSlice";
+import {
+  selectPostFastTransferTo,
+  selectPostFastTransferToStatus,
+  postFastTransferTo,
+} from "../../Feactures/apiSlice";
 
 function UnitTransferTo() {
   const dispatch = useDispatch();
@@ -21,6 +26,9 @@ function UnitTransferTo() {
   const userWithId = useSelector(selectUserWithId);
   const userWithIdStatus = useSelector(selectUserWithIdStatus);
   const logInData = useSelector(selectlogInData);
+  const postFastTransferToData = useSelector(selectPostFastTransferTo);
+  const status = useSelector(selectPostFastTransferToStatus);
+
   const accessToken = logInData.token;
   const [id, setId] = useState("");
   const [text, setText] = useState("");
@@ -29,7 +37,14 @@ function UnitTransferTo() {
   const handleSubmit = () => {
     if (id && userWithId?.data.userAll[0].name && unit) {
       if (Number(unit > 0)) {
-        dispatch(setModalSecretCode(true));
+        // dispatch(setModalSecretCode(true)); secret code modle box
+        dispatch(
+          postFastTransferTo({
+            api: `transferTo/${id}`,
+            postData: { amount: unit },
+            accessToken,
+          })
+        );
       } else {
         setText("Unit Amount Will Be Plus");
       }
@@ -37,7 +52,7 @@ function UnitTransferTo() {
       setText("Enter User ID and Unit Amount");
     }
   };
-
+  console.log(postFastTransferToData, "from fast transfer");
   const handleCheck = () => {
     if (id) {
       dispatch(fetGetUserWithId({ api: `user?userId=${id}`, accessToken }));
@@ -74,7 +89,7 @@ function UnitTransferTo() {
               <input
                 disabled={true}
                 type="text"
-                value={userWithId?.data.userAll[0].name}
+                placeholder={userWithId?.data.userAll[0].name}
               />
             </div>
             <div>
@@ -90,9 +105,12 @@ function UnitTransferTo() {
               onClick={() => handleSubmit()}
               className={`btn_hover ${styles.submit_btn}`}
             >
-              Submit
+              {status === "loading" ? "Loading" : "Submit"}
             </NormalButton>
           </div>
+          {postFastTransferToData?.status === "succeed" && (
+            <span className={styles.success}>Successfully Transfer Unit</span>
+          )}
         </div>
       </div>
     </>

@@ -2,13 +2,14 @@ import React from "react";
 import { FaCopy } from "react-icons/fa";
 import styles from "./CopyID.module.css";
 import { message } from "antd";
+import CopyToClipboard from "react-copy-to-clipboard";
 
 function CopyID({ id }) {
   const handleCopy = () => {
-    const copyContent = document.getElementById("textToCopy");
-    const textToCopy = copyContent.innerText;
+    // const copyContent = document.getElementById("textToCopy");
+    // const textToCopy = copyContent.innerText;
 
-    navigator.clipboard.writeText(textToCopy);
+    // navigator.clipboard.writeText(textToCopy);
 
     success();
   };
@@ -28,9 +29,11 @@ function CopyID({ id }) {
       <td className={styles.copy_id_td}>
         <span id="textToCopy">{id}</span>
 
-        <span className={styles.copy_icon} onClick={() => handleCopy()}>
-          <FaCopy />
-        </span>
+        <CopyToClipboard text={id} onCopy={() => handleCopy()}>
+          <span className={styles.copy_icon}>
+            <FaCopy />
+          </span>
+        </CopyToClipboard>
       </td>
     </>
   );
