@@ -38,13 +38,18 @@ function MiddleReportTable() {
   ));
 
   const tableData = userDetail?.data.map((d, i) => (
-    <tr className={styles.win_lose_color} key={`userDeatil_${i}`}>
+    <tr
+      className={`table_d_tbody_tr ${styles.win_lose_color}`}
+      key={`userDeatil_${i}`}
+    >
       <td>{d.player_id}</td>
-      <td>{d.game_name}</td>
+      <td className={styles.game_size}>{d.game_name}</td>
       <td>{d.game_type}</td>
-      <td>{d.game_provider_name}</td>
-      <td>
-        <Link to={`${d.total_bet_count}`}>{d.total_bet_count}</Link>
+      <td className={styles.game_size}>{d.game_provider_name}</td>
+      <td className={styles.user_report}>
+        <Link to={`${d.total_bet_count}`}>
+          <span>{d.total_bet_count}</span>
+        </Link>
       </td>
       <td>{d.total_bet}</td>
       <td>{d.total_win}</td>

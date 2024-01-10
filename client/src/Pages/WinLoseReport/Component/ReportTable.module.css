@@ -51,6 +51,7 @@
   margin-top: 1.2rem;
   background-color: var(--text-white);
   color: var(--text);
+  border-radius: 8px;
 }
 
 .report_all_table thead tr th {
@@ -110,6 +111,11 @@
   padding: 7px 1.6rem;
   font-size: 1.4rem;
   outline: none;
-  width: 15rem;
+  width: 20rem;
   border-radius: 8px;
+}
+
+.game_size {
+  font-size: 1.5rem !important;
+  line-height: 1.2;
 }

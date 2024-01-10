@@ -26,7 +26,10 @@ function AllReportMainTable({ selectReport }) {
   ));
 
   const tableData = userAll?.data.map((d, i) => (
-    <tr key={`slot_user_${i}`} className={styles.win_lose_color}>
+    <tr
+      key={`slot_user_${i}`}
+      className={`table_d_tbody_tr ${styles.win_lose_color}`}
+    >
       <td style={{ minWidth: "20rem" }} className={styles.user_report}>
         <Link to={`${d.player_id}`}>
           <span> {d.player_id}</span>
