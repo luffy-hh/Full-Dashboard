@@ -19,6 +19,7 @@ import AgentDepositHistory from "../Pages/ToDepositPage/AgentDeposit/AgentDeposi
 import DownLineUser from "../Component/DownLineUser/DownLineUser";
 import AgentUnitHistroy from "../Pages/UnitHistoryTransfer/AgentUnitHistroy";
 import UnitTransferTo from "../Pages/UnitTransferTo/UnitTransferTo";
+import MiddleReportTable from "../Pages/WinLoseReport/Component/MiddleReportTable";
 const agent = [
   { id: 0, path: "/agent", route: <Home /> },
   { id: 3, path: "allusers", route: <AllUsers /> },
@@ -27,7 +28,8 @@ const agent = [
 
   { id: 14, path: "bankAcc", route: <BankAcc /> },
   { id: 20, path: "user-report", route: <UserReport /> },
-  { id: 21, path: "user-report/:userId", route: <UserReportTable /> },
+  { id: 21, path: "user-report/:userId", route: <MiddleReportTable /> },
+  { id: 41, path: "user-report/:userId/:count", route: <UserReportTable /> },
   { id: 22, path: "todeposit", route: <ToDeposit /> },
   { id: 23, path: "todeposit-request", route: <AgentDepositRequest /> },
   { id: 25, path: "todeposit-history", route: <AgentDepositHistory /> },
