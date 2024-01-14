@@ -8,12 +8,8 @@ const fs = require("fs");
 require("./slots/grpc-services/grpc");
 dotenv.config({ path: "./config.env" });
 const options = {
-  key: fs.readFileSync(
-    "/etc/letsencrypt/live/yourdomain.example.com/privkey.pem"
-  ),
-  cert: fs.readFileSync(
-    "/etc/letsencrypt/live/yourdomain.example.com/fullchain.pem"
-  ),
+  key: fs.readFileSync("/etc/letsencrypt/live/gamevegas.online/privkey.pem"),
+  cert: fs.readFileSync("/etc/letsencrypt/live/gamevegas.online/fullchain.pem"),
 };
 
 mongoose
