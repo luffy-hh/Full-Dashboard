@@ -1,6 +1,6 @@
 //local
-const BASE_URL = 'http://localhost:5000/api/v1/'
-//const BASE_URL = "https://gamevegas.online/api/v1/";
+//const BASE_URL = 'http://localhost:5000/api/v1/'
+const BASE_URL = "https://gamevegas.online/api/v1/";
 const SLOT_URL = "https://napi.ar7mm.com/api/";
 
 export const fetchData = async (api) => {

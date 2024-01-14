@@ -7,7 +7,7 @@ const shanTableSchema = new mongoose.Schema({
   },
   role: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "ShanRoll",
+    ref: "ShanRole",
     required: true,
   },
   banker_amount: {
