@@ -65,7 +65,7 @@ function MiddleReportTable() {
       <div className={`box_shadow ${styles.user_report_table_detail}`}>
         <h3>{userId} Win/Lose Detail Report</h3>
         <ReportDate condition={"oneuser"} id={userId} />
-        <ReportGameCat />
+        <ReportGameCat condition={"oneuser"} id={userId} />
       </div>
       <section
         style={{ marginTop: "2.4rem" }}

@@ -1,19 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NormalButton from "../../../Component/NormalButton";
 import { selectDays } from "../../../Feactures/winOrLoseSlice";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import styles from "./ReportTable.module.css";
+import {
+  fetchSlotAllUser,
+  fetchSlotUserDetail,
+} from "../../../Feactures/slotSlice";
 
-function ReportGameCat() {
+function ReportGameCat({ condition, id }) {
   const days = useSelector(selectDays);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const dispatch = useDispatch();
 
-  const getFormattedDate = (date, endDate) => {
+  const getFormattedDate = (date) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
-
     //call api with if condition
     return `${year}-${month}-${day}`;
   };
@@ -45,16 +49,21 @@ function ReportGameCat() {
         const thisWeekEndDate = getFormattedDate(currentDate);
         setStartDate(getFormattedDate(thisWeekStartDate));
         setEndDate(thisWeekEndDate);
+
         break;
       case "Last week":
         const lastWeekStartDate = new Date(currentDate);
         lastWeekStartDate.setDate(
           lastWeekStartDate.getDate() - lastWeekStartDate.getDay() - 7
         );
-        const lastWeekEndDate = getFormattedDate(currentDate);
+        const lastWeekEndDate = new Date(
+          lastWeekStartDate.getFullYear(),
+          lastWeekStartDate.getMonth(),
+          lastWeekStartDate.getDate() + 6
+        );
         setStartDate(getFormattedDate(lastWeekStartDate));
 
-        setEndDate(lastWeekEndDate);
+        setEndDate(getFormattedDate(lastWeekEndDate));
         break;
       case "This month":
         const thisMonthStartDate = new Date(currentDate);
@@ -64,12 +73,17 @@ function ReportGameCat() {
         break;
       case "Last month":
         const lastMonthStartDate = new Date(currentDate);
-        const lastMonthEndDate = getFormattedDate(new Date(lastMonthStartDate));
+
         lastMonthStartDate.setMonth(lastMonthStartDate.getMonth() - 1);
         lastMonthStartDate.setDate(1);
 
+        const lastMonthEndDate = new Date(
+          lastMonthStartDate.getFullYear(),
+          lastMonthStartDate.getMonth() + 1,
+          0
+        );
         setStartDate(getFormattedDate(lastMonthStartDate));
-        setEndDate(lastMonthEndDate);
+        setEndDate(getFormattedDate(lastMonthEndDate));
         break;
       default:
         break;
@@ -79,6 +93,24 @@ function ReportGameCat() {
   const handleButtonClick = (interval) => {
     btnCondition(interval);
   };
+
+  useEffect(() => {
+    if (condition === "alluser") {
+      dispatch(
+        fetchSlotAllUser(
+          `slotegrator/users/reports?start_date=${startDate}&end_date=${endDate}`
+        )
+      );
+
+      console.log("userall working");
+    } else {
+      dispatch(
+        fetchSlotUserDetail(
+          `slotegrator/users/reports-detail?userId=${id}&start_date=${startDate}&end_date=${endDate}`
+        )
+      );
+    }
+  }, [startDate, endDate, dispatch, id]);
 
   const list = days.map((d, i) => (
     <li key={i}>

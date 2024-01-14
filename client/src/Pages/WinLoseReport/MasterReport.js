@@ -58,7 +58,7 @@ function MasterReport() {
       </tr>
       {d?.action &&
         d.gameCat.map((d, i) => (
-          <tr key={i} className={styles.win_lose_color}>
+          <tr key={`master_report_${i}`} className={styles.win_lose_color}>
             <td>{d.name}</td>
             <td>{d.bet}</td>
             <td>{d.totalWin}</td>

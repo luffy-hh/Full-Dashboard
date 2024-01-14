@@ -7,7 +7,7 @@ function UserBetIcon({ index }) {
       className={`${styles.user_bet_icons} ${styles[`player_bet_${index}`]}`}
     >
       <img src="/shangame/D.png" alt="coin_photo" />
-      <span>1K</span>
+      <span>1</span>
     </div>
   );
 }
