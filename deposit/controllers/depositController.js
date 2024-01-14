@@ -157,7 +157,7 @@ exports.updateDeposit = catchAsync(async (req, res) => {
           new: true,
         }
       ).populate("fromId toId");
-      console.log(depositObj, "deposit 158");
+      console.log(depositObj.toId.unit, "deposit 158");
 
       const updateUnit = userObj.unit - reqBody.unit;
       const updateUser = await User.findByIdAndUpdate(
@@ -178,7 +178,7 @@ exports.updateDeposit = catchAsync(async (req, res) => {
       const transactionObj = {
         user_id: depositObj.toId,
         action_id: depositObj.fromId,
-        before_amt: depositObj.fromId.unit,
+        before_amt: depositObj.toId.unit,
         action_amt: reqBody.unit,
         after_amt: updateUser.unit,
         type: "deposit-confirmed",

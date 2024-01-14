@@ -31,7 +31,7 @@ exports.getUplineBankName = catchAsync(async (req, res) => {
       _id: { $in: uniqueBankNameDataValues },
     });
 
-    console.log(allUplineBankNames);
+    // console.log(allUplineBankNames);
 
     res.status(200).json({
       status: "Success",
