@@ -5,6 +5,9 @@ const User = require("../../users/userModels");
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
 const MainUnit = require("../../mainUnit/models/mainUnitModel");
+const {
+  createTransactionRecord,
+} = require("../../transaction-record/transactionRecordController");
 // Create Bank Type
 exports.createDeposit = catchAsync(async (req, res) => {
   try {
@@ -44,20 +47,20 @@ exports.createDeposit = catchAsync(async (req, res) => {
 
     const newDeposit = await Deposit.create({ ...insertObj });
 
-    const resObj = newDeposit
-      .populate("fromId")
-      .populate("toId")
-      .populate("bankName_id");
+    // const resObj = newDeposit
+    //   .populate("fromId")
+    //   .populate("toId")
+    //   .populate("bankName_id");
     res.status(201).json({
       status: "success",
       data: {
-        resObj,
+        newDeposit,
       },
     });
   } catch (err) {
     res.status(404).json({
       status: "fail",
-      message: err,
+      message: err.message,
     });
   }
 });
@@ -153,7 +156,9 @@ exports.updateDeposit = catchAsync(async (req, res) => {
         {
           new: true,
         }
-      );
+      ).populate("fromId toId");
+      console.log(depositObj, "deposit 158");
+
       const updateUnit = userObj.unit - reqBody.unit;
       const updateUser = await User.findByIdAndUpdate(
         userId,
@@ -163,12 +168,24 @@ exports.updateDeposit = catchAsync(async (req, res) => {
         { new: true }
       );
 
-      const depositUnit = downlineUserObj.unit + reqBody.unit;
+      const depositUnit = depositObj.fromId.unit + reqBody.unit;
+      const downlineUser = await User.findById(depositObj.fromId);
       const downlineUserDepositUpdate = await User.findByIdAndUpdate(
         depositObj.fromId,
         { unit: depositUnit },
         { new: true }
       );
+      const transactionObj = {
+        user_id: depositObj.toId,
+        action_id: depositObj.fromId,
+        before_amt: depositObj.fromId.unit,
+        action_amt: reqBody.unit,
+        after_amt: updateUser.unit,
+        type: "deposit-confirmed",
+        status: "Out",
+      };
+      const newTransactionRecord = createTransactionRecord(transactionObj);
+
       res.status(200).json({
         status: "Success",
         data: {
@@ -188,8 +205,13 @@ exports.updateDeposit = catchAsync(async (req, res) => {
         {
           new: true,
         }
-      );
+      ).populate("fromId");
+      console.log(depositObj, "line 207");
 
+      const transactionObj = {
+        user_id: depositObj.fromId,
+        action_id: depositObj.toId,
+      };
       res.status(200).json({
         status: "Success",
         data: {
@@ -289,7 +311,7 @@ exports.updateDepositMasterToAdmin = catchAsync(async (req, res) => {
       throw new Error("Invalid userObj.unit or reqBody.unit value");
     }
   } catch (err) {
-    res.status(400).json({
+    res.status(500).json({
       status: "failed",
       message: err.message,
     });

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
-const shanRollSchema = new mongoose.Schema({
-  roll_name: {
+const shanRoleSchema = new mongoose.Schema({
+  role_name: {
     type: String,
     required: [true, "Shan Roll Name must be added"],
   },
@@ -27,18 +27,11 @@ const shanRollSchema = new mongoose.Schema({
   description: {
     type: String,
   },
-  endPoints: {
-    type: String,
-    required: true,
-  },
-  ring: {
-    type: Array,
-  },
   status: {
     type: Boolean,
     default: true,
   },
 });
 
-const ShanRoll = mongoose.model("ShanRoll", shanRollSchema);
-module.exports = ShanRoll;
+const ShanRole = mongoose.model("ShanRole", shanRoleSchema);
+module.exports = ShanRole;

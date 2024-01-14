@@ -1,18 +1,17 @@
 const mongoose = require("mongoose");
 
-const shanPlayRingSchema = new mongoose.Schema({
-  ring_name: {
+const shanTableSchema = new mongoose.Schema({
+  tableName: {
     type: "String",
     required: true,
   },
-  shan_roll: {
+  role: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "ShanRoll",
     required: true,
   },
   banker_amount: {
     type: Number,
-    required: true,
   },
   description: {
     type: String,
@@ -22,9 +21,8 @@ const shanPlayRingSchema = new mongoose.Schema({
     enum: ["inactive", "active"],
     default: "inactive",
   },
-  game_round: {
-    type: Number,
-    default: 0,
+  endPoint:{
+    type: String,
   },
   players: [
     {
@@ -32,28 +30,28 @@ const shanPlayRingSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
       },
-      player_roll: {
+      player_role: {
         type: String,
         enum: ["banker", "player"],
         default: "banker",
       },
-      playingStatus:{
-        type:String,
-        enum:["playing","waiting"],
-        default:"waiting"
-      },
+      // playingStatus:{
+      //   type:String,
+      //   enum:["playing","waiting"],
+      //   default:"waiting"
+      // },
       game_unit: {
         type: Number,
         default: 0,
       },
-      finalResult:{
-        type:String,
-        enum:["win","lose"]
-      }
+      // finalResult:{
+      //   type:String,
+      //   enum:["win","lose"]
+      // }
     },
   ],
 });
 
-const ShanPlayRing = mongoose.model("ShanPlayRing", shanPlayRingSchema);
+const ShanTable = mongoose.model("ShanTable", shanTableSchema);
 
-module.exports = ShanPlayRing;
+module.exports = ShanTable;

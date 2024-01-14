@@ -1,5 +1,5 @@
 const express = require("express");
-const shanRollController = require("./controllers");
+const shanRoleController = require("./shanRoleController");
 const userController = require("../../users/userControllers");
 
 const router = express.Router();
@@ -7,19 +7,19 @@ const router = express.Router();
 router
   .route("/")
   .post(
-    shanRollController.uploadShanRollImg,
+    shanRoleController.uploadShanRoleImg,
     userController.protect,
     userController.restrictTo("Admin"),
-    shanRollController.createShanRoll
+    shanRoleController.createShanRole
   )
-  .get(userController.protect, shanRollController.getShanRollAll);
+  .get(userController.protect, shanRoleController.getShanRoleAll);
 
 router
   .route("/:id")
   .patch(
     userController.protect,
     userController.restrictTo("Admin"),
-    shanRollController.uploadShanRollImg,
-    shanRollController.updateShanRoll
+    shanRoleController.uploadShanRoleImg,
+    shanRoleController.updateShanRole
   );
 module.exports = router;
