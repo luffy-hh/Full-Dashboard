@@ -2,15 +2,23 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const express = require("express");
 const https = require("https");
-const socketIo = require("socket.io");
+const http = require("http");
+const { Server } = require("socket.io");
 const app = require("./app");
 const fs = require("fs");
 require("./slots/grpc-services/grpc");
 dotenv.config({ path: "./config.env" });
-const options = {
-  key: fs.readFileSync("/etc/letsencrypt/live/gamevegas.online/privkey.pem"),
-  cert: fs.readFileSync("/etc/letsencrypt/live/gamevegas.online/fullchain.pem"),
-};
+let options = {};
+process.env.NODE_ENV === "development"
+  ? (options = {})
+  : (options = {
+      key: fs.readFileSync(
+        "/etc/letsencrypt/live/gamevegas.online/privkey.pem"
+      ),
+      cert: fs.readFileSync(
+        "/etc/letsencrypt/live/gamevegas.online/fullchain.pem"
+      ),
+    });
 
 mongoose
   .connect(process.env.DATABASE_LOCAL, {
@@ -20,8 +28,11 @@ mongoose
   .then(() => console.log("DB Connection Success"));
 
 const port = process.env.PORT || 3000;
-const http_server = https.createServer(options, app);
-const io = socketIo(http_server);
+const http_server =
+  process.env.NODE_ENV === "development"
+    ? http.createServer(options, app)
+    : https.createServer(options, app);
+const io = new Server(http_server);
 
 let tableRooms = {}; // Object to store players in each table
 
