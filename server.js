@@ -8,12 +8,12 @@ const app = require("./app");
 const fs = require("fs");
 require("./slots/grpc-services/grpc");
 dotenv.config({ path: "./config.env" });
-// let options = {};
+let options = {};
 
-// options = {
-//   key: fs.readFileSync("/etc/letsencrypt/live/gamevegas.online/privkey.pem"),
-//   cert: fs.readFileSync("/etc/letsencrypt/live/gamevegas.online/fullchain.pem"),
-// };
+options = {
+  key: fs.readFileSync("/etc/letsencrypt/live/gamevegas.online/privkey.pem"),
+  cert: fs.readFileSync("/etc/letsencrypt/live/gamevegas.online/fullchain.pem"),
+};
 
 mongoose
   .connect(process.env.DATABASE_LOCAL, {
@@ -23,7 +23,7 @@ mongoose
   .then(() => console.log("DB Connection Success"));
 
 const port = process.env.PORT || 3000;
-const http_server = http.createServer(app);
+const http_server = https.createServer(options, app);
 
 // const io = new Server(http_server);
 
