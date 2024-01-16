@@ -23,7 +23,7 @@ mongoose
   .then(() => console.log("DB Connection Success"));
 
 const port = process.env.PORT || 3000;
-const http_server = https.createServer(options, app);
+const http_server = http.createServer(app);
 
 // const io = new Server(http_server);
 
