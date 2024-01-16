@@ -6,13 +6,18 @@ import styles from "./ReportTable.module.css";
 import {
   fetchSlotAllUser,
   fetchSlotUserDetail,
+  fetchSlotUserRecord,
 } from "../../../Feactures/slotSlice";
+import { selectlogInData } from "../../../Feactures/apiSlice";
 
-function ReportGameCat({ condition, id }) {
+function ReportGameCat({ condition, id, gameapi }) {
   const days = useSelector(selectDays);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const dispatch = useDispatch();
+
+  const logInData = useSelector(selectlogInData);
+  const accessToken = logInData.token;
 
   const getFormattedDate = (date) => {
     const year = date.getFullYear();
@@ -97,20 +102,29 @@ function ReportGameCat({ condition, id }) {
   useEffect(() => {
     if (condition === "alluser") {
       dispatch(
-        fetchSlotAllUser(
-          `slotegrator/users/reports?start_date=${startDate}&end_date=${endDate}`
-        )
+        fetchSlotAllUser({
+          api: `slotegrator/users/reports?start_date=${startDate}&end_date=${endDate}`,
+          accessToken,
+        })
       );
 
       console.log("userall working");
+    } else if (condition === "oneuser") {
+      dispatch(
+        fetchSlotUserDetail({
+          api: `slotegrator/users/reports-detail?userId=${id}&start_date=${startDate}&end_date=${endDate}`,
+          accessToken,
+        })
+      );
     } else {
       dispatch(
-        fetchSlotUserDetail(
-          `slotegrator/users/reports-detail?userId=${id}&start_date=${startDate}&end_date=${endDate}`
-        )
+        fetchSlotUserRecord({
+          api: `${gameapi}&start_date=${startDate}&end_date=${endDate}`,
+          accessToken,
+        })
       );
     }
-  }, [startDate, endDate, dispatch, id]);
+  }, [startDate, endDate, dispatch, id, gameapi]);
 
   const list = days.map((d, i) => (
     <li key={i}>

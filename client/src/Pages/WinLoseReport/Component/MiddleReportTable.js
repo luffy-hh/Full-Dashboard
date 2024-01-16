@@ -6,12 +6,14 @@ import { useParams } from "react-router-dom";
 import styles from "./ReportTable.module.css";
 import { selectUserMiddleHead } from "../../../Feactures/winOrLoseSlice";
 import { Link } from "react-router-dom";
+import { selectlogInData } from "../../../Feactures/apiSlice";
 
 import { selectCollapsed } from "../../../Feactures/modalSlice";
 import {
   fetchSlotUserDetail,
   selectUserDetailSlot,
   selectUserDetailSlotStatus,
+  setGameData,
 } from "../../../Feactures/slotSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Spinner from "../../../Component/Spinner/Spinner";
@@ -24,10 +26,15 @@ function MiddleReportTable() {
   const dispatch = useDispatch();
   const userDetail = useSelector(selectUserDetailSlot);
   const userDetailStatus = useSelector(selectUserDetailSlotStatus);
+  const logInData = useSelector(selectlogInData);
+  const accessToken = logInData.token;
 
   useEffect(() => {
     dispatch(
-      fetchSlotUserDetail(`slotegrator/users/reports-detail?userId=${userId}`)
+      fetchSlotUserDetail({
+        api: `slotegrator/users/reports-detail?userId=${userId}`,
+        accessToken,
+      })
     );
   }, []);
 
@@ -48,7 +55,9 @@ function MiddleReportTable() {
       <td className={styles.game_size}>{d.game_provider_name}</td>
       <td className={styles.user_report}>
         <Link to={`${d.total_bet_count}`}>
-          <span>{d.total_bet_count}</span>
+          <span onClick={() => dispatch(setGameData(d))}>
+            {d.total_bet_count}
+          </span>
         </Link>
       </td>
       <td>{d.total_bet}</td>

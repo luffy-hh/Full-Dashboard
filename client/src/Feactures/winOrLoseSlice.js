@@ -141,6 +141,18 @@ const userDetailHead = [
   "Description",
 ];
 
+const userDetailHeadEdit = [
+  "Bet Time",
+  "Action",
+  "Player ID",
+  "Game Name",
+  "Game Type",
+  "Provider Name",
+  "Before Amount",
+  "Bet Amount",
+  "After Amount",
+];
+
 const userMiddleHead = [
   "User ID",
   "Game",

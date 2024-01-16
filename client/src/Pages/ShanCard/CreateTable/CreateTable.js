@@ -41,15 +41,15 @@ function CreateTable() {
   const data = [
     { title: "bankerAmount", value: bankerAmount, setValue: setBankerAmount },
     { title: "Ring Name", value: ringName, setValue: setRingName },
-    { title: "UserId", value: userId, setValue: setUserId },
+
     { title: "Description", value: description, setValue: setDescription },
   ];
 
   useEffect(() => {
-    dispatch(fetGetShanRoll({ api: "shanroll", accessToken }));
+    dispatch(fetGetShanRoll({ api: "shanrole", accessToken }));
   }, []);
 
-  const shanRollData = shanRoll?.data.allShanRoll;
+  const shanRollData = shanRoll?.data.allShanRole;
 
   const inputList = data.map((d) => (
     <div key={d.title}>
@@ -64,7 +64,7 @@ function CreateTable() {
   ));
 
   const getCatFun = (data) => {
-    setRoll(data.roll_name);
+    setRoll(data.role_name);
     setRollId(data._id);
     setBankerAmount(data.banker_amount);
     dispatch(setShowDropDown());
@@ -73,16 +73,14 @@ function CreateTable() {
 
   const list = shanRollData?.map((d) => (
     <li onClick={() => getCatFun(d)} key={d._id}>
-      {d.roll_name}
+      {d.role_name}
     </li>
   ));
 
   const postData = {
-    userId,
-    ring_name: ringName,
-    shan_roll: rollId,
+    tableName: ringName,
+    role: rollId,
     description,
-    banker_amount: bankerAmount,
   };
 
   const handleCreateShanRing = () => {
@@ -98,7 +96,7 @@ function CreateTable() {
   const handlePost = (e) => {
     e.preventDefault();
 
-    dispatch(fetPostShanRing({ api: "shanring", postData, accessToken }));
+    dispatch(fetPostShanRing({ api: "shantable", postData, accessToken }));
   };
 
   console.log(shanRing);

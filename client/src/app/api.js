@@ -10,13 +10,24 @@ export const fetchData = async (api) => {
   }
 };
 
-export const fetchDataSlot = async (api) => {
+export const fetchDataSlot = async (api, accessToken) => {
   try {
-    const response = await fetch(`${SLOT_URL}${api}`);
+    const response = await fetch(`${SLOT_URL}${api}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
     const data = await response.json();
     return data;
   } catch (error) {
-    throw new Error("Error fetching data");
+    throw new Error("Error fetching data: " + error.message);
   }
 };
 

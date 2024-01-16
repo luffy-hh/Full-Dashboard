@@ -3,11 +3,13 @@ import { DatePicker } from "antd";
 import "react-datepicker/dist/react-datepicker.css";
 import NormalButton from "../../../Component/NormalButton";
 import styles from "./ReportTable.module.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   fetchSlotAllUser,
   fetchSlotUserDetail,
+  fetchSlotUserRecord,
 } from "../../../Feactures/slotSlice";
+import { selectlogInData } from "../../../Feactures/apiSlice";
 
 const chnageDateFormat = (data) => {
   const dateObject = new Date(data);
@@ -18,12 +20,14 @@ const chnageDateFormat = (data) => {
   return outputDate;
 };
 
-function ReportDate({ condition, id }) {
+function ReportDate({ condition, id, gameapi }) {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [userID, setUserID] = useState("");
   const [type, setType] = useState("");
   const dispatch = useDispatch();
+  const logInData = useSelector(selectlogInData);
+  const accessToken = logInData.token;
 
   console.log(startDate);
 
@@ -40,23 +44,32 @@ function ReportDate({ condition, id }) {
 
     if (condition === "alluser") {
       dispatch(
-        fetchSlotAllUser(
-          `slotegrator/users/reports?${
+        fetchSlotAllUser({
+          api: `slotegrator/users/reports?${
             startDate ? `start_date=${startDate}&` : ""
           }${endDate ? `end_date=${endDate}&` : ""}${
             userID ? `userId=${userID}` : ""
-          }`
-        )
+          }`,
+          accessToken,
+        })
       );
-    } else {
+    } else if (condition === "oneuser") {
       dispatch(
-        fetchSlotUserDetail(
-          `slotegrator/users/reports-detail?userId=${id}&${
+        fetchSlotUserDetail({
+          api: `slotegrator/users/reports-detail?userId=${id}&${
             startDate ? `start_date=${startDate}&` : ""
           }${endDate ? `end_date=${endDate}&` : ""}${
             type ? `search=${type}` : ""
-          }`
-        )
+          }`,
+          accessToken,
+        })
+      );
+    } else {
+      dispatch(
+        fetchSlotUserRecord({
+          api: `${gameapi}&start_date=${startDate}&end_date=${endDate}`,
+          accessToken,
+        })
       );
     }
   };
@@ -90,7 +103,7 @@ function ReportDate({ condition, id }) {
             placeholder="User Id"
           />
         </div>
-      ) : (
+      ) : condition === "oneuser" ? (
         <div>
           <label>Type</label>
           <input
@@ -101,7 +114,7 @@ function ReportDate({ condition, id }) {
             placeholder="Game Type"
           />
         </div>
-      )}
+      ) : null}
       <NormalButton
         onClick={(e) => handleDate(e)}
         className={`${styles.report_date_save} btn_hover`}

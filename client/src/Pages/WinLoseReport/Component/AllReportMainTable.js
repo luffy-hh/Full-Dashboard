@@ -9,14 +9,19 @@ import {
   selectUserAllStatus,
 } from "../../../Feactures/slotSlice";
 import Spinner from "../../../Component/Spinner/Spinner";
+import { selectlogInData } from "../../../Feactures/apiSlice";
 
 function AllReportMainTable({ selectReport }) {
   const dispatch = useDispatch();
   const userAll = useSelector(selectUserAll);
   const userAllStatus = useSelector(selectUserAllStatus);
+  const logInData = useSelector(selectlogInData);
+  const accessToken = logInData.token;
 
   useEffect(() => {
-    dispatch(fetchSlotAllUser("slotegrator/users/reports"));
+    dispatch(
+      fetchSlotAllUser({ api: "slotegrator/users/reports", accessToken })
+    );
   }, []);
 
   const tableHead = selectReport.map((d, i) => (

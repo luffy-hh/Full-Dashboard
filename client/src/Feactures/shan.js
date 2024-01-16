@@ -151,6 +151,10 @@ const shan = createSlice({
     setResult: (state, action) => {
       state.shanGame.result = action.payload;
     },
+
+    setShanRoll: (state) => {
+      state.postShanRoll = {};
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -161,6 +165,8 @@ const shan = createSlice({
       .addCase(fetPostShanRoll.fulfilled, (state, action) => {
         state.postShanRollStatus = "succeeded";
         state.postShanRoll = action.payload;
+
+        console.log(state.postShanRoll);
       })
       .addCase(fetPostShanRoll.rejected, (state, action) => {
         state.postShanRollStatus = "failed";
@@ -236,6 +242,7 @@ export const {
   setPullCard,
   setPullCardShow,
   setResult,
+  setShanRoll,
 } = shan.actions;
 
 // GAME STATE AND DATA========================================================
