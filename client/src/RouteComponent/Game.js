@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import GameTwoD from "../GameApp/Pages/GameTwoPage/GameTwoD";
 import GameHome from "../GameApp/Pages/Home/GameHome";
@@ -8,7 +8,7 @@ import GameUserLogin from "../GameApp/Pages/LoginPage/GameUserLogin";
 function Game() {
   const [showform, setShowForm] = useState(false);
   return (
-    <Routes>
+    <Fragment>
       <Route
         path="/"
         element={
@@ -22,7 +22,7 @@ function Game() {
         <Route index element={<GameHome />} />
         <Route path="twothree" element={<GameTwoD />} />
       </Route>
-    </Routes>
+    </Fragment>
   );
 }
 
