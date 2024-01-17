@@ -131,8 +131,11 @@ exports.transferUnitWithUserId = catchAsync(async (req, res, next) => {
         ).select(
           "-password -__v -sessionIdentifier -loginTime -passwordChangedAt"
         );
+        const receiveUser = await User.findOne({ userId: req.params.id });
+
         const transactionSenderObj = {
           user_id: sentUser._id,
+          action_id:receiveUser._id,
           before_amt: sendUser.unit,
           after_amt: sentUser.unit,
           action_amt: req.body.amount,
@@ -140,7 +143,6 @@ exports.transferUnitWithUserId = catchAsync(async (req, res, next) => {
           status: "Out",
         };
         const newSenderRecord = createTransactionRecord(transactionSenderObj);
-        const receiveUser = await User.findOne({ userId: req.params.id });
 
         const receivedUser = await User.findByIdAndUpdate(
           receiveUser._id,
@@ -151,7 +153,7 @@ exports.transferUnitWithUserId = catchAsync(async (req, res, next) => {
         );
         const transactionReceiverObj = {
           user_id: receiveUser._id,
-          sender_id: sendUser._id,
+          action_id: sendUser._id,
           before_amt: receiveUser.unit,
           action_amt: req.body.amount,
           after_amt: receivedUser.unit,

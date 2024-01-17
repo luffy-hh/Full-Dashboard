@@ -334,7 +334,7 @@ exports.getUsersAll = async (req, res) => {
     let query;
 
     query = User.find(JSON.parse(queryStr)).select(
-      "-password -loginTime -__v -sessionIdentifier"
+      "-password -__v -sessionIdentifier"
     );
 
     //const query = User.find({ role });

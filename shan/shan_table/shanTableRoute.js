@@ -1,5 +1,5 @@
 const express = require("express");
-const shanRingController = require("./controllers");
+const shanTableController = require("./shanTableController");
 const userController = require("../../users/userControllers");
 
 
@@ -10,15 +10,15 @@ router
   .post(
     userController.protect,
     userController.restrictTo("Admin","User"),
-    shanRingController.createShanRingFromAdmin
-  ).get(shanRingController.getAllRing);
+    shanTableController.createShanTableFromAdmin
+  ).get(shanTableController.getAllTables);
 
-router.route('/ringIn').patch(userController.protect,shanRingController.enterShanRing)
-router.route('/ringOut').patch(userController.protect,shanRingController.exitFromShanRing)
-router.route('/playingCards').post(userController.protect,shanRingController.startPlayingCards)
+// router.route('/ringIn').patch(userController.protect,shanTableController.enterShanRing)
+// router.route('/ringOut').patch(userController.protect,shanTableController.exitFromShanRing)
+// router.route('/playingCards').post(userController.protect,shanTableController.startPlayingCards)
 router
   .route("/:id")
-  .get(userController.protect, shanRingController.getShingRingByShanRoll);
+  .get(userController.protect, shanTableController.getTablesByRole);
 
 
 // router
