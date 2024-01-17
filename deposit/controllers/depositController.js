@@ -8,6 +8,7 @@ const MainUnit = require("../../mainUnit/models/mainUnitModel");
 const {
   createTransactionRecord,
 } = require("../../transaction-record/transactionRecordController");
+const {populate} = require("dotenv");
 // Create Bank Type
 exports.createDeposit = catchAsync(async (req, res) => {
   try {
@@ -46,7 +47,6 @@ exports.createDeposit = catchAsync(async (req, res) => {
     };
 
     const newDeposit = await Deposit.create({ ...insertObj });
-
     // const resObj = newDeposit
     //   .populate("fromId")
     //   .populate("toId")
@@ -169,7 +169,6 @@ exports.updateDeposit = catchAsync(async (req, res) => {
       );
 
       const depositUnit = depositObj.fromId.unit + reqBody.unit;
-      const downlineUser = await User.findById(depositObj.fromId);
       const downlineUserDepositUpdate = await User.findByIdAndUpdate(
         depositObj.fromId,
         { unit: depositUnit },
@@ -185,7 +184,15 @@ exports.updateDeposit = catchAsync(async (req, res) => {
         status: "Out",
       };
       const newTransactionRecord = createTransactionRecord(transactionObj);
-
+      const newReceiverTransaction = {
+        user_id: depositObj.fromId,
+        action_id: depositObj.toId,
+        before_amt: depositObj.fromId.unit,
+        action_amt: reqBody.unit,
+        after_amt: downlineUserDepositUpdate.unit,
+        type: "deposit-received",
+        status:'In'
+      }
       res.status(200).json({
         status: "Success",
         data: {
@@ -205,12 +212,17 @@ exports.updateDeposit = catchAsync(async (req, res) => {
         {
           new: true,
         }
-      ).populate("fromId");
+      ).populate("fromId toId");
       console.log(depositObj, "line 207");
 
       const transactionObj = {
-        user_id: depositObj.fromId,
-        action_id: depositObj.toId,
+        user_id: depositObj.toId,
+        action_id: depositObj.fromId,
+        before_amt: depositObj.toId.unit,
+        action_amt: reqBody.unit,
+        after_amt: depositObj.toId.unit,
+        type: "deposit-canceled",
+        status: "Still",
       };
       res.status(200).json({
         status: "Success",
@@ -249,7 +261,7 @@ exports.updateDepositMasterToAdmin = catchAsync(async (req, res) => {
         {
           new: true,
         }
-      );
+      ).populate("fromId toId");
 
       const mainUnitId = mainUnit[0]._id;
       const mainUnitDocument = mainUnit[0]; // Assuming it's an array with one document
@@ -275,6 +287,25 @@ exports.updateDepositMasterToAdmin = catchAsync(async (req, res) => {
           },
           { new: true }
         );
+        const newSenderTransactionObj = createTransactionRecord({
+          user_id: depositObj.toId,
+          action_id: depositObj.fromId,
+          before_amt:mainUnit[0].mainUnit,
+          action_amt: reqBody.unit,
+          after_amt: updateMainUnit.mainUnit,
+          type:"deposit-confirmed",
+          status:'Out'
+        })
+        const newReceiverTransactionObj = createTransactionRecord({
+          user_id: depositObj.fromId,
+          action_id: depositObj.toId,
+          before_amt:depositObj.fromId.unit,
+          action_amt: reqBody.unit,
+          after_amt: updatedUser.unit,
+          type:"deposit-received",
+          status:'In'
+        })
+
 
         res.status(200).json({
           status: "Success",
@@ -299,7 +330,7 @@ exports.updateDepositMasterToAdmin = catchAsync(async (req, res) => {
         {
           new: true,
         }
-      );
+      ).populate("fromId toId");
 
       res.status(200).json({
         status: "Success",

@@ -37,6 +37,10 @@ const userSchema = new mongoose.Schema({
       message: "Password and Confirm Password are not same and Try Again.",
     },
   },
+  security_code:{
+    type: String,
+    match:[/^\d{6}$/, 'Security code must be a 6-digit number']
+  },
   role: {
     type: String,
     enum: [

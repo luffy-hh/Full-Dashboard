@@ -58,6 +58,9 @@ const shanRole = require("./shan/shan_role/shanRoleRoute");
 const shanTable = require("./shan/shan_table/shanTableRoute");
 // const shanPlay = require("./shan/shan_play/routes");
 
+//transaction record
+const transactionRecordRouter = require('./transaction-record/transactionRecordRoute')
+
 // Transfer and Change
 const transferTo = require("./transition/routes/transitionsRoutes");
 const changeTo = require("./transition/routes/changeUnitRoutes");
@@ -199,6 +202,9 @@ app.use("/api/v1/shantable", shanTable);
 // Transition
 app.use("/api/v1/transferTo", transferTo);
 app.use("/api/v1/changeTo", changeTo);
+
+// transactionRecord
+app.use('/api/v1/transaction-record',transactionRecordRouter)
 
 // App Things
 app.use("/api/v1/things", appThingsRouter)
