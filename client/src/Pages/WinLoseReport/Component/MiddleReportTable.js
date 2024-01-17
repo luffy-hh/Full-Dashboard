@@ -6,12 +6,14 @@ import { useParams } from "react-router-dom";
 import styles from "./ReportTable.module.css";
 import { selectUserMiddleHead } from "../../../Feactures/winOrLoseSlice";
 import { Link } from "react-router-dom";
+import { selectlogInData } from "../../../Feactures/apiSlice";
 
 import { selectCollapsed } from "../../../Feactures/modalSlice";
 import {
   fetchSlotUserDetail,
   selectUserDetailSlot,
   selectUserDetailSlotStatus,
+  setGameData,
 } from "../../../Feactures/slotSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Spinner from "../../../Component/Spinner/Spinner";
@@ -24,10 +26,15 @@ function MiddleReportTable() {
   const dispatch = useDispatch();
   const userDetail = useSelector(selectUserDetailSlot);
   const userDetailStatus = useSelector(selectUserDetailSlotStatus);
+  const logInData = useSelector(selectlogInData);
+  const accessToken = logInData.token;
 
   useEffect(() => {
     dispatch(
-      fetchSlotUserDetail(`slotegrator/users/reports-detail?userId=${userId}`)
+      fetchSlotUserDetail({
+        api: `slotegrator/users/reports-detail?userId=${userId}`,
+        accessToken,
+      })
     );
   }, []);
 
@@ -38,13 +45,20 @@ function MiddleReportTable() {
   ));
 
   const tableData = userDetail?.data.map((d, i) => (
-    <tr className={styles.win_lose_color} key={`userDeatil_${i}`}>
+    <tr
+      className={`table_d_tbody_tr ${styles.win_lose_color}`}
+      key={`userDeatil_${i}`}
+    >
       <td>{d.player_id}</td>
-      <td>{d.game_name}</td>
+      <td className={styles.game_size}>{d.game_name}</td>
       <td>{d.game_type}</td>
-      <td>{d.game_provider_name}</td>
-      <td>
-        <Link to={`${d.total_bet_count}`}>{d.total_bet_count}</Link>
+      <td className={styles.game_size}>{d.game_provider_name}</td>
+      <td className={styles.user_report}>
+        <Link to={`${d.total_bet_count}`}>
+          <span onClick={() => dispatch(setGameData(d))}>
+            {d.total_bet_count}
+          </span>
+        </Link>
       </td>
       <td>{d.total_bet}</td>
       <td>{d.total_win}</td>
@@ -60,7 +74,7 @@ function MiddleReportTable() {
       <div className={`box_shadow ${styles.user_report_table_detail}`}>
         <h3>{userId} Win/Lose Detail Report</h3>
         <ReportDate condition={"oneuser"} id={userId} />
-        <ReportGameCat />
+        <ReportGameCat condition={"oneuser"} id={userId} />
       </div>
       <section
         style={{ marginTop: "2.4rem" }}

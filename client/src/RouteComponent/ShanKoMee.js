@@ -1,14 +1,14 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Route, Routes } from "react-router-dom";
 import ShanGame from "../GameApp/Pages/ShanGame/ShanGame";
 
 function ShanKoMee() {
   return (
-    <Routes>
+    <Fragment>
       <Route path="shankomee">
         <Route path=":tableId" element={<ShanGame />} />
       </Route>
-    </Routes>
+    </Fragment>
   );
 }
 

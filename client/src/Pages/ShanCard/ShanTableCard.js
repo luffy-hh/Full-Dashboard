@@ -19,10 +19,10 @@ function ShanTableCard() {
   const rollIds = useSelector(selectRollIds);
 
   useEffect(() => {
-    dispatch(fetGetShanRing({ api: `shanring/${rollIds}`, accessToken }));
+    dispatch(fetGetShanRing({ api: `shantable/${rollIds}`, accessToken }));
   }, [rollIds]);
 
-  const shanRingData = shanRing?.data.allShanRing;
+  const shanRingData = shanRing?.data;
   console.log(shanRing && shanRing);
   return (
     <div className={styles.shan_ring_container}>
@@ -30,10 +30,10 @@ function ShanTableCard() {
         shanRingData.map((d) => (
           <div className={styles.shan_ring_box} key={d._id}>
             <div className={styles.shan_ring}>
-              <ShanPlayer players={d.players} />
-              <p className={styles.ring_name}>{d.ring_name}</p>
+              {/* <ShanPlayer players={d.players} /> */}
+              <p className={styles.ring_name}>{d.table.tableName}</p>
             </div>
-            <p>{d.players.length}/6</p>
+            <p>{d.playersCount}/6</p>
           </div>
         ))}
     </div>

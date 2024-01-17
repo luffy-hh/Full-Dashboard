@@ -9,14 +9,19 @@ import {
   selectUserAllStatus,
 } from "../../../Feactures/slotSlice";
 import Spinner from "../../../Component/Spinner/Spinner";
+import { selectlogInData } from "../../../Feactures/apiSlice";
 
 function AllReportMainTable({ selectReport }) {
   const dispatch = useDispatch();
   const userAll = useSelector(selectUserAll);
   const userAllStatus = useSelector(selectUserAllStatus);
+  const logInData = useSelector(selectlogInData);
+  const accessToken = logInData.token;
 
   useEffect(() => {
-    dispatch(fetchSlotAllUser("slotegrator/users/reports"));
+    dispatch(
+      fetchSlotAllUser({ api: "slotegrator/users/reports", accessToken })
+    );
   }, []);
 
   const tableHead = selectReport.map((d, i) => (
@@ -26,7 +31,10 @@ function AllReportMainTable({ selectReport }) {
   ));
 
   const tableData = userAll?.data.map((d, i) => (
-    <tr key={`slot_user_${i}`} className={styles.win_lose_color}>
+    <tr
+      key={`slot_user_${i}`}
+      className={`table_d_tbody_tr ${styles.win_lose_color}`}
+    >
       <td style={{ minWidth: "20rem" }} className={styles.user_report}>
         <Link to={`${d.player_id}`}>
           <span> {d.player_id}</span>

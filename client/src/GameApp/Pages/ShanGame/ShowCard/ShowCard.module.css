@@ -57,18 +57,23 @@
   color: var(--primary);
   font-weight: 600;
   position: absolute;
-  bottom: 20%;
+  bottom: 30%;
   left: 50%;
   transform: translateX(-50%);
 }
 
 .speak {
-  font-size: 1.8rem;
+  font-size: 1.4rem;
   z-index: 100;
   color: var(--blue);
   font-weight: 500;
   position: absolute;
   left: 30%;
-  top: 20%;
+  bottom: 0;
   transform: translateX(-30%);
+  width: 100%;
+  background-color: var(--primary);
+  border-radius: 8rem;
+  text-align: center;
+  padding: 2px 0;
 }

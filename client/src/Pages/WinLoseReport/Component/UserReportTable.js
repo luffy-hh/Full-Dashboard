@@ -5,22 +5,40 @@ import ReportGameCat from "./ReportGameCat";
 import { useParams } from "react-router-dom";
 import styles from "./ReportTable.module.css";
 import { selectUserDetailHead } from "../../../Feactures/winOrLoseSlice";
-
+import {
+  selectGameData,
+  selectUserRecordSlot,
+  fetchSlotUserRecord,
+  selectUserRecordSlotStatus,
+} from "../../../Feactures/slotSlice";
 import { selectCollapsed } from "../../../Feactures/modalSlice";
+import { selectlogInData } from "../../../Feactures/apiSlice";
 
 import { useDispatch, useSelector } from "react-redux";
 import Spinner from "../../../Component/Spinner/Spinner";
 
 function UserReportTable() {
   const { count } = useParams();
+  const gameData = useSelector(selectGameData);
+  console.log(gameData);
+
+  const logInData = useSelector(selectlogInData);
+  const accessToken = logInData.token;
 
   const userDetailHead = useSelector(selectUserDetailHead);
   const collapsed = useSelector(selectCollapsed);
+  const userRecordSlot = useSelector(selectUserRecordSlot);
+  const userRecordSlotStatus = useSelector(selectUserRecordSlotStatus);
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   dispatch();
-  // }, []);
+  useEffect(() => {
+    dispatch(
+      fetchSlotUserRecord({
+        api: `slotegrator/users/reports/${gameData.player_id}?game_name=${gameData.game_name}&game_type=${gameData.game_type}&provider_name=${gameData.game_provider_name}`,
+        accessToken,
+      })
+    );
+  }, []);
 
   const tableHeader = userDetailHead.map((d, i) => (
     <th key={`userHead${i}`} style={{ minWidth: "20rem" }}>
@@ -28,26 +46,26 @@ function UserReportTable() {
     </th>
   ));
 
-  // const tableData = userDetail?.data.map((d, i) => (
-  //   <tr className={styles.win_lose_color} key={`userDeatil_${i}`}>
-  //     <td>{"no data"}</td>
-  //     <td>{"no data"}</td>
-  //     <td>{d.player_id}</td>
-  //     <td>{"no date"}</td>
-  //     <td>{d.game_name}</td>
-  //     <td>{d.game_type}</td>
-  //     <td>{d.game_provider_name}</td>
-  //     <td>{"no data"}</td>
-  //     <td>{d.total_bet}</td>
-  //     <td>{d.total_win}</td>
-  //     <td>{d.total_win - d.total_bet}</td>
-  //     <td>{"no data"}</td>
-  //     <td>{"no data"}</td>
-  //     <td>{"no data"}</td>
-  //     <td>{d.total_bet_count}</td>
-  //     <td>{d.game_name}</td>
-  //   </tr>
-  // ));
+  const tableData = userRecordSlot?.data.map((d, i) => (
+    <tr className={styles.win_lose_color} key={`user_record_${i}`}>
+      <td>{d.created_at}</td>
+      <td>{"no data"}</td>
+      <td>{d.player_id}</td>
+      <td>{"no date"}</td>
+      <td>{d.game_name}</td>
+      <td>{d.game_type}</td>
+      <td>{d.game_provider_name}</td>
+      <td>{d.before}</td>
+      <td>{d.amount}</td>
+      <td>{"nodata"}</td>
+      <td>{"no data"}</td>
+      <td>{d.after}</td>
+      <td>{d.action}</td>
+      <td>{"no data"}</td>
+      <td>{"no data"}</td>
+      <td>{"no data"}</td>
+    </tr>
+  ));
 
   return (
     <div
@@ -55,20 +73,30 @@ function UserReportTable() {
       style={{ overflow: "hidden" }}
     >
       <div className={`box_shadow ${styles.user_report_table_detail}`}>
-        <h3>{count} Win/Lose Detail Report</h3>
-        <ReportDate />
-        <ReportGameCat />
+        <h3> Win/Lose Detail Report</h3>
+        <ReportDate
+          condition={"user_record"}
+          gameapi={`slotegrator/users/reports/${gameData.player_id}?game_name=${gameData.game_name}&game_type=${gameData.game_type}&provider_name=${gameData.game_provider_name}`}
+        />
+        <ReportGameCat
+          condition={"user_record"}
+          gameapi={`slotegrator/users/reports/${gameData.player_id}?game_name=${gameData.game_name}&game_type=${gameData.game_type}&provider_name=${gameData.game_provider_name}`}
+        />
       </div>
       <section
         style={{ marginTop: "2.4rem" }}
         className={`${styles.report_main_table_container} hide_scroll`}
       >
-        <table className={`box_shadow ${styles.report_all_table}`}>
-          <thead>
-            <tr>{tableHeader}</tr>
-          </thead>
-          {/* <tbody>{tableData}</tbody> */}
-        </table>
+        {userRecordSlotStatus === "loading" ? (
+          <Spinner />
+        ) : (
+          <table className={`box_shadow ${styles.report_all_table}`}>
+            <thead>
+              <tr>{tableHeader}</tr>
+            </thead>
+            <tbody>{tableData}</tbody>
+          </table>
+        )}
       </section>
     </div>
   );

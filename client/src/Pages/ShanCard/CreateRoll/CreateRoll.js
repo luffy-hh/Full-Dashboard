@@ -9,6 +9,7 @@ import { selectlogInData } from "../../../Feactures/apiSlice";
 import {
   fetPostShanRoll,
   selectPostShanRollStatus,
+  setShanRoll,
 } from "../../../Feactures/shan";
 import { selectCollapsed } from "../../../Feactures/modalSlice";
 
@@ -18,6 +19,7 @@ function CreateRoll() {
   const logInData = useSelector(selectlogInData);
   const accessToken = logInData.token;
   const postShanRollStatus = useSelector(selectPostShanRollStatus);
+
   const collapsed = useSelector(selectCollapsed);
 
   const [name, setName] = useState("");
@@ -41,7 +43,7 @@ function CreateRoll() {
   ];
 
   const formData = new FormData();
-  formData.append("roll_name", name);
+  formData.append("role_name", name);
   formData.append("min_amount", Number(amount));
   formData.append("max_amount", Number(maxAmount));
   formData.append("banker_amount", Number(bankerAmmount));
@@ -52,7 +54,7 @@ function CreateRoll() {
   const handlePost = (event) => {
     event.preventDefault();
 
-    dispatch(fetPostShanRoll({ api: "shanroll", formData, accessToken }));
+    dispatch(fetPostShanRoll({ api: "shanrole", formData, accessToken }));
 
     if (postShanRollStatus === "succeeded") {
       dispatch(setShowRoll(false));
@@ -64,6 +66,11 @@ function CreateRoll() {
       setPercentage("");
       setDescription("");
     }
+  };
+
+  const handleCancel = () => {
+    dispatch(setShowRoll(false));
+    dispatch(setShanRoll());
   };
 
   return (
@@ -82,7 +89,7 @@ function CreateRoll() {
           </NormalButton>
         ) : (
           <NormalButton
-            onClick={() => dispatch(setShowRoll(false))}
+            onClick={() => handleCancel()}
             className={`btn_hover ${styles.cancel_btn}`}
           >
             Cancel

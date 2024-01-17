@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import AllUsers from "../Pages/AllUsersPage/AllUsers";
 import Layout from "../Pages/Layoutpage/Layout";
 import Home from "../Pages/Homepage/Home";
@@ -44,13 +44,13 @@ function AgentLayout() {
   const agentLayoutShow = useSelector(selectAgentLayoutShow);
   console.log(agentLayoutShow);
   return (
-    <Routes>
+    <Fragment>
       <Route path="/agent" element={agentLayoutShow ? <Layout /> : <Login />}>
         {agent.map((d) => (
           <Route key={d.id} path={d.path} element={d.route} />
         ))}
       </Route>
-    </Routes>
+    </Fragment>
   );
 }
 

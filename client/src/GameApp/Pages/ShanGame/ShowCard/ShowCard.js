@@ -283,9 +283,9 @@ function ShowCard({ index, data }) {
           className={styles.show_card_two}
         />
 
-        {pullCardShow && <p className={styles.speak}>{data.speakValue}</p>}
         {pullCardShow && <p className={styles.win_lose}>{data.result}</p>}
         {!pullCardShow && <p className={styles.speak}>{data.speakValue} </p>}
+        {pullCardShow && <p className={styles.speak}>{data.speakValue}</p>}
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "../Pages/Homepage/Home";
 import Layout from "../Pages/Layoutpage/Layout";
@@ -11,7 +11,11 @@ import AllMaster from "../Pages/AllMaster/AllMaster";
 import AllAdmin from "../Pages/AllAdmin/AllAdmin";
 import TwoDPage from "../Pages/NestPage/TwoDPage/TwoDPage";
 import Login from "../Pages/Loginpage/Login";
-import { selectSetShowForm } from "../Feactures/apiSlice";
+import {
+  selectSetShowForm,
+  selectAgentLayoutShow,
+  selectMasterLayoutShow,
+} from "../Feactures/apiSlice";
 import { useSelector } from "react-redux";
 import LuckyNumber from "../Pages/LuckyNumberPage/LuckyNumber";
 
@@ -38,6 +42,20 @@ import CreateTable from "../Pages/ShanCard/CreateTable/CreateTable";
 import UserDetailBox from "../Component/CustomBox/UserDetail/UserDetailBox";
 import UnitTransferTo from "../Pages/UnitTransferTo/UnitTransferTo";
 import MiddleReportTable from "../Pages/WinLoseReport/Component/MiddleReportTable";
+import AgentUnitHistroy from "../Pages/UnitHistoryTransfer/AgentUnitHistroy";
+import AgentDepositRequest from "../Pages/ToDepositPage/AgentDeposit/AgentDepositRequest";
+import AgentDepositHistory from "../Pages/ToDepositPage/AgentDeposit/AgentDepositHistory";
+import AgentWithdrawRequest from "../Pages/ToWithdrawPage/AgentWithdraw/AgentWithdrawRequest";
+import AgentWithdrawHistory from "../Pages/ToWithdrawPage/AgentWithdraw/AgentWithdrawHistory";
+import ToDeposit from "../Pages/ToDepositPage/ToDeposit";
+import ToWithdraw from "../Pages/ToWithdrawPage/ToWithdraw";
+import DownLineUser from "../Component/DownLineUser/DownLineUser";
+import DownLineAllUser from "../Component/DownLineUser/DownLineAllUser";
+import MasterWithdrawHistory from "../Pages/ToWithdrawPage/MasterWithdraw/MasterWithdrawHistory";
+import MasterWithdrawRequest from "../Pages/ToWithdrawPage/MasterWithdraw/MasterWithdrawRequest";
+import MasterDepositHistory from "../Pages/ToDepositPage/MasterDeposit/MasterDepositHistory";
+import MasterDepositRequest from "../Pages/ToDepositPage/MasterDeposit/MasterDepositRequest";
+import DownLineAgent from "../Component/DownLineUser/DownLineAgent";
 
 const admin = [
   { id: 0, path: "/admin", route: <Home /> },
@@ -77,8 +95,50 @@ const admin = [
   { id: 40, path: "create-table", route: <CreateTable /> },
 ];
 
+const agent = [
+  { id: 0, path: "/agent", route: <Home /> },
+  { id: 3, path: "allusers", route: <AllUsers /> },
+  { id: 4, path: "allagents", route: <AllAgentsPage /> },
+  { id: 5, path: "unithistoryTransfer", route: <AgentUnitHistroy /> },
+
+  { id: 14, path: "bankAcc", route: <BankAcc /> },
+  { id: 20, path: "user-report", route: <UserReport /> },
+  { id: 21, path: "user-report/:userId", route: <MiddleReportTable /> },
+  { id: 41, path: "user-report/:userId/:count", route: <UserReportTable /> },
+  { id: 22, path: "todeposit", route: <ToDeposit /> },
+  { id: 23, path: "todeposit-request", route: <AgentDepositRequest /> },
+  { id: 25, path: "todeposit-history", route: <AgentDepositHistory /> },
+  { id: 24, path: "towithdraw", route: <ToWithdraw /> },
+  { id: 26, path: "towithdraw-request", route: <AgentWithdrawRequest /> },
+  { id: 27, path: "towithdraw-history", route: <AgentWithdrawHistory /> },
+  { id: 29, path: "down_line_user", route: <DownLineUser /> },
+  { id: 41, path: "unitTransferTo", route: <UnitTransferTo /> },
+];
+
+const master = [
+  { id: 0, path: "/master", route: <Home /> },
+  { id: 3, path: "allusers", route: <AllUsers /> },
+  { id: 4, path: "allagents", route: <AllAgentsPage /> },
+  { id: 14, path: "bankAcc", route: <BankAcc /> },
+  { id: 19, path: "master-report", route: <MasterReport /> },
+  { id: 20, path: "user-report", route: <UserReport /> },
+  { id: 21, path: "user-report/:userId", route: <MiddleReportTable /> },
+  { id: 1, path: "user-report/:userId/:count", route: <UserReportTable /> },
+  { id: 22, path: "todeposit", route: <ToDeposit /> },
+  { id: 23, path: "todeposit-request", route: <MasterDepositRequest /> },
+  { id: 25, path: "todeposit-history", route: <MasterDepositHistory /> },
+  { id: 24, path: "towithdraw", route: <ToWithdraw /> },
+  { id: 26, path: "towithdraw-request", route: <MasterWithdrawRequest /> },
+  { id: 27, path: "towithdraw-history", route: <MasterWithdrawHistory /> },
+  { id: 31, path: "down_line_agent", route: <DownLineAgent /> },
+  { id: 32, path: "down_line_agent/:userId", route: <DownLineAllUser /> },
+  { id: 41, path: "unitTransferTo", route: <UnitTransferTo /> },
+];
+
 function Admin() {
   const formshow = useSelector(selectSetShowForm);
+  const agentLayoutShow = useSelector(selectAgentLayoutShow);
+  const masterLayoutShow = useSelector(selectMasterLayoutShow);
   // const currentLoginUser = useSelector(selectcurrentLoginUser);
 
   // const currentLogin =
@@ -90,6 +150,16 @@ function Admin() {
     <Routes>
       <Route path="/admin" element={formshow ? <Layout /> : <Login />}>
         {admin.map((d) => (
+          <Route key={d.id} path={d.path} element={d.route} />
+        ))}
+      </Route>
+      <Route path="/agent" element={agentLayoutShow ? <Layout /> : <Login />}>
+        {agent.map((d) => (
+          <Route key={d.id} path={d.path} element={d.route} />
+        ))}
+      </Route>
+      <Route path="/master" element={masterLayoutShow ? <Layout /> : <Login />}>
+        {master.map((d) => (
           <Route key={d.id} path={d.path} element={d.route} />
         ))}
       </Route>

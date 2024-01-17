@@ -10,7 +10,7 @@ function ReportTable({ selectReport, title }) {
       <div className={`box_shadow  ${styles.report_container}`}>
         <h3>{title}</h3>
         <ReportDate condition="alluser" />
-        <ReportGameCat />
+        <ReportGameCat condition="alluser" />
       </div>
 
       <AllReportMainTable selectReport={selectReport} />

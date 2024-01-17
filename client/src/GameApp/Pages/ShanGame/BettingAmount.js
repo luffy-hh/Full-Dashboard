@@ -26,7 +26,7 @@ function BettingAmount() {
       onClick={() => dispatch(setPlayerBetAmount(d))}
       className={styles.btn_bet}
     >
-      {d}K
+      {d}
     </NormalButton>
   ));
   return (
@@ -45,7 +45,7 @@ function BettingAmount() {
               onClick={() => dispatch(betRangeAmount)}
               className={styles.btn_max}
             >
-              {betRangeAmount}K
+              {betRangeAmount}
             </NormalButton>
           ) : (
             <NormalButton

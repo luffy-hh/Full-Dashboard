@@ -26,7 +26,7 @@ function MasterReport() {
 
   const tableBody = agentUser.map((d) => (
     <>
-      <tr className={styles.win_lose_color} key={d.id}>
+      <tr className={`${styles.win_lose_color} table_d_tbody_tr`} key={d.id}>
         <td
           className={styles.agent_name_dorpdown}
           style={{ minWidth: "20rem" }}
@@ -58,7 +58,7 @@ function MasterReport() {
       </tr>
       {d?.action &&
         d.gameCat.map((d, i) => (
-          <tr key={i} className={styles.win_lose_color}>
+          <tr key={`master_report_${i}`} className={styles.win_lose_color}>
             <td>{d.name}</td>
             <td>{d.bet}</td>
             <td>{d.totalWin}</td>

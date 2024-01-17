@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import AllUsers from "../Pages/AllUsersPage/AllUsers";
 import Layout from "../Pages/Layoutpage/Layout";
 import Home from "../Pages/Homepage/Home";
@@ -47,13 +47,13 @@ const master = [
 function MasterLayout() {
   const masterLayoutShow = useSelector(selectMasterLayoutShow);
   return (
-    <Routes>
+    <Fragment>
       <Route path="/master" element={masterLayoutShow ? <Layout /> : <Login />}>
         {master.map((d) => (
           <Route key={d.id} path={d.path} element={d.route} />
         ))}
       </Route>
-    </Routes>
+    </Fragment>
   );
 }
 
