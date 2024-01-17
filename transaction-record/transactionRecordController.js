@@ -19,15 +19,50 @@ exports.createTransactionRecord = catchAsync(async (obj)=>{
 exports.getAllTransactionRecord = catchAsync(async (req,res,next)=>{
     try {
         // Filtering
-        const queryObj = {...req.query};
-        console.log("queryObj :" ,queryObj)
+        // const queryObj = {...req.query};
+        // console.log("queryObj :" ,queryObj)
+        // const excludeFields = ["page", "sort", "limit", "fields"];
+        // excludeFields.forEach((el) => delete queryObj[el]);
+        // let queryStr = JSON.stringify(queryObj);
+        // queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+        // let query = TransactionRecord.find(JSON.parse(queryStr));
+        const queryObj = { ...req.query };
+        console.log("queryObj :", queryObj);
+
+// Exclude fields
         const excludeFields = ["page", "sort", "limit", "fields"];
         excludeFields.forEach((el) => delete queryObj[el]);
-        let queryStr = JSON.stringify(queryObj);
-        queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
 
+// Function to convert keys and values
+        function convertKeysAndValues(obj) {
+            let newObj = {};
+            for (let key in obj) {
+                if (typeof obj[key] === 'object' && obj[key] !== null) {
+                    for (let subKey in obj[key]) {
+                        let newKey = `$${subKey}`;
+                        let newValue;
+                        if (newKey === '$in') {
+                            newValue = obj[key][subKey].includes(',') ? obj[key][subKey].split(',') : [obj[key][subKey]];
+                        } else if (newKey === '$gt' || newKey === '$lt' || newKey === '$gte' || newKey === '$lte') {
+                            // Check if value is a number or a date string
+                            newValue = isNaN(obj[key][subKey]) ? new Date(obj[key][subKey]) : Number(obj[key][subKey]);
+                        }
+                        newObj[key] = { ...newObj[key], [newKey]: newValue };
+                    }
+                } else {
+                    newObj[key] = obj[key];
+                }
+            }
+            return newObj;
+        }
+
+        // Convert original object
+        let convertedObj = convertKeysAndValues(queryObj);
+
+        // Convert to string and replace keys
+        let queryStr = JSON.stringify(convertedObj);
+        console.log(JSON.parse(queryStr))
         let query = TransactionRecord.find(JSON.parse(queryStr));
-
         // Sorting
 
         if (req.query.sort) {
@@ -64,7 +99,7 @@ exports.getAllTransactionRecord = catchAsync(async (req,res,next)=>{
     }catch (e) {
         res.status(500).json({
             status:'error',
-            message: e.message
+            message:process.env.NODE_ENV ==="production"? e.message: e.stack
         })
     }
 })
