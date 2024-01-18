@@ -27,7 +27,7 @@ const TransactionRecordSchema = mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["In", "Out"],
+      enum: ["In", "Out","Still"],
     },
     additional_info: {
       type: String,

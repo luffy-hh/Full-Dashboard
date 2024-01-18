@@ -58,6 +58,16 @@ exports.createWithdraw = catchAsync(async (req, res) => {
             },
             {new: true}
         );
+        const transactionObj = {
+            user_id :req.user.id,
+            action_id: uplineObjId,
+            before_amt: currentUserObj.unit,
+            action_amt:reqBody.amount,
+            after_amt:withdrawUserObj.unit,
+            type: 'withdrawal-requested',
+            status:'Out'
+        }
+         const newTransactionRecord = createTransactionRecord(transactionObj)
 
         res.status(201).json({
             status: "success",
@@ -171,8 +181,8 @@ exports.updateWithdarw = catchAsync(async (req, res) => {
         const currentTime = new Date();
         // const token = req.headers.authorization.split(" ")[1];
         // const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-        // const userId = req.user.id;
-        // const userObj = await User.findById(userId);
+        const userId = req.user.id;
+        const userObj = await User.findById(userId);
         const withdrawId = req.params.id;
         const withdrawal = await Withdraw.findById(withdrawId)
         if (reqBody.status === "Confirm") {
@@ -196,6 +206,16 @@ exports.updateWithdarw = catchAsync(async (req, res) => {
                 },
                 {new: true}
             );
+            const transactionObj = {
+                user_id: withdrawObj.toId,
+                action_id: withdrawObj.fromId,
+                before_amt:userObj.unit,
+                action_amt: withdrawObj.amount,
+                after_amt: updateUser.unit,
+                status: "In",
+                type: "withdrawal-confirmed"
+            }
+            const newTransactionRecord = createTransactionRecord(transactionObj)
             res.status(200).json({
                 status: "Success",
                 data: {
@@ -215,8 +235,9 @@ exports.updateWithdarw = catchAsync(async (req, res) => {
                     new: true,
                 }
             );
+            const user = await User.findById(withdrawal.fromId)
             //const updateUnit = userObj.unit + reqBody.unit;
-            const downlineUser = await User.findByIdAndUpdate(
+            const updatedUser = await User.findByIdAndUpdate(
                 withdrawal.fromId,
                 {
                     $inc: {
@@ -225,11 +246,21 @@ exports.updateWithdarw = catchAsync(async (req, res) => {
                 },
                 {new: true}
             );
+            const transactionObj = {
+                user_id: withdrawObj.fromId,
+                action_id: withdrawObj.toId,
+                before_amt:user.unit,
+                action_amt: withdrawObj.amount,
+                after_amt: updatedUser.unit,
+                status: "In",
+                type: "withdrawal-canceled-refunded",
+            }
+            const newTransactionRecord = createTransactionRecord(transactionObj)
             res.status(200).json({
                 status: "Success",
                 data: {
                     withdrawObj,
-                    downlineUser,
+                    updatedUser,
                 },
             });
         }
@@ -263,7 +294,7 @@ exports.updateWithDrawalFromAdmin = catchAsync(async (req, res, next) => {
 
             const mainUnitId = mainUnit[0]._id;
             const mainUnitDocument = mainUnit[0]; // Assuming it's an array with one document
-
+            const mainUnitObj = await MainUnit.findById(mainUnitId)
             // Check if mainUnitDocument is valid and has a numeric mainUnit
             if (
                 mainUnitDocument &&
@@ -280,6 +311,16 @@ exports.updateWithDrawalFromAdmin = catchAsync(async (req, res, next) => {
                     },
                     {new: true}
                 );
+                const transactionObj ={
+                    user_id: req.user.id,
+                    action_id:withdrawalObj.fromId,
+                    before_amt: mainUnitObj.mainUnit,
+                    action_amt: reqBody.unit,
+                    after_amt: updateMainUnit.mainUnit,
+                    type: "withdrawal-confirm-from-admin",
+                    status:'In',
+                }
+                const newTransactionRecord = createTransactionRecord(transactionObj)
 
                 res.status(200).json({
                     status: "Success",
@@ -304,6 +345,7 @@ exports.updateWithDrawalFromAdmin = catchAsync(async (req, res, next) => {
                     new: true,
                 }
             );
+            const oldUserObj = await User.findById(withDrawal.fromId)
             const updatedUser = await User.findByIdAndUpdate(
                 withDrawal.fromId,
                 {
@@ -311,6 +353,16 @@ exports.updateWithDrawalFromAdmin = catchAsync(async (req, res, next) => {
                 },
                 {new: true}
             );
+            const transactionObj ={
+                user_id: withDrawal.fromId,
+                action_id:req.user.id,
+                before_amt: oldUserObj.unit,
+                action_amt: reqBody.unit,
+                after_amt: updatedUser.unit,
+                type: "withdrawal-canceled-refunded",
+                status:'In',
+            }
+            const newTransactionRecord = createTransactionRecord(transactionObj)
 
             res.status(200).json({
                 status: "Success",

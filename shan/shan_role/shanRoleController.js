@@ -1,5 +1,5 @@
 const multer = require("multer");
-const ShanRoll = require("./models");
+const ShanRole = require("./shanRoleModel");
 const AppError = require("../../utils/appError");
 const catchAsync = require("../../utils/catchAsync");
 const { promisify } = require("util");
@@ -25,10 +25,10 @@ const multerFilter = (req, file, cb) => {
 };
 
 const upload = multer({ storage: multerStorage, fileFilter: multerFilter });
-exports.uploadShanRollImg = upload.single("img");
+exports.uploadShanRoleImg = upload.single("img");
 
 // Create Shan Roll
-exports.createShanRoll = catchAsync(async (req, res) => {
+exports.createShanRole = catchAsync(async (req, res) => {
   try {
     if (req.file) {
       const token = req.headers.authorization.split(" ")[1];
@@ -42,12 +42,11 @@ exports.createShanRoll = catchAsync(async (req, res) => {
       const imageLink = `${req.protocol}://${req.get(
         "host"
       )}/images/shan_roll/${req.file.filename}`;
-      const newShanRoll = await ShanRoll.create({ ...reqBody });
-      console.log(newShanRoll);
+      const newShanRole = await ShanRole.create({ ...reqBody });
       res.status(201).json({
         status: "success",
         data: {
-          newShanRoll,
+          newShanRole,
           imageLink,
         },
       });
@@ -61,7 +60,7 @@ exports.createShanRoll = catchAsync(async (req, res) => {
 });
 
 // Read All Shan Roll
-exports.getShanRollAll = catchAsync(async (req, res) => {
+exports.getShanRoleAll = catchAsync(async (req, res) => {
   try {
     const queryObj = { ...req.query };
     const excludeFields = ["page", "sort", "limit", "fields"];
@@ -71,24 +70,24 @@ exports.getShanRollAll = catchAsync(async (req, res) => {
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
 
     // Select the 'img' field in the query
-    const query = ShanRoll.find(JSON.parse(queryStr));
-    const allShanRoll = await query;
+    const query = ShanRole.find(JSON.parse(queryStr));
+    const allShanRole = await query;
 
     // Construct image links for each result
-    const shanRollWithImageLinks = allShanRoll.map((shanRoll) => {
+    const shanRoleWithImageLinks = allShanRole.map((shanRole) => {
       return {
-        ...shanRoll._doc,
+        ...shanRole._doc,
         imgLink: `${req.protocol}://${req.get("host")}/images/shan_roll/${
-          shanRoll.img
+          shanRole.img
         }`,
       };
     });
 
     res.status(200).json({
       status: "Success",
-      length: allShanRoll.length,
+      length: allShanRole.length,
       data: {
-        allShanRoll: shanRollWithImageLinks, // Include image links in the response
+        allShanRole: shanRoleWithImageLinks, // Include image links in the response
       },
     });
   } catch (err) {
@@ -100,23 +99,23 @@ exports.getShanRollAll = catchAsync(async (req, res) => {
 });
 
 // Update Shan Roll
-exports.updateShanRoll = catchAsync(async (req, res) => {
+exports.updateShanRole = catchAsync(async (req, res) => {
   try {
     // Extract user ID from token
     const token = req.headers.authorization.split(" ")[1];
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
     const currentUserId = decoded.id;
 
-    // Find the ShanRoll document by ID
-    const shanRollId = req.params.id;
-    const shanRoll = await ShanRoll.findById(shanRollId);
+    // Find the ShanRole document by ID
+    const shanRoleId = req.params.id;
+    const shanRole = await ShanRole.findById(shanRoleId);
 
-    // Check if the ShanRoll document exists
-    if (!shanRoll) {
-      throw new AppError("ShanRoll not found", 404);
+    // Check if the ShanRole document exists
+    if (!shanRole) {
+      throw new AppError("ShanRole not found", 404);
     }
 
-    // Update ShanRoll properties
+    // Update ShanRole properties
     const reqBody = { ...req.body, ownderData: currentUserId };
 
     // Check if an image file is provided in the update
@@ -124,9 +123,9 @@ exports.updateShanRoll = catchAsync(async (req, res) => {
       reqBody.img = req.file.filename;
     }
 
-    // Update the ShanRoll document
-    const updatedShanRoll = await ShanRoll.findByIdAndUpdate(
-      shanRollId,
+    // Update the ShanRole document
+    const updatedShanRole = await ShanRole.findByIdAndUpdate(
+      shanRoleId,
       reqBody,
       {
         new: true,
@@ -145,7 +144,7 @@ exports.updateShanRoll = catchAsync(async (req, res) => {
     res.status(200).json({
       status: "success",
       data: {
-        updatedShanRoll,
+        updatedShanRole,
         imageLink,
       },
     });
