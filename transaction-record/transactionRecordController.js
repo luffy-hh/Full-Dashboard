@@ -32,25 +32,28 @@ exports.getAllTransactionRecord = catchAsync(async (req,res,next)=>{
 // Exclude fields
         const excludeFields = ["page", "sort", "limit", "fields"];
         excludeFields.forEach((el) => delete queryObj[el]);
-
-// Function to convert keys and values
         function convertKeysAndValues(obj) {
             let newObj = {};
-            for (let key in obj) {
-                if (typeof obj[key] === 'object' && obj[key] !== null) {
-                    for (let subKey in obj[key]) {
-                        let newKey = `$${subKey}`;
+            for (let [key, value] of Object.entries(obj)) {
+                //check if the value obj is object if not else work
+                if (typeof value === 'object' && value !== null) {
+                    // loop the value of Obj
+                    for (let [innerKey, innerValue] of Object.entries(value)) {
+                        let newKey = `$${innerKey}`;
                         let newValue;
                         if (newKey === '$in') {
-                            newValue = obj[key][subKey].includes(',') ? obj[key][subKey].split(',') : [obj[key][subKey]];
+                            // Check if innerValue has multiple values
+                            newValue = innerValue.includes(',') ? innerValue.split(',') : [innerValue];
                         } else if (newKey === '$gt' || newKey === '$lt' || newKey === '$gte' || newKey === '$lte') {
+                            //for > < >= <= this will work both for number and date string
                             // Check if value is a number or a date string
-                            newValue = isNaN(obj[key][subKey]) ? new Date(obj[key][subKey]) : Number(obj[key][subKey]);
+                            newValue = isNaN(innerValue) ? new Date(innerValue) : Number(innerValue);
                         }
+                        // after changing assign in newObj
                         newObj[key] = { ...newObj[key], [newKey]: newValue };
                     }
                 } else {
-                    newObj[key] = obj[key];
+                    newObj[key] = value;
                 }
             }
             return newObj;
@@ -61,7 +64,6 @@ exports.getAllTransactionRecord = catchAsync(async (req,res,next)=>{
 
         // Convert to string and replace keys
         let queryStr = JSON.stringify(convertedObj);
-        console.log(JSON.parse(queryStr))
         let query = TransactionRecord.find(JSON.parse(queryStr));
         // Sorting
 
