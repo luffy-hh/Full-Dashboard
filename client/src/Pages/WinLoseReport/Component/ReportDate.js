@@ -9,7 +9,11 @@ import {
   fetchSlotUserDetail,
   fetchSlotUserRecord,
 } from "../../../Feactures/slotSlice";
-import { selectlogInData } from "../../../Feactures/apiSlice";
+
+import {
+  selectlogInData,
+  fetGetTransationRecord,
+} from "../../../Feactures/apiSlice";
 
 const chnageDateFormat = (data) => {
   const dateObject = new Date(data);
@@ -61,6 +65,13 @@ function ReportDate({ condition, id, gameapi }) {
           }${endDate ? `end_date=${endDate}&` : ""}${
             type ? `search=${type}` : ""
           }`,
+          accessToken,
+        })
+      );
+    } else if (condition === "transation") {
+      dispatch(
+        fetGetTransationRecord({
+          api: `${gameapi}&createdAt[gte]=${startDate}&createdAt[lte]=${endDate}`,
           accessToken,
         })
       );

@@ -216,6 +216,20 @@ a {
   background-color: var(--green-light);
 }
 
+.color_red_style {
+  background-color: var(--red-light);
+  padding: 2px 4px;
+  border-radius: 1px;
+  color: var(--text-white);
+}
+
+.color_green_style {
+  background-color: var(--green-light);
+  padding: 2px 4px;
+  border-radius: 1px;
+  color: var(--text-white);
+}
+
 .ant-menu {
   font-size: 1.6rem;
 }
