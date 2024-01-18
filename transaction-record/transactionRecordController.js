@@ -18,7 +18,7 @@ exports.createTransactionRecord = catchAsync(async (obj)=>{
 //url /api/v1/transactionRecord
 exports.getAllTransactionRecord = catchAsync(async (req,res,next)=>{
     try {
-        // Filtering
+        // Old Filtering
         // const queryObj = {...req.query};
         // console.log("queryObj :" ,queryObj)
         // const excludeFields = ["page", "sort", "limit", "fields"];
@@ -29,7 +29,7 @@ exports.getAllTransactionRecord = catchAsync(async (req,res,next)=>{
         const queryObj = { ...req.query };
         console.log("queryObj :", queryObj);
 
-// Exclude fields
+        // Exclude fields
         const excludeFields = ["page", "sort", "limit", "fields"];
         excludeFields.forEach((el) => delete queryObj[el]);
         function convertKeysAndValues(obj) {
