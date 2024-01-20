@@ -11,26 +11,27 @@ import styles from "./CustomBox.module.css";
 import { selectLogHead } from "../../Feactures/AllUserPageSlice";
 import Spinner from "../Spinner/Spinner";
 import {
-  selectlogInData,
   selectTransationRecordAll,
   selectTransationRecordAllStatus,
-  fetGetTransationRecord,
 } from "../../Feactures/apiSlice";
 import Tables from "../Tables";
 function LogBox() {
   const dispatch = useDispatch();
   const modalLog = useSelector(selectModalLog);
   const logHead = useSelector(selectLogHead);
-
   const userObj = useSelector(selectUserObj);
-  console.log(userObj);
 
   const transationRecordAll = useSelector(selectTransationRecordAll);
   const status = useSelector(selectTransationRecordAllStatus);
 
   const dataList = transationRecordAll?.map((d) => (
     <tr key={d._id} className="table_d_tbody_tr">
-      <td>{new Date(d.createdAt).toLocaleDateString()}</td>
+      <td>
+        <span>{new Date(d.createdAt).toLocaleDateString()}</span>
+        <span style={{ paddingLeft: "10px" }}>
+          {new Date(d.createdAt).toLocaleTimeString()}
+        </span>
+      </td>
       <td>{d.type}</td>
       <td>{d.user_id.userId}</td>
       <td>{d.action_id.userId}</td>

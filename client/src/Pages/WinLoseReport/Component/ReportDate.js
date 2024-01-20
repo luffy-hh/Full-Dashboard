@@ -46,42 +46,46 @@ function ReportDate({ condition, id, gameapi }) {
   const handleDate = (e) => {
     e.preventDefault();
 
-    if (condition === "alluser") {
-      dispatch(
-        fetchSlotAllUser({
-          api: `slotegrator/users/reports?${
-            startDate ? `start_date=${startDate}&` : ""
-          }${endDate ? `end_date=${endDate}&` : ""}${
-            userID ? `userId=${userID}` : ""
-          }`,
-          accessToken,
-        })
-      );
-    } else if (condition === "oneuser") {
-      dispatch(
-        fetchSlotUserDetail({
-          api: `slotegrator/users/reports-detail?userId=${id}&${
-            startDate ? `start_date=${startDate}&` : ""
-          }${endDate ? `end_date=${endDate}&` : ""}${
-            type ? `search=${type}` : ""
-          }`,
-          accessToken,
-        })
-      );
-    } else if (condition === "transation") {
-      dispatch(
-        fetGetTransationRecord({
-          api: `${gameapi}&createdAt[gte]=${startDate}&createdAt[lte]=${endDate}`,
-          accessToken,
-        })
-      );
+    if ((startDate && endDate) || type || userID) {
+      if (condition === "alluser") {
+        dispatch(
+          fetchSlotAllUser({
+            api: `slotegrator/users/reports?${
+              startDate ? `start_date=${startDate}&` : ""
+            }${endDate ? `end_date=${endDate}&` : ""}${
+              userID ? `userId=${userID}` : ""
+            }`,
+            accessToken,
+          })
+        );
+      } else if (condition === "oneuser") {
+        dispatch(
+          fetchSlotUserDetail({
+            api: `slotegrator/users/reports-detail?userId=${id}&${
+              startDate ? `start_date=${startDate}&` : ""
+            }${endDate ? `end_date=${endDate}&` : ""}${
+              type ? `search=${type}` : ""
+            }`,
+            accessToken,
+          })
+        );
+      } else if (condition === "transation") {
+        dispatch(
+          fetGetTransationRecord({
+            api: `${gameapi}&createdAt[gte]=${startDate}&createdAt[lte]=${endDate}`,
+            accessToken,
+          })
+        );
+      } else {
+        dispatch(
+          fetchSlotUserRecord({
+            api: `${gameapi}&start_date=${startDate}&end_date=${endDate}`,
+            accessToken,
+          })
+        );
+      }
     } else {
-      dispatch(
-        fetchSlotUserRecord({
-          api: `${gameapi}&start_date=${startDate}&end_date=${endDate}`,
-          accessToken,
-        })
-      );
+      alert("Fill start date and end date");
     }
   };
 
