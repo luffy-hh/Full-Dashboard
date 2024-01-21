@@ -152,7 +152,7 @@ exports.signup = catchAsync(async (req, res, next) => {
         subCatStatus: subCatObjArr,
       });
     }
-
+    await newUser.save();
     // Generate a JWT token
     const token = signToken(newUser);
 

@@ -6,7 +6,6 @@ const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
 
 const ShanTable = require("./shanTableModel");
-const { io, tableRooms } = require("./shanTableSocket");
 
 exports.createShanTableFromAdmin = catchAsync(async (req, res) => {
   try {
@@ -30,13 +29,10 @@ exports.createShanTableFromAdmin = catchAsync(async (req, res) => {
 
     await newTable.save();
 
-    const tableNamespace = io.of(`/${newTable._id}`);
-    console.log(tableNamespace);
-
-    newTable.tableNamespaceId = tableNamespace._name;
+    // Use the endPoint value directly in the route
+    const endpoint = `/${newTable._id.toString()}`;
+    newTable.endPoint = endpoint;
     await newTable.save();
-
-    tableNamespace.emit("testEvent", { message: "Hello from the namespace" });
 
     res.status(201).json({
       status: "success",
