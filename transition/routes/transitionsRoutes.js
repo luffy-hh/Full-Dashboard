@@ -10,5 +10,5 @@ router
   .post(userController.protect, transitionController.transferUnit)
   .get(userController.protect, transitionController.transferHistory);
 
-router.route("/:id").post(userController.protect,transitionController.transferUnitWithUserId)
+router.route("/:id").post(userController.protect,userController.checkSecurityCode,transitionController.transferUnitWithUserId)
 module.exports = router;
