@@ -54,25 +54,11 @@ exports.getAllTables = catchAsync(async (req, res, next) => {
   try {
     const allTables = await ShanTable.find({});
 
-    // Fetch the socket namespace IDs for all tables
-    const tableNamespaceIds = allTables.map((table) => table.tableNamespaceId);
-
-    // Calculate player count for each table
-    const tableData = allTables.map((table) => {
-      const playersInRoom = tableRooms[table._id]?.players.length || 0; // Access player count for the table room
-
-      return {
-        table,
-        playersCount: playersInRoom,
-      };
-    });
-
     res.status(200).json({
       status: "succeed",
-      tableCount: tableData.length,
+      tableCount: allTables.length,
       data: {
-        tables: tableData,
-        tableNamespaceIds: tableNamespaceIds,
+        tables: allTables,
       },
     });
   } catch (error) {
@@ -87,24 +73,12 @@ exports.getAllTables = catchAsync(async (req, res, next) => {
 exports.getTablesByRole = catchAsync(async (req, res, next) => {
   try {
     const roleId = req.params.id;
-    console.log(roleId);
     const allTables = await ShanTable.find({ role: roleId });
-    console.log(allTables);
-
-    // Calculate player count for each table
-    const tableData = allTables.map((table) => {
-      const playersInRoom = tableRooms[table._id]?.players.length || 0; // Access player count for the table room
-
-      return {
-        table,
-        playersCount: playersInRoom,
-      };
-    });
 
     res.status(200).json({
       status: "succeed",
-      tableCount: tableData.length,
-      data: tableData,
+      tableCount: allTables.length,
+      data: allTables,
     });
   } catch (error) {
     console.error(error); // Log the error
