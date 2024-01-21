@@ -65,8 +65,11 @@ exports.getAllTransactionRecord = catchAsync(async (req,res,next)=>{
         // Convert to string and replace keys
         let queryStr = JSON.stringify(convertedObj);
         let query = TransactionRecord.find(JSON.parse(queryStr));
-        // Sorting
 
+        // Get the total count of all records
+        const totalCount = await TransactionRecord.countDocuments(query);
+
+        // Sorting
         if (req.query.sort) {
             const sortBy = req.query.sort.split(",").join(" ");
             query = query.sort(sortBy);
@@ -98,7 +101,7 @@ exports.getAllTransactionRecord = catchAsync(async (req,res,next)=>{
             {path: "action_id", select:'name userId profileImg userLevel status'}
         ]);
         res.json({
-            total: transactionRecord.length,
+            total: totalCount,
             transactionRecord
         });
     }catch (e) {
