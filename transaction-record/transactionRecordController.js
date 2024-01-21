@@ -97,7 +97,10 @@ exports.getAllTransactionRecord = catchAsync(async (req,res,next)=>{
             {path: "user_id", select:'name userId profileImg userLevel status'},
             {path: "action_id", select:'name userId profileImg userLevel status'}
         ]);
-        res.json(transactionRecord);
+        res.json({
+            total: transactionRecord.length,
+            transactionRecord
+        });
     }catch (e) {
         res.status(500).json({
             status:'error',
