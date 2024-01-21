@@ -22,6 +22,7 @@ const logHead = [
   "From Id",
   "To Id",
   "Before Balance",
+  "Action Amount",
   "After Balance",
 ];
 
