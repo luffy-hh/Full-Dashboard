@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import ReportDate from "./ReportDate";
 import ReportGameCat from "./ReportGameCat";
@@ -16,11 +16,14 @@ import { selectlogInData } from "../../../Feactures/apiSlice";
 
 import { useDispatch, useSelector } from "react-redux";
 import Spinner from "../../../Component/Spinner/Spinner";
+import Paginate from "../../../Component/Paginate/Paginate";
 
 function UserReportTable() {
   const { count } = useParams();
   const gameData = useSelector(selectGameData);
   console.log(gameData);
+
+  const [page, setPage] = useState(1);
 
   const logInData = useSelector(selectlogInData);
   const accessToken = logInData.token;
@@ -34,11 +37,11 @@ function UserReportTable() {
   useEffect(() => {
     dispatch(
       fetchSlotUserRecord({
-        api: `slotegrator/users/reports/${gameData.player_id}?game_name=${gameData.game_name}&game_type=${gameData.game_type}&provider_name=${gameData.game_provider_name}`,
+        api: `slotegrator/users/reports/${gameData.player_id}?game_name=${gameData.game_name}&game_type=${gameData.game_type}&provider_name=${gameData.game_provider_name}&page=${page}&perPage=50`,
         accessToken,
       })
     );
-  }, []);
+  }, [page]);
 
   const tableHeader = userDetailHead.map((d, i) => (
     <th key={`userHead${i}`} style={{ minWidth: "20rem" }}>
@@ -98,6 +101,11 @@ function UserReportTable() {
           </table>
         )}
       </section>
+      <Paginate
+        total={userRecordSlot?.meta.total}
+        setPage={setPage}
+        limit={50}
+      />
     </div>
   );
 }

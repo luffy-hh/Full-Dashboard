@@ -185,13 +185,17 @@ function Sidebar() {
     }
   };
 
+  const handleNavige = (key) => {
+    navigate(key);
+  };
+
   return (
     <aside
       className={styles.admin_aside}
       style={{ width: collapsed ? "80px" : "280px" }}
     >
       <Menu
-        onClick={({ label, key }) => navigate(key)}
+        onClick={({ label, key }) => handleNavige(key)}
         defaultSelectedKeys={["1"]}
         defaultOpenKeys={["sub1"]}
         mode="inline"
