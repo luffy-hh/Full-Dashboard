@@ -1,15 +1,6 @@
-const socketIo = require("socket.io");
-const http = require("http"); // Make sure http is imported
-
-// Assuming you have an http server instance
-const http_server = http.createServer(/* your server configuration */);
-const io = socketIo(http_server);
-
 let tableRooms = {};
-
-io.on("connection", (socket) => {
+const init = (socket, io) => {
   console.log("A user connected");
-
   // Handle table joining
   socket.on("joinTable", (tableId) => {
     socket.join(tableId);
@@ -35,6 +26,6 @@ io.on("connection", (socket) => {
       );
     }
   });
-});
+};
 
-module.exports = { io, tableRooms };
+module.exports = { init, tableRooms };

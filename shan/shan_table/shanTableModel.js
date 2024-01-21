@@ -7,7 +7,7 @@ const shanTableSchema = new mongoose.Schema({
   },
   role: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "ShanRole",
+    ref: "ShanRoll",
     required: true,
   },
   banker_amount: {
@@ -21,7 +21,10 @@ const shanTableSchema = new mongoose.Schema({
     enum: ["inactive", "active"],
     default: "inactive",
   },
-  endPoint:{
+  endPoint: {
+    type: String,
+  },
+  tableNamespaceId: {
     type: String,
   },
   players: [
@@ -35,19 +38,10 @@ const shanTableSchema = new mongoose.Schema({
         enum: ["banker", "player"],
         default: "banker",
       },
-      // playingStatus:{
-      //   type:String,
-      //   enum:["playing","waiting"],
-      //   default:"waiting"
-      // },
       game_unit: {
         type: Number,
         default: 0,
       },
-      // finalResult:{
-      //   type:String,
-      //   enum:["win","lose"]
-      // }
     },
   ],
 });

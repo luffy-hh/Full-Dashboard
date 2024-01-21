@@ -68,6 +68,7 @@ const createSendToken = (user, statusCode, res) => {
 exports.signup = catchAsync(async (req, res, next) => {
   try {
     const reqBody = req.body;
+
     let userId;
     let isUnique = false;
     while (!isUnique) {
