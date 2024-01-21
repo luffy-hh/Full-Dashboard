@@ -73,7 +73,7 @@ function LogBox() {
           <PaginateForLog
             gameapi={`transaction-record?user_id=${userObj?._id}&type[in]=receive-from-other,send-to-other,deposit-confirmed,deposit-canceled,withdrawal-confirmed,withdrawal-cancled,deposit-received,withdrawal-requested,withdrawal-canceled-refunded,withdrawal-confirm-from-admin`}
             total={transationRecordAll?.total}
-            limit={5}
+            limit={10}
           />
           {status === "loading" ? (
             <Spinner />

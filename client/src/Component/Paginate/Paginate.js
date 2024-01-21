@@ -10,7 +10,7 @@ function Paginate({ total, setPage, limit }) {
       previousLabel={"<<"}
       nextLabel={">>"}
       breakLabel={"..."}
-      pageCount={Math.ceil(total / limit)}
+      pageCount={Math.ceil(Number(total) / limit)}
       marginPagesDisplayed={3}
       pageRangeDisplayed={2}
       onPageChange={handlePageClick}

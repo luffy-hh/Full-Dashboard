@@ -1,9 +1,21 @@
 import React from "react";
 import ReactPaginate from "react-paginate";
+import { fetGetTransationRecord } from "../../Feactures/apiSlice";
+import { selectlogInData } from "../../Feactures/apiSlice";
+import { useSelector, useDispatch } from "react-redux";
 
-function PaginateForLog({ total, limit }) {
-  console.log(total / limit, total);
-  const handlePageClick = (count) => {};
+function PaginateForLog({ gameapi, total, limit }) {
+  const dispatch = useDispatch();
+  const logInData = useSelector(selectlogInData);
+  const accessToken = logInData.token;
+  const handlePageClick = (count) => {
+    dispatch(
+      fetGetTransationRecord({
+        api: `${gameapi}&page=${count.selected + 1}&limit=10`,
+        accessToken,
+      })
+    );
+  };
   return (
     <ReactPaginate
       previousLabel={"<<"}

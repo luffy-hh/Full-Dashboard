@@ -15,6 +15,7 @@ import AllPlayer from "./AllPlayer";
 
 function ShanGame() {
   const { tableId } = useParams();
+
   const randomNumber = Math.floor(Math.random() * 10) + 1;
 
   const dispatch = useDispatch();
