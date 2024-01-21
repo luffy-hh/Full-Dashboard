@@ -137,7 +137,7 @@ const userDetailHead = [
   "After Balance",
   "Status",
   "Detail",
-  "Count",
+
   "Description",
 ];
 

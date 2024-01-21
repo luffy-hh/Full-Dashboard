@@ -34,7 +34,7 @@ function MiddleReportTable() {
   useEffect(() => {
     dispatch(
       fetchSlotUserDetail({
-        api: `slotegrator/users/reports-detail?userId=${userId}&page=${page}&perPage=50`,
+        api: `slotegrator/users/reports-detail?userId=${userId}&page=${page}&perPage=100`,
         accessToken,
       })
     );
@@ -93,7 +93,7 @@ function MiddleReportTable() {
           </table>
         )}
       </section>
-      <Paginate total={userDetail?.meta.total} setPage={setPage} limit={50} />
+      <Paginate total={userDetail?.meta.total} setPage={setPage} limit={100} />
     </div>
   );
 }

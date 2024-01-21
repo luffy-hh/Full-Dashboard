@@ -1,10 +1,9 @@
 import React from "react";
 import ReactPaginate from "react-paginate";
 
-function Paginate({ total, setPage, limit }) {
-  const handlePageClick = (count) => {
-    setPage(count.selected + 1);
-  };
+function PaginateForLog({ total, limit }) {
+  console.log(total / limit, total);
+  const handlePageClick = (count) => {};
   return (
     <ReactPaginate
       previousLabel={"<<"}
@@ -14,7 +13,7 @@ function Paginate({ total, setPage, limit }) {
       marginPagesDisplayed={3}
       pageRangeDisplayed={2}
       onPageChange={handlePageClick}
-      containerClassName={"pagination justify-content-center mt-5"}
+      containerClassName={"pagination justify-content-center mt-2"}
       pageClassName={"page-item"}
       pageLinkClassName={"page-link"}
       previousClassName={"page-item"}
@@ -28,4 +27,4 @@ function Paginate({ total, setPage, limit }) {
   );
 }
 
-export default Paginate;
+export default PaginateForLog;

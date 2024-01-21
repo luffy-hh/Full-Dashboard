@@ -15,6 +15,7 @@ import {
   selectTransationRecordAllStatus,
 } from "../../Feactures/apiSlice";
 import Tables from "../Tables";
+import PaginateForLog from "../Paginate/PaginateForLog";
 function LogBox() {
   const dispatch = useDispatch();
   const modalLog = useSelector(selectModalLog);
@@ -24,7 +25,7 @@ function LogBox() {
   const transationRecordAll = useSelector(selectTransationRecordAll);
   const status = useSelector(selectTransationRecordAllStatus);
 
-  const dataList = transationRecordAll?.map((d) => (
+  const dataList = transationRecordAll?.transactionRecord.map((d) => (
     <tr key={d._id} className="table_d_tbody_tr">
       <td>
         <span>{new Date(d.createdAt).toLocaleDateString()}</span>
@@ -67,6 +68,12 @@ function LogBox() {
           <ReportDate
             condition={"transation"}
             gameapi={`transaction-record?user_id=${userObj?._id}&type[in]=receive-from-other,send-to-other,deposit-confirmed,deposit-canceled,withdrawal-confirmed,withdrawal-cancled,deposit-received,withdrawal-requested,withdrawal-canceled-refunded,withdrawal-confirm-from-admin`}
+          />
+
+          <PaginateForLog
+            gameapi={`transaction-record?user_id=${userObj?._id}&type[in]=receive-from-other,send-to-other,deposit-confirmed,deposit-canceled,withdrawal-confirmed,withdrawal-cancled,deposit-received,withdrawal-requested,withdrawal-canceled-refunded,withdrawal-confirm-from-admin`}
+            total={transationRecordAll?.total}
+            limit={5}
           />
           {status === "loading" ? (
             <Spinner />

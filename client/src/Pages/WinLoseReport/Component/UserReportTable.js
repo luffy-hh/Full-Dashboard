@@ -35,9 +35,10 @@ function UserReportTable() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log("working userreport api", page);
     dispatch(
       fetchSlotUserRecord({
-        api: `slotegrator/users/reports/${gameData.player_id}?game_name=${gameData.game_name}&game_type=${gameData.game_type}&provider_name=${gameData.game_provider_name}&page=${page}&perPage=50`,
+        api: `slotegrator/users/reports/${gameData.player_id}?game_name=${gameData.game_name}&game_type=${gameData.game_type}&provider_name=${gameData.game_provider_name}&page=${page}&perPage=100`,
         accessToken,
       })
     );
@@ -48,6 +49,8 @@ function UserReportTable() {
       {d}
     </th>
   ));
+
+  console.log(userRecordSlot && userRecordSlot.data);
 
   const tableData = userRecordSlot?.data.map((d, i) => (
     <tr className={styles.win_lose_color} key={`user_record_${i}`}>
@@ -65,7 +68,7 @@ function UserReportTable() {
       <td>{d.after}</td>
       <td>{d.action}</td>
       <td>{"no data"}</td>
-      <td>{"no data"}</td>
+
       <td>{"no data"}</td>
     </tr>
   ));
@@ -104,7 +107,7 @@ function UserReportTable() {
       <Paginate
         total={userRecordSlot?.meta.total}
         setPage={setPage}
-        limit={50}
+        limit={100}
       />
     </div>
   );

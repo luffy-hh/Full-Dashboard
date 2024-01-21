@@ -60,7 +60,7 @@ function AllusersFun({ data, toId, userObj }) {
     dispatch(setUserObj(userObj));
     dispatch(
       fetGetTransationRecord({
-        api: `transaction-record?user_id=${userObj?._id}&type[in]=receive-from-other,send-to-other,deposit-confirmed,deposit-canceled,withdrawal-confirmed,withdrawal-cancled,deposit-received,withdrawal-requested,withdrawal-canceled-refunded,withdrawal-confirm-from-admin`,
+        api: `transaction-record?user_id=${userObj?._id}&type[in]=receive-from-other,send-to-other,deposit-confirmed,deposit-canceled,withdrawal-confirmed,withdrawal-cancled,deposit-received,withdrawal-requested,withdrawal-canceled-refunded,withdrawal-confirm-from-admin&page=1&limit=5`,
         accessToken,
       })
     );
