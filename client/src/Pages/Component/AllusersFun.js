@@ -11,6 +11,10 @@ import {
   setModalChangePassword,
   setModalLog,
 } from "../../Feactures/modalSlice";
+import {
+  selectlogInData,
+  fetGetTransationRecord,
+} from "../../Feactures/apiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { MdAdd } from "react-icons/md";
 import { AiOutlineMinus } from "react-icons/ai";
@@ -20,7 +24,6 @@ import { MdStorage } from "react-icons/md";
 import { FiKey } from "react-icons/fi";
 
 import { BsLockFill } from "react-icons/bs";
-import { selectlogInData } from "../../Feactures/apiSlice";
 
 const adminData = [
   { icon: <MdStorage />, text: "Log" },
@@ -30,6 +33,8 @@ const adminData = [
 
 function AllusersFun({ data, toId, userObj }) {
   const logInData = useSelector(selectlogInData);
+
+  const accessToken = logInData.token;
   const role = logInData.user.role;
   console.log(role);
   const handleDepo = (text) => {
@@ -52,6 +57,13 @@ function AllusersFun({ data, toId, userObj }) {
 
   const handleLog = () => {
     dispatch(setModalLog(true));
+    dispatch(setUserObj(userObj));
+    dispatch(
+      fetGetTransationRecord({
+        api: `transaction-record?user_id=${userObj?._id}&type[in]=receive-from-other,send-to-other,deposit-confirmed,deposit-canceled,withdrawal-confirmed,withdrawal-cancled,deposit-received,withdrawal-requested,withdrawal-canceled-refunded,withdrawal-confirm-from-admin`,
+        accessToken,
+      })
+    );
   };
 
   const handleChangePassword = () => {

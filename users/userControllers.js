@@ -152,6 +152,7 @@ exports.signup = catchAsync(async (req, res, next) => {
         subCatStatus: subCatObjArr,
       });
     }
+
     await newUser.save();
     // Generate a JWT token
     const token = signToken(newUser);
@@ -281,6 +282,15 @@ exports.protect = catchAsync(async (req, res, next) => {
   next();
 });
 
+exports.checkSecurityCode=catchAsync(async (req,res,next)=>{
+  try {
+    if(req.user.securityCode === req.body.securityCode){
+      next();
+    } next(new AppError('Incorrect Security Code.',403))
+  }catch (e) {
+    next(new AppError(e.message,e.status))
+  }
+})
 exports.logout = catchAsync(async (req, res, next) => {
   try {
     // Get the user ID from the decoded token

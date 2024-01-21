@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Paginate from "../../../Component/Paginate/Paginate";
 
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./ReportTable.module.css";
@@ -17,12 +18,16 @@ function AllReportMainTable({ selectReport }) {
   const userAllStatus = useSelector(selectUserAllStatus);
   const logInData = useSelector(selectlogInData);
   const accessToken = logInData.token;
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     dispatch(
-      fetchSlotAllUser({ api: "slotegrator/users/reports", accessToken })
+      fetchSlotAllUser({
+        api: `slotegrator/users/reports?page=${page}&perPage=50`,
+        accessToken,
+      })
     );
-  }, []);
+  }, [page]);
 
   const tableHead = selectReport.map((d, i) => (
     <th style={{ minWidth: "20rem" }} key={i}>
@@ -62,6 +67,7 @@ function AllReportMainTable({ selectReport }) {
           <tbody>{tableData}</tbody>
         </table>
       )}
+      <Paginate total={userAll?.meta.total} setPage={setPage} limit={50} />
     </div>
   );
 }

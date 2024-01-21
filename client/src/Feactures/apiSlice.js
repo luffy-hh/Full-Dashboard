@@ -228,6 +228,14 @@ export const fetGetUserWithId = createAsyncThunk(
   }
 );
 
+export const fetGetTransationRecord = createAsyncThunk(
+  "data/fetGetTransationRecord",
+  async ({ api, accessToken }) => {
+    const data = await fetchDataWithToken(api, accessToken);
+    return data;
+  }
+);
+
 const initialState = {
   logInData: {},
   currentLoginUser: "",
@@ -338,6 +346,10 @@ const initialState = {
   userWithId: null,
   userWithIdStatus: "idle",
   userWithIdError: null,
+
+  transationRecordAll: null,
+  transationRecordAllStatus: "idle",
+  transationRecordAllError: null,
 };
 
 const dataSlice = createSlice({
@@ -804,6 +816,19 @@ const dataSlice = createSlice({
       .addCase(fetGetUserWithId.rejected, (state, action) => {
         state.userWithIdStatus = "failed";
         state.userWithIdError = action.error.message;
+      })
+
+      //GET Transation Record All
+      .addCase(fetGetTransationRecord.pending, (state) => {
+        state.transationRecordAllStatus = "loading";
+      })
+      .addCase(fetGetTransationRecord.fulfilled, (state, action) => {
+        state.transationRecordAllStatus = "succeeded";
+        state.transationRecordAll = action.payload;
+      })
+      .addCase(fetGetTransationRecord.rejected, (state, action) => {
+        state.transationRecordAllStatus = "failed";
+        state.transationRecordAllError = action.error.message;
       });
   },
 });
@@ -918,5 +943,10 @@ export const selectPostFastTransferTo = (state) =>
   state.data.postFastTransferTo;
 export const selectPostFastTransferToStatus = (state) =>
   state.data.postFastTransferToStatus;
+
+export const selectTransationRecordAll = (state) =>
+  state.data.transationRecordAll;
+export const selectTransationRecordAllStatus = (state) =>
+  state.data.transationRecordAllStatus;
 
 export default dataSlice.reducer;

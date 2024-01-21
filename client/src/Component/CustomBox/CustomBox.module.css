@@ -255,7 +255,7 @@
 }
 
 .log_tabel table thead tr th:first-child {
-  min-width: 10rem;
+  min-width: 20rem;
 }
 
 .log_tabel table thead tr th {
