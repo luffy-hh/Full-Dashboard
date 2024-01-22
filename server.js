@@ -36,7 +36,7 @@ initFunction();
 
 function setupServer() {
     const port = process.env.PORT || 5000;
-    const http_server = http.createServer(app);
+    const httpServer = http.createServer(app);
 
     io = new Server(httpServer, {
         cors: {
