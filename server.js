@@ -41,7 +41,6 @@ function setupServer() {
     io = new Server(httpServer, {
         cors: {
             origin: "*", // replace with your domain
-            allowedHeaders: ["my-custom-header"],
             credentials: true
         }
     });
