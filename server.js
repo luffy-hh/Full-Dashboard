@@ -11,7 +11,7 @@ const tableGetter = require("./shan/shan_table/tableGetter");
 dotenv.config({path: "./config.env"});
 let options = {};
 
-let io;
+
 let tableRooms = [];
 
 mongoose
@@ -26,19 +26,19 @@ mongoose
         console.error(error);
     });
 
-const initFunction = async () => {
+(async () => {
     tableRooms = [];
     const tablesValue = await tableGetter.getTables();
     tableRooms = [...tableRooms, ...tablesValue];
     setupServer();
-};
-initFunction();
+})();
+
 
 function setupServer() {
     const port = process.env.PORT || 5000;
     const httpServer = http.createServer(app);
 
-    io = new Server(httpServer);
+    const io = new Server(httpServer);
 
     console.log("endpoint:" + tableRooms);
 
@@ -69,5 +69,5 @@ function setupServer() {
 
     setupSocketLogic(io, tableRooms);
 
-    io.listen(port, () => console.log("Listen Now", port));
+    httpServer.listen(port, () => console.log("Listen Now", port));
 }
