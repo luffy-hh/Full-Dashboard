@@ -38,12 +38,7 @@ function setupServer() {
     const port = process.env.PORT || 5000;
     const httpServer = http.createServer(app);
 
-    io = new Server(httpServer, {
-        cors: {
-            origin: "*", // replace with your domain
-            credentials: true
-        }
-    });
+    io = new Server(httpServer);
 
     console.log("endpoint:" + tableRooms);
 
