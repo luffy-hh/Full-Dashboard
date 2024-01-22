@@ -27,6 +27,7 @@ function AllCreateForm({
   const [password, setPassword] = useState("");
   const [confirmPassword, setComfirmPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [security, setSecurity] = useState("");
   const [uplineId, setUpLineId] = useState(logInData.user.userId);
   const dispatch = useDispatch();
   const [copyPass, setCopyPass] = useState("");
@@ -75,6 +76,13 @@ function AllCreateForm({
           setValue: setComfirmPassword,
         };
 
+      case 6:
+        return {
+          ...item,
+          value: security,
+          setValue: setSecurity,
+        };
+
       default:
         return item;
     }
@@ -98,6 +106,7 @@ function AllCreateForm({
     email,
     password,
     confirmPassword,
+    securityCode: security,
     role: role,
     uplineId: uplineId,
   };
@@ -110,6 +119,7 @@ function AllCreateForm({
     setPassword("");
     setComfirmPassword("");
     setEmail("");
+    setSecurity("");
   };
 
   return (
