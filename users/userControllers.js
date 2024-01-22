@@ -153,7 +153,7 @@ exports.signup = catchAsync(async (req, res, next) => {
       });
     }
 
-    await newUser.save();
+
     // Generate a JWT token
     const token = signToken(newUser);
 
