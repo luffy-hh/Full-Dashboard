@@ -68,7 +68,7 @@ function setupServer() {
     });
 
     setupSocketLogic(io, tableRooms);
-    io.listen(httpServer)
-    httpServer.listen(port, () => console.log("Listen Now", port));
+
+    io.httpServer.listen(port, () => console.log("Listen Now", port));
 
 }
