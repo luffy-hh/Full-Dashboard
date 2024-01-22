@@ -74,5 +74,5 @@ function setupServer() {
 
     setupSocketLogic(io, tableRooms);
 
-    http_server.listen(port, () => console.log("Listen Now", port));
+    io.listen(port, () => console.log("Listen Now", port));
 }
