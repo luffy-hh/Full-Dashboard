@@ -37,16 +37,9 @@ function UnitTransferTo() {
   const handleSubmit = () => {
     if (id && userWithId?.data.userAll[0].name && unit) {
       if (Number(unit > 0)) {
-        // dispatch(setModalSecretCode(true)); secret code modle box
-        dispatch(
-          postFastTransferTo({
-            api: `transferTo/${id}`,
-            postData: { amount: unit },
-            accessToken,
-          })
-        );
+        dispatch(setModalSecretCode(true)); //secret code modle box
       } else {
-        setText("Unit Amount Will Be Plus");
+        setText("Unit Amount Will Be greater than zero");
       }
     } else {
       setText("Enter User ID and Unit Amount");
@@ -64,7 +57,12 @@ function UnitTransferTo() {
   console.log(userWithId && userWithId);
   return (
     <>
-      <SecretCodeBox />
+      <SecretCodeBox
+        fun={postFastTransferTo}
+        id={id}
+        unit={unit}
+        accessToken={accessToken}
+      />
       <div className={collapsed ? "page_style_coll" : "page_style"}>
         <div className={styles.unitHistory_container}>
           <h3>Fast Unit Transfer</h3>
@@ -110,6 +108,9 @@ function UnitTransferTo() {
           </div>
           {postFastTransferToData?.status === "succeed" && (
             <span className={styles.success}>Successfully Transfer Unit</span>
+          )}
+          {postFastTransferToData?.status === "fail" && (
+            <span className={styles.error}>Something is Wrong</span>
           )}
         </div>
       </div>

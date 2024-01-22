@@ -6,6 +6,7 @@ const masterData = [
   { id: "Master", label: "Role", state: 2 },
   { id: "password", label: "Password", state: 3 },
   { id: "comfirmpassword", label: "Comfrim Password", state: 4 },
+  { id: "security", label: "Security Code", state: 6 },
 ];
 
 const userDetailComHead = [
@@ -32,6 +33,7 @@ const agentData = [
   { id: "Agent", label: "Role", state: 2 },
   { id: "password", label: "Password", state: 3 },
   { id: "comfirmpassword", label: "Comfrim Password", state: 4 },
+  { id: "security", label: "Security Code", state: 6 },
 ];
 
 const userData = [
@@ -40,6 +42,7 @@ const userData = [
   { id: "User", label: "Role", state: 2 },
   { id: "password", label: "Password", state: 3 },
   { id: "comfirmpassword", label: "Comfrim Password", state: 4 },
+  { id: "security", label: "Security Code", state: 6 },
 ];
 
 const adminData = [

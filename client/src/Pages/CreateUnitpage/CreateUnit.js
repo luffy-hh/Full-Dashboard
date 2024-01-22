@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./CreateUnit.module.css";
 import { selectCollapsed } from "../../Feactures/modalSlice";
 
@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 
 function CreateUnit() {
   const collapsed = useSelector(selectCollapsed);
+
   return (
     <div className={collapsed ? styles.createUnit_coll : styles.createUnitPage}>
       <CreateUnitForm />

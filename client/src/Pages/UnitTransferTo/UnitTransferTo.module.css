@@ -56,3 +56,10 @@
   font-size: 1.8rem;
   display: block;
 }
+
+.error {
+  margin-top: 1.2rem;
+  color: var(--red);
+  font-size: 1.8rem;
+  display: block;
+}
