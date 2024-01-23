@@ -2,7 +2,7 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const express = require("express");
 const http = require("http");
-const {Server} = require("socket.io");
+
 const app = require("./app");
 require("./slots/grpc-services/grpc");
 const setupSocketLogic = require("./shan/shan_table/shanSocket");
@@ -40,7 +40,7 @@ function setupServer() {
 
     // Socket.IO server
 
-    const io = new Server();
+    const io = require("socket.io")(httpServer);
 
 
     console.log("endpoint:" + tableRooms);

@@ -25,9 +25,9 @@ const xhr = new XMLHttpRequest();
 xhr.withCredentials = true;
 
 function Home() {
-  // useEffect(() => {
-  //   const socket = io("https://gamevegas.online");
-  // }, []);
+  useEffect(() => {
+    const socket = io("http://localhost:5000");
+  }, []);
 
   const dispatch = useDispatch();
   const logInData = useSelector(selectlogInData);
