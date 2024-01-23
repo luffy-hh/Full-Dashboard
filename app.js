@@ -9,10 +9,7 @@ const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 
 const app = express();
-// app.use(cors({
-//   origin:"*",
-//   methods:['GET','POST']
-// }));
+app.use(cors());
 
 const userRouter = require("./users/userRoutes");
 const userProfileRouter = require("./users/userProfileRoute");

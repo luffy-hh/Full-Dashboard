@@ -2,7 +2,7 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const express = require("express");
 const http = require("http");
-
+const {Server} = require("socket.io")
 const app = require("./app");
 require("./slots/grpc-services/grpc");
 const setupSocketLogic = require("./shan/shan_table/shanSocket");
@@ -40,7 +40,7 @@ function setupServer() {
 
     // Socket.IO server
 
-    const io = require("socket.io")(httpServer);
+    const io = new Server();
 
 
     console.log("endpoint:" + tableRooms);
@@ -73,5 +73,11 @@ function setupServer() {
     setupSocketLogic(io, tableRooms);
 
     httpServer.listen(port, () => console.log("Listen Now", port));
-    io.attach(httpServer)
+    io.attach(httpServer, {
+        cors: {
+            'Access-Control-Allow-Origin': "*",
+            methods: ["GET", "POST"],
+            credentials: true
+        }
+    })
 }
