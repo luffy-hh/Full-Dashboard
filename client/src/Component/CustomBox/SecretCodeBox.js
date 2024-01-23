@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Modal } from "antd";
 import {
   selectModalSecretCode,
@@ -7,12 +7,21 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./CustomBox.module.css";
 
-function SecretCodeBox() {
+function SecretCodeBox({ fun, id, unit, accessToken }) {
   const dispatch = useDispatch();
   const modalSecretCode = useSelector(selectModalSecretCode);
+  const [security, setSecurity] = useState("");
+  console.log(unit, security);
 
   const handleSecret = () => {
-    dispatch(setModalSecretCode(true));
+    dispatch(
+      fun({
+        api: `transferTo/${id}`,
+        postData: { amount: unit, securityCode: security },
+        accessToken,
+      })
+    );
+    dispatch(setModalSecretCode(false));
   };
   return (
     <>
@@ -28,7 +37,12 @@ function SecretCodeBox() {
         <div className={styles.secret_container}>
           <div className={styles.secret_box}>
             <label>Enter Secret Code</label>
-            <input type="text" className="input" />
+            <input
+              type="text"
+              className="input"
+              value={security}
+              onChange={(e) => setSecurity(e.target.value)}
+            />
           </div>
         </div>
       </Modal>

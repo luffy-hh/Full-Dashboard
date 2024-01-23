@@ -40,7 +40,10 @@ function LuckyNumber() {
   }, []);
 
   return (
-    <div className={collapsed ? "page_style_coll" : "page_style"}>
+    <div
+      className={collapsed ? "page_style_coll" : "page_style"}
+      style={{ overflow: "hidden" }}
+    >
       {!luckyNoShow && (
         <LuckyNoCategory
           setLuckyNoShow={setLuckyNoShow}

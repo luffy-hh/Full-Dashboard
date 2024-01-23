@@ -22,22 +22,21 @@ function ShanTableCard() {
     dispatch(fetGetShanRing({ api: `shantable/${rollIds}`, accessToken }));
   }, [rollIds]);
 
+  console.log(rollIds, "roll id");
+
   const shanRingData = shanRing?.data;
-  console.log(shanRing && shanRing);
-  return (
-    <div className={styles.shan_ring_container}>
-      {shanRingData &&
-        shanRingData.map((d) => (
-          <div className={styles.shan_ring_box} key={d._id}>
-            <div className={styles.shan_ring}>
-              {/* <ShanPlayer players={d.players} /> */}
-              <p className={styles.ring_name}>{d.table.tableName}</p>
-            </div>
-            <p>{d.playersCount}/6</p>
-          </div>
-        ))}
+
+  const list = shanRingData?.map((d) => (
+    <div className={styles.shan_ring_box} key={d._id}>
+      <div className={styles.shan_ring}>
+        {/* <ShanPlayer players={d.players} /> */}
+        <p className={styles.ring_name}>{d.tableName}</p>
+      </div>
+      <p>{d.players.length}/6</p>
     </div>
-  );
+  ));
+  console.log(shanRing && shanRing);
+  return <div className={styles.shan_ring_container}>{list}</div>;
 }
 
 export default ShanTableCard;

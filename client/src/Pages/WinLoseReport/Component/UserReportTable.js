@@ -35,9 +35,10 @@ function UserReportTable() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log("working userreport api", page);
     dispatch(
       fetchSlotUserRecord({
-        api: `slotegrator/users/reports/${gameData.player_id}?game_name=${gameData.game_name}&game_type=${gameData.game_type}&provider_name=${gameData.game_provider_name}&page=${page}&perPage=50`,
+        api: `slotegrator/users/reports/${gameData.player_id}?game_name=${gameData.game_name}&game_type=${gameData.game_type}&provider_name=${gameData.game_provider_name}&page=${page}&perPage=100`,
         accessToken,
       })
     );
@@ -49,24 +50,20 @@ function UserReportTable() {
     </th>
   ));
 
+  console.log(userRecordSlot && userRecordSlot.data);
+
   const tableData = userRecordSlot?.data.map((d, i) => (
-    <tr className={styles.win_lose_color} key={`user_record_${i}`}>
+    <tr className={styles.win_lose_color} key={`user_record_${i}`} style={{ backgroundColor: d.action === 'bet' ? 'gray' : 'defaultColor' }}>
       <td>{d.created_at}</td>
-      <td>{"no data"}</td>
+      <td>{d.action}</td>
       <td>{d.player_id}</td>
-      <td>{"no date"}</td>
       <td>{d.game_name}</td>
       <td>{d.game_type}</td>
       <td>{d.game_provider_name}</td>
       <td>{d.before}</td>
       <td>{d.amount}</td>
-      <td>{"nodata"}</td>
-      <td>{"no data"}</td>
       <td>{d.after}</td>
-      <td>{d.action}</td>
-      <td>{"no data"}</td>
-      <td>{"no data"}</td>
-      <td>{"no data"}</td>
+      <td>{d.after-d.before}</td>
     </tr>
   ));
 
@@ -104,7 +101,7 @@ function UserReportTable() {
       <Paginate
         total={userRecordSlot?.meta.total}
         setPage={setPage}
-        limit={50}
+        limit={100}
       />
     </div>
   );

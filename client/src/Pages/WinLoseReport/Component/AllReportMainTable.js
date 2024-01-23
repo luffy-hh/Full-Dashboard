@@ -23,7 +23,7 @@ function AllReportMainTable({ selectReport }) {
   useEffect(() => {
     dispatch(
       fetchSlotAllUser({
-        api: `slotegrator/users/reports?page=${page}&perPage=50`,
+        api: `slotegrator/users/reports?page=${page}&perPage=100`,
         accessToken,
       })
     );
@@ -45,30 +45,28 @@ function AllReportMainTable({ selectReport }) {
           <span> {d.player_id}</span>
         </Link>
       </td>
-      <td>{d.total_bet}</td>
-      <td>{d.total_win}</td>
-      <td>{d.total_win - d.total_bet}</td>
-      <td>{"no data"}</td>
-      <td>{"no data"}</td>
-      <td>{"no data"}</td>
-      <td>{"no data"}</td>
+      <td>{Math.round(d.total_bet)}</td>
+      <td>{Math.round(d.total_win)}</td>
+      <td>{Math.round(d.total_win - d.total_bet)}</td>
     </tr>
   ));
 
   return (
-    <div className={`${styles.report_main_table_container} hide_scroll`}>
-      {userAllStatus === "loading" ? (
-        <Spinner />
-      ) : (
-        <table className={`box_shadow ${styles.report_all_table}`}>
-          <thead>
-            <tr> {tableHead}</tr>
-          </thead>
-          <tbody>{tableData}</tbody>
-        </table>
-      )}
-      <Paginate total={userAll?.meta.total} setPage={setPage} limit={50} />
-    </div>
+    <>
+      <div className={`${styles.report_main_table_container} hide_scroll`}>
+        {userAllStatus === "loading" ? (
+          <Spinner />
+        ) : (
+          <table className={`box_shadow ${styles.report_all_table}`}>
+            <thead>
+              <tr> {tableHead}</tr>
+            </thead>
+            <tbody>{tableData}</tbody>
+          </table>
+        )}
+      </div>
+      <Paginate total={userAll?.meta.total} setPage={setPage} limit={100} />
+    </>
   );
 }
 
