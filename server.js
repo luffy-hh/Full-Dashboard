@@ -38,7 +38,10 @@ function setupServer() {
     const port = process.env.PORT || 5000;
     const httpServer = http.createServer(app);
 
-    const io = new Server(httpServer);
+    // Socket.IO server
+
+    const io = new Server();
+
 
     console.log("endpoint:" + tableRooms);
 
@@ -69,6 +72,7 @@ function setupServer() {
 
     setupSocketLogic(io, tableRooms);
 
-    io.httpServer.listen(port, () => console.log("Listen Now", port));
+    httpServer.listen(port, () => console.log("Listen Now", port));
+    io.attach(httpServer)
 
 }
