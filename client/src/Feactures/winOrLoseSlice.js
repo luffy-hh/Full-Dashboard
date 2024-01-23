@@ -25,10 +25,6 @@ const userReport = [
   "Total Bet",
   "Total Win",
   "Player Win/Lose",
-  "Agent Win/Lose",
-  "User Commision",
-  "Company",
-  "RTP",
 ];
 
 const chartData = [
@@ -124,21 +120,15 @@ const agentUser = [
 
 const userDetailHead = [
   "Bet Time",
-  "Result Time",
+  "Action",
   "User Id",
-  "Game Code",
   "Game Name",
-  "Category",
-  "SubCategory",
-  "Before Balance",
-  "Bet",
-  "Win",
+  "Type",
+  "Provider",
+  "Before",
+  "Amoumt",
+  "After",
   "Win/Lose",
-  "After Balance",
-  "Status",
-  "Detail",
-
-  "Description",
 ];
 
 const userDetailHeadEdit = [

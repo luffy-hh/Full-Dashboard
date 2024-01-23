@@ -53,23 +53,17 @@ function UserReportTable() {
   console.log(userRecordSlot && userRecordSlot.data);
 
   const tableData = userRecordSlot?.data.map((d, i) => (
-    <tr className={styles.win_lose_color} key={`user_record_${i}`}>
+    <tr className={styles.win_lose_color} key={`user_record_${i}`} style={{ backgroundColor: d.action === 'bet' ? 'gray' : 'defaultColor' }}>
       <td>{d.created_at}</td>
-      <td>{"no data"}</td>
+      <td>{d.action}</td>
       <td>{d.player_id}</td>
-      <td>{"no date"}</td>
       <td>{d.game_name}</td>
       <td>{d.game_type}</td>
       <td>{d.game_provider_name}</td>
       <td>{d.before}</td>
       <td>{d.amount}</td>
-      <td>{"nodata"}</td>
-      <td>{"no data"}</td>
       <td>{d.after}</td>
-      <td>{d.action}</td>
-      <td>{"no data"}</td>
-
-      <td>{"no data"}</td>
+      <td>{d.after-d.before}</td>
     </tr>
   ));
 

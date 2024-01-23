@@ -224,6 +224,7 @@ exports.updateDeposit = catchAsync(async (req, res) => {
         type: "deposit-canceled",
         status: "Still",
       };
+      const newTransactionObj = createTransactionRecord(transactionObj)
       res.status(200).json({
         status: "Success",
         data: {

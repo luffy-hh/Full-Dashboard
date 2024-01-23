@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema({
       message: "Password and Confirm Password are not same and Try Again.",
     },
   },
-  security_code:{
+  securityCode:{
     type: String,
     match:[/^\d{6}$/, 'Security code must be a 6-digit number']
   },
@@ -117,12 +117,6 @@ userSchema.methods.correctPassword = async function (
   return await bcrypt.compare(candidatePassword, userPassword);
 };
 
-userSchema.methods.correctPassword = async function (
-  candidatePassword,
-  userPassword
-) {
-  return await bcrypt.compare(candidatePassword, userPassword);
-};
 userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
   if (this.passwordChangedAt) {
     const changedTimestamp = parseInt(
