@@ -13,7 +13,7 @@ import DohnutChart from "./ChartForAdmin/DohnutChart";
 import AllAmountByGame from "./AllamountbyGame/AllAmountByGame";
 import { selectCollapsed } from "../../Feactures/modalSlice";
 import { io } from "socket.io-client";
-
+const socket = io("https://gamevegas.online", { autoConnect: false });
 const dashUser = [
   { id: 1, user: "Master", total: "280" },
   { id: 2, user: "Agent", total: "300" },
@@ -26,7 +26,13 @@ xhr.withCredentials = true;
 
 function Home() {
   useEffect(() => {
-    const socket = io("https://gamevegas.online");
+    socket.connect();
+    socket.on("joinSocket", (data) => {
+      console.log(data);
+    });
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
   const dispatch = useDispatch();
