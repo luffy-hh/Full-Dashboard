@@ -12,7 +12,7 @@ import BarChart from "./ChartForAdmin/BarChart";
 import DohnutChart from "./ChartForAdmin/DohnutChart";
 import AllAmountByGame from "./AllamountbyGame/AllAmountByGame";
 import { selectCollapsed } from "../../Feactures/modalSlice";
-// import { socket } from "../../socket";
+import { socket } from "../../socket";
 
 const dashUser = [
   { id: 1, user: "Master", total: "280" },
@@ -22,11 +22,13 @@ const dashUser = [
 ];
 
 function Home() {
-  // useEffect(() => {
-  //   socket.on("connect", () => {
-  //     console.log("socket connected" + socket.id);
-  //   });
-  // }, []);
+  useEffect(() => {
+    console.log("working console");
+
+    socket.on("connect", () => {
+      console.log("socket connected" + socket.id);
+    });
+  }, []);
 
   const dispatch = useDispatch();
   const logInData = useSelector(selectlogInData);
