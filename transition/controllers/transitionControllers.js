@@ -139,7 +139,7 @@ exports.transferUnitWithUserId = catchAsync(async (req, res, next) => {
           before_amt: sendUser.unit,
           after_amt: sentUser.unit,
           action_amt: req.body.amount,
-          type: "send to other",
+          type: "send-to-other",
           status: "Out",
         };
         const newSenderRecord = createTransactionRecord(transactionSenderObj);
@@ -157,7 +157,7 @@ exports.transferUnitWithUserId = catchAsync(async (req, res, next) => {
           before_amt: receiveUser.unit,
           action_amt: req.body.amount,
           after_amt: receivedUser.unit,
-          type: "receive from other",
+          type: "receive-from-other",
           status: "In",
         };
         const newReceiverRecord = createTransactionRecord(

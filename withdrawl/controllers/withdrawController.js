@@ -61,7 +61,7 @@ exports.createWithdraw = catchAsync(async (req, res) => {
         const transactionObj = {
             user_id :req.user.id,
             action_id: uplineObjId,
-            before_amt: currentUserObj.unit,
+            before_amt: req.user.unit,
             action_amt:reqBody.amount,
             after_amt:withdrawUserObj.unit,
             type: 'withdrawal-requested',

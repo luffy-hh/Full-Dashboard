@@ -37,7 +37,7 @@ exports.createShanRole = catchAsync(async (req, res) => {
         process.env.JWT_SECRET
       );
       const currentUserId = decoded.id;
-      const reqBody = { ...req.body, ownderData: currentUserId };
+      const reqBody = { ...req.body };
       reqBody.img = req.file.filename;
       const imageLink = `${req.protocol}://${req.get(
         "host"

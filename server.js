@@ -1,62 +1,77 @@
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const express = require("express");
-const https = require("https");
 const http = require("http");
-const { Server } = require("socket.io");
+const {Server} = require("socket.io");
 const app = require("./app");
-const fs = require("fs");
 require("./slots/grpc-services/grpc");
-dotenv.config({ path: "./config.env" });
+const setupSocketLogic = require("./shan/shan_table/shanSocket");
+const tableGetter = require("./shan/shan_table/tableGetter");
+
+dotenv.config({path: "./config.env"});
 let options = {};
 
-// options = {
-//   key: fs.readFileSync("/etc/letsencrypt/live/gamevegas.online/privkey.pem"),
-//   cert: fs.readFileSync("/etc/letsencrypt/live/gamevegas.online/fullchain.pem"),
-// };
+
+let tableRooms = [];
 
 mongoose
-  .connect(process.env.DATABASE_LOCAL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("DB Connection Success"));
+    .connect(process.env.DATABASE_LOCAL, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    })
+    .then(() => {
+        console.log("DB Connection Success");
+    })
+    .catch((error) => {
+        console.error(error);
+    });
 
-const port = process.env.PORT || 3000;
-const http_server = http.createServer(app);
+(async () => {
+    tableRooms = [];
+    const tablesValue = await tableGetter.getTables();
+    tableRooms = [...tableRooms, ...tablesValue];
+    setupServer();
+})();
 
-const io = new Server(http_server);
 
-let tableRooms = {}; // Object to store players in each table
+function setupServer() {
+    const port = process.env.PORT || 5000;
+    const httpServer = http.createServer(app);
 
-io.on("connection", (socket) => {
-  console.log("A user connected");
+    // Socket.IO server
 
-  // Handle table joining
-  socket.on("joinTable", (tableId) => {
-    socket.join(tableId);
-    console.log(`User joined table: ${tableId}`);
+    const io = new Server();
 
-    // Initialize or update the table room data
-    if (!tableRooms[tableId]) {
-      tableRooms[tableId] = { players: [] };
-    }
 
-    // Add player to the room
-    tableRooms[tableId].players.push(socket.id);
-  });
+    console.log("endpoint:" + tableRooms);
 
-  // Disconnect event
-  socket.on("disconnect", () => {
-    console.log("User disconnected");
+    // Default namespace connection event
+    io.on("connection", (socket) => {
+        console.log(`${socket.id} : user connected`);
+        socket.emit("joinSocket", {message: "Welcome To Shan"});
+    });
 
-    // Remove the disconnected player from the table room
-    for (const tableId in tableRooms) {
-      tableRooms[tableId].players = tableRooms[tableId].players.filter(
-        (playerId) => playerId !== socket.id
-      );
-    }
-  });
-});
+    // Custom namespace "/admin" connection event
+    const adminNamespace = io.of("/admin");
+    adminNamespace.on("connection", (socket) => {
+        console.log(`Admin ${socket.id} connected`);
 
-http_server.listen(port, () => console.log("Listen Now", port));
+        // Handle "changeTable" event
+        socket.on("changeTable", async () => {
+            tableRooms = [];
+            const tablesValue = await tableGetter.getTables();
+            tableRooms = [...tableRooms, ...tablesValue];
+            console.log("Change Table Value:", tablesValue);
+        });
+
+        // Handle "disconnect" event
+        socket.on("disconnect", () => {
+            console.log(`Admin ${socket.id} disconnected`);
+        });
+    });
+
+    setupSocketLogic(io, tableRooms);
+
+    httpServer.listen(port, () => console.log("Listen Now", port));
+    io.attach(httpServer)
+}
