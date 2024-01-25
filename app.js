@@ -114,7 +114,7 @@ app.use(express.json());
 // app.use(xss());
 
 app.use(express.static("public"));
-
+app.use(express.static("static"));
 //app.use((req, res, next) => {
 //console.log("This is Test Middleware");
 //next();
