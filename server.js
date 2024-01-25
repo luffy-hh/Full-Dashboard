@@ -7,6 +7,7 @@ const app = require("./app");
 require("./slots/grpc-services/grpc");
 const setupSocketLogic = require("./shan/shan_table/shanSocket");
 const tableGetter = require("./shan/shan_table/tableGetter");
+const { setIOInstance } = require("./shan/shan_table/shanTableController");
 
 dotenv.config({ path: "./config.env" });
 let options = {};
@@ -71,7 +72,7 @@ function setupServer() {
   });
 
   setupSocketLogic(io, tableRooms);
-
+  setIOInstance(io);
   httpServer.listen(port, () => console.log("Listen Now", port));
   io.attach(httpServer, {
     cors: {
