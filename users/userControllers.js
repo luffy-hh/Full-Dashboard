@@ -153,7 +153,7 @@ exports.signup = catchAsync(async (req, res, next) => {
       });
     }
 
-    await newUser.save();
+
     // Generate a JWT token
     const token = signToken(newUser);
 
@@ -286,7 +286,9 @@ exports.checkSecurityCode=catchAsync(async (req,res,next)=>{
   try {
     if(req.user.securityCode === req.body.securityCode){
       next();
-    } next(new AppError('Incorrect Security Code.',403))
+    }else{
+      next(new AppError('Incorrect Security Code.',403))
+    }
   }catch (e) {
     next(new AppError(e.message,e.status))
   }

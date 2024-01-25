@@ -8,7 +8,14 @@ const twodHead = [
 ];
 
 const luckyNoHead = ["No", "2D Number", "Category", "Status", "Date"];
-const threeDLuckyNoHead = ["No", "3D Number", "Category", "Status", "Date"];
+const threeDLuckyNoHead = [
+  "No",
+  "3D Number",
+  "Category",
+  "Status",
+  "Other Compensation",
+  "Date",
+];
 
 const twoDReportHead = [
   { text: "Table 1", active: true, id: 1 },
@@ -31,7 +38,7 @@ const table3Data = [
   "အကြိမ်အရေအတွက်",
   "ထိုးသည့်ပမာဏစုစုပေါင်း",
   "နိုင်သည့်ပမာဏ",
-  "ဂုတ်စီး",
+
   "အရှုံးအမြတ်",
 ];
 

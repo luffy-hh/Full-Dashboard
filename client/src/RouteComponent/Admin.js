@@ -56,6 +56,7 @@ import MasterWithdrawRequest from "../Pages/ToWithdrawPage/MasterWithdraw/Master
 import MasterDepositHistory from "../Pages/ToDepositPage/MasterDeposit/MasterDepositHistory";
 import MasterDepositRequest from "../Pages/ToDepositPage/MasterDeposit/MasterDepositRequest";
 import DownLineAgent from "../Component/DownLineUser/DownLineAgent";
+import ShanGame from "../GameApp/Pages/ShanGame/ShanGame";
 
 const admin = [
   { id: 0, path: "/admin", route: <Home /> },
@@ -162,6 +163,9 @@ function Admin() {
         {master.map((d) => (
           <Route key={d.id} path={d.path} element={d.route} />
         ))}
+      </Route>
+      <Route path="shankomee">
+        <Route path=":tableId" element={<ShanGame />} />
       </Route>
     </Routes>
   );

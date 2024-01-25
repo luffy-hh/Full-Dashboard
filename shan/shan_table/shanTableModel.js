@@ -41,6 +41,20 @@ const shanTableSchema = new mongoose.Schema({
         type: Number,
         default: 0,
       },
+      banker_amt: {
+        type: Number,
+        default: 0,
+      },
+      play_amt: {
+        type: Number,
+        default: 0,
+      },
+      player_status: {
+        type: String,
+        enum: ["play", "wait"],
+        default: "wait",
+      },
+      player_card: [],
     },
   ],
 });

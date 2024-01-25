@@ -49,7 +49,7 @@ function ThaiTable3({ mainData, text }) {
       <td>{d.count}</td>
       <td>{d.amount}</td>
       <td>{d.winObj.reduce((acc, curr) => acc + curr.returnedAmount, 0)}</td>
-      <td>no data</td>
+
       <td>
         {d.winObj.length >= 1
           ? d.winObj?.reduce((acc, curr) => acc + curr.returnedAmount, 0) -

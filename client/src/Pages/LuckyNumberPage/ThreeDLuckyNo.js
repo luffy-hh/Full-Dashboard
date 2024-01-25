@@ -42,6 +42,11 @@ function ThreeDLuckyNo({
       <td>{d.number}</td>
       <td>{d.subCatId.subCatName}</td>
       <td>{"Complete"}</td>
+      <td>
+        {d.otherCompensationNumberArray?.map((d) => (
+          <span key={d._id}>{d.otherNumber},</span>
+        ))}
+      </td>
       <td className={styles.luky_date}>
         <span style={{ marginRight: "1.2rem" }}>
           {new Date(d.date).toLocaleDateString()}
@@ -76,7 +81,7 @@ function ThreeDLuckyNo({
         </Container>
       </div>
       <Container
-        className={`table_d_container box_shadow ${styles.show_lucky_no}`}
+        className={`table_d_container hide_scroll box_shadow ${styles.show_lucky_no}`}
       >
         <Tables thead={luckyNoHead} tbody={list} />
       </Container>

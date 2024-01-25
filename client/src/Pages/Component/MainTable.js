@@ -59,6 +59,7 @@ function MainTable({ data, dataArr, query, downLine }) {
               {d.status ? "Active" : "InActive"}
             </span>
           </td>
+          {admin ? null : <td>{d?.securityCode}</td>}
           <td className="table_d_lastTime">
             <span>{new Date(d.loginTime).toLocaleDateString()}</span>
             <span>{new Date(d.loginTime).toLocaleTimeString()}</span>
@@ -79,6 +80,9 @@ function MainTable({ data, dataArr, query, downLine }) {
             )}
             <th style={{ minWidth: "50rem" }}>Function</th>
             <th style={{ minWidth: "15rem" }}>Status</th>
+            {admin ? null : (
+              <th style={{ minWidth: "20rem" }}>Security Code</th>
+            )}
             <th style={{ minWidth: "20rem" }}>Last login Time</th>
           </tr>
         </thead>

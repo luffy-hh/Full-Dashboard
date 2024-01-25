@@ -12,7 +12,8 @@ import BarChart from "./ChartForAdmin/BarChart";
 import DohnutChart from "./ChartForAdmin/DohnutChart";
 import AllAmountByGame from "./AllamountbyGame/AllAmountByGame";
 import { selectCollapsed } from "../../Feactures/modalSlice";
-
+import { io } from "socket.io-client";
+const socket = io("https://gamevegas.online", { autoConnect: false });
 const dashUser = [
   { id: 1, user: "Master", total: "280" },
   { id: 2, user: "Agent", total: "300" },
@@ -20,7 +21,20 @@ const dashUser = [
   { id: 4, user: "Total Profit", total: "40000000" },
 ];
 
+const xhr = new XMLHttpRequest();
+xhr.withCredentials = true;
+
 function Home() {
+  useEffect(() => {
+    socket.connect();
+    socket.on("joinSocket", (data) => {
+      console.log(data);
+    });
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
   const dispatch = useDispatch();
   const logInData = useSelector(selectlogInData);
   const allCounts = useSelector(selectAllCounts);

@@ -11,7 +11,6 @@ const tableGetter = require("./shan/shan_table/tableGetter");
 dotenv.config({ path: "./config.env" });
 let options = {};
 
-let io;
 let tableRooms = [];
 
 mongoose
@@ -26,30 +25,34 @@ mongoose
     console.error(error);
   });
 
-const initFunction = async () => {
+(async () => {
   tableRooms = [];
   const tablesValue = await tableGetter.getTables();
   tableRooms = [...tableRooms, ...tablesValue];
   setupServer();
-};
-initFunction();
+})();
 
 function setupServer() {
   const port = process.env.PORT || 5000;
-  const http_server = http.createServer(app);
+  const httpServer = http.createServer(app);
 
-  io = new Server(http_server);
+  // Socket.IO server
+
+  const io = new Server();
 
   console.log("endpoint:" + tableRooms);
 
   // Default namespace connection event
   io.on("connection", (socket) => {
-    console.log(`${socket.id} : user connected`);
+    console.log(`${socket.id} : user connected`, "line: 50");
     socket.emit("joinSocket", { message: "Welcome To Shan" });
+    socket.on("disconnect", () => {
+      console.log(`${socket.id} : user disconnected`);
+    });
   });
 
   // Custom namespace "/admin" connection event
-  const adminNamespace = io.of("/admin");
+  const adminNamespace = io.of("/dashboard");
   adminNamespace.on("connection", (socket) => {
     console.log(`Admin ${socket.id} connected`);
 
@@ -69,5 +72,12 @@ function setupServer() {
 
   setupSocketLogic(io, tableRooms);
 
-  http_server.listen(port, () => console.log("Listen Now", port));
+  httpServer.listen(port, () => console.log("Listen Now", port));
+  io.attach(httpServer, {
+    cors: {
+      "Access-Control-Allow-Origin": "*",
+      methods: ["GET", "POST"],
+      credentials: true,
+    },
+  });
 }
