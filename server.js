@@ -51,7 +51,30 @@ function setupServer() {
       console.log(`${socket.id} : user disconnected`);
     });
   });
-
+  const allTablesNamespace = io.of("/allTables");
+  allTablesNamespace.on("connection", (socket) => {
+    console.log("Connected For Table Data All");
+    socket.on("getTableDatasAll", async (data) => {
+      try {
+        const parsedData = JSON.parse(data);
+        if (parsedData.idValue === "all") {
+          const tablesValue = await tableGetter.responseTableAll();
+          socket.emit("responseTableDataAll", { tableDataAll: tablesValue });
+          console.log("getTablDatasAll Value:", tablesValue);
+        } else if (parsedData.idValue !== "all" && data) {
+          const tablesValue = await tableGetter.getTableByRole(
+            parsedData.idValue
+          );
+          socket.emit("responseTableDataAll", {
+            tableDataByRole: tablesValue,
+          });
+          // console.log("getTablDatasWithFilter Value:", tablesValue);
+        }
+      } catch (error) {
+        console.error("Error parsing JSON data:", error);
+      }
+    });
+  });
   // Custom namespace "/admin" connection event
   const adminNamespace = io.of("/dashboard");
   adminNamespace.on("connection", (socket) => {
