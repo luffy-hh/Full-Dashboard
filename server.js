@@ -34,7 +34,6 @@ mongoose
 })();
 
 function setupServer() {
-  try {
     const port = process.env.PORT || 5000;
   const httpServer = http.createServer(app);
 
@@ -82,7 +81,4 @@ function setupServer() {
       credentials: true,
     },
   });
-  } catch (error) {
-    console.log(error?.stack)
-  }
 }
