@@ -61,7 +61,7 @@ function setupServer() {
     // Handle "changeTable" event
     socket.on("changeTable", async () => {
       tableRooms = [];
-      const tablesValue = await tableGetter.getTables();
+      const tablesValue = await tableGetter.getTableAll();
       tableRooms = [...tableRooms, ...tablesValue];
       console.log("Change Table Value:", tablesValue);
     });
