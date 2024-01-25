@@ -6,9 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import Tables from "../../Component/Tables";
 import { selectThreeDLuckyNoHead } from "../../Feactures/adminTwodSlice";
 import { selectlogInData } from "../../Feactures/apiSlice";
+import Spinner from "../../Component/Spinner/Spinner";
 import {
   fetGetThreeDLuckyNo,
   selectThreeDLuckyNo,
+  selectThreeDluckyNoStatus,
   selectPostThreeDLuckyNo,
   selectfilterTwoDArr,
   postThreeDLuckyNo,
@@ -26,9 +28,11 @@ function ThreeDLuckyNo({
   const dispatch = useDispatch();
   const luckyNoData = useSelector(selectThreeDLuckyNo);
   const postLuckyNoData = useSelector(selectPostThreeDLuckyNo);
+
   const logInData = useSelector(selectlogInData);
   const accessToken = logInData.token;
   const filterTwoDArr = useSelector(selectfilterTwoDArr);
+  const loading = useSelector(selectThreeDluckyNoStatus);
 
   useEffect(() => {
     dispatch(fetGetThreeDLuckyNo({ api: "thai3DLuckyNum", accessToken }));
@@ -80,11 +84,15 @@ function ThreeDLuckyNo({
           </NormalButton>
         </Container>
       </div>
-      <Container
-        className={`table_d_container hide_scroll box_shadow ${styles.show_lucky_no}`}
-      >
-        <Tables thead={luckyNoHead} tbody={list} />
-      </Container>
+      {loading === "loading" ? (
+        <Spinner />
+      ) : (
+        <Container
+          className={`table_d_container hide_scroll box_shadow ${styles.show_lucky_no}`}
+        >
+          <Tables thead={luckyNoHead} tbody={list} />
+        </Container>
+      )}
     </>
   );
 }
