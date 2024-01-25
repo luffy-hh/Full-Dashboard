@@ -28,7 +28,7 @@ mongoose
 
 (async () => {
   tableRooms = [];
-  const tablesValue = await tableGetter.getTables();
+  const tablesValue = await tableGetter.getTableAll();
   tableRooms = [...tableRooms, ...tablesValue];
   setupServer();
 })();
