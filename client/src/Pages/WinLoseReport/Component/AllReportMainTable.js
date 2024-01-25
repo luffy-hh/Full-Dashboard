@@ -45,9 +45,13 @@ function AllReportMainTable({ selectReport }) {
           <span> {d.player_id}</span>
         </Link>
       </td>
-      <td>{Math.round(d.total_bet)}</td>
-      <td>{Math.round(d.total_win)}</td>
-      <td>{Math.round(d.total_win - d.total_bet)}</td>
+      <td>{d.total_bet}</td>
+      <td>{d.total_win}</td>
+      <td>{d.total_win - d.total_bet}</td>
+      <td>{"no data"}</td>
+      <td>{"no data"}</td>
+      <td>{"no data"}</td>
+      <td>{"no data"}</td>
     </tr>
   ));
 

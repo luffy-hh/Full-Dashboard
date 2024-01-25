@@ -20,6 +20,7 @@ import ShanTableCard from "../ShanTableCard";
 import Error from "../../../Component/ErrorandSuccess/Error";
 import Success from "../../../Component/ErrorandSuccess/Success";
 import { selectCollapsed } from "../../../Feactures/modalSlice";
+import { socket } from "../../../socket";
 
 function CreateTable() {
   const dispatch = useDispatch();
@@ -97,6 +98,7 @@ function CreateTable() {
     e.preventDefault();
 
     dispatch(fetPostShanRing({ api: "shantable", postData, accessToken }));
+    socket.emit("changeTable", "Create Table successfully");
   };
 
   console.log(shanRing);

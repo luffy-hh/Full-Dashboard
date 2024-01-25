@@ -39,6 +39,13 @@ export const fetGetGameCat = createAsyncThunk(
     return data;
   }
 );
+export const fetPatchGameCat = createAsyncThunk(
+  "data/fetPatchGameCat",
+  async ({ api, patchData, accessToken }) => {
+    const data = await patchDatas(api, patchData, accessToken);
+    return data;
+  }
+);
 
 export const fetGetSubGameCat = createAsyncThunk(
   "data/fetGetSubGameCat",
@@ -194,6 +201,10 @@ const initialState = {
   twoDReportHistory: null,
   threeDReportHistory: null,
   twoDTable1History: null,
+
+  patchGameCat: null,
+  patchGameCatStatus: "idle",
+  patchGameCatError: null,
 
   subGameCatId: {},
 };
@@ -426,6 +437,19 @@ const twoDapiSlice = createSlice({
         state.patchCloseNoError = action.error.message;
       })
 
+      //patch Game Cat
+      .addCase(fetPatchGameCat.pending, (state) => {
+        state.patchGameCatStatus = "loading";
+      })
+      .addCase(fetPatchGameCat.fulfilled, (state, action) => {
+        state.patchGameCatStatus = "succeeded";
+        state.patchGameCat = action.payload;
+      })
+      .addCase(fetPatchGameCat.rejected, (state, action) => {
+        state.patchGameCatStatus = "failed";
+        state.patchGameCatError = action.error.message;
+      })
+
       //patch Master game cat
       .addCase(fetPatchMasterGameCat.pending, (state) => {
         state.patchMasterGameCatStatus = "loading";
@@ -500,6 +524,8 @@ export const selectPatchCloseNoStatus = (state) =>
 export const selectLuckyNoData = (state) => state.twoDapi.luckyNoData;
 
 export const selectThreeDLuckyNo = (state) => state.twoDapi.threeDluckyNo;
+export const selectThreeDluckyNoStatus = (state) =>
+  state.twoDapi.threeDluckyNoStatus;
 export const selectPostThreeDLuckyNo = (state) =>
   state.twoDapi.postThreeDLuckyNoData;
 

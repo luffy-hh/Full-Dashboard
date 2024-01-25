@@ -24,7 +24,8 @@ function ShanTableCard() {
 
   console.log(rollIds, "roll id");
 
-  const shanRingData = shanRing?.data;
+  const shanRingData = shanRing?.data.tables;
+  console.log(shanRing && shanRing, "shanring");
 
   const list = shanRingData?.map((d) => (
     <div className={styles.shan_ring_box} key={d._id}>
