@@ -10,9 +10,6 @@ const shanTableSchema = new mongoose.Schema({
     ref: "ShanRoll",
     required: true,
   },
-  banker_amount: {
-    type: Number,
-  },
   description: {
     type: String,
   },
@@ -24,24 +21,18 @@ const shanTableSchema = new mongoose.Schema({
   endPoint: {
     type: String,
   },
-  tableNamespaceId: {
-    type: String,
-  },
   players: [
     {
       userId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
       },
       player_role: {
         type: String,
         enum: ["banker", "player"],
         default: "banker",
       },
-      game_unit: {
-        type: Number,
-        default: 0,
-      },
-      banker_amt: {
+      bank_amt: {
         type: Number,
         default: 0,
       },

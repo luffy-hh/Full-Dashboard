@@ -1,7 +1,12 @@
 const ShanTable = require("./shanTableModel");
-const getTables = async () => {
+exports.getTableAll = async () => {
   let updateTablesArr = [];
-  const shanTables = await ShanTable.find({});
+  const shanTables = await ShanTable.find({})
+    .populate({
+      path: "role",
+      model: "ShanRole",
+    })
+    .exec();
 
   shanTables.map((table) => {
     updateTablesArr.push(table.endPoint);
@@ -9,4 +14,22 @@ const getTables = async () => {
   return updateTablesArr;
 };
 
-module.exports = { getTables };
+exports.responseTableAll = async () => {
+  const shanTables = await ShanTable.find({})
+    .populate({
+      path: "role",
+      model: "ShanRole",
+    })
+    .exec();
+  return shanTables;
+};
+
+exports.getTableByRole = async (roleId) => {
+  const shanTables = await ShanTable.find({ role: roleId })
+    .populate({
+      path: "role",
+      model: "ShanRole",
+    })
+    .exec();
+  return shanTables;
+};

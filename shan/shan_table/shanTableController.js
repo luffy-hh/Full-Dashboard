@@ -4,8 +4,14 @@ const catchAsync = require("../../utils/catchAsync");
 const User = require("../../users/userModels");
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
-
 const ShanTable = require("./shanTableModel");
+
+let ioInstance;
+const setIOInstance = (io) => {
+  ioInstance = io;
+};
+
+exports.setIOInstance = setIOInstance;
 
 exports.createShanTableFromAdmin = catchAsync(async (req, res) => {
   try {
@@ -22,7 +28,6 @@ exports.createShanTableFromAdmin = catchAsync(async (req, res) => {
 
     const newTable = new ShanTable({
       tableName,
-      banker_amount: shanRoleObj.banker_amount,
       role,
       description,
     });
@@ -52,7 +57,12 @@ exports.createShanTableFromAdmin = catchAsync(async (req, res) => {
 // get all Tables
 exports.getAllTables = catchAsync(async (req, res, next) => {
   try {
-    const allTables = await ShanTable.find({});
+    const allTables = await ShanTable.find({})
+      .populate({
+        path: "role",
+        model: "ShanRoll",
+      })
+      .exec();
 
     res.status(200).json({
       status: "succeed",
@@ -73,7 +83,12 @@ exports.getAllTables = catchAsync(async (req, res, next) => {
 exports.getTablesByRole = catchAsync(async (req, res, next) => {
   try {
     const roleId = req.params.id;
-    const allTables = await ShanTable.find({ role: roleId });
+    const allTables = await ShanTable.find({ role: roleId })
+      .populate({
+        path: "role",
+        model: "ShanRoll",
+      })
+      .exec();
 
     res.status(200).json({
       status: "succeed",
@@ -88,3 +103,51 @@ exports.getTablesByRole = catchAsync(async (req, res, next) => {
     });
   }
 });
+
+exports.tableOut = async (req, res) => {
+  try {
+    const { tableId } = req.body;
+
+    const shanTable = await ShanTable.findOne({ endPoint: `/${tableId}` });
+
+    if (!shanTable) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Table not found",
+      });
+    }
+
+    // Remove the user from the table players array
+    const foundPlayer = shanTable.players.find(
+      (player) => String(player.userId) === String(req.user.userId) // Use user.userId
+    );
+
+    // Update the user's game unit value
+    if (foundPlayer) {
+      req.user.gameUnit = foundPlayer.game_unit;
+    } else {
+      // Handle the case when the player is not found (e.g., log a message)
+      console.error(
+        `Player with userId ${req.user.userId} not found in table ${tableId}`
+      );
+    }
+
+    await Promise.all([shanTable.save()]);
+
+    // Emit an event to notify other clients about the player leaving
+    ioInstance.of(shanTable.endPoint).emit("playerLeft", {
+      userId: req.user.userId,
+      tableId,
+    });
+
+    res.status(200).json({
+      status: "success",
+      message: "Player removed from table and game unit updated",
+    });
+  } catch (e) {
+    res.json({
+      status: "failed",
+      message: e.stack,
+    });
+  }
+};
