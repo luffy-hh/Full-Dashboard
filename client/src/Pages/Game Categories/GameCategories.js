@@ -28,11 +28,11 @@ function GameCategories() {
 
   useEffect(() => {
     dispatch(fetGetGameCat({ api: "gamecat", accessToken }));
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetGetSubGameCat({ api: "gamesubcat", accessToken }));
-  }, [filterSubGameArr]);
+  }, [filterSubGameArr, dispatch]);
 
   const gameCatArr = gameCat?.data.allGameCategory;
 

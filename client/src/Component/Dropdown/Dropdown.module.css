@@ -19,17 +19,15 @@
   list-style: none;
   display: flex;
   flex-direction: column;
-
   top: 5rem;
   background-color: var(--blue-light);
   width: 100%;
   color: var(--text-white);
-
   max-height: 40rem;
   overflow-y: auto;
 }
 .dropdown_container ul li {
-  padding: 1.2rem 2.4rem;
+  padding: 1.2rem 0;
   font-size: 1.6rem;
   transition: all 0.3s;
   cursor: pointer;

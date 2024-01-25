@@ -25,9 +25,13 @@ function Home() {
   useEffect(() => {
     console.log("working console");
 
-    socket.on("connect", () => {
-      console.log("socket connected" + socket.id);
+    socket.on("joinSocket", (data) => {
+      console.log(data);
     });
+
+    return () => {
+      socket.off("joinSocket");
+    };
   }, []);
 
   const dispatch = useDispatch();
