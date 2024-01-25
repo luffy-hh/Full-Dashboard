@@ -8,6 +8,7 @@ require("./slots/grpc-services/grpc");
 const setupSocketLogic = require("./shan/shan_table/shanSocket");
 const tableGetter = require("./shan/shan_table/tableGetter");
 const { setIOInstance } = require("./shan/shan_table/shanTableController");
+const shanTableControllerSocket = require("./shan/shan_table/shanTableControllerSocket");
 
 dotenv.config({ path: "./config.env" });
 let options = {};
@@ -51,28 +52,26 @@ function setupServer() {
       console.log(`${socket.id} : user disconnected`);
     });
   });
-  const allTablesNamespace = io.of("/allTables");
-  allTablesNamespace.on("connection", (socket) => {
+  const allTables = io.of("/allTables");
+  allTables.on("connection", (socket) => {
     console.log("Connected For Table Data All");
+
     socket.on("getTableDatasAll", async (data) => {
-      try {
-        const parsedData = JSON.parse(data);
-        if (parsedData.idValue === "all") {
-          const tablesValue = await tableGetter.responseTableAll();
-          socket.emit("responseTableDataAll", { tableDataAll: tablesValue });
-          console.log("getTablDatasAll Value:", tablesValue);
-        } else if (parsedData.idValue !== "all" && data) {
-          const tablesValue = await tableGetter.getTableByRole(
-            parsedData.idValue
-          );
-          socket.emit("responseTableDataAll", {
-            tableDataByRole: tablesValue,
-          });
-          // console.log("getTablDatasWithFilter Value:", tablesValue);
-        }
-      } catch (error) {
-        console.error("Error parsing JSON data:", error);
-      }
+      await shanTableControllerSocket.readTableData(socket, data);
+    });
+  });
+
+  const createTable = io.of("/createTable");
+  createTable.on("connection", (socket) => {
+    console.log("Table Create");
+    socket.emit("CreateStartTable", { message: "Create Start Table" });
+
+    socket.on("newTableData", async (data) => {
+      await shanTableControllerSocket.createTableData(socket, data);
+      tableRooms = [];
+      const tablesValue = await tableGetter.getTables();
+      tableRooms = [...tableRooms, ...tablesValue];
+      console.log("Create Table Value:", tablesValue);
     });
   });
   // Custom namespace "/admin" connection event
