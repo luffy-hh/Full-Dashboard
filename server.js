@@ -73,7 +73,7 @@ function setupServer() {
     socket.on("newRoleData", async (data) => {
       await shanRoleControllerSocket.createRoleData(socket, data);
       roleNamespace = [];
-      const rolesValue = await roleGetter.getTablesAll();
+      const rolesValue = await roleGetter.getTableAll();
       roleNamespace = [...roleNamespace, ...rolesValue];
       console.log("Create Role Value:", roleNamespace);
     });
@@ -121,7 +121,7 @@ function setupServer() {
 
     socket.on("changeTable", async () => {
       tableRooms = [];
-      const tablesValue = await tableGetter.getTablesAll();
+      const tablesValue = await tableGetter.getTableAll();
       tableRooms = [...tableRooms, ...tablesValue];
       console.log("Change Table Value:", tablesValue);
     });
