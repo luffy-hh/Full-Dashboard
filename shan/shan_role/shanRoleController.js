@@ -31,18 +31,16 @@ exports.uploadShanRoleImg = upload.single("img");
 exports.createShanRole = catchAsync(async (req, res) => {
   try {
     if (req.file) {
-      const token = req.headers.authorization.split(" ")[1];
-      const decoded = await promisify(jwt.verify)(
-        token,
-        process.env.JWT_SECRET
-      );
-      const currentUserId = decoded.id;
       const reqBody = { ...req.body };
       reqBody.img = req.file.filename;
       const imageLink = `${req.protocol}://${req.get(
         "host"
       )}/images/shan_roll/${req.file.filename}`;
       const newShanRole = await ShanRole.create({ ...reqBody });
+      const endpoint = `/${newShanRole._id.toString()}`;
+      newShanRole.endPoint = endpoint;
+      await newShanRole.save();
+
       res.status(201).json({
         status: "success",
         data: {
