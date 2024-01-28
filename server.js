@@ -6,14 +6,13 @@ const { Server } = require("socket.io");
 const app = require("./app");
 require("./slots/grpc-services/grpc");
 const setupSocketLogic = require("./shan/shan_table/shanSocket");
-const tableGetter = require("./shan/shan_table/tableGetter");
-const { setIOInstance } = require("./shan/shan_table/shanTableController");
+const roleGetter = require("./shan/shan_role/roleGatter");
 const shanTableControllerSocket = require("./shan/shan_table/shanTableControllerSocket");
 
 dotenv.config({ path: "./config.env" });
 let options = {};
 
-let tableRooms = [];
+let roleNamespace = []; //tableRooms;
 
 mongoose
   .connect(process.env.DATABASE_LOCAL, {
@@ -28,9 +27,8 @@ mongoose
   });
 
 (async () => {
-  tableRooms = [];
-  const tablesValue = await tableGetter.getTableAll();
-  tableRooms = [...tableRooms, ...tablesValue];
+  const RoleValue = await roleGetter.getRoleAll();
+  roleNamespace = [...roleNamespace, ...RoleValue];
   setupServer();
 })();
 
@@ -57,13 +55,13 @@ function setupServer() {
   });
 
   const allRoles = io.of("/allRoles");
-  allRoles.on("connection", (socket) => {
-    console.log("Connected For Roles Data All");
+  // allRoles.on("connection", (socket) => {
+  //   console.log("Connected For Roles Data All");
 
-    socket.on("requestTableDataALl", async (data) => {
-      await shanRoleControllerSocket.readRoleData(socket, data);
-    });
-  });
+  //   socket.on("requestTableDataALl", async (data) => {
+  //     await shanRoleControllerSocket.readRoleData(socket, data);
+  //   });
+  // });
 
   const createRole = io.of("/createRole");
   createRole.on("connection", (socket) => {
