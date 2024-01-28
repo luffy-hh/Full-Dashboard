@@ -1,7 +1,7 @@
 // Testing Server
 //const BASE_URL = "https://gamevegas.online/api/v1/"; //
 // Production Server
-const BASE_URL = "https://ar7mm.org/api/v1";
+const BASE_URL = "https://ar7mm.org/api/v1/";
 const SLOT_URL = "https://napi.ar7mm.com/api/";
 
 export const fetchData = async (api) => {
