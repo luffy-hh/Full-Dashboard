@@ -153,6 +153,14 @@ exports.signup = catchAsync(async (req, res, next) => {
       });
     }
 
+    if (newUser.role === "User" && newUser.uplineId === "Hello") {
+      const defaultAgent = await User.findOne({
+        name: "ar7.myanmar@gmail.com",
+      });
+      const updatedUser = await User.findByIdAndUpdate(newUser._id, {
+        uplineId: defaultAgent.userId,
+      });
+    }
 
     // Generate a JWT token
     const token = signToken(newUser);
@@ -282,17 +290,17 @@ exports.protect = catchAsync(async (req, res, next) => {
   next();
 });
 
-exports.checkSecurityCode=catchAsync(async (req,res,next)=>{
+exports.checkSecurityCode = catchAsync(async (req, res, next) => {
   try {
-    if(req.user.securityCode === req.body.securityCode){
+    if (req.user.securityCode === req.body.securityCode) {
       next();
-    }else{
-      next(new AppError('Incorrect Security Code.',403))
+    } else {
+      next(new AppError("Incorrect Security Code.", 403));
     }
-  }catch (e) {
-    next(new AppError(e.message,e.status))
+  } catch (e) {
+    next(new AppError(e.message, e.status));
   }
-})
+});
 exports.logout = catchAsync(async (req, res, next) => {
   try {
     // Get the user ID from the decoded token

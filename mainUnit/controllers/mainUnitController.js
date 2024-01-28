@@ -25,15 +25,13 @@ exports.createMainUnit = async (req, res) => {
 // Read Main Unit
 exports.getMainUnitValue = async (req, res) => {
   try {
-    const unitId = "6527d1074eb2bfc53e025c9d";
-
-    const query = MainUnit.findById(unitId);
+    const query = MainUnit.find();
     const mainUnitValue = await query;
 
     res.status(200).json({
       status: "Success",
       data: {
-        mainUnitValue: mainUnitValue,
+        mainUnitValue: mainUnitValue[0],
       },
     });
   } catch (err) {
@@ -47,10 +45,9 @@ exports.getMainUnitValue = async (req, res) => {
 // Update or Increase / Decrease Main Unit
 exports.updateMainUnit = async (req, res) => {
   try {
-    const unitId = "6527d1074eb2bfc53e025c9d";
     const addUnitValue = req.body.mainUnit * 1;
-    const mainUnitObj = await MainUnit.findById(unitId);
-    const orgMainUnitValue = mainUnitObj.mainUnit * 1;
+    const mainUnitObj = await MainUnit.find();
+    const orgMainUnitValue = mainUnitObj[0].mainUnit * 1;
     const status = req.body.status;
 
     let newMainUnit;
@@ -66,7 +63,7 @@ exports.updateMainUnit = async (req, res) => {
     const currentMyanmarTime = moment().format("YYYY-MM-DD HH:mm:ss");
 
     const mainUnitValue = await MainUnit.findByIdAndUpdate(
-      unitId,
+      mainUnitObj[0]._id,
       {
         mainUnit: newMainUnit,
       },
@@ -74,12 +71,10 @@ exports.updateMainUnit = async (req, res) => {
     );
 
     //User Id and User Name
-    const userId = "652828b555d62366ddb1bc4c";
-    const curentUserObj = await User.findById(userId);
-    const userName = curentUserObj.name;
+    const userName = req.user.name;
 
     const mainUnitHistoryObj = {
-      userId: userId,
+      userId: req.user.id,
       userName: userName,
       createDate: moment(currentMyanmarTime).tz("Asia/Yangon").format(),
       actionAmount: addUnitValue,
