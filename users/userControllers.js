@@ -155,7 +155,7 @@ exports.signup = catchAsync(async (req, res, next) => {
 
     if (newUser.role === "User" && newUser.uplineId === "Hello") {
       const defaultAgent = await User.findOne({
-        name: "ar7.myanmar@gmail.com",
+        email: "ar7mm.agent@gmail.com",
       });
       const updatedUser = await User.findByIdAndUpdate(newUser._id, {
         uplineId: defaultAgent.userId,
