@@ -18,9 +18,6 @@ const shanTableSchema = new mongoose.Schema({
     enum: ["inactive", "active"],
     default: "inactive",
   },
-  endPoint: {
-    type: String,
-  },
   players: [
     {
       userId: {
@@ -30,7 +27,7 @@ const shanTableSchema = new mongoose.Schema({
       player_role: {
         type: String,
         enum: ["banker", "player"],
-        default: "banker",
+        default: "player",
       },
       bank_amt: {
         type: Number,

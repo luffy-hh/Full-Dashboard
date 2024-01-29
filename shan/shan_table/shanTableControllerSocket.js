@@ -10,9 +10,6 @@ exports.createTableData = async (socket, data) => {
       description: parsedData.description,
     });
     await newTable.save();
-    const endpoint = `/${newTable._id.toString()}`;
-    newTable.endPoint = endpoint;
-    await newTable.save();
 
     socket.emit("createTable", { newTable });
   } catch (error) {
@@ -28,7 +25,7 @@ exports.readTableData = async (socket, data) => {
       const tablesValue = await tableGetter.responseTableAll();
       socket.emit("responseTableDataAll", { tableDataAll: tablesValue });
       console.log("getTableDatasAll Value:", tablesValue);
-    } else if (parsedData.idValue !== "all" && data) {
+    } else if (parsedData.idValue !== "all" && parsedData.idValue) {
       const tablesValue = await tableGetter.getTableByRole(parsedData.idValue);
       socket.emit("responseTableDataAll", { tableDataByRole: tablesValue });
     }

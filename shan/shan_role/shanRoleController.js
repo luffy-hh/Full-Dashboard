@@ -57,45 +57,6 @@ exports.createShanRole = catchAsync(async (req, res) => {
   }
 });
 
-// Read All Shan Roll
-exports.getShanRoleAll = catchAsync(async (req, res) => {
-  try {
-    const queryObj = { ...req.query };
-    const excludeFields = ["page", "sort", "limit", "fields"];
-    excludeFields.forEach((el) => delete queryObj[el]);
-
-    let queryStr = JSON.stringify(queryObj);
-    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-
-    // Select the 'img' field in the query
-    const query = ShanRole.find(JSON.parse(queryStr));
-    const allShanRole = await query;
-
-    // Construct image links for each result
-    const shanRoleWithImageLinks = allShanRole.map((shanRole) => {
-      return {
-        ...shanRole._doc,
-        imgLink: `${req.protocol}://${req.get("host")}/images/shan_roll/${
-          shanRole.img
-        }`,
-      };
-    });
-
-    res.status(200).json({
-      status: "Success",
-      length: allShanRole.length,
-      data: {
-        allShanRole: shanRoleWithImageLinks, // Include image links in the response
-      },
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: "failed",
-      message: err,
-    });
-  }
-});
-
 // Update Shan Roll
 exports.updateShanRole = catchAsync(async (req, res) => {
   try {
