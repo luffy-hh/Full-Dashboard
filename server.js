@@ -9,6 +9,7 @@ const roleGetter = require("./shan/shan_role/roleGetter");
 const shanTableControllerSocket = require("./shan/shan_table/shanTableControllerSocket");
 const User = require("./users/userModels");
 const Table = require("./shan/shan_table/shanTableModel");
+const Role = require('./shan/shan_role/shanRoleModel')
 
 dotenv.config({ path: "./config.env" });
 let options = {};
