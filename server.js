@@ -5,14 +5,16 @@ const http = require("http");
 const { Server } = require("socket.io");
 const app = require("./app");
 require("./slots/grpc-services/grpc");
-const Role = require("./shan/shan_role/shanRoleModel");
+const roleGetter = require("./shan/shan_role/roleGetter");
 const shanTableControllerSocket = require("./shan/shan_table/shanTableControllerSocket");
+const User = require("./users/userModels");
+const Table = require("./shan/shan_table/shanTableModel");
 
 dotenv.config({ path: "./config.env" });
 let options = {};
 
 let roleNamespace = []; //tableRooms;
-
+let userSocketMap = {};
 mongoose
   .connect(process.env.DATABASE_LOCAL, {
     useNewUrlParser: true,
