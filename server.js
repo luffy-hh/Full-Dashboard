@@ -5,7 +5,6 @@ const http = require("http");
 const { Server } = require("socket.io");
 const app = require("./app");
 require("./slots/grpc-services/grpc");
-const setupSocketLogic = require("./shan/shan_table/shanSocket");
 const roleGetter = require("./shan/shan_role/roleGatter");
 const shanTableControllerSocket = require("./shan/shan_table/shanTableControllerSocket");
 
