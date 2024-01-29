@@ -5,7 +5,7 @@ const http = require("http");
 const { Server } = require("socket.io");
 const app = require("./app");
 require("./slots/grpc-services/grpc");
-const roleGetter = require("./shan/shan_role/roleGatter");
+const Role = require("./shan/shan_role/shanRoleModel");
 const shanTableControllerSocket = require("./shan/shan_table/shanTableControllerSocket");
 
 dotenv.config({ path: "./config.env" });
