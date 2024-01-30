@@ -206,8 +206,8 @@ exports.login = catchAsync(async (req, res, next) => {
     const user = await User.findOne({ userId });
     console.log(user);
 
-    if (!user.status) {
-      return next(new AppError("You have been blocked", 400));
+    if (!user && !user?.status) {
+      return next(new AppError("You User Id is invalid.", 400));
     }
     // ၂. ရှိတယ်ဆိုရင် Password ကိုတိုက်စစ်ပြီး User က လက်ရှိ သုံးနေ / မသုံးနေကို စစ်
 
@@ -242,7 +242,7 @@ exports.login = catchAsync(async (req, res, next) => {
   } catch (err) {
     res.status(404).json({
       status: "fail",
-      message: err.stack,
+      message: err.message,
     });
   }
 });
