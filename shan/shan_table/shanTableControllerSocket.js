@@ -24,7 +24,7 @@ exports.readTableData = async (socket, data) => {
       console.log("getTableDatasAll Value:", tablesValue);
     } else if (data.idValue !== "all" && data.idValue) {
       const tablesValue = await tableGetter.getTableByRole(data.idValue);
-      socket.emit("responseTableDataAll", { tableDataByRole: tablesValue });
+      socket.emit("responseTableDataAll", { tableDataAll: tablesValue });
     }
   } catch (error) {
     console.error("Error parsing JSON data:", error);
