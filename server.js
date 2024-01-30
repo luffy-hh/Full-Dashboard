@@ -82,17 +82,14 @@ function setupServer() {
             return;
           }
           // Players Is full or not Condition
-          if (
-            tableObj.players.length >= 6 ||
-            Object.keys(userSocketMap).length >= 6
-          ) {
+          if (tableObj.players.length >= 6)  {
             socket.emit("rejectJoinTable", {
               message: "This Table can't join because of full of players.",
               status: false,
             });
             return;
           }
-          // Player is Stay Current table or not Condition
+          // Player is Stay Current table or not In Database Condition
           if (
             tableObj.players.some(
               (player) =>
@@ -110,28 +107,37 @@ function setupServer() {
           const otherTable = await Table.findOne({
             "players.userId": currentUser._id.toString(),
           });
-
+          let joinedPalyerObjAtOtherTable;
           if (otherTable) {
-            const filterUser = otherTable.players.find((player) => {
+            joinedPalyerObjAtOtherTable = otherTable.players.find((player) => {
               return player.userId.toString() === currentUser._id.toString();
             });
-            if (filterUser.player_role === "banker") {
-              return;
-            }
-            otherTable.players = otherTable.players.filter(
-              (player) => String(player.userId) !== String(currentUser._id)
-            );
-
-            await otherTable.save();
           }
-
+          
+          if (joinedPalyerObjAtOtherTable) {
+            if (joinedPalyerObjAtOtherTable.player_role === "banker") {
+              socket.emit("rejectJoinTable", {
+                message:
+                  "You are Banker In Other Table So not join other table.",
+                status: false,
+              });
+              return;
+            } else {
+              otherTable.players = otherTable.players.filter(
+                (player) => String(player.userId) !== String(currentUser._id)
+              );
+              await otherTable.save();
+            }
+          }
           // Check Table Object Array is First Element Or Not
-          console.log(tableObj.players.length);
           if (tableObj.players.length === 0) {
             tableObj.players.push({
-              userId: currentUser._id,
+              userId: currentUser.userId,
               player_role: "banker",
-              // bank_amt: ,
+              bank_amt: roleObj.banker_amount,
+            });
+            await User.findByIdAndUpdate({
+              gameUnit: currentUser.gameUnit - roleObj.banker_amount,
             });
           } else {
             tableObj.players.push({
@@ -140,8 +146,8 @@ function setupServer() {
           }
 
           await tableObj.save();
-          socket.join(data.tableId);
-          userSocketMap[currentUser.userId] = socket.id;
+          // socket.join(data.tableId);
+          // userSocketMap[currentUser.userId] = socket.id;
         } catch (error) {
           console.error("Error processing joinTableData:", error);
         }
@@ -161,13 +167,19 @@ function setupServer() {
   });
 
   // Create New Table
-  const createTable = io.of("/createTable");
-  createTable.on("connection", (socket) => {
+  const createTableIo = io.of("/createTable");
+  createTableIo.on("connection", (socket) => {
     console.log("Table Create");
     socket.emit("StartTable", { message: "Create Start Table Processing" });
 
+    // Table Data in Database
     socket.on("newTableData", async (data) => {
-      await shanTableControllerSocket.createTableData(socket, data);
+      const newTable = await shanTableControllerSocket.createTableData(
+        socket,
+        data,
+        createTableIo
+      );
+      socket.emit("createTable", { status: true, newTable });
     });
   });
 
