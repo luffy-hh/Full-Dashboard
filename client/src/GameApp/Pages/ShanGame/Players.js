@@ -19,11 +19,11 @@ function Players({ data, index }) {
           <div className={styles.user_box}>
             {/* Check Banker */}
 
-            {data?.player_roll === "banker" ? (
+            {/* {data?.player_roll === "banker" ? (
               <Banker index={index} />
             ) : (
               <UserBetIcon index={index} />
-            )}
+            )} */}
 
             <div className={styles.user_img_box}>
               <img
@@ -33,13 +33,13 @@ function Players({ data, index }) {
               />
             </div>
             <div className={styles.userInfo}>
-              <p className={styles.player_data_name}>{data.userId.name}</p>
-              <p className={styles.player_data_price}>{data.game_unit}</p>
+              <p className={styles.player_data_name}>{data.userId}</p>
+              {/* <p className={styles.player_data_price}>{data.game_unit}</p> */}
             </div>
           </div>
         </div>
-        {result && <ShowCard index={index} data={data} />}
-        {index === 2 && dragCardState && <DragCard data={data} />}
+        {/* {result && <ShowCard index={index} data={data} />}
+        {index === 2 && dragCardState && <DragCard data={data} />} */}
       </div>
     </>
   );

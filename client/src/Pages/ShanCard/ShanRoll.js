@@ -1,28 +1,29 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./CreateShanForm.module.css";
 import NormalButton from "../../Component/NormalButton";
 import { selectlogInData } from "../../Feactures/apiSlice";
-import {
-  fetGetShanRoll,
-  selectShanRoll,
-  selectPostShanRoll,
-} from "../../Feactures/shan";
+
 import { useSelector, useDispatch } from "react-redux";
+import { io } from "socket.io-client";
 
 function ShanRoll() {
   const dispatch = useDispatch();
-  const shanRoll = useSelector(selectShanRoll);
-  const logInData = useSelector(selectlogInData);
-  const postShanRoll = useSelector(selectPostShanRoll);
-  const accessToken = logInData.token;
+  const [allRole, setAllRole] = useState([]);
+
+  const getRowInfo = async () => {
+    const socket = io("https://gamevegas.online/allRoles");
+    socket.on("responseRoleAllData", (data) => {
+      console.log("Received message:", data.allRoleData);
+      setAllRole(data.allRoleData);
+    });
+  };
 
   useEffect(() => {
-    dispatch(fetGetShanRoll({ api: "shanrole", accessToken }));
-  }, [postShanRoll]);
+    // getInformation();
+    getRowInfo();
+  }, []);
 
-  const shanRollData = shanRoll?.data.allShanRole;
-
-  const list = shanRollData?.map((d) => (
+  const list = allRole?.map((d) => (
     <div key={d._id} className={styles.shan_roll_card}>
       <img src="/img/diamond.jpg" alt="grade_photo" />
       <div className={styles.shan_roll_description}>

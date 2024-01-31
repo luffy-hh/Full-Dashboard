@@ -92,13 +92,7 @@ const cardPosition = new Map([
   ],
 ]);
 
-function DumyCard({
-  cardHandling,
-  counts,
-  setCardHandling,
-
-  number,
-}) {
+function DumyCard({ cardHandling, counts, setCardHandling, number }) {
   const dispatch = useDispatch();
 
   const cards = myArray.map((d, index) => (
