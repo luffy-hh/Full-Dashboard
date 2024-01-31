@@ -27,13 +27,19 @@ function ShanGame() {
   const [mainObj, setMainObj] = useState([]);
   const [cardHandling, setCardHandling] = useState(false);
 
+  const expfun = () => {
+    setInterval(() => {
+      const socket = io("https://gamevegas.online/playGame");
+      socket.emit("tableId", { tableId: tableId });
+      socket.on("playData", (data) => {
+        console.log(data.playCard);
+        setMainObj(data.playCard);
+      });
+    }, 2000);
+  };
+
   useEffect(() => {
-    const socket = io("https://gamevegas.online/playGame");
-    socket.emit("tableId", { tableId: tableId });
-    socket.on("playData", (data) => {
-      console.log(data.playCard);
-      setMainObj(data.playCard);
-    });
+    expfun();
   }, []);
 
   return (
