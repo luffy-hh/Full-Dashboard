@@ -6,30 +6,21 @@ import Dropdown from "../../../Component/Dropdown/Dropdown";
 import { setShowDropDown } from "../../../Feactures/ShowHideSlice";
 import { setShowRing, selectShowRing } from "../../../Feactures/shan";
 import NormalButton from "../../../Component/NormalButton";
-import {
-  fetGetShanRoll,
-  selectShanRoll,
-  fetPostShanRing,
-  selectPostShanRing,
-  setRollIds,
-  setPostShanRing,
-} from "../../../Feactures/shan";
+import { setRollIds, setPostShanRing } from "../../../Feactures/shan";
 import { selectlogInData } from "../../../Feactures/apiSlice";
 import styles from "../CreateShanForm.module.css";
 import ShanTableCard from "../ShanTableCard";
 import Error from "../../../Component/ErrorandSuccess/Error";
 import Success from "../../../Component/ErrorandSuccess/Success";
 import { selectCollapsed } from "../../../Feactures/modalSlice";
-import { socket } from "../../../socket";
+import { io } from "socket.io-client";
+const socket = io("https://gamevegas.online/createTable");
 
 function CreateTable() {
   const dispatch = useDispatch();
 
   const showRing = useSelector(selectShowRing);
-  const logInData = useSelector(selectlogInData);
-  const accessToken = logInData.token;
-  const shanRoll = useSelector(selectShanRoll);
-  const shanRing = useSelector(selectPostShanRing);
+
   const collapsed = useSelector(selectCollapsed);
 
   const [roll, setRoll] = useState("Choose Roll Name");
@@ -46,11 +37,19 @@ function CreateTable() {
     { title: "Description", value: description, setValue: setDescription },
   ];
 
-  useEffect(() => {
-    dispatch(fetGetShanRoll({ api: "shanrole", accessToken }));
-  }, []);
+  const [allRole, setAllRole] = useState([]);
 
-  const shanRollData = shanRoll?.data.allShanRole;
+  const getRowInfo = async () => {
+    const socket = io("https://gamevegas.online/allRoles");
+    socket.on("responseRoleAllData", (data) => {
+      console.log("Received message:", data.allRoleData);
+      setAllRole(data.allRoleData);
+    });
+  };
+
+  useEffect(() => {
+    getRowInfo();
+  }, []);
 
   const inputList = data.map((d) => (
     <div key={d.title}>
@@ -72,7 +71,7 @@ function CreateTable() {
     dispatch(setRollIds(data._id));
   };
 
-  const list = shanRollData?.map((d) => (
+  const list = allRole?.map((d) => (
     <li onClick={() => getCatFun(d)} key={d._id}>
       {d.role_name}
     </li>
@@ -97,11 +96,11 @@ function CreateTable() {
   const handlePost = (e) => {
     e.preventDefault();
 
-    dispatch(fetPostShanRing({ api: "shantable", postData, accessToken }));
-    socket.emit("changeTable", "Create Table successfully");
+    socket.emit("newTableData", postData);
+    socket.on("createTable", (data) => {
+      console.log(data);
+    });
   };
-
-  console.log(shanRing);
 
   return (
     <div
@@ -140,13 +139,13 @@ function CreateTable() {
             className={styles.shan_form}
             onSubmit={(event) => handlePost(event)}
           >
-            {shanRing?.status === "fail" && (
+            {/* {shanRing?.status === "fail" && (
               <Error message={shanRing?.message} />
             )}
 
             {shanRing?.status === "success" && (
               <Success message={"SuccessFully Created Table"} />
-            )}
+            )} */}
             <Dropdown width={"100%"} title={roll} list={list} />
 
             {inputList}

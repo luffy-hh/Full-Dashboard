@@ -22,18 +22,6 @@ const dashUser = [
 ];
 
 function Home() {
-  useEffect(() => {
-    console.log("working console");
-
-    socket.on("joinSocket", (data) => {
-      console.log(data);
-    });
-
-    return () => {
-      socket.off("joinSocket");
-    };
-  }, []);
-
   const dispatch = useDispatch();
   const logInData = useSelector(selectlogInData);
   const allCounts = useSelector(selectAllCounts);

@@ -6,6 +6,7 @@ import {
   patchDatas,
   fetchData,
 } from "../app/api";
+import { io } from "socket.io-client";
 
 export const fetPostShanRing = createAsyncThunk(
   "data/fetPostShanRing",
@@ -18,14 +19,6 @@ export const fetPostShanRing = createAsyncThunk(
 
 export const fetGetShanRing = createAsyncThunk(
   "data/fetGetShanRing",
-  async ({ api, accessToken }) => {
-    const data = await fetchDataWithToken(api, accessToken);
-    return data;
-  }
-);
-
-export const fetGetShanRoll = createAsyncThunk(
-  "data/fetGetShanRoll",
   async ({ api, accessToken }) => {
     const data = await fetchDataWithToken(api, accessToken);
     return data;
@@ -65,15 +58,11 @@ const initialState = {
   shanGame,
   showRoll: false,
   showRing: false,
-  rollIds: "",
+  rollIds: "all",
 
   postShanRoll: {},
   postShanRollStatus: "idle",
   postShanRollError: null,
-
-  shanRoll: null,
-  shanRollStatus: "idle",
-  shanRollError: null,
 
   postShanRing: {},
   postShanRingStatus: "idle",
@@ -165,25 +154,14 @@ const shan = createSlice({
       .addCase(fetPostShanRoll.fulfilled, (state, action) => {
         state.postShanRollStatus = "succeeded";
         state.postShanRoll = action.payload;
+        const socket = io("https://gamevegas.online/updateRole");
+        socket.emit("updateRole", { message: "Role created" });
 
         console.log(state.postShanRoll);
       })
       .addCase(fetPostShanRoll.rejected, (state, action) => {
         state.postShanRollStatus = "failed";
         state.postShanRollError = action.error.message;
-      })
-
-      //for Shan Roll GET Method
-      .addCase(fetGetShanRoll.pending, (state) => {
-        state.shanRollStatus = "loading";
-      })
-      .addCase(fetGetShanRoll.fulfilled, (state, action) => {
-        state.shanRollStatus = "succeeded";
-        state.shanRoll = action.payload;
-      })
-      .addCase(fetGetShanRoll.rejected, (state, action) => {
-        state.shanRollStatus = "failed";
-        state.shanRollError = action.error.message;
       })
 
       //For ShanRing GET Method
@@ -265,7 +243,6 @@ export const selectShowRoll = (state) => state.shan.showRoll;
 export const selectShowRing = (state) => state.shan.showRing;
 export const selectRollIds = (state) => state.shan.rollIds;
 
-export const selectShanRoll = (state) => state.shan.shanRoll;
 export const selectPostShanRoll = (state) => state.shan.postShanRoll;
 export const selectPostShanRollStatus = (state) =>
   state.shan.postShanRollStatus;

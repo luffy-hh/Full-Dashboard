@@ -12,8 +12,8 @@ function PlayerTop({ data, index }) {
       <div className={styles.player_card}>
         <div>
           <div className={styles.userInfo_top}>
-            <p className={styles.player_data_name}>{data.userId.name}</p>
-            <p className={styles.player_data_price}>{data.game_unit}</p>
+            <p className={styles.player_data_name}>{data.userId}</p>
+            {/* <p className={styles.player_data_price}>{data.game_unit}</p> */}
           </div>
           <div className={styles.user_box}>
             <img
@@ -22,15 +22,15 @@ function PlayerTop({ data, index }) {
               alt="player3"
             />
 
-            {data?.player_roll === "banker" ? (
+            {/* {data?.player_roll === "banker" ? (
               <Banker index={index} />
             ) : (
               <UserBetIcon index={index} />
-            )}
+            )} */}
           </div>
         </div>
       </div>
-      {result && <ShowCard index={index} data={data} />}
+      {/* {result && <ShowCard index={index} data={data} />} */}
     </div>
   );
 }
