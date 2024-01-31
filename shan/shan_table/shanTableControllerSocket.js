@@ -1,3 +1,11 @@
+const express = require("express");
+const http = require("http");
+const { Server } = require("socket.io");
+
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
+
 const tableGetter = require("./tableGetter");
 const ShanTable = require("./shanTableModel");
 
@@ -24,7 +32,10 @@ exports.readTableData = async (socket, data) => {
       console.log("getTableDatasAll Value:", tablesValue);
     } else if (data.idValue !== "all" && data.idValue) {
       const tablesValue = await tableGetter.getTableByRole(data.idValue);
-      socket.emit("responseTableDataAll", { tableDataAll: tablesValue });
+      const currentNameSpace = io.of(`/${data.idValue}`);
+      console.log("Current Namespace", currentNameSpace);
+      const rooms = currentNameSpace.adapter.rooms;
+      socket.emit("responseTableDataAll", { tableDataAll: tablesValue, rooms });
     }
   } catch (error) {
     console.error("Error parsing JSON data:", error);

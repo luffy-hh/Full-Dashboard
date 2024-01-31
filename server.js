@@ -9,13 +9,12 @@ const roleGetter = require("./shan/shan_role/roleGetter");
 const shanTableControllerSocket = require("./shan/shan_table/shanTableControllerSocket");
 const User = require("./users/userModels");
 const Table = require("./shan/shan_table/shanTableModel");
-const Role = require('./shan/shan_role/shanRoleModel')
-
+const Role = require("./shan/shan_role/shanRoleModel");
+const shanCard = require("./shan/shanCard");
 dotenv.config({ path: "./config.env" });
-let options = {};
 
 let roleNamespace = []; //tableRooms;
-let userSocketMap = {};
+
 mongoose
   .connect(process.env.DATABASE_LOCAL, {
     useNewUrlParser: true,
@@ -35,7 +34,7 @@ mongoose
 })();
 
 function setupServer() {
-    const port = process.env.PORT || 5000;
+  const port = process.env.PORT || 5000;
   const httpServer = http.createServer(app);
 
   // Socket.IO server
@@ -70,9 +69,8 @@ function setupServer() {
           const currentUser = await User.findById(decoded.id);
           const currentRoleId = ns.startsWith("/") ? ns.substring(1) : ns;
           const roleObj = await Role.findById(currentRoleId);
-          console.log(roleObj);
-
           const tableObj = await Table.findById(data.tableId);
+
           // Table is Existing Or Not Codition
           if (!tableObj) {
             socket.emit("rejectJoinTable", {
@@ -82,7 +80,7 @@ function setupServer() {
             return;
           }
           // Players Is full or not Condition
-          if (tableObj.players.length >= 6)  {
+          if (tableObj.players.length >= 6) {
             socket.emit("rejectJoinTable", {
               message: "This Table can't join because of full of players.",
               status: false,
@@ -93,7 +91,7 @@ function setupServer() {
           if (
             tableObj.players.some(
               (player) =>
-                player.userId.toString() === currentUser._id.toString()
+                player.userObjId.toString() === currentUser._id.toString()
             )
           ) {
             socket.emit("rejectJoinTable", {
@@ -105,15 +103,15 @@ function setupServer() {
 
           // Player is Stay Other table or not Condition
           const otherTable = await Table.findOne({
-            "players.userId": currentUser._id.toString(),
+            "players.userId": currentUser.userId,
           });
           let joinedPalyerObjAtOtherTable;
           if (otherTable) {
             joinedPalyerObjAtOtherTable = otherTable.players.find((player) => {
-              return player.userId.toString() === currentUser._id.toString();
+              return player.userId === currentUser.userId;
             });
           }
-          
+
           if (joinedPalyerObjAtOtherTable) {
             if (joinedPalyerObjAtOtherTable.player_role === "banker") {
               socket.emit("rejectJoinTable", {
@@ -124,7 +122,7 @@ function setupServer() {
               return;
             } else {
               otherTable.players = otherTable.players.filter(
-                (player) => String(player.userId) !== String(currentUser._id)
+                (player) => player.userId !== currentUser.userId
               );
               await otherTable.save();
             }
@@ -132,24 +130,42 @@ function setupServer() {
           // Check Table Object Array is First Element Or Not
           if (tableObj.players.length === 0) {
             tableObj.players.push({
+              userObjId: currentUser._id,
               userId: currentUser.userId,
               player_role: "banker",
               bank_amt: roleObj.banker_amount,
             });
-            await User.findByIdAndUpdate({
-              gameUnit: currentUser.gameUnit - roleObj.banker_amount,
-            });
+            await User.updateOne(
+              { userId: currentUser.userId },
+              {
+                $set: {
+                  gameUnit: currentUser.gameUnit - roleObj.banker_amount,
+                },
+              }
+            );
           } else {
             tableObj.players.push({
-              userId: currentUser._id,
+              userObjId: currentUser._id,
+              userId: currentUser.userId,
             });
           }
 
           await tableObj.save();
-          // socket.join(data.tableId);
-          // userSocketMap[currentUser.userId] = socket.id;
+          socket.emit("joinSuccess", {
+            tableId: data.tableId,
+            user: currentUser,
+            status: true,
+            tableData: tableObj,
+            roleData: roleObj,
+          });
         } catch (error) {
           console.error("Error processing joinTableData:", error);
+          if (error.code === 11000) {
+            socket.emit("rejectJoinTable", {
+              message: "Duplicate key error. User with this ID already exists.",
+              status: false,
+            });
+          }
         }
       });
     });
@@ -192,7 +208,63 @@ function setupServer() {
       await shanTableControllerSocket.readTableData(socket, data);
     });
   });
-  
+
+  // Playing Game
+  const playGame = io.of("/playGame");
+  playGame.on("connection", (socket) => {
+    console.log("Game Start Playing");
+    socket.emit("welcome", { status: true, message: "Shan Game Start Play" });
+
+    socket.on("tableId", async (data) => {
+      const tableObj = await Table.findById(data.tableId);
+
+      // Creade Card For Six Player
+      const cardArray = [];
+
+      const shanArrayValue = () => {
+        let cardVal = Math.round(Math.random() * 51);
+        if (cardArray.includes(cardVal)) {
+          cardVal = Math.round(Math.random() * 51);
+        } else {
+          cardArray.push(cardVal);
+        }
+      };
+
+      let i = 0;
+      while (i < 1) {
+        shanArrayValue();
+        if (cardArray.length === 18) {
+          i++;
+        }
+      }
+      const playCard = [];
+      for (let i = 0; i < tableObj.players.length; i++) {
+        playCard.push({
+          userId: tableObj.players[i].userId,
+          cardId: [
+            shanCard.shan[cardArray[0]],
+            shanCard.shan[cardArray[1]],
+            shanCard.shan[cardArray[2]],
+          ],
+        });
+        cardArray.splice(0, 3);
+      }
+      console.log(shanCard);
+      console.log(cardArray);
+      console.log(playCard);
+
+      socket.emit("playData", {
+        tableId: data.tableId,
+        playCard: playCard,
+      });
+
+      // Deliver The Cards To Players
+      // playGame
+      //   .to(data.tableId)
+      //   .emit("gameStart", { message: "The game has started!" });
+    });
+  });
+
   httpServer.listen(port, () => console.log("Listen Now", port));
   io.attach(httpServer, {
     cors: {

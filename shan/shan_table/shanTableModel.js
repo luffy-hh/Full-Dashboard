@@ -20,9 +20,12 @@ const shanTableSchema = new mongoose.Schema({
   },
   players: [
     {
-      userId: {
+      userObjId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
+      },
+      userId: {
+        type: String,
       },
       player_role: {
         type: String,
