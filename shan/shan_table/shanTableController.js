@@ -57,8 +57,9 @@ exports.getAllTables = catchAsync(async (req, res, next) => {
     res.status(200).json({
       status: "succeed",
       tableCount: allTables.length,
-      data:  allTables,
-
+      data: {
+        tables: allTables,
+      },
     });
   } catch (error) {
     console.error(error); // Log the error

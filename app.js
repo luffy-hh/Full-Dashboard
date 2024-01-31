@@ -9,9 +9,11 @@ const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 
 const app = express();
-app.use(cors({
-  origin:"*"
-}));
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
 const userRouter = require("./users/userRoutes");
 const userProfileRouter = require("./users/userProfileRoute");
@@ -61,7 +63,7 @@ const shanTable = require("./shan/shan_table/shanTableRoute");
 // const shanPlay = require("./shan/shan_play/routes");
 
 //transaction record
-const transactionRecordRouter = require('./transaction-record/transactionRecordRoute')
+const transactionRecordRouter = require("./transaction-record/transactionRecordRoute");
 
 // Transfer and Change
 const transferTo = require("./transition/routes/transitionsRoutes");
@@ -71,7 +73,7 @@ const lottery2dRoutes = require("./lottery_nuumbers/routes/lottery2dRoutes");
 const lottery2dEveningRoutes = require("./lottery_nuumbers/routes/lottery2dEveningRoute");
 
 // App Things
-const appThingsRouter = require('./app_things/appThingsRoute')
+const appThingsRouter = require("./app_things/appThingsRoute");
 //GameSoft
 const gameSoftGetBalance = require("./game_soft/get_balance/getBalanceRoutes");
 //Infinity Game
@@ -92,8 +94,8 @@ if (process.env.NODE_ENV === "development") {
 
 app.use((req, res, next) => {
   res.setHeader(
-      "Content-Security-Policy",
-      "connect-src 'self' https://gamevegas.online"
+    "Content-Security-Policy",
+    "connect-src 'self' https://gamevegas.online"
   );
   next();
 });
@@ -206,10 +208,10 @@ app.use("/api/v1/transferTo", transferTo);
 app.use("/api/v1/changeTo", changeTo);
 
 // transactionRecord
-app.use('/api/v1/transaction-record',transactionRecordRouter)
+app.use("/api/v1/transaction-record", transactionRecordRouter);
 
 // App Things
-app.use("/api/v1/things", appThingsRouter)
+app.use("/api/v1/things", appThingsRouter);
 // // Infinity game
 // app.use("/api/v1/infinity", infinityGameCreatePlayer);
 // app.use("/api/v1/infinity", infinityGetGameList);

@@ -3,8 +3,12 @@ const jwt = require("jsonwebtoken");
 const { Server } = require("socket.io");
 const User = require("../../users/userModels");
 const ShanTable = require("./shanTableModel");
+// const ShanPlay = require("../shan_play/shanPlay.js-bkp");
+const ShanRole = require("../shan_role/shanRoleModel");
 
 function setupSocketLogic(io, tableRooms) {
+  // const shanPlay = new ShanPlay(io, tableRooms);
+
   tableRooms.forEach((endpoint) => {
     io.of(endpoint).on("connection", async (tableSocket) => {
       const token = tableSocket.handshake.query.token;
@@ -33,6 +37,8 @@ function setupSocketLogic(io, tableRooms) {
         await removeUserFromPreviousTable(currentUser.userId, io);
 
         const shanTable = await ShanTable.findOne({ endPoint: endpoint });
+        const shanRoleObj = await ShanRole.findById(shanTable.role);
+        const bankerAmt = shanRoleObj.banker_amount;
 
         if (!shanTable) {
           console.error("Table not found");
@@ -57,6 +63,12 @@ function setupSocketLogic(io, tableRooms) {
           userId: currentUser.userId,
           player_role,
           game_unit: currentUser.gameUnit,
+          game_unit:
+            player_role === "banker"
+              ? currentUser.gameUnit - bankerAmt
+              : currentUser.gameUnit,
+          banker_amt:
+            player_role === "banker" ? currentUser.gameUnit - bankerAmt : 0,
         });
 
         await shanTable.save();
@@ -68,6 +80,9 @@ function setupSocketLogic(io, tableRooms) {
           gameunit: currentUser.gameUnit,
           message: `Welcome, ${currentUser.name}!`,
         });
+
+        // Call the play function when needed
+        // shanPlay.play(shanTable);
       } catch (error) {
         console.error(`Error decoding token:`, error);
         tableSocket.disconnect();
