@@ -3,9 +3,9 @@ const mongoose = require("mongoose");
 const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
+const app = require("./app");
 const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
-const app = require("./app");
 require("./slots/grpc-services/grpc");
 const roleGetter = require("./shan/shan_role/roleGetter");
 const shanTableControllerSocket = require("./shan/shan_table/shanTableControllerSocket");
@@ -57,7 +57,6 @@ function setupServer() {
     });
   });
   roleNamespace.forEach((ns) => {
-    const userSocketMap = {};
     io.of(ns).on("connection", (socket) => {
       console.log(`Join Now Role Id ${ns}`);
       socket.emit("welcome", { message: "welcome To Table" });
@@ -72,6 +71,14 @@ function setupServer() {
           const currentRoleId = ns.startsWith("/") ? ns.substring(1) : ns;
           const roleObj = await Role.findById(currentRoleId);
           const tableObj = await Table.findById(data.tableId);
+
+          if (!currentUser) {
+            socket.emit("rejectJoinTable", {
+              message: "User not found.",
+              status: false,
+            });
+            return;
+          }
 
           // Table is Existing Or Not Codition
           if (!tableObj) {
@@ -134,6 +141,7 @@ function setupServer() {
             tableObj.players.push({
               userObjId: currentUser._id,
               userId: currentUser.userId,
+              userName: currentUser.name,
               player_role: "banker",
               bank_amt: roleObj.banker_amount,
             });
@@ -149,16 +157,17 @@ function setupServer() {
             tableObj.players.push({
               userObjId: currentUser._id,
               userId: currentUser.userId,
+              userName: currentUser.name,
             });
           }
 
           await tableObj.save();
           socket.emit("joinSuccess", {
             tableId: data.tableId,
-            user: currentUser,
-            status: true,
-            tableData: tableObj,
-            roleData: roleObj,
+            // user: currentUser,
+            // status: true,
+            // tableData: tableObj,
+            // roleData: roleObj,
           });
         } catch (error) {
           console.error("Error processing joinTableData:", error);
@@ -214,57 +223,104 @@ function setupServer() {
   // Playing Game
   const playGame = io.of("/playGame");
   playGame.on("connection", (socket) => {
-    console.log("Game Start Playing");
-    socket.emit("welcome", { status: true, message: "Shan Game Start Play" });
+    try {
+      console.log("Game Start Playing");
+      socket.emit("welcome", { status: true, message: "Shan Game Start Play" });
+      socket.on("tableId", async (data) => {
+        const tableId = data.tableId;
+        const tableObj = await Table.findById(tableId);
+        const roleObj = await Role.findById(tableObj.role);
+        // Table ရဲ့ min and max amount player ရဲ့ name နှင့် amout, current player ရဲ့ id or name
+        const currentPlayerArr = [];
+        const currentPalyerDataArr = await Promise.all(
+          tableObj.players.map(async (player) => {
+            const userObj = await User.findById(player.userObjId.toString());
+            return {
+              playerId: player.userId,
+              playerName: userObj.name,
+              playerRole: player.player_role,
+              playerAmount: userObj.gameUnit,
+              bankAmount: player.bank_amt,
+            };
+          })
+        );
+        currentPlayerArr.push(...currentPalyerDataArr);
+        const initTableData = {
+          tableId: tableId,
+          tableMinAmt: roleObj.min_amount,
+          tableMaxAmt: roleObj.max_amount,
+          currentPlayerArr: currentPlayerArr,
+        };
 
-    socket.on("tableId", async (data) => {
-      const tableObj = await Table.findById(data.tableId);
-
-      // Creade Card For Six Player
-      const cardArray = [];
-
-      const shanArrayValue = () => {
-        let cardVal = Math.round(Math.random() * 51);
-        if (cardArray.includes(cardVal)) {
-          cardVal = Math.round(Math.random() * 51);
-        } else {
-          cardArray.push(cardVal);
-        }
-      };
-
-      let i = 0;
-      while (i < 1) {
-        shanArrayValue();
-        if (cardArray.length === 18) {
-          i++;
-        }
-      }
-      const playCard = [];
-      for (let i = 0; i < tableObj.players.length; i++) {
-        playCard.push({
-          userId: tableObj.players[i].userId,
-          cardId: [
-            shanCard.shan[cardArray[0]],
-            shanCard.shan[cardArray[1]],
-            shanCard.shan[cardArray[2]],
-          ],
+        socket.emit("initTableData", {
+          initTableData,
         });
-        cardArray.splice(0, 3);
-      }
-      console.log(shanCard);
-      console.log(cardArray);
-      console.log(playCard);
+        socket.on("betArr", (data) => {
+          console.log(data);
+        });
 
-      socket.emit("playData", {
-        tableId: data.tableId,
-        playCard: playCard,
+        console.log(
+          `Table Id : ${tableId} and Table Object : ${tableObj} and Role Object : ${roleObj}`
+        );
+        console.log("User Array:", currentPalyerDataArr);
       });
+    } catch (error) {
+      console.error("Error processing joinTableData:", error);
+      socket.emit("palyingError", {
+        message: "Palying Function Error",
+        status: false,
+      });
+    }
 
-      // Deliver The Cards To Players
-      // playGame
-      //   .to(data.tableId)
-      //   .emit("gameStart", { message: "The game has started!" });
-    });
+    // const tableId = data.tableId;
+    // const tableObj = await Table.findById(tableId);
+    // socket.emit("startPlay", {
+    //   tableId: tableId,
+    //   tableObj,
+    // });
+    // console.log(tableObj);
+    // Creade Card For Six Player
+    // const cardArray = [];
+    // const shanArrayValue = () => {
+    //   let cardVal = Math.round(Math.random() * 51);
+    //   if (cardArray.includes(cardVal)) {
+    //     cardVal = Math.round(Math.random() * 51);
+    //   } else {
+    //     cardArray.push(cardVal);
+    //   }
+    // };
+    // let i = 0;
+    // while (i < 1) {
+    //   shanArrayValue();
+    //   if (cardArray.length === 18) {
+    //     i++;
+    //   }
+    // }
+    // const playCard = [];
+    // for (let i = 0; i < tableObj.players.length; i++) {
+    //   playCard.push({
+    //     userId: tableObj.players[i].userId,
+    //     cardId: [
+    //       shanCard.shan[cardArray[0]],
+    //       shanCard.shan[cardArray[1]],
+    //       shanCard.shan[cardArray[2]],
+    //     ],
+    //   });
+    //   cardArray.splice(0, 3);
+    // }
+    // console.log(shanCard);
+    // console.log(cardArray);
+    // console.log(playCard);
+    // const userArr = [];
+    // playCard.forEach(user => {
+    //   // userArr.push()
+    //   user.
+    // })
+    // socket.emit("playData", {
+    //   tableId: data.tableId,
+    //   playCard: playCard,
+    // });
+    // });
   });
 
   httpServer.listen(port, () => console.log("Listen Now", port));
