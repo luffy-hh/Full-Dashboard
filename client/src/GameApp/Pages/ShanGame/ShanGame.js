@@ -25,18 +25,24 @@ function ShanGame() {
   const shanGameRing = useSelector(selectShanGameRing);
   const bettingTime = useSelector(selectBettingTime);
   const [mainObj, setMainObj] = useState([]);
+  const [mainAmount, setMainAmount] = useState([]);
   const [cardHandling, setCardHandling] = useState(false);
 
   const expfun = () => {
-    setInterval(() => {
-      const socket = io("https://gamevegas.online/playGame");
-      socket.emit("tableId", { tableId: tableId });
-      socket.on("playData", (data) => {
-        console.log(data.playCard);
-        setMainObj(data.playCard);
-      });
-    }, 2000);
+    const socket = io("https://gamevegas.online/playGame");
+    socket.emit("tableId", { tableId: tableId });
+
+    socket.on("initTableData", (data) => {
+      console.log(data);
+      setMainObj(data.initTableData.currentPlayerArr);
+      setMainAmount([
+        data.initTableData.tableMaxAmt,
+        data.initTableData.tableMinAmt,
+      ]);
+    });
   };
+
+  console.log(mainAmount);
 
   useEffect(() => {
     expfun();
@@ -47,10 +53,10 @@ function ShanGame() {
       <div className={styles.shan_table}>
         <img src="/shangame/lady/Girl.png" alt="lady" className={styles.lady} />
 
-        {/* {shanGameRing && (
+        {/* { mainObj.length > 0 && (
           <DumyCard
             cardHandling={cardHandling}
-            counts={mainObj}
+            counts={mainObj.length}
             setCardHandling={setCardHandling}
             number={randomNumber}
           />
@@ -60,7 +66,7 @@ function ShanGame() {
           <AllPlayer data={mainObj} number={randomNumber} />
         )}
       </div>
-      {/* {bettingTime && <BettingAmount />} */}
+      {bettingTime && <BettingAmount mainAmount={mainAmount} />}
     </div>
   );
 }

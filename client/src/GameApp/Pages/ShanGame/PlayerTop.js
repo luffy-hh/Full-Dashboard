@@ -12,8 +12,8 @@ function PlayerTop({ data, index }) {
       <div className={styles.player_card}>
         <div>
           <div className={styles.userInfo_top}>
-            <p className={styles.player_data_name}>{data.userId}</p>
-            {/* <p className={styles.player_data_price}>{data.game_unit}</p> */}
+            <p className={styles.player_data_name}>{data.playerName}</p>
+            <p className={styles.player_data_price}>{data.playerAmount}</p>
           </div>
           <div className={styles.user_box}>
             <img
