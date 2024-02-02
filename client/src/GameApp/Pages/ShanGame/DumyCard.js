@@ -141,14 +141,7 @@ function DumyCard({ cardHandling, counts, setCardHandling, number }) {
   };
 
   useEffect(() => {
-    cardHandling &&
-      counts[0].players.length >= 2 &&
-      autoCardHealding(cardPosition, counts[0].players.length);
-
-    // //testing
-    // false &&
-    //   counts[0].players.length >= 2 &&
-    //   autoCardHealding(cardPosition, counts[0].players.length);
+    cardHandling && counts >= 2 && autoCardHealding(cardPosition, counts);
   }, [cardHandling]);
 
   useEffect(() => {

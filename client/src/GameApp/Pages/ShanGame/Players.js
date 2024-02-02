@@ -33,8 +33,8 @@ function Players({ data, index }) {
               />
             </div>
             <div className={styles.userInfo}>
-              <p className={styles.player_data_name}>{data.userId}</p>
-              {/* <p className={styles.player_data_price}>{data.game_unit}</p> */}
+              <p className={styles.player_data_name}>{data.playerName}</p>
+              <p className={styles.player_data_price}>{data.playerAmount}</p>
             </div>
           </div>
         </div>

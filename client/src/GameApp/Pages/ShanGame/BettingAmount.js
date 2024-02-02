@@ -10,19 +10,19 @@ import {
 } from "../../../Feactures/shan";
 import { useDispatch, useSelector } from "react-redux";
 
-function BettingAmount() {
-  const min = 100;
-  const max = 1000;
+function BettingAmount({ mainAmount }) {
+  const min = mainAmount[1];
+  const max = mainAmount[0];
 
-  const numbers = [200, 600, 900];
+  const numbers = [min + min, max / 2, max - min];
 
   const betRangeShow = useSelector(selectBetRangeShow);
   const dispatch = useDispatch();
   const betRangeAmount = useSelector(selectBetRangeAmount);
 
-  const btnList = numbers.map((d) => (
+  const btnList = numbers.map((d, i) => (
     <NormalButton
-      key={d}
+      key={`btn_${i}`}
       onClick={() => dispatch(setPlayerBetAmount(d))}
       className={styles.btn_bet}
     >
@@ -41,10 +41,7 @@ function BettingAmount() {
             All In
           </NormalButton>
           {betRangeShow ? (
-            <NormalButton
-              onClick={() => dispatch(betRangeAmount)}
-              className={styles.btn_max}
-            >
+            <NormalButton className={styles.btn_max}>
               {betRangeAmount}
             </NormalButton>
           ) : (
