@@ -162,6 +162,13 @@ function setupServer() {
           }
 
           await tableObj.save();
+          socket.emit("joinSuccess", {
+            tableId: data.tableId,
+            user: currentUser,
+            status: true,
+            tableData: tableObj,
+            roleData: roleObj,
+          });
           io.of("/playerJoinTable").emit("joinSuccess", {
             tableId: data.tableId,
             user: currentUser,
