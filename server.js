@@ -1,4 +1,6 @@
 const dotenv = require("dotenv");
+const { promisify } = require("util");
+const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const express = require("express");
 const http = require("http");
@@ -162,12 +164,12 @@ function setupServer() {
           }
 
           await tableObj.save();
-          socket.emit("joinSuccess", {
+          io.of("/playerJoinTable").emit("joinSuccess", {
             tableId: data.tableId,
             user: currentUser,
             status: true,
-            // tableData: tableObj,
-            // roleData: roleObj,
+            tableData: tableObj,
+            roleData: roleObj,
           });
         } catch (error) {
           console.error("Error processing joinTableData:", error);
