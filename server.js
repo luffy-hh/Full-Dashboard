@@ -6,8 +6,6 @@ const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
 const app = require("./app");
-const jwt = require("jsonwebtoken");
-const { promisify } = require("util");
 require("./slots/grpc-services/grpc");
 const roleGetter = require("./shan/shan_role/roleGetter");
 const shanTableControllerSocket = require("./shan/shan_table/shanTableControllerSocket");
