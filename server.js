@@ -164,8 +164,8 @@ function setupServer() {
           await tableObj.save();
           socket.emit("joinSuccess", {
             tableId: data.tableId,
-            // user: currentUser,
-            // status: true,
+            user: currentUser,
+            status: true,
             // tableData: tableObj,
             // roleData: roleObj,
           });
@@ -180,6 +180,22 @@ function setupServer() {
         }
       });
     });
+  });
+
+  // Player's Show Data
+  const playerData = io.of("/playerData");
+  // Table Id , User Id
+  playerData.on("connection", async (socket) => {
+    socket.on("connectUser", (data) => {
+      const tableId = data.tableId;
+      const userId = data.UserId;
+    });
+    const allRoleData = await Role.find({});
+    socket.emit("responseRoleAllData", {
+      length: allRoleData.length,
+      allRoleData,
+    });
+    console.log("Join Player");
   });
 
   // Get All Role
