@@ -43,6 +43,7 @@ function setupServer() {
 
   const io = new Server();
   console.log("All Role Name Space:" + roleNamespace);
+  const playerJoinTable = io.of("/playerJoinTable");
 
   // Default namespace connection event
   io.on("connection", (socket) => {
@@ -169,13 +170,16 @@ function setupServer() {
             tableData: tableObj,
             roleData: roleObj,
           });
-          io.of("/playerJoinTable").emit("joinSuccess", {
-            tableId: data.tableId,
-            user: currentUser,
-            status: true,
-            tableData: tableObj,
-            roleData: roleObj,
+          playerJoinTable.on("connection", (socket) => {
+            console.log("Connected to playerJoinTable namespace");
           });
+          // playerJoinTable.emit("joinSuccess", {
+          //   tableId: data.tableId,
+          //   user: currentUser,
+          //   status: true,
+          //   tableData: tableObj,
+          //   roleData: roleObj,
+          // });
         } catch (error) {
           console.error("Error processing joinTableData:", error);
           if (error.code === 11000) {
