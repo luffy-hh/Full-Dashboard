@@ -59,7 +59,7 @@ const thai3DLuckyNumRouter = require("./3dLucky&Winner/routes/3DLuckyNumRoutes")
 const thai3DLuckyWinnerRouter = require("./3dLucky&Winner/routes/3DLuckyWinnerRoutes");
 // Shan
 const shanRole = require("./shan/shan_role/shanRoleRoutes");
-// const shanTable = require("./shan/shan_table/shanTableRoute");
+const shanTable = require("./shan/shan_table/shanTableRoutes");
 // const shanPlay = require("./shan/shan_play/routes");
 
 //transaction record
@@ -200,7 +200,7 @@ app.use("/api/v1/agentsubcatstatus", agentSubCatStatusAdmin);
 
 // // Shan API
 app.use("/api/v1/shanrole", shanRole);
-// app.use("/api/v1/shantable", shanTable);
+app.use("/api/v1/shantable", shanTable);
 // app.use("/api/v1/shanPlay", shanPlay);
 
 // Transition
