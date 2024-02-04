@@ -209,8 +209,8 @@ const shan = createSlice({
       .addCase(fetPostShanRing.fulfilled, (state, action) => {
         state.postShanRingStatus = "succeeded";
         state.postShanRing = action.payload;
-        const socket = io("https://gamevegas.online/createTable");
-        socket.emit("newTableData", "Created Table");
+        const socket = io("https://gamevegas.online");
+        socket.emit("updateTable", "Created Table");
       })
       .addCase(fetPostShanRing.rejected, (state, action) => {
         state.postShanRingStatus = "failed";
