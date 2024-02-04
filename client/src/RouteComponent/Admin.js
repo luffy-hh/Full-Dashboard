@@ -57,6 +57,7 @@ import MasterDepositHistory from "../Pages/ToDepositPage/MasterDeposit/MasterDep
 import MasterDepositRequest from "../Pages/ToDepositPage/MasterDeposit/MasterDepositRequest";
 import DownLineAgent from "../Component/DownLineUser/DownLineAgent";
 import ShanGame from "../GameApp/Pages/ShanGame/ShanGame";
+import GameTheme from "../GameTheme/GameTheme";
 
 const admin = [
   { id: 0, path: "/admin", route: <Home /> },
@@ -94,6 +95,7 @@ const admin = [
   { id: 27, path: "towithdraw-history", route: <AdminWithdrawHistory /> },
   { id: 39, path: "create-roll", route: <CreateRoll /> },
   { id: 40, path: "create-table", route: <CreateTable /> },
+  { id: 41, path: "game-theme", route: <GameTheme /> },
 ];
 
 const agent = [

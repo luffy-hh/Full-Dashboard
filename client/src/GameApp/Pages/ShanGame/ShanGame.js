@@ -42,10 +42,16 @@ function ShanGame() {
     });
   };
 
-  console.log(mainAmount);
+  const joinFun = () => {
+    const socketJoin = io("https://gamevegas.online/playerJoinTable");
+    socketJoin.on("joinSuccess", (data) => {
+      console.log(data, "join Table data");
+    });
+  };
 
   useEffect(() => {
     expfun();
+    joinFun();
   }, []);
 
   return (

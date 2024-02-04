@@ -4,7 +4,13 @@ import Button from "../../../Component/Button";
 import { useSelector, useDispatch } from "react-redux";
 import Dropdown from "../../../Component/Dropdown/Dropdown";
 import { setShowDropDown } from "../../../Feactures/ShowHideSlice";
-import { setShowRing, selectShowRing } from "../../../Feactures/shan";
+import {
+  setShowRing,
+  selectShowRing,
+  selectShanRoll,
+  fetGetShanRoll,
+  fetPostShanRing,
+} from "../../../Feactures/shan";
 import NormalButton from "../../../Component/NormalButton";
 import { setRollIds, setPostShanRing } from "../../../Feactures/shan";
 import { selectlogInData } from "../../../Feactures/apiSlice";
@@ -13,8 +19,6 @@ import ShanTableCard from "../ShanTableCard";
 import Error from "../../../Component/ErrorandSuccess/Error";
 import Success from "../../../Component/ErrorandSuccess/Success";
 import { selectCollapsed } from "../../../Feactures/modalSlice";
-import { io } from "socket.io-client";
-const socket = io("https://gamevegas.online/createTable");
 
 function CreateTable() {
   const dispatch = useDispatch();
@@ -29,6 +33,9 @@ function CreateTable() {
   const [bankerAmount, setBankerAmount] = useState("");
   const [userId, setUserId] = useState("");
   const [description, setDescription] = useState("");
+  const logInData = useSelector(selectlogInData);
+  const accessToken = logInData.token;
+  const shanRoll = useSelector(selectShanRoll);
 
   const data = [
     { title: "bankerAmount", value: bankerAmount, setValue: setBankerAmount },
@@ -37,20 +44,10 @@ function CreateTable() {
     { title: "Description", value: description, setValue: setDescription },
   ];
 
-  const [allRole, setAllRole] = useState([]);
-
-  const getRowInfo = async () => {
-    const socket = io("https://gamevegas.online/allRoles");
-    socket.on("responseRoleAllData", (data) => {
-      console.log("Received message:", data.allRoleData);
-      setAllRole(data.allRoleData);
-    });
-  };
-
   useEffect(() => {
-    getRowInfo();
+    dispatch(fetGetShanRoll({ api: "shanrole", accessToken }));
   }, []);
-
+  const allRole = shanRoll.data?.allShanRole;
   const inputList = data.map((d) => (
     <div key={d.title}>
       <label>{d.title} </label>
@@ -96,10 +93,7 @@ function CreateTable() {
   const handlePost = (e) => {
     e.preventDefault();
 
-    socket.emit("newTableData", postData);
-    socket.on("createTable", (data) => {
-      console.log(data);
-    });
+    dispatch(fetPostShanRing({ api: "shantable", postData, accessToken }));
   };
 
   return (

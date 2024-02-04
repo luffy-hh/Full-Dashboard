@@ -215,6 +215,22 @@ export const fetGetAgentDepositUpline = createAsyncThunk(
   }
 );
 
+export const fetGetGameThing = createAsyncThunk(
+  "data/fetGetGameThing",
+  async ({ api, accessToken }) => {
+    const data = await fetchDataWithToken(api, accessToken);
+    return data;
+  }
+);
+
+export const fetPostGameThing = createAsyncThunk(
+  "data/fetPostGameThing",
+  async ({ api, postData, accessToken }) => {
+    const data = await postDataWithToken(api, postData, accessToken);
+    return data;
+  }
+);
+
 const toDeposite = {
   clickBankNameId: "",
   clickBankAcc: "",
@@ -222,6 +238,8 @@ const toDeposite = {
   showDepForm: false,
   bankNameId: "",
 };
+
+const gameThingHead = ["Message", "Action"];
 
 const initialState = {
   toDeposite,
@@ -322,10 +340,20 @@ const initialState = {
   patchDepositStatus: "idle",
   patchDepositError: null,
 
+  gameThing: null,
+  gameThingStatus: "idle",
+  gameThingError: null,
+
+  postGameThing: null,
+  postGameThingStatus: "idle",
+  postGameThingError: null,
+
   admintDownandUpHistory: null,
   masterDownandUpHistroy: null,
   depositAdminHistory: null,
   depositMasterHistory: null,
+  gameThingHead,
+  editGameThing: "",
 };
 const bankApiSlice = createSlice({
   name: "bank",
@@ -345,6 +373,10 @@ const bankApiSlice = createSlice({
 
     setPostWithdraw: (state) => {
       state.postWithdraw = {};
+    },
+
+    setEditGameThing: (state, action) => {
+      state.editGameThing = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -709,6 +741,32 @@ const bankApiSlice = createSlice({
       .addCase(fetGetAgentDepositUpline.rejected, (state, action) => {
         state.agentDepositUpLineStatus = "failed";
         state.agentDepositUpLineError = action.error.message;
+      })
+
+      //GET GameThing
+      .addCase(fetGetGameThing.pending, (state) => {
+        state.gameThingStatus = "loading";
+      })
+      .addCase(fetGetGameThing.fulfilled, (state, action) => {
+        state.gameThingStatus = "succeeded";
+        state.gameThing = action.payload;
+      })
+      .addCase(fetGetGameThing.rejected, (state, action) => {
+        state.gameThingStatus = "failed";
+        state.gameThingError = action.error.message;
+      })
+
+      //POST GameThing
+      .addCase(fetPostGameThing.pending, (state) => {
+        state.postGameThingStatus = "loading";
+      })
+      .addCase(fetPostGameThing.fulfilled, (state, action) => {
+        state.postGameThingStatus = "succeeded";
+        state.postGameThing = action.payload;
+      })
+      .addCase(fetPostGameThing.rejected, (state, action) => {
+        state.postGameThingStatus = "failed";
+        state.postGameThingError = action.error.message;
       });
   },
 });
@@ -719,6 +777,7 @@ export const {
   setBankNameIds,
   setPostWithdraw,
   setPostDeposit,
+  setEditGameThing,
 } = bankApiSlice.actions;
 
 export const selectBankCat = (state) => state.bank.bankCat;
@@ -799,5 +858,13 @@ export const selectPatchWithdrawStatus = (state) =>
   state.bank.patchWithdrawStatus;
 export const selectPatchWithdraw = (state) => state.bank.patchWithdraw;
 export const selectPatchDeposit = (state) => state.bank.patchDeposit;
+
+export const selectGameThing = (state) => state.bank.gameThing;
+export const selectGameThingHead = (state) => state.bank.gameThingHead;
+export const selectPostGameThing = (state) => state.bank.postGameThing;
+export const selectPostGameThingStatus = (state) =>
+  state.bank.postGameThingStatus;
+
+export const selectEditGameThing = (state) => state.bank.editGameThing;
 
 export default bankApiSlice.reducer;
