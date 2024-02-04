@@ -125,7 +125,7 @@ function setupServer() {
                 (player) => player.userId !== currentUser.userId
               );
               await otherTable.save();
-              io.of(`${otherTable.endPoint}`).emit("updateTable", {
+              io.of(`${otherTable.endPoint}`).emit("updateSingleTable", {
                 message: "Update Table",
                 tableObj,
               });
@@ -154,7 +154,7 @@ function setupServer() {
             });
           }
           await tableObj.save();
-          io.of(tableNs).emit("updateTable", {
+          io.of(tableNs).emit("updateSingleTable", {
             message: "Update Table",
             tableObj,
           });
