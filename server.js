@@ -53,8 +53,9 @@ function setupServer() {
     socket.on("updateTable", async () => {
       tables = [];
       const tableValue = await tableGetter.getTableAll();
-      tables = [...tables, ...tableValue];
+      tables = [...tableValue];
       console.log("All Role Name Space With Update:" + tables);
+      socket.emit("updateFinish", { message: "Table Already Update Finished" });
     });
   });
 
