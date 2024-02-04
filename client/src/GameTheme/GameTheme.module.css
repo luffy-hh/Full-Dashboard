@@ -1,0 +1,23 @@
+.btn_edit {
+  padding: 8px 2rem;
+  font-size: 1.6rem;
+  background-color: var(--blue-light);
+  color: var(--text-white);
+}
+.deposit_title {
+  background-color: var(--text-white);
+  padding: 2.4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3.2rem;
+}
+
+.game_theme table tr td,
+.game_theme table tr th {
+  text-align: left !important;
+  padding-left: 5rem !important;
+}
+.game_theme table tr th:first-child {
+  min-width: 80%;
+}

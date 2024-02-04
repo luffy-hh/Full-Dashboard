@@ -29,6 +29,7 @@ const modalShowHide = {
   modalError: false,
   collapsed: false,
   modalSecretCode: false,
+  modalGameThing: false,
 };
 
 const initialState = {
@@ -103,6 +104,10 @@ const modalSlice = createSlice({
 
     setModalSecretCode: (state, action) => {
       state.modalShowHide.modalSecretCode = action.payload;
+    },
+
+    setModalGameThing: (state, action) => {
+      state.modalShowHide.modalGameThing = action.payload;
     },
 
     setModalLog: (state, action) => {
@@ -196,6 +201,7 @@ export const {
   setCollapsed,
   setModalSecretCode,
   setCurrentUnit,
+  setModalGameThing,
 } = modalSlice.actions;
 export const selectModalShow = (state) => state.modal.modalShowHide.modalShow;
 export const selectUserId = (state) => state.modal.depositeToUser.userId;
@@ -257,5 +263,8 @@ export const selectBeforeAmt = (state) => state.modal.beforeAmt;
 export const selectCurrentUnit = (state) => state.modal.currentUnit;
 export const selectModalSecretCode = (state) =>
   state.modal.modalShowHide.modalSecretCode;
+
+export const selectModalGameThing = (state) =>
+  state.modal.modalShowHide.modalGameThing;
 
 export default modalSlice.reducer;

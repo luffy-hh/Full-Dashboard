@@ -42,7 +42,7 @@ function BettingAmount({ mainAmount }) {
           </NormalButton>
           {betRangeShow ? (
             <NormalButton className={styles.btn_max}>
-              {betRangeAmount}
+              {`${betRangeAmount}`}
             </NormalButton>
           ) : (
             <NormalButton

@@ -33,6 +33,14 @@ export const fetPostShanRoll = createAsyncThunk(
   }
 );
 
+export const fetGetShanRoll = createAsyncThunk(
+  "data/fetGetShanRoll",
+  async ({ api, accessToken }) => {
+    const data = await fetchDataWithToken(api, accessToken);
+    return data;
+  }
+);
+
 export const fetGetShanGameRing = createAsyncThunk(
   "data/fetGetShanGameRing",
   async (api) => {
@@ -59,6 +67,10 @@ const initialState = {
   showRoll: false,
   showRing: false,
   rollIds: "all",
+
+  shanRoll: {},
+  shanRollStatus: "idle",
+  shanRollError: null,
 
   postShanRoll: {},
   postShanRollStatus: "idle",
@@ -164,6 +176,19 @@ const shan = createSlice({
         state.postShanRollError = action.error.message;
       })
 
+      //For fetGetShanRoll GET Method
+      .addCase(fetGetShanRoll.pending, (state) => {
+        state.shanRoll = "loading";
+      })
+      .addCase(fetGetShanRoll.fulfilled, (state, action) => {
+        state.shanRollStatus = "succeeded";
+        state.shanRoll = action.payload;
+      })
+      .addCase(fetGetShanRoll.rejected, (state, action) => {
+        state.shanRollStatus = "failed";
+        state.shanRollError = action.error.message;
+      })
+
       //For ShanRing GET Method
       .addCase(fetGetShanRing.pending, (state) => {
         state.shanRingStatus = "loading";
@@ -184,6 +209,8 @@ const shan = createSlice({
       .addCase(fetPostShanRing.fulfilled, (state, action) => {
         state.postShanRingStatus = "succeeded";
         state.postShanRing = action.payload;
+        const socket = io("https://gamevegas.online/createTable");
+        socket.emit("newTableData", "Created Table");
       })
       .addCase(fetPostShanRing.rejected, (state, action) => {
         state.postShanRingStatus = "failed";
@@ -255,5 +282,6 @@ export const selectPostShanRingError = (state) => state.shan.postShanRingError;
 export const selectShanRing = (state) => state.shan.shanRing;
 
 export const selectShanGameRing = (state) => state.shan.shanGameRing;
+export const selectShanRoll = (state) => state.shan.shanRoll;
 
 export default shan.reducer;

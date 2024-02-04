@@ -2,26 +2,21 @@ import React, { useEffect, useState } from "react";
 import styles from "./CreateShanForm.module.css";
 import NormalButton from "../../Component/NormalButton";
 import { selectlogInData } from "../../Feactures/apiSlice";
+import { selectShanRoll, fetGetShanRoll } from "../../Feactures/shan";
 
 import { useSelector, useDispatch } from "react-redux";
-import { io } from "socket.io-client";
 
 function ShanRoll() {
   const dispatch = useDispatch();
-  const [allRole, setAllRole] = useState([]);
-
-  const getRowInfo = async () => {
-    const socket = io("https://gamevegas.online/allRoles");
-    socket.on("responseRoleAllData", (data) => {
-      console.log("Received message:", data.allRoleData);
-      setAllRole(data.allRoleData);
-    });
-  };
+  const logInData = useSelector(selectlogInData);
+  const accessToken = logInData.token;
+  const shanRoll = useSelector(selectShanRoll);
 
   useEffect(() => {
-    // getInformation();
-    getRowInfo();
+    dispatch(fetGetShanRoll({ api: `shanrole`, accessToken }));
   }, []);
+
+  const allRole = shanRoll.data?.allShanRole;
 
   const list = allRole?.map((d) => (
     <div key={d._id} className={styles.shan_roll_card}>

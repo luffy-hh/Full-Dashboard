@@ -20,6 +20,7 @@ import { BiSolidReport } from "react-icons/bi";
 import { RiLuggageDepositFill } from "react-icons/ri";
 import { BiMoneyWithdraw } from "react-icons/bi";
 import { ImHistory } from "react-icons/im";
+import { GrDocumentUpdate } from "react-icons/gr";
 import { selectCollapsed } from "../../Feactures/modalSlice";
 import { FaDirections } from "react-icons/fa";
 
@@ -158,6 +159,8 @@ const adminData = [
     getItem("To Withdraw Request", "towithdraw-request", <MdRequestQuote />),
     getItem("To Withdraw History", "towithdraw-history", <ImHistory />),
   ]),
+
+  getItem("Game Theme", "game-theme", <AiFillSetting />),
 ];
 
 function Sidebar() {

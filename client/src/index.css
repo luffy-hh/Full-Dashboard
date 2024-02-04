@@ -19,6 +19,7 @@
   padding: 0;
   box-sizing: border-box;
 }
+
 html {
   font-size: 62.5%;
   height: 100%;
@@ -90,20 +91,19 @@ a {
   border: 1px solid var(--blue-light);
 }
 
-/* ::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 10px;
   height: 100px;
-  
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: var(--blue-light); 
+  background-color: var(--blue-light);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #f1f1f1; 
-} */
+  background-color: #f1f1f1;
+}
 
 .hide_scroll::-webkit-scrollbar {
   display: none;
