@@ -44,7 +44,6 @@ function setupServer() {
   // Socket.IO server
 
   const io = new Server();
-  const playerJoinTable = io.of("/playerJoinTable");
 
   // Default namespace connection event
   io.on("connection", (socket) => {
@@ -193,34 +192,6 @@ function setupServer() {
       allRoleData,
     });
     console.log("Join Player");
-  });
-
-  // Get All Role
-  const allRoles = io.of("/allRoles");
-  allRoles.on("connection", async (socket) => {
-    const allRoleData = await Role.find({});
-    socket.emit("responseRoleAllData", {
-      length: allRoleData.length,
-      allRoleData,
-    });
-    console.log("Connected For Roles Data All");
-  });
-
-  // Create New Table
-  const createTableIo = io.of("/createTable");
-  createTableIo.on("connection", (socket) => {
-    console.log("Table Create");
-    socket.emit("StartTable", { message: "Create Start Table Processing" });
-
-    // Table Data in Database
-    socket.on("newTableData", async (data) => {
-      const newTable = await shanTableControllerSocket.createTableData(
-        socket,
-        data,
-        createTableIo
-      );
-      socket.emit("createTable", { status: true, newTable });
-    });
   });
 
   // Get All Tables
