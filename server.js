@@ -127,6 +127,7 @@ function setupServer() {
               await otherTable.save();
               io.of(`${otherTable.endPoint}`).emit("updateTable", {
                 message: "Update Table",
+                tableObj,
               });
             }
           }
@@ -153,18 +154,15 @@ function setupServer() {
             });
           }
           await tableObj.save();
+          io.of(tableNs).emit("updateTable", {
+            message: "Update Table",
+            tableObj,
+          });
           socket.emit("joinSuccess", {
             tableId: data.tableId,
             tableObj,
             user: currentUser,
           });
-          // tables = [1, 2, 3, 4, 5];
-
-          updateTableEndpoint = tables.filter(
-            (value) => value !== `/${data.tableId}`
-          );
-          tables = [...tables, ...updateTableEndpoint];
-          console.log("Tables", tables);
         } catch (error) {
           console.error("Error processing joinTableData:", error);
           if (error.code === 11000) {
