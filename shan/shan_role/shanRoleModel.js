@@ -27,9 +27,6 @@ const shanRoleSchema = new mongoose.Schema({
   description: {
     type: String,
   },
-  endPoint: {
-    type: String,
-  },
   status: {
     type: Boolean,
     default: true,

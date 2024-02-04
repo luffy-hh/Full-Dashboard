@@ -1,56 +1,31 @@
-const multer = require("multer");
-const ShanRole = require("./shanRoleModel");
+const ShanTable = require("./shanTableModel");
 const AppError = require("../../utils/appError");
 const catchAsync = require("../../utils/catchAsync");
-const { promisify } = require("util");
-const jwt = require("jsonwebtoken");
 
-const multerStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "public/images/shan_roll");
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    const ext = file.mimetype.split("/")[1];
-    cb(null, `${file.fieldname}-${uniqueSuffix}.${ext}`);
-  },
-});
-
-const multerFilter = (req, file, cb) => {
-  if (file.mimetype.startsWith("image")) {
-    cb(null, true);
-  } else {
-    cb(new AppError("No an Image!, Please Upload only Image", 400), false);
-  }
-};
-
-const upload = multer({ storage: multerStorage, fileFilter: multerFilter });
-exports.uploadShanRoleImg = upload.single("img");
-
-// Create Shan Roll
-exports.createShanRole = catchAsync(async (req, res) => {
+// Create Shan Table
+exports.createShanTable = catchAsync(async (req, res) => {
   try {
-    if (req.file) {
-      const reqBody = { ...req.body };
-      reqBody.img = req.file.filename;
-      const imageLink = `${req.protocol}://${req.get(
-        "host"
-      )}/images/shan_roll/${req.file.filename}`;
-      const newShanRole = await ShanRole.create({ ...reqBody });
-      await newShanRole.save();
+    const { tableName, role, description } = req.body;
 
-      res.status(201).json({
-        status: "success",
-        data: {
-          newShanRole,
-          imageLink,
-        },
-      });
-    }
+    const insertObj = {
+      tableName,
+      role,
+      description,
+    };
+
+    const newTable = await ShanTable.create({ ...insertObj });
+    newTable.endPoint = `/${newTable._id.toString()}`;
+    await newTable.save();
+    res.status(201).json({
+      status: "success",
+      data: {
+        newTable,
+      },
+    });
   } catch (err) {
     res.status(404).json({
       status: "fail",
-      message: err,
+      message: err.message,
     });
   }
 });
@@ -75,7 +50,7 @@ exports.readShanRole = catchAsync(async (req, res) => {
 });
 
 // Update Shan Roll
-exports.updateShanRole = catchAsync(async (req, res) => {
+exports.updateShanTable = catchAsync(async (req, res) => {
   try {
     // Extract user ID from token
     const token = req.headers.authorization.split(" ")[1];

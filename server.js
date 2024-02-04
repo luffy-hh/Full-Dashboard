@@ -11,11 +11,12 @@ const roleGetter = require("./shan/shan_role/roleGetter");
 const shanTableControllerSocket = require("./shan/shan_table/shanTableControllerSocket");
 const User = require("./users/userModels");
 const Table = require("./shan/shan_table/shanTableModel");
+const tableGetter = require("./shan/shan_table/tableGetter");
 const Role = require("./shan/shan_role/shanRoleModel");
 const shanCard = require("./shan/shanCard");
 dotenv.config({ path: "./config.env" });
 
-let roleNamespace = []; //tableRooms;
+let tables = [];
 
 mongoose
   .connect(process.env.DATABASE_LOCAL, {
@@ -30,8 +31,9 @@ mongoose
   });
 
 (async () => {
-  const RoleValue = await roleGetter.getRoleAll();
-  roleNamespace = [...roleNamespace, ...RoleValue];
+  tables = [];
+  const tableValue = await tableGetter.getTableAll();
+  tables = [...tables, ...tableValue];
   setupServer();
 })();
 
@@ -42,7 +44,6 @@ function setupServer() {
   // Socket.IO server
 
   const io = new Server();
-  console.log("All Role Name Space:" + roleNamespace);
   const playerJoinTable = io.of("/playerJoinTable");
 
   // Default namespace connection event
@@ -50,17 +51,19 @@ function setupServer() {
     console.log(`${socket.id} : user connected`);
     socket.emit("welcomeMessage", { message: "Welcome To Shan" });
 
-    socket.on("updateRole", async () => {
-      roleNamespace = [];
-      const rolesValue = await roleGetter.getRoleAll();
-      roleNamespace = [...roleNamespace, ...rolesValue];
-      console.log("All Role Name Space:" + roleNamespace);
+    socket.on("updateTable", async () => {
+      tables = [];
+      const tableValue = await tableGetter.getTableAll();
+      tables = [...tables, ...tableValue];
+      console.log("All Role Name Space With Update:" + tables);
     });
   });
-  roleNamespace.forEach((ns) => {
-    io.of(ns).on("connection", (socket) => {
-      console.log(`Join Now Role Id ${ns}`);
-      socket.emit("welcome", { message: "welcome To Table" });
+
+  tables.forEach((tableNs) => {
+    io.of(tableNs).on("connection", (socket) => {
+      console.log(`Join Now Table Id ${tableNs}`);
+
+      socket.emit("welcome", { message: `welcome To Table ${tableNs}` });
       socket.on("playerData", async (data) => {
         try {
           const token = data.token;
@@ -69,18 +72,8 @@ function setupServer() {
             process.env.JWT_SECRET
           );
           const currentUser = await User.findById(decoded.id);
-          const currentRoleId = ns.startsWith("/") ? ns.substring(1) : ns;
-          const roleObj = await Role.findById(currentRoleId);
           const tableObj = await Table.findById(data.tableId);
-
-          if (!currentUser) {
-            socket.emit("rejectJoinTable", {
-              message: "User not found.",
-              status: false,
-            });
-            return;
-          }
-
+          const roleObj = await Role.findById(tableObj.role);
           // Table is Existing Or Not Codition
           if (!tableObj) {
             socket.emit("rejectJoinTable", {
@@ -89,7 +82,7 @@ function setupServer() {
             });
             return;
           }
-          // Players Is full or not Condition
+          // Players Is full In array or not Condition
           if (tableObj.players.length >= 6) {
             socket.emit("rejectJoinTable", {
               message: "This Table can't join because of full of players.",
@@ -110,7 +103,6 @@ function setupServer() {
             });
             return;
           }
-
           // Player is Stay Other table or not Condition
           const otherTable = await Table.findOne({
             "players.userId": currentUser.userId,
@@ -121,7 +113,6 @@ function setupServer() {
               return player.userId === currentUser.userId;
             });
           }
-
           if (joinedPalyerObjAtOtherTable) {
             if (joinedPalyerObjAtOtherTable.player_role === "banker") {
               socket.emit("rejectJoinTable", {
@@ -135,14 +126,16 @@ function setupServer() {
                 (player) => player.userId !== currentUser.userId
               );
               await otherTable.save();
+              io.of(`${otherTable.endPoint}`).emit("updateTable", {
+                message: "Update Table",
+              });
             }
           }
-          // Check Table Object Array is First Element Or Not
+          // Save Table Object In MongoDB Database Palyer Data
           if (tableObj.players.length === 0) {
             tableObj.players.push({
               userObjId: currentUser._id,
               userId: currentUser.userId,
-              userName: currentUser.name,
               player_role: "banker",
               bank_amt: roleObj.banker_amount,
             });
@@ -158,28 +151,21 @@ function setupServer() {
             tableObj.players.push({
               userObjId: currentUser._id,
               userId: currentUser.userId,
-              userName: currentUser.name,
             });
           }
-
           await tableObj.save();
           socket.emit("joinSuccess", {
             tableId: data.tableId,
+            tableObj,
             user: currentUser,
-            status: true,
-            tableData: tableObj,
-            roleData: roleObj,
           });
-          playerJoinTable.on("connection", (socket) => {
-            console.log("Connected to playerJoinTable namespace");
-          });
-          // playerJoinTable.emit("joinSuccess", {
-          //   tableId: data.tableId,
-          //   user: currentUser,
-          //   status: true,
-          //   tableData: tableObj,
-          //   roleData: roleObj,
-          // });
+          // tables = [1, 2, 3, 4, 5];
+
+          updateTableEndpoint = tables.filter(
+            (value) => value !== `/${data.tableId}`
+          );
+          tables = [...tables, ...updateTableEndpoint];
+          console.log("Tables", tables);
         } catch (error) {
           console.error("Error processing joinTableData:", error);
           if (error.code === 11000) {

@@ -18,6 +18,9 @@ const shanTableSchema = new mongoose.Schema({
     enum: ["inactive", "active"],
     default: "inactive",
   },
+  endPoint: {
+    type: String,
+  },
   players: [
     {
       userObjId: {
