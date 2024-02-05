@@ -166,9 +166,8 @@ const shan = createSlice({
       .addCase(fetPostShanRoll.fulfilled, (state, action) => {
         state.postShanRollStatus = "succeeded";
         state.postShanRoll = action.payload;
-        const socket = io("https://gamevegas.online/updateRole");
-        socket.emit("updateRole", { message: "Role created" });
-
+        // const socket = io("https://gamevegas.online/updateRole");
+        // socket.emit("updateRole", { message: "Role created" });
         console.log(state.postShanRoll);
       })
       .addCase(fetPostShanRoll.rejected, (state, action) => {
@@ -210,7 +209,7 @@ const shan = createSlice({
         state.postShanRingStatus = "succeeded";
         state.postShanRing = action.payload;
         const socket = io("https://gamevegas.online");
-        socket.emit("updateTable", "Created Table");
+        socket.emit("updateTable", { roleId: state.rollIds });
       })
       .addCase(fetPostShanRing.rejected, (state, action) => {
         state.postShanRingStatus = "failed";
