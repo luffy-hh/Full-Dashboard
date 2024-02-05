@@ -131,7 +131,7 @@ function setupServer() {
                 (player) => player.userId !== currentUser.userId
               );
               await otherTable.save();
-              io.of(`${otherTable.endPoint}`).emit("updateSingleTable", {
+              io.of(`${otherTable.endPoint}`).emit("updateTables", {
                 message: "Update Table",
                 tableObj,
               });
@@ -169,15 +169,21 @@ function setupServer() {
             message: "Update Table",
             updatTableWithAllRole,
             roleId: tableObj.role,
+            currentUserId: currentUser.userId,
           });
-
-          console.log(updatTableWithAllRole);
 
           // Table ရဲ့ min and max amout, user name,  user amount, user role, shan process (win or lose) current user ID
 
+          const currentUserData = {
+            objId: currentUser._id.toString(),
+            name: currentUser.name,
+            userId: currentUser.userId,
+            gameUnit: currentUser.gameUnit,
+          };
+
           io.of(tableNs).emit("joinUserSuccess", {
             tableObj,
-            currentUserObj: currentUser,
+            currentUserData,
             minAmt: roleObj.min_amount,
             maxAmt: roleObj.max_amount,
             tableBankerAmt: roleObj.banker_amount,
