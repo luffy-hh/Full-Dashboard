@@ -19,7 +19,7 @@ exports.responseTableAll = async () => {
   return shanTables;
 };
 
-exports.getTableByRole = async (roleId) => {
+exports.responseTableByRole = async (roleId) => {
   const shanTables = await ShanTable.find({ role: roleId })
     .populate({
       path: "role",
