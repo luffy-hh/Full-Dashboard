@@ -173,7 +173,7 @@ function setupServer() {
 
           console.log(updatTableWithAllRole);
 
-          socket.emit("joinUserSuccess", {
+          io.of(tableNs).emit("joinUserSuccess", {
             tableObj,
             currentUserObj: currentUser,
           });
