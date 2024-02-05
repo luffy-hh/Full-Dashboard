@@ -5,7 +5,7 @@ const router = express.Router()
 
 router.route('/')
     .post(protect,restrictTo('Admin'),createOrModifyThing)
-    .get(protect,getAppThings)
+    .get(getAppThings)
 
 
 module.exports = router
