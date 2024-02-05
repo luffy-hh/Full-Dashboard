@@ -161,10 +161,17 @@ function setupServer() {
           }
           await tableObj.save();
 
-          io.of(tableNs).emit("updateSingleTable", {
-            message: "Update Table",
-            tableObj,
+          const updatTableWithAllRole = await Table.find({
+            role: tableObj.role,
           });
+
+          io.of(tableNs).emit("updateTables", {
+            message: "Update Table",
+            updatTableWithAllRole,
+            roleId: tableObj.role,
+          });
+
+          console.log(updatTableWithAllRole);
 
           socket.emit("joinUserSuccess", {
             tableObj,
