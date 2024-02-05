@@ -173,9 +173,14 @@ function setupServer() {
 
           console.log(updatTableWithAllRole);
 
+          // Table ရဲ့ min and max amout, user name,  user amount, user role, shan process (win or lose) current user ID
+
           io.of(tableNs).emit("joinUserSuccess", {
             tableObj,
             currentUserObj: currentUser,
+            minAmt: roleObj.min_amount,
+            maxAmt: roleObj.max_amount,
+            tableBankerAmt: roleObj.banker_amount,
           });
           // Play Game
         } catch (error) {
