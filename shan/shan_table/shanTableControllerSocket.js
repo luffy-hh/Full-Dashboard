@@ -33,7 +33,7 @@ exports.readTableData = async (socket, data) => {
         tableDataAll: tablesValue,
       });
     } else if (data.idValue !== "all" && data.idValue) {
-      const tablesValue = await tableGetter.getTableByRole(data.idValue);
+      const tablesValue = await tableGetter.responseTableByRole(data.idValue);
       socket.emit("responseTableDataAll", {
         length: tablesValue.length,
         tableDataAll: tablesValue,
