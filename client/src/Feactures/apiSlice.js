@@ -8,6 +8,8 @@ import {
   postDataWithToken,
 } from "../app/api";
 
+import { io } from "socket.io-client";
+
 export const fetchMainUnit = createAsyncThunk(
   "data/fetchMainUnit",
   async ({ api, accessToken }) => {
@@ -427,8 +429,22 @@ const dataSlice = createSlice({
       .addCase(fetchPostLogin.fulfilled, (state, action) => {
         state.logInStatus = "succeeded";
         state.logInData = action.payload;
-        state.currentLoginUser = state.logInData.user.role;
-        state.currentUserId = state.logInData.user.userId;
+
+        //socket
+        const socket = io("https://gamevegas.online");
+        socket.on("welcomeMessage", (data) => {
+          console.log(data);
+        });
+
+        socket.on("updateTableFinish", (data) => {
+          console.log(data);
+        });
+
+        if (state.logInStatus === "succeeded") {
+          state.currentUserId = state.logInData.user.userId;
+          state.currentLoginUser = state.logInData.user.role;
+        }
+
         if (state.currentLoginUser === "Admin") {
           state.formshow = true;
         } else if (state.currentLoginUser === "Master") {
