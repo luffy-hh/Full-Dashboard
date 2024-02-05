@@ -56,7 +56,7 @@ function setupServer() {
       const updateTableObj = await tableGetter.responseTableByRole(data.roleId);
       console.log("Role Id", updateTableObj);
       tables = [...tableValue];
-      socket.emit("updateTableFinish", {
+      io.emit("updateTableFinish", {
         roleId: data.roleId,
         updateTableObj,
       });
