@@ -31,9 +31,8 @@ mongoose
   });
 
 (async () => {
-  tables = [];
   const tableValue = await tableGetter.getTableAll();
-  tables = [...tables, ...tableValue];
+  tables = [...tableValue];
   setupServer();
 })();
 
@@ -44,26 +43,32 @@ function setupServer() {
   // Socket.IO server
 
   const io = new Server();
+  console.log("All Tables Name Space:", tables);
 
   // Default namespace connection event
   io.on("connection", (socket) => {
     console.log(`${socket.id} : user connected`);
     socket.emit("welcomeMessage", { message: "Welcome To Shan" });
 
-    socket.on("updateTable", async () => {
+    socket.on("updateTable", async (data) => {
       tables = [];
       const tableValue = await tableGetter.getTableAll();
+      const updateTableObj = await tableGetter.responseTableByRole(data.roleId);
+      console.log("Role Id", updateTableObj);
       tables = [...tableValue];
-      console.log("All Role Name Space With Update:" + tables);
-      socket.emit("updateFinish", { message: "Table Already Update Finished" });
+      socket.emit("updateTableFinish", {
+        roleId: data.roleId,
+        updateTableObj,
+      });
     });
   });
 
   tables.forEach((tableNs) => {
     io.of(tableNs).on("connection", (socket) => {
-      console.log(`Join Now Table Id ${tableNs}`);
+      console.log(`Connect Now Table Id ${tableNs}`);
 
       socket.emit("welcome", { message: `welcome To Table ${tableNs}` });
+      // Client Request From Table Id and User Token
       socket.on("playerData", async (data) => {
         try {
           const token = data.token;
@@ -155,15 +160,17 @@ function setupServer() {
             });
           }
           await tableObj.save();
+
           io.of(tableNs).emit("updateSingleTable", {
             message: "Update Table",
             tableObj,
           });
-          socket.emit("joinSuccess", {
-            tableId: data.tableId,
+
+          socket.emit("joinUserSuccess", {
             tableObj,
-            user: currentUser,
+            currentUserObj: currentUser,
           });
+          // Play Game
         } catch (error) {
           console.error("Error processing joinTableData:", error);
           if (error.code === 11000) {
