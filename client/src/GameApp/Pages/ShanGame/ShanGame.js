@@ -52,20 +52,23 @@ function ShanGame() {
       console.log(data, "join user data");
 
       let players = data.tableObj.players; //player Array
+      console.log(data.tableObj.players);
 
       let userIndex = players.findIndex(
-        (player) => player.userId === activeUser
+        (player) => player.userId == activeUser
       );
+
+      console.log(userIndex);
 
       // If the loginUser is found and not already at index 0, move it to index 0
       if (userIndex !== -1 && userIndex !== 0) {
-        let [removedUser] = players.splice(userIndex, 1);
+        let removedUser = players.splice(userIndex, 1)[0]; // Get the removed user
 
         // Insert the removed loginUser at index 0
-        players.splice(0, 0, removedUser);
-
-        setMainObj(players);
+        players.unshift(removedUser);
       }
+
+      setMainObj([...players]);
     });
   };
 
