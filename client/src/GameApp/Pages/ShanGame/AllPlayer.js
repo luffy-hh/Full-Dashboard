@@ -12,17 +12,20 @@ function AllPlayer({ data, number }) {
     if (index === 0) {
       return {
         ...item,
-        position: { top: "-8rem", right: `calc(75vw - 65vw)` },
+        // position: { top: "-8rem", right: `calc(75vw - 65vw)` },
+        position: { bottom: "-7rem", right: `calc(75vw - 60vw)` },
       };
     } else if (index === 1) {
       return {
         ...item,
-        position: { top: "7rem", right: `calc(75vw - 78vw)` },
+        position: { top: "-8rem", right: `calc(75vw - 65vw)` },
+        // position: { top: "7rem", right: `calc(75vw - 78vw)` },
       };
     } else if (index === 2) {
       return {
         ...item,
-        position: { bottom: "-7rem", right: `calc(75vw - 60vw)` },
+        position: { top: "-8rem", right: `calc(75vw - 65vw)` },
+        // position: { bottom: "-7rem", right: `calc(75vw - 60vw)` },
       };
     } else if (index === 3) {
       return {
@@ -43,6 +46,43 @@ function AllPlayer({ data, number }) {
       return item;
     }
   });
+
+  //original
+  // const accounts = data.map((item, index) => {
+  //   if (index === 0) {
+  //     return {
+  //       ...item,
+  //       position: { top: "-8rem", right: `calc(75vw - 65vw)` },
+  //     };
+  //   } else if (index === 1) {
+  //     return {
+  //       ...item,
+  //       position: { top: "7rem", right: `calc(75vw - 78vw)` },
+  //     };
+  //   } else if (index === 2) {
+  //     return {
+  //       ...item,
+  //       position: { bottom: "-7rem", right: `calc(75vw - 60vw)` },
+  //     };
+  //   } else if (index === 3) {
+  //     return {
+  //       ...item,
+  //       position: { bottom: "-7rem", left: `calc(75vw - 60vw)` },
+  //     };
+  //   } else if (index === 4) {
+  //     return {
+  //       ...item,
+  //       position: { top: "7rem", left: `calc(75vw - 78vw)` },
+  //     };
+  //   } else if (index === 5) {
+  //     return {
+  //       ...item,
+  //       position: { top: "-8rem", left: `calc(75vw - 65vw)` },
+  //     };
+  //   } else {
+  //     return item;
+  //   }
+  // });
 
   const shan = [
     {
