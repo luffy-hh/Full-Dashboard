@@ -77,7 +77,7 @@ function ShanGame() {
   useEffect(() => {
     // expfun();
     joinFun();
-  }, []);
+  }, [tableId]);
 
   return (
     <div className={styles.shan_game}>
