@@ -65,9 +65,20 @@ function setupServer() {
 
   tables.forEach((tableNs) => {
     io.of(tableNs).on("connection", (socket) => {
+      const socketIdArr = [];
       console.log(`Connect Now Table Id ${tableNs}`);
 
-      socket.emit("welcome", { message: `welcome To Table ${tableNs}` });
+      const socketId = socket.id;
+
+      socket.on("userData", (data) => {
+        socketIdArr.push(data);
+        console.log("Complete Processing");
+        console.log(socketIdArr);
+        io.of(tableNs)
+          .to(socketId)
+          .emit("dataFromServer", { message: "Data received successfully." });
+      });
+
       // Client Request From Table Id and User Token
       socket.on("playerData", async (data) => {
         try {
@@ -188,7 +199,6 @@ function setupServer() {
             maxAmt: roleObj.max_amount,
             tableBankerAmt: roleObj.banker_amount,
           });
-          // Play Game
         } catch (error) {
           console.error("Error processing joinTableData:", error);
           if (error.code === 11000) {
