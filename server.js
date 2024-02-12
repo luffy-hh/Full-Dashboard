@@ -80,9 +80,9 @@ function setupServer() {
         const tableObj = await Table.findById(data.tableId);
         const currentUserObj = await User.findOne({ userId: data.userId });
         const roleObj = await Role.findById(tableObj.role);
-        const currentUserRole = tableObj.players.find(
-          (player) => player.userId === currentUserObj.userId
-        );
+        // const currentUserRole = tableObj.players.find(
+        //   (player) => player.userId === currentUserObj.userId
+        // );
 
         // Table ရဲ့ min and max amout, user name,  user amount, user role, shan process (win or lose) current user ID
         io.of(tableNs)
@@ -92,7 +92,7 @@ function setupServer() {
               min_amt: roleObj.min_amount,
               max_amt: roleObj.max_amount,
               banker_amt: roleObj.banker_amount,
-              currentUserName: currentUserObj.name,
+              // currentUserName: currentUserObj.name,
               currentUserAmt: currentUserObj.unit,
               currentUserRole: currentUserRole.player_role,
               tableArr: tableObj.players,
