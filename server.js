@@ -70,13 +70,34 @@ function setupServer() {
 
       const socketId = socket.id;
 
-      socket.on("userData", (data) => {
-        socketIdArr.push(data);
-        console.log("Complete Processing");
+      socket.on("userData", async (data) => {
+        socketIdArr.push({
+          userId: data.userId,
+          tableId: data.tableId,
+          socketId,
+        });
         console.log(socketIdArr);
+        const tableObj = await Table.findById(data.tableId);
+        const currentUserObj = await User.findOne({ userId: data.userId });
+        const roleObj = await Role.findById(tableObj.role);
+        const currentUserRole = tableObj.players.find(
+          (player) => player.userId === currentUserObj.userId
+        );
+
+        // Table ရဲ့ min and max amout, user name,  user amount, user role, shan process (win or lose) current user ID
         io.of(tableNs)
           .to(socketId)
-          .emit("dataFromServer", { message: "Data received successfully." });
+          .emit("dataFromServer", {
+            message: {
+              min_amt: roleObj.min_amount,
+              max_amt: roleObj.max_amount,
+              banker_amt: roleObj.banker_amount,
+              currentUserName: currentUserObj.name,
+              currentUserAmt: currentUserObj.unit,
+              currentUserRole: currentUserRole.player_role,
+              tableArr: tableObj.players,
+            },
+          });
       });
 
       // Client Request From Table Id and User Token
@@ -195,9 +216,6 @@ function setupServer() {
           io.of(tableNs).emit("joinUserSuccess", {
             tableObj,
             currentUserData,
-            minAmt: roleObj.min_amount,
-            maxAmt: roleObj.max_amount,
-            tableBankerAmt: roleObj.banker_amount,
           });
         } catch (error) {
           console.error("Error processing joinTableData:", error);
