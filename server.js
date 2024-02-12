@@ -92,9 +92,9 @@ function setupServer() {
               min_amt: roleObj.min_amount,
               max_amt: roleObj.max_amount,
               banker_amt: roleObj.banker_amount,
-              // currentUserName: currentUserObj.name,
+              currentUserName: currentUserObj.name,
               currentUserAmt: currentUserObj.unit,
-              currentUserRole: currentUserRole.player_role,
+              // currentUserRole: currentUserRole.player_role,
               tableArr: tableObj.players,
             },
           });
