@@ -15,6 +15,7 @@ const tableGetter = require("./shan/shan_table/tableGetter");
 const Role = require("./shan/shan_role/shanRoleModel");
 const shanCard = require("./shan/shanCard");
 dotenv.config({ path: "./config.env" });
+const shanPlay = require("./shan/shan_play/shan_play");
 
 let tables = [];
 
@@ -66,23 +67,44 @@ function setupServer() {
   tables.forEach((tableNs) => {
     io.of(tableNs).on("connection", (socket) => {
       const socketIdArr = [];
-      console.log(`Connect Now Table Id ${tableNs}`);
-
       const socketId = socket.id;
+
+      // shanPlay.shanPlay(socketIdArr, tableNs, socketId);
+      // const socketArrLength = socketIdArr.length;
+      // if (socketArrLength > 1) {
+      // ထိုးသားတွေဆီက Play Bat တွေလက်ခံမယ်။
+      // သက်ဆိုင်ရာ User အလိုက် Amount တွေကို နှုတ်မယ်။
+      // Table မှာ User အလိုက် Bet Amount တွေကို Update လုပ်မယ်။
+      // Data တွေ အကုန်လုံးကို UI ကို ပို့ပေးမယ်။
+      // ဖဲချပ်နှစ်ချပ်ဝေမယ်။
+      // ထပ်တောင်းရင် ထပ်တောင်းတဲ့ userId အလိုက် ဖဲချပ်တစ်ချပ်စီထပ်ပို့မယ်။
+      // Player တစ်ယောက်ချင်းစီရဲ့ ဖဲချပ်တွေကို ပေါင်းမယ်။
+      // Player တစ်ယောက်ချင်းစီရဲ့ ဖဲချပ်သည် Banker ထက်ကြီးရင် Player နိုင်တယ်။
+      // Banker ထက် ငယ်ရင် Banker နိုင်တယ်။
+      // Player တွေနိုင်ရင် နိုင်တာရဲ့ ၁၀% ဖြတ်မယ်။
+      // အဲ့ဒါကို Admin ဆီကိုပို့ပြီး ကျန်တာကို Player ဆီမှာ Update လုပ်ပေးမယ်။
+      // Banker နိုင်ရင် နိုင်တာရဲ့ ၁၀% ကို ဖြတ်ပြီး ကျန်တာကို Banker ဆီမှာ Update လုပ်မယ်။
+      // အားလုံးပြီးရင် နောက်တစ်ပွဲထပ်စမယ်။
+      // } else {
+      //   io.of(tableNs).emit("tableStop", {
+      //     message: "To Start Play more then 2 player",
+      //   });
+      // }
 
       socket.on("userData", async (data) => {
         socketIdArr.push({
           userId: data.userId,
           tableId: data.tableId,
           socketId,
+          betAmt: 0,
         });
         console.log(socketIdArr);
         const tableObj = await Table.findById(data.tableId);
         const currentUserObj = await User.findOne({ userId: data.userId });
         const roleObj = await Role.findById(tableObj.role);
-        // const currentUserRole = tableObj.players.find(
-        //   (player) => player.userId === currentUserObj.userId
-        // );
+        const currentUserRole = tableObj.players.find(
+          (player) => player.userId === currentUserObj.userId
+        );
 
         // Table ရဲ့ min and max amout, user name,  user amount, user role, shan process (win or lose) current user ID
         io.of(tableNs)
@@ -94,9 +116,12 @@ function setupServer() {
               banker_amt: roleObj.banker_amount,
               currentUserName: currentUserObj.name,
               currentUserAmt: currentUserObj.unit,
-              // currentUserRole: currentUserRole.player_role,
+              currentUserRole: currentUserRole.player_role,
               tableArr: tableObj.players,
             },
+          })
+          .on("betAmt", (data) => {
+            console.log(`${socketId} betting amount with ${data}`);
           });
       });
 
@@ -227,6 +252,21 @@ function setupServer() {
           }
         }
       });
+
+      // Deliver Card
+      io.of(tableNs)
+        .to(socketId)
+        .emit("cardDeliver", {
+          firstCard: {
+            cardName: "Hello",
+          },
+          secondCard: {
+            cardName: "World",
+          },
+          thirdCard: {
+            cardName: "Hello World",
+          },
+        });
     });
   });
 
