@@ -15,7 +15,6 @@ const tableGetter = require("./shan/shan_table/tableGetter");
 const Role = require("./shan/shan_role/shanRoleModel");
 const shanCard = require("./shan/shanCard");
 dotenv.config({ path: "./config.env" });
-const shanPlay = require("./shan/shan_play/shan_play");
 
 let tables = [];
 
