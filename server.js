@@ -229,8 +229,10 @@ function setupServer() {
             tableObj.players.push({
               userObjId: currentUser._id,
               userId: currentUser.userId,
+              userName: currentUser.name,
               player_role: "banker",
               bank_amt: roleObj.banker_amount,
+              gameUnit: currentUser.gameUnit,
             });
             await User.updateOne(
               { userId: currentUser.userId },
@@ -244,6 +246,8 @@ function setupServer() {
             tableObj.players.push({
               userObjId: currentUser._id,
               userId: currentUser.userId,
+              gameUnit: currentUser.gameUnit,
+              userName: currentUser.name,
             });
           }
           await tableObj.save();
