@@ -15,6 +15,7 @@ const tableGetter = require("./shan/shan_table/tableGetter");
 const Role = require("./shan/shan_role/shanRoleModel");
 const shanCard = require("./shan/shanCard");
 dotenv.config({ path: "./config.env" });
+const shanPlay = require("./shan/shan_play/shan_play");
 
 let tables = [];
 
@@ -68,27 +69,37 @@ function setupServer() {
       const socketIdArr = [];
       const socketId = socket.id;
 
-      // shanPlay.shanPlay(socketIdArr, tableNs, socketId);
-      // const socketArrLength = socketIdArr.length;
-      // if (socketArrLength > 1) {
-      // ထိုးသားတွေဆီက Play Bat တွေလက်ခံမယ်။
-      // သက်ဆိုင်ရာ User အလိုက် Amount တွေကို နှုတ်မယ်။
-      // Table မှာ User အလိုက် Bet Amount တွေကို Update လုပ်မယ်။
-      // Data တွေ အကုန်လုံးကို UI ကို ပို့ပေးမယ်။
-      // ဖဲချပ်နှစ်ချပ်ဝေမယ်။
-      // ထပ်တောင်းရင် ထပ်တောင်းတဲ့ userId အလိုက် ဖဲချပ်တစ်ချပ်စီထပ်ပို့မယ်။
-      // Player တစ်ယောက်ချင်းစီရဲ့ ဖဲချပ်တွေကို ပေါင်းမယ်။
-      // Player တစ်ယောက်ချင်းစီရဲ့ ဖဲချပ်သည် Banker ထက်ကြီးရင် Player နိုင်တယ်။
-      // Banker ထက် ငယ်ရင် Banker နိုင်တယ်။
-      // Player တွေနိုင်ရင် နိုင်တာရဲ့ ၁၀% ဖြတ်မယ်။
-      // အဲ့ဒါကို Admin ဆီကိုပို့ပြီး ကျန်တာကို Player ဆီမှာ Update လုပ်ပေးမယ်။
-      // Banker နိုင်ရင် နိုင်တာရဲ့ ၁၀% ကို ဖြတ်ပြီး ကျန်တာကို Banker ဆီမှာ Update လုပ်မယ်။
-      // အားလုံးပြီးရင် နောက်တစ်ပွဲထပ်စမယ်။
-      // } else {
-      //   io.of(tableNs).emit("tableStop", {
-      //     message: "To Start Play more then 2 player",
-      //   });
-      // }
+      const shanArray = [];
+      // Shan Array ထဲကို 0 - 51 ကြား random number 18 လုံးထည့်မယ်..
+      // ရလာတဲ့ Random Number တွေကို ထပ်/မထပ် စစ်ထုတ်ရမယ် တစ်ကယ်လို့ array ထဲမှာ ရှိပြီးသား value ဖြစ်နေတယ်ဆိုရင် Random Number ကို နောက်တစ်ကြိမ် ပြန် run ခိုင်းပြီး ထပ်တိုက်စစ်မယ် နောက်ဆုံး မတူညီတဲ့ Random Number 18 လုံးဖြစ်တော့မှ array ကို အမှန်ယူမယ်...
+      const shanArrayValue = () => {
+        let shanVal = Math.round(Math.random() * 51);
+        if (shanArray.includes(shanVal)) {
+          shanVal = Math.round(Math.random() * 51);
+        } else {
+          shanArray.push(shanVal);
+        }
+      };
+
+      let i = 0;
+      while (i < 1) {
+        shanArrayValue();
+        if (shanArray.length === 18) {
+          i++;
+        }
+      }
+      //ရလာတဲ့ shanArray ထဲက Random Number 18 လုံးကို user တစ်ယောက်လျင် ၁ ကြိမ် နှစ်ခါ ပေးမယ်... Data တွေကို Socket နဲ့ပို့မှာဖြစ်တဲ့အတွက် socketIdArr ကို loop ပတ်ပြီး ပို့ပါ့မယ်။
+
+      shanArray.forEach((arr) => {
+        io.of(tableNs).to(arr.socketId).emit("initialCard", {
+          firstCard: shanArray[0],
+          secondCard: shanArray[1],
+        });
+        shanArray.splice(0, 2);
+        console.log(shanArray[0], shanArray[1]);
+      });
+
+      // Deliver Cards To Client
 
       socket.on("userData", async (data) => {
         socketIdArr.push({
@@ -118,10 +129,31 @@ function setupServer() {
               currentUserRole: currentUserRole.player_role,
               tableArr: tableObj.players,
             },
-          })
-          .on("betAmt", (data) => {
-            console.log(`${socketId} betting amount with ${data}`);
           });
+        socket.on("betAmt", async ({ betAmt }) => {
+          console.log(`${socketId} betting amount with ${betAmt}`);
+          const updateUser = await User.findOneAndUpdate(
+            {
+              userId: currentUserObj.userId,
+            },
+            { gameUnit: currentUserObj.gameUnit - betAmt }
+          );
+          const updateTable = await Table.findOneAndUpdate(
+            {
+              "players.userId": currentUserObj.userId,
+            },
+            { $set: { "players.$.play_amt": betAmt } },
+            { new: true }
+          );
+          socket.emit("currentUserBetAmt", {
+            betAmt: betAmt,
+          });
+          io.of(tableNs).emit("tableData", {
+            updateTableArr: updateTable.players,
+          });
+        });
+
+        // Deliver To Initial Card
       });
 
       // Client Request From Table Id and User Token
@@ -293,109 +325,6 @@ function setupServer() {
     socket.on("requestTableDataAll", async (data) => {
       await shanTableControllerSocket.readTableData(socket, data);
     });
-  });
-
-  // Playing Game
-  const playGame = io.of("/playGame");
-  playGame.on("connection", (socket) => {
-    try {
-      console.log("Game Start Playing");
-      socket.emit("welcome", { status: true, message: "Shan Game Start Play" });
-      socket.on("tableId", async (data) => {
-        const tableId = data.tableId;
-        const tableObj = await Table.findById(tableId);
-        const roleObj = await Role.findById(tableObj.role);
-        // Table ရဲ့ min and max amount player ရဲ့ name နှင့် amout, current player ရဲ့ id or name
-        const currentPlayerArr = [];
-        const currentPalyerDataArr = await Promise.all(
-          tableObj.players.map(async (player) => {
-            const userObj = await User.findById(player.userObjId.toString());
-            return {
-              playerId: player.userId,
-              playerName: userObj.name,
-              playerRole: player.player_role,
-              playerAmount: userObj.gameUnit,
-              bankAmount: player.bank_amt,
-            };
-          })
-        );
-        currentPlayerArr.push(...currentPalyerDataArr);
-        const initTableData = {
-          tableId: tableId,
-          tableMinAmt: roleObj.min_amount,
-          tableMaxAmt: roleObj.max_amount,
-          currentPlayerArr: currentPlayerArr,
-        };
-
-        socket.emit("initTableData", {
-          initTableData,
-        });
-        socket.on("betArr", (data) => {
-          console.log(data);
-        });
-
-        console.log(
-          `Table Id : ${tableId} and Table Object : ${tableObj} and Role Object : ${roleObj}`
-        );
-        console.log("User Array:", currentPalyerDataArr);
-      });
-    } catch (error) {
-      console.error("Error processing joinTableData:", error);
-      socket.emit("palyingError", {
-        message: "Palying Function Error",
-        status: false,
-      });
-    }
-
-    // const tableId = data.tableId;
-    // const tableObj = await Table.findById(tableId);
-    // socket.emit("startPlay", {
-    //   tableId: tableId,
-    //   tableObj,
-    // });
-    // console.log(tableObj);
-    // Creade Card For Six Player
-    // const cardArray = [];
-    // const shanArrayValue = () => {
-    //   let cardVal = Math.round(Math.random() * 51);
-    //   if (cardArray.includes(cardVal)) {
-    //     cardVal = Math.round(Math.random() * 51);
-    //   } else {
-    //     cardArray.push(cardVal);
-    //   }
-    // };
-    // let i = 0;
-    // while (i < 1) {
-    //   shanArrayValue();
-    //   if (cardArray.length === 18) {
-    //     i++;
-    //   }
-    // }
-    // const playCard = [];
-    // for (let i = 0; i < tableObj.players.length; i++) {
-    //   playCard.push({
-    //     userId: tableObj.players[i].userId,
-    //     cardId: [
-    //       shanCard.shan[cardArray[0]],
-    //       shanCard.shan[cardArray[1]],
-    //       shanCard.shan[cardArray[2]],
-    //     ],
-    //   });
-    //   cardArray.splice(0, 3);
-    // }
-    // console.log(shanCard);
-    // console.log(cardArray);
-    // console.log(playCard);
-    // const userArr = [];
-    // playCard.forEach(user => {
-    //   // userArr.push()
-    //   user.
-    // })
-    // socket.emit("playData", {
-    //   tableId: data.tableId,
-    //   playCard: playCard,
-    // });
-    // });
   });
 
   httpServer.listen(port, () => console.log("Listen Now", port));
