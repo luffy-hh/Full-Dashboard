@@ -44,15 +44,49 @@ function ShanGame() {
   //   });
   // };
 
+  // const joinFun = () => {
+  //   const socketJoin = io(
+  //     `https://gamevegas.online/${tableId.slice(0, tableId.length - 6)}`
+  //   );
+  //   socketJoin.on("joinUserSuccess", (data) => {
+  //     console.log(data, "join user data");
+
+  //     let players = data.tableObj.players; //player Array
+  //     console.log(data.tableObj.players);
+
+  //     let userIndex = players.findIndex(
+  //       (player) => player.userId == activeUser
+  //     );
+
+  //     console.log(userIndex);
+
+  //     // If the loginUser is found and not already at index 0, move it to index 0
+  //     if (userIndex !== -1 && userIndex !== 0) {
+  //       let removedUser = players.splice(userIndex, 1)[0]; // Get the removed user
+
+  //       // Insert the removed loginUser at index 0
+  //       players.unshift(removedUser);
+  //     }
+
+  //     setMainObj([...players]);
+  //   });
+  // };
+
   const joinFun = () => {
     const socketJoin = io(
       `https://gamevegas.online/${tableId.slice(0, tableId.length - 6)}`
     );
-    socketJoin.on("joinUserSuccess", (data) => {
-      console.log(data, "join user data");
 
-      let players = data.tableObj.players; //player Array
-      console.log(data.tableObj.players);
+    socketJoin.emit("userData", {
+      userId: activeUser,
+      tableId: tableId.slice(0, tableId.length - 6),
+    });
+
+    socketJoin.on("dataFromServer", (data) => {
+      console.log(data);
+
+      setMainAmount([data.message.max_amt, data.message.min_amt]);
+      let players = data.message.tableArr; //player Array
 
       let userIndex = players.findIndex(
         (player) => player.userId == activeUser
