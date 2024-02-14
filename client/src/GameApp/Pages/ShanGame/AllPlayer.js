@@ -24,8 +24,8 @@ function AllPlayer({ data, number }) {
     } else if (index === 2) {
       return {
         ...item,
-        position: { top: "-8rem", right: `calc(75vw - 65vw)` },
-        // position: { bottom: "-7rem", right: `calc(75vw - 60vw)` },
+        // position: { top: "-8rem", right: `calc(75vw - 65vw)` },
+        position: { top: "7rem", right: `calc(75vw - 78vw)` },
       };
     } else if (index === 3) {
       return {
