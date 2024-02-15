@@ -30,6 +30,9 @@ const shanTableSchema = new mongoose.Schema({
       userId: {
         type: String,
       },
+      userName: {
+        type: String,
+      },
       player_role: {
         type: String,
         enum: ["banker", "player"],
@@ -40,6 +43,10 @@ const shanTableSchema = new mongoose.Schema({
         default: 0,
       },
       play_amt: {
+        type: Number,
+        default: 0,
+      },
+      gameUnit: {
         type: Number,
         default: 0,
       },
