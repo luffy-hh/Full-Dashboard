@@ -148,7 +148,12 @@ function setupServer() {
             {
               "players.userId": currentUserObj.userId,
             },
-            { $set: { "players.$.play_amt": betAmt } },
+            {
+              $set: {
+                "players.$.play_amt": betAmt,
+                "players.$.gameUnit": currentUserObj.gameUnit - betAmt,
+              },
+            },
             { new: true }
           );
           socket.emit("currentUserBetAmt", {
@@ -233,10 +238,7 @@ function setupServer() {
             }
           }
           // Save Table Object In MongoDB Database Palyer Data
-          if (
-            tableObj.players.length === 0 &&
-            roleObj.banker_amount >= currentUser.gameUnit
-          ) {
+          if (tableObj.players.length === 0) {
             tableObj.players.push({
               userObjId: currentUser._id,
               userId: currentUser.userId,
@@ -327,22 +329,6 @@ function setupServer() {
         }
       });
     });
-  });
-
-  // Player's Show Data
-  const playerData = io.of("/playerData");
-  // Table Id , User Id
-  playerData.on("connection", async (socket) => {
-    socket.on("connectUser", (data) => {
-      const tableId = data.tableId;
-      const userId = data.UserId;
-    });
-    const allRoleData = await Role.find({});
-    socket.emit("responseRoleAllData", {
-      length: allRoleData.length,
-      allRoleData,
-    });
-    console.log("Join Player");
   });
 
   // Get All Tables
