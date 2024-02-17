@@ -128,14 +128,18 @@ function setupServer() {
               tableArr: tableObj.players,
             },
           });
-        socket.on("betAmt", async ({ betAmt }) => {
-          console.log(`${socketId} betting amount with ${betAmt}`);
-          if (betAmt > currentUserObj.gameUnit) {
-            socket.emit("rejectBetAmt", {
-              message: "Your Bet Amount Not Enough",
-            });
-          }
 
+        // Deliver To Initial Card
+      });
+      socket.on("betAmt", async ({ betAmt, userId }) => {
+        console.log(`${socketId} betting amount with ${betAmt}`);
+        const currentUserObj = await User.findOne({ userId: userId });
+        console.log("Current User Object", currentUserObj);
+        if (betAmt > currentUserObj.gameUnit) {
+          socket.emit("rejectBetAmt", {
+            message: "Your Bet Amount Not Enough",
+          });
+        } else {
           const updateUser = await User.findOneAndUpdate(
             {
               userId: currentUserObj.userId,
@@ -164,9 +168,7 @@ function setupServer() {
           io.of(tableNs).emit("tableData", {
             updateTableArr: updateTable.players,
           });
-        });
-
-        // Deliver To Initial Card
+        }
       });
 
       // Client Request From Table Id and User Token
