@@ -68,35 +68,35 @@ function setupServer() {
       const socketIdArr = [];
       const socketId = socket.id;
 
-      const shanArray = [];
-      // Shan Array ထဲကို 0 - 51 ကြား random number 18 လုံးထည့်မယ်..
-      // ရလာတဲ့ Random Number တွေကို ထပ်/မထပ် စစ်ထုတ်ရမယ် တစ်ကယ်လို့ array ထဲမှာ ရှိပြီးသား value ဖြစ်နေတယ်ဆိုရင် Random Number ကို နောက်တစ်ကြိမ် ပြန် run ခိုင်းပြီး ထပ်တိုက်စစ်မယ် နောက်ဆုံး မတူညီတဲ့ Random Number 18 လုံးဖြစ်တော့မှ array ကို အမှန်ယူမယ်...
-      const shanArrayValue = () => {
-        let shanVal = Math.round(Math.random() * 51);
-        if (shanArray.includes(shanVal)) {
-          shanVal = Math.round(Math.random() * 51);
-        } else {
-          shanArray.push(shanVal);
-        }
-      };
+      // const shanArray = [];
+      // // Shan Array ထဲကို 0 - 51 ကြား random number 18 လုံးထည့်မယ်..
+      // // ရလာတဲ့ Random Number တွေကို ထပ်/မထပ် စစ်ထုတ်ရမယ် တစ်ကယ်လို့ array ထဲမှာ ရှိပြီးသား value ဖြစ်နေတယ်ဆိုရင် Random Number ကို နောက်တစ်ကြိမ် ပြန် run ခိုင်းပြီး ထပ်တိုက်စစ်မယ် နောက်ဆုံး မတူညီတဲ့ Random Number 18 လုံးဖြစ်တော့မှ array ကို အမှန်ယူမယ်...
+      // const shanArrayValue = () => {
+      //   let shanVal = Math.round(Math.random() * 51);
+      //   if (shanArray.includes(shanVal)) {
+      //     shanVal = Math.round(Math.random() * 51);
+      //   } else {
+      //     shanArray.push(shanVal);
+      //   }
+      // };
 
-      let i = 0;
-      while (i < 1) {
-        shanArrayValue();
-        if (shanArray.length === 18) {
-          i++;
-        }
-      }
-      //ရလာတဲ့ shanArray ထဲက Random Number 18 လုံးကို user တစ်ယောက်လျင် ၁ ကြိမ် နှစ်ခါ ပေးမယ်... Data တွေကို Socket နဲ့ပို့မှာဖြစ်တဲ့အတွက် socketIdArr ကို loop ပတ်ပြီး ပို့ပါ့မယ်။
+      // let i = 0;
+      // while (i < 1) {
+      //   shanArrayValue();
+      //   if (shanArray.length === 18) {
+      //     i++;
+      //   }
+      // }
+      // //ရလာတဲ့ shanArray ထဲက Random Number 18 လုံးကို user တစ်ယောက်လျင် ၁ ကြိမ် နှစ်ခါ ပေးမယ်... Data တွေကို Socket နဲ့ပို့မှာဖြစ်တဲ့အတွက် socketIdArr ကို loop ပတ်ပြီး ပို့ပါ့မယ်။
 
-      shanArray.forEach((arr) => {
-        io.of(tableNs).to(arr.socketId).emit("initialCard", {
-          firstCard: shanArray[0],
-          secondCard: shanArray[1],
-        });
-        shanArray.splice(0, 2);
-        console.log(shanArray[0], shanArray[1]);
-      });
+      // shanArray.forEach((arr) => {
+      //   io.of(tableNs).to(arr.socketId).emit("initialCard", {
+      //     firstCard: shanArray[0],
+      //     secondCard: shanArray[1],
+      //   });
+      //   shanArray.splice(0, 2);
+      //   console.log(shanArray[0], shanArray[1]);
+      // });
 
       // Deliver Cards To Client
 
@@ -105,7 +105,6 @@ function setupServer() {
           userId: data.userId,
           tableId: data.tableId,
           socketId,
-          betAmt: 0,
         });
         console.log(socketIdArr);
         const tableObj = await Table.findById(data.tableId);
@@ -131,11 +130,19 @@ function setupServer() {
           });
         socket.on("betAmt", async ({ betAmt }) => {
           console.log(`${socketId} betting amount with ${betAmt}`);
+          console.log("Current User Object :", currentUserObj);
+          if (currentUserObj.gameUnit > betAmt) {
+            socket.emit("rejectBetAmt", {
+              message: "Your Bet Amount Not Enough",
+            });
+          }
+
           const updateUser = await User.findOneAndUpdate(
             {
               userId: currentUserObj.userId,
             },
-            { gameUnit: currentUserObj.gameUnit - betAmt }
+            { gameUnit: currentUserObj.gameUnit - betAmt },
+            { new: true }
           );
           const updateTable = await Table.findOneAndUpdate(
             {
@@ -146,6 +153,7 @@ function setupServer() {
           );
           socket.emit("currentUserBetAmt", {
             betAmt: betAmt,
+            updateUser,
           });
           io.of(tableNs).emit("tableData", {
             updateTableArr: updateTable.players,
@@ -225,14 +233,17 @@ function setupServer() {
             }
           }
           // Save Table Object In MongoDB Database Palyer Data
-          if (tableObj.players.length === 0) {
+          if (
+            tableObj.players.length === 0 &&
+            roleObj.banker_amount >= currentUser.gameUnit
+          ) {
             tableObj.players.push({
               userObjId: currentUser._id,
               userId: currentUser.userId,
               userName: currentUser.name,
               player_role: "banker",
               bank_amt: roleObj.banker_amount,
-              gameUnit: currentUser.gameUnit,
+              gameUnit: currentUser.gameUnit - roleObj.banker_amount,
             });
             await User.updateOne(
               { userId: currentUser.userId },
@@ -286,21 +297,35 @@ function setupServer() {
           }
         }
       });
+      // Remove From Table
+      socket.on("leaveTable", async (data) => {
+        console.log("Leave Table Data", data);
 
-      // Deliver Card
-      io.of(tableNs)
-        .to(socketId)
-        .emit("cardDeliver", {
-          firstCard: {
-            cardName: "Hello",
-          },
-          secondCard: {
-            cardName: "World",
-          },
-          thirdCard: {
-            cardName: "Hello World",
-          },
-        });
+        try {
+          const tableObj = await Table.findOneAndUpdate(
+            { "players.userId": data.userId },
+            {
+              $pull: {
+                players: { userId: data.userId },
+              },
+            },
+            { new: true }
+          );
+
+          const indexToRemove = socketIdArr.findIndex(
+            (item) => item.userId === data.userId
+          );
+          if (indexToRemove !== -1) {
+            socketIdArr.splice(indexToRemove, 1);
+          }
+          io.of(tableNs).emit("leavePlayer", {
+            message: "Successfully Leave Player From Table",
+            status: true,
+          });
+        } catch (error) {
+          console.error("Error leaving table:", error);
+        }
+      });
     });
   });
 
