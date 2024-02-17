@@ -130,8 +130,7 @@ function setupServer() {
           });
         socket.on("betAmt", async ({ betAmt }) => {
           console.log(`${socketId} betting amount with ${betAmt}`);
-          console.log("Current User Object :", currentUserObj);
-          if (currentUserObj.gameUnit > betAmt) {
+          if (betAmt > currentUserObj.gameUnit) {
             socket.emit("rejectBetAmt", {
               message: "Your Bet Amount Not Enough",
             });
@@ -158,7 +157,9 @@ function setupServer() {
           );
           socket.emit("currentUserBetAmt", {
             betAmt: betAmt,
-            updateUser,
+            updateUserId: updateUser.userId,
+            updateUserName: updateUser.name,
+            updateGameUnit: updateUser.gameUnit,
           });
           io.of(tableNs).emit("tableData", {
             updateTableArr: updateTable.players,
