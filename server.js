@@ -13,7 +13,7 @@ const User = require("./users/userModels");
 const Table = require("./shan/shan_table/shanTableModel");
 const tableGetter = require("./shan/shan_table/tableGetter");
 const Role = require("./shan/shan_role/shanRoleModel");
-const shanCard = require("./shan/shanCard");
+const shanCard = require("./shan/shan_card/shanCardModel");
 dotenv.config({ path: "./config.env" });
 
 let tables = [];
@@ -63,43 +63,79 @@ function setupServer() {
     });
   });
 
-  tables.forEach((tableNs) => {
+  tables.forEach(async (tableNs) => {
+    const socketIdArr = [];
+    //Shan Object ကို Array တစခုအနေနဲ့ ဆွဲထုတ်မယ်
+    const shanCardArr = await shanCard.find();
+    //Shan Object ကို Random Array အနေနဲ့ ပြန်ရေးထား
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+    let randomShanArr = [];
+
     io.of(tableNs).on("connection", (socket) => {
-      const socketIdArr = [];
       const socketId = socket.id;
 
-      // const shanArray = [];
-      // // Shan Array ထဲကို 0 - 51 ကြား random number 18 လုံးထည့်မယ်..
-      // // ရလာတဲ့ Random Number တွေကို ထပ်/မထပ် စစ်ထုတ်ရမယ် တစ်ကယ်လို့ array ထဲမှာ ရှိပြီးသား value ဖြစ်နေတယ်ဆိုရင် Random Number ကို နောက်တစ်ကြိမ် ပြန် run ခိုင်းပြီး ထပ်တိုက်စစ်မယ် နောက်ဆုံး မတူညီတဲ့ Random Number 18 လုံးဖြစ်တော့မှ array ကို အမှန်ယူမယ်...
-      // const shanArrayValue = () => {
-      //   let shanVal = Math.round(Math.random() * 51);
-      //   if (shanArray.includes(shanVal)) {
-      //     shanVal = Math.round(Math.random() * 51);
-      //   } else {
-      //     shanArray.push(shanVal);
-      //   }
-      // };
+      // Deliver Shan Card
+      //ရလာတဲ့ shanArray ထဲက Random Number 18 လုံးကို user တစ်ယောက်လျင် ၁ ကြိမ် နှစ်ခါ ပေးမယ်... Data တွေကို Socket နဲ့ပို့မှာဖြစ်တဲ့အတွက် socketIdArr ကို loop ပတ်ပြီး ပို့ပါ့မယ်။
+      socket.on("startPlay", async () => {
+        randomShanArr = shuffleArray(shanCardArr);
 
-      // let i = 0;
-      // while (i < 1) {
-      //   shanArrayValue();
-      //   if (shanArray.length === 18) {
-      //     i++;
-      //   }
-      // }
-      // //ရလာတဲ့ shanArray ထဲက Random Number 18 လုံးကို user တစ်ယောက်လျင် ၁ ကြိမ် နှစ်ခါ ပေးမယ်... Data တွေကို Socket နဲ့ပို့မှာဖြစ်တဲ့အတွက် socketIdArr ကို loop ပတ်ပြီး ပို့ပါ့မယ်။
+        for (const userArr of socketIdArr) {
+          // Emit initialCard event to each user
+          io.of(tableNs).to(userArr.socketId).emit("initialCard", {
+            firstCard: randomShanArr[0],
+            secondCard: randomShanArr[1],
+          });
 
-      // shanArray.forEach((arr) => {
-      //   io.of(tableNs).to(arr.socketId).emit("initialCard", {
-      //     firstCard: shanArray[0],
-      //     secondCard: shanArray[1],
-      //   });
-      //   shanArray.splice(0, 2);
-      //   console.log(shanArray[0], shanArray[1]);
-      // });
+          // Update player_card in the database
+          await Table.findOneAndUpdate(
+            {
+              "players.userId": userArr.userId,
+            },
+            {
+              $push: {
+                "players.$.player_card": {
+                  firstCard: randomShanArr[0],
+                  secondCard: randomShanArr[1],
+                },
+              },
+            },
+            { new: true }
+          );
 
-      // Deliver Cards To Client
+          // Remove the first two elements from randomShanArr
+          randomShanArr.splice(0, 2);
+        }
+      });
 
+      // Deliver Third Card
+      socket.on("nextCard", async ({ userId }) => {
+        console.log("nextCard");
+        const thirdCard = randomShanArr[0];
+        socket.emit("nextCard", {
+          thirdCard,
+        });
+
+        await Table.findOneAndUpdate(
+          {
+            "players.userId": userId,
+          },
+          {
+            $push: {
+              "players.$.player_card": { thirdCard },
+            },
+          },
+          { new: true }
+        );
+        randomShanArr.splice(0, 1);
+      });
+
+      // Client Web Connect With Server
       socket.on("userData", async (data) => {
         socketIdArr.push({
           userId: data.userId,
@@ -128,9 +164,8 @@ function setupServer() {
               tableArr: tableObj.players,
             },
           });
-
-        // Deliver To Initial Card
       });
+      // Client Bet Amount
       socket.on("betAmt", async ({ betAmt, userId }) => {
         console.log(`${socketId} betting amount with ${betAmt}`);
         const currentUserObj = await User.findOne({ userId: userId });
