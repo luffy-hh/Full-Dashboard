@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const shanTableSchema = new mongoose.Schema({
   tableName: {
-    type: "String",
+    type: "String", 
     required: true,
   },
   role: {
