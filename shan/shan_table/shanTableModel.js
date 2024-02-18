@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const shanTableSchema = new mongoose.Schema({
   tableName: {
-    type: "String", 
+    type: "String",
     required: true,
   },
   role: {
@@ -56,6 +56,9 @@ const shanTableSchema = new mongoose.Schema({
         default: "wait",
       },
       player_card: [],
+      result: {
+        type: Number,
+      },
     },
   ],
 });

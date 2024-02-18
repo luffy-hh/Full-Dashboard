@@ -87,11 +87,13 @@ function setupServer() {
 
         for (const userArr of socketIdArr) {
           // Emit initialCard event to each user
-          io.of(tableNs).to(userArr.socketId).emit("initialCard", {
-            firstCard: randomShanArr[0],
-            secondCard: randomShanArr[1],
-          });
-
+          let firstCard = randomShanArr[0];
+          let secondCard = randomShanArr[1];
+          let result = firstCard.cardValue + secondCard.cardValue;
+          if (result.toString().length > 1) {
+            let modifiedResult = result.toString().slice(1);
+            result = Number(modifiedResult);
+          }
           // Update player_card in the database
           await Table.findOneAndUpdate(
             {
@@ -104,11 +106,22 @@ function setupServer() {
                   secondCard: randomShanArr[1],
                 },
               },
+              $set: {
+                "players.$.result": result,
+              },
             },
             { new: true }
           );
 
+          io.of(tableNs).to(userArr.socketId).emit("initialCard", {
+            firstCard,
+            secondCard,
+            result,
+          });
+
           // Remove the first two elements from randomShanArr
+          console.log("First Card Before", firstCard);
+          console.log("Second Card Before", secondCard);
           randomShanArr.splice(0, 2);
         }
       });
@@ -117,21 +130,41 @@ function setupServer() {
       socket.on("nextCard", async ({ userId }) => {
         console.log("nextCard");
         const thirdCard = randomShanArr[0];
-        socket.emit("nextCard", {
-          thirdCard,
+        const tableObj = await Table.findOne({
+          "players.userId": userId,
         });
+
+        const playerIndex = tableObj?.players.findIndex(
+          (player) => player.userId === userId
+        );
+        let result =
+          playerIndex !== -1
+            ? tableObj?.players[playerIndex]?.result
+            : "Player not found or result not available";
+
+        result += thirdCard.cardValue;
+        if (result.toString().length > 1) {
+          let modifiedResult = result.toString().slice(1);
+          result = Number(modifiedResult);
+        }
 
         await Table.findOneAndUpdate(
           {
             "players.userId": userId,
           },
           {
-            $push: {
-              "players.$.player_card": { thirdCard },
+            $set: {
+              "players.$.result": result,
             },
           },
           { new: true }
         );
+
+        socket.emit("nextCard", {
+          thirdCard,
+          result,
+        });
+
         randomShanArr.splice(0, 1);
       });
 
