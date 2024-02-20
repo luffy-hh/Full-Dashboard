@@ -65,6 +65,7 @@ function setupServer() {
 
   tables.forEach(async (tableNs) => {
     const socketIdArr = [];
+    let sendFinalResultBoolean = false;
     //Shan Object ကို Array တစခုအနေနဲ့ ဆွဲထုတ်မယ်
     const shanCardArr = await shanCard.find();
     //Shan Object ကို Random Array အနေနဲ့ ပြန်ရေးထား
@@ -79,6 +80,140 @@ function setupServer() {
 
     io.of(tableNs).on("connection", (socket) => {
       const socketId = socket.id;
+
+      // Win / Loose Result
+      socket.on("winlose", async ({ tableId }) => {
+        const tableObj = await Table.findById(tableId);
+        const players = tableObj.players;
+        const banker = players.find(
+          (player) => player.player_role === "banker"
+        );
+
+        for (const player of players) {
+          if (player.player_role === "banker") {
+            continue;
+          }
+
+          const result = banker.result < player.result ? true : false;
+
+          // Push winlose:result into socketIdArr
+          const userIndex = socketIdArr.findIndex(
+            (item) => item.userId === player.userId
+          );
+          if (userIndex !== -1) {
+            socketIdArr[userIndex].winlose = result;
+          }
+
+          console.log("Win Lose Result :", socketIdArr);
+        }
+        sendFinalResultBoolean = true;
+
+        if (sendFinalResultBoolean) {
+          for (const userArr of socketIdArr) {
+            // Emit winlose event to each user
+            io.of(tableNs)
+              .to(userArr.socketId)
+              .emit("winloseResult", { winlose: userArr.winlose });
+          }
+        }
+        // အလျော် / အစား
+
+        //Value From Socket Array
+        const [bankerObjSocket] = socketIdArr.filter(
+          (user) => user.winlose === undefined
+        );
+        const winPlayerArrSocket = socketIdArr.filter(
+          (user) => user.winlose === true
+        );
+        const losePlayerArrSocket = socketIdArr.filter(
+          (user) => user.winlose === false
+        );
+
+        //Value From Database
+        const bankerObjMongo = tableObj?.players.find(
+          (player) => player.userId === bankerObjSocket.userId
+        );
+
+        // အစား
+        if (losePlayerArrSocket.length > 0) {
+          for (const loser of losePlayerArrSocket) {
+            const currentPlayer = tableObj?.players.find(
+              (player) => player.userId === loser.userId
+            );
+            const currentUserObj = await User.findOne({
+              userId: currentPlayer.userId,
+            });
+
+            const updateBankerAmt =
+              bankerObjMongo.bank_amt + currentPlayer.play_amt;
+            const updatePlayerAmt =
+              currentUserObj.gameUnit - currentPlayer.play_amt;
+
+            const userUpdate = await User.findOneAndUpdate(
+              { userId: currentPlayer.userId },
+              { $set: { gameUnit: updatePlayerAmt } },
+              { new: true }
+            );
+
+            const tableUpdate = await Table.findOneAndUpdate(
+              {
+                "players.userId": bankerObjSocket.userId,
+              },
+              {
+                $set: {
+                  "players.$.bank_amt": updateBankerAmt,
+                },
+              },
+              { new: true }
+            );
+
+            io.of(tableNs)
+              .to(currentPlayer.socketId)
+              .emit("winloseAmt", { amt: userUpdate.gameUnit });
+          }
+        }
+
+        // အလျော်
+        if (winPlayerArrSocket.length > 0) {
+          for (const winner of winPlayerArrSocket) {
+            const currentPlayer = tableObj?.players.find(
+              (player) => player.userId === winner.userId
+            );
+            const currentUserObj = await User.findOne({
+              userId: currentPlayer.userId,
+            });
+
+            const updateBankerAmt = Math.max(
+              0,
+              bankerObjMongo.bank_amt - currentPlayer.play_amt
+            );
+            const updatePlayerAmt =
+              currentUserObj.gameUnit + currentPlayer.play_amt;
+
+            const userUpdate = await User.findOneAndUpdate(
+              { userId: currentPlayer.userId },
+              { $set: { gameUnit: updatePlayerAmt } },
+              { new: true }
+            );
+
+            const tableUpdate = await Table.findOneAndUpdate(
+              {
+                "players.userId": bankerObjSocket.userId,
+              },
+              {
+                $set: {
+                  "players.$.bank_amt": updateBankerAmt,
+                },
+              },
+              { new: true }
+            );
+
+            io.of(tableNs)
+              .to(currentPlayer.socketId)
+              .emit("winloseAmt", { amt: userUpdate.gameUnit });
+          }
+        }
+      });
 
       // Deliver Shan Card
       //ရလာတဲ့ shanArray ထဲက Random Number 18 လုံးကို user တစ်ယောက်လျင် ၁ ကြိမ် နှစ်ခါ ပေးမယ်... Data တွေကို Socket နဲ့ပို့မှာဖြစ်တဲ့အတွက် socketIdArr ကို loop ပတ်ပြီး ပို့ပါ့မယ်။
@@ -152,9 +287,13 @@ function setupServer() {
           {
             "players.userId": userId,
           },
+
           {
             $set: {
               "players.$.result": result,
+            },
+            $push: {
+              "players.$.player_card": { thirdCard },
             },
           },
           { new: true }
