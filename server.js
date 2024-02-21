@@ -67,6 +67,7 @@ function setupServer() {
     const socketIdArr = [];
     let deliverCards = [];
     let sendFinalResultBoolean = false;
+    console.log("Socket Id Array", socketIdArr);
     //Shan Object ကို Array တစခုအနေနဲ့ ဆွဲထုတ်မယ်
     const shanCardArr = await shanCard.find();
     //Shan Object ကို Random Array အနေနဲ့ ပြန်ရေးထား
@@ -275,6 +276,7 @@ function setupServer() {
           console.log("Deliver Card In Loop :", deliverCards);
         }
         console.log("Deliver Card Final :", deliverCards);
+        console.log("Socket Id Array Final :", socketIdArr);
         socket.emit("initialCard", {
           allCard: deliverCards,
         });
