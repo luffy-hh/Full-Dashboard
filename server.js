@@ -77,6 +77,7 @@ function setupServer() {
       return array;
     }
     let randomShanArr = [];
+    let deliverCards = [];
 
     io.of(tableNs).on("connection", (socket) => {
       const socketId = socket.id;
@@ -95,6 +96,16 @@ function setupServer() {
           }
 
           const result = banker.result < player.result ? true : false;
+          if (banker.result < player.result) {
+            result = true;
+          } else if (banker.result > player.result) {
+            result = false;
+          } else if (banker.result == player.result) {
+            result =
+              banker.player_card.length < player.player_card.length
+                ? true
+                : false;
+          }
 
           // Push winlose:result into socketIdArr
           const userIndex = socketIdArr.findIndex(
@@ -175,13 +186,6 @@ function setupServer() {
 
         // အလျော်
         if (winPlayerArrSocket.length > 0) {
-          //tableObj ထဲက banker_amt သည် 0 ဟုတ်/မဟုတ် စစ်မယ်။
-          if (bankerObjMongo.bank_amt > 0) {
-          } else {
-            // 0 ဆိုရင် Client ကို ဒီအတိုင်းပြန်မယ် မလျော်ဘူး။
-          }
-          //Current Player ရဲ့ TableObj ထဲက play_amt ကိုယူမယ်။
-          //TableObj ထဲက bank_amt ထဲကနေ play_amt ကို နှုတ်မယ်။ ပြီးရင် TableObj bank_amt မှာ ကျန်တာကို Update လုပ်မယ်။
           for (const winner of winPlayerArrSocket) {
             const currentPlayer = tableObj?.players.find(
               (player) => player.userId === winner.userId
@@ -262,18 +266,18 @@ function setupServer() {
             },
             { new: true }
           );
-
-          io.of(tableNs).to(userArr.socketId).emit("initialCard", {
-            firstCard,
-            secondCard,
-            result,
-          });
-
           // Remove the first two elements from randomShanArr
-          console.log("First Card Before", firstCard);
-          console.log("Second Card Before", secondCard);
           randomShanArr.splice(0, 2);
+          deliverCards = [
+            ...deliverCards,
+            { userId: userArr.userId, firstCard, secondCard, result },
+          ];
+          console.log("Deliver Card In Loop :", deliverCards);
         }
+        console.log("Deliver Card Final :", deliverCards);
+        socket.emit("initialCard", {
+          allCard: deliverCards,
+        });
       });
 
       // Deliver Third Card
@@ -314,11 +318,19 @@ function setupServer() {
           { new: true }
         );
 
+        const indexToUpdate = deliverCards.findIndex(
+          (element) => element.userId === userId
+        );
+
+        // Update the thirdCard and result value in the array
+        deliverCards[indexToUpdate].thirdCard = thirdCard;
+        deliverCards[indexToUpdate].result = result;
+
         socket.emit("nextCard", {
-          thirdCard,
-          result,
+          updateCard: deliverCards,
         });
 
+        console.log("Third Card :", deliverCards);
         randomShanArr.splice(0, 1);
       });
 
