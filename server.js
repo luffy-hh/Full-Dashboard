@@ -168,13 +168,20 @@ function setupServer() {
             );
 
             io.of(tableNs)
-              .to(currentPlayer.socketId)
+              .to(loser.socketId)
               .emit("winloseAmt", { amt: userUpdate.gameUnit });
           }
         }
 
         // အလျော်
         if (winPlayerArrSocket.length > 0) {
+          //tableObj ထဲက banker_amt သည် 0 ဟုတ်/မဟုတ် စစ်မယ်။
+          if (bankerObjMongo.bank_amt > 0) {
+          } else {
+            // 0 ဆိုရင် Client ကို ဒီအတိုင်းပြန်မယ် မလျော်ဘူး။
+          }
+          //Current Player ရဲ့ TableObj ထဲက play_amt ကိုယူမယ်။
+          //TableObj ထဲက bank_amt ထဲကနေ play_amt ကို နှုတ်မယ်။ ပြီးရင် TableObj bank_amt မှာ ကျန်တာကို Update လုပ်မယ်။
           for (const winner of winPlayerArrSocket) {
             const currentPlayer = tableObj?.players.find(
               (player) => player.userId === winner.userId
@@ -182,35 +189,43 @@ function setupServer() {
             const currentUserObj = await User.findOne({
               userId: currentPlayer.userId,
             });
+            if (bankerObjMongo.bank_amt > 0) {
+              const updateBankAmt = Math.max(
+                0,
+                bankerObjMongo.bank_amt - currentPlayer.play_amt
+              );
+              const updateUserAmt = bankerObjMongo.bank_amt - updateBankAmt;
+              const userUpdate = await User.findOneAndUpdate(
+                { userId: currentPlayer.userId },
+                { $set: { gameUnit: updateUserAmt } },
+                { new: true }
+              );
 
-            const updateBankerAmt = Math.max(
-              0,
-              bankerObjMongo.bank_amt - currentPlayer.play_amt
-            );
-            const updatePlayerAmt =
-              currentUserObj.gameUnit + currentPlayer.play_amt;
-
-            const userUpdate = await User.findOneAndUpdate(
-              { userId: currentPlayer.userId },
-              { $set: { gameUnit: updatePlayerAmt } },
-              { new: true }
-            );
-
-            const tableUpdate = await Table.findOneAndUpdate(
-              {
-                "players.userId": bankerObjSocket.userId,
-              },
-              {
-                $set: {
-                  "players.$.bank_amt": updateBankerAmt,
+              const tableUpdate = await Table.findOneAndUpdate(
+                {
+                  "players.userId": bankerObjSocket.userId,
                 },
-              },
-              { new: true }
-            );
-
-            io.of(tableNs)
-              .to(currentPlayer.socketId)
-              .emit("winloseAmt", { amt: userUpdate.gameUnit });
+                {
+                  $set: {
+                    "players.$.bank_amt": updateBankAmt,
+                  },
+                },
+                { new: true }
+              );
+              io.of(tableNs)
+                .to(winner.socketId)
+                .emit("winloseAmt", { amt: userUpdate.gameUnit });
+            } else {
+              const updateUserAmt = 0;
+              const userUpdate = await User.findOneAndUpdate(
+                { userId: currentPlayer.userId },
+                { $set: { gameUnit: updateUserAmt } },
+                { new: true }
+              );
+              io.of(tableNs)
+                .to(winner.socketId)
+                .emit("winloseAmt", { amt: userUpdate.gameUnit });
+            }
           }
         }
       });
