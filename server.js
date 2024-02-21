@@ -65,6 +65,7 @@ function setupServer() {
 
   tables.forEach(async (tableNs) => {
     const socketIdArr = [];
+    let deliverCards = [];
     let sendFinalResultBoolean = false;
     //Shan Object ကို Array တစခုအနေနဲ့ ဆွဲထုတ်မယ်
     const shanCardArr = await shanCard.find();
@@ -77,7 +78,6 @@ function setupServer() {
       return array;
     }
     let randomShanArr = [];
-    let deliverCards = [];
 
     io.of(tableNs).on("connection", (socket) => {
       const socketId = socket.id;
