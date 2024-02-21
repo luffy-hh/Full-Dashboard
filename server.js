@@ -83,6 +83,8 @@ function setupServer() {
     io.of(tableNs).on("connection", (socket) => {
       const socketId = socket.id;
 
+      socket.on("restart", ({ tableId }) => {});
+
       // Win / Loose Result
       socket.on("winlose", async ({ tableId }) => {
         const tableObj = await Table.findById(tableId);
@@ -96,7 +98,7 @@ function setupServer() {
             continue;
           }
 
-          const result = banker.result < player.result ? true : false;
+          let result;
           if (banker.result < player.result) {
             result = true;
           } else if (banker.result > player.result) {
@@ -121,13 +123,9 @@ function setupServer() {
         sendFinalResultBoolean = true;
 
         if (sendFinalResultBoolean) {
-          for (const userArr of socketIdArr) {
-            // Emit winlose event to each user
-            io.of(tableNs)
-              .to(userArr.socketId)
-              .emit("winloseResult", { winlose: userArr.winlose });
-          }
+          socket.emit("winloseResult", { winlose: socketIdArr });
         }
+
         // အလျော် / အစား
 
         //Value From Socket Array
@@ -238,6 +236,7 @@ function setupServer() {
       // Deliver Shan Card
       //ရလာတဲ့ shanArray ထဲက Random Number 18 လုံးကို user တစ်ယောက်လျင် ၁ ကြိမ် နှစ်ခါ ပေးမယ်... Data တွေကို Socket နဲ့ပို့မှာဖြစ်တဲ့အတွက် socketIdArr ကို loop ပတ်ပြီး ပို့ပါ့မယ်။
       socket.on("startPlay", async () => {
+        deliverCards = [];
         randomShanArr = shuffleArray(shanCardArr);
 
         for (const userArr of socketIdArr) {
