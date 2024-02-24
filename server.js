@@ -337,12 +337,24 @@ function setupServer() {
 
       // Client Web Connect With Server
       socket.on("userData", async (data) => {
-        socketIdArr.push({
-          userId: data.userId,
-          tableId: data.tableId,
-          socketId,
-        });
-        console.log(socketIdArr);
+        const existingUserIndex = socketIdArr.findIndex(
+          (item) => item.userId === data.userId
+        );
+
+        if (existingUserIndex !== -1) {
+          // If user already exists, update the socketId
+          socketIdArr[existingUserIndex].socketId = socketId;
+          console.log("User updated:", socketIdArr);
+        } else {
+          // If user doesn't exist, push a new element
+          socketIdArr.push({
+            userId: data.userId,
+            tableId: data.tableId,
+            socketId,
+          });
+          console.log("New user added:", socketIdArr);
+        }
+        console.log("Join From Web", socketIdArr);
         const tableObj = await Table.findById(data.tableId);
         const currentUserObj = await User.findOne({ userId: data.userId });
         const roleObj = await Role.findById(tableObj.role);
@@ -528,7 +540,6 @@ function setupServer() {
             tableObj,
             currentUserData,
           });
-          console.log("Socket Id Join User Data After Mobile", socketIdArr);
         } catch (error) {
           console.error("Error processing joinTableData:", error);
           if (error.code === 11000) {
@@ -564,7 +575,7 @@ function setupServer() {
             message: "Successfully Leave Player From Table",
             status: true,
           });
-          console.error("leaving table:", socketIdArr);
+          console.log("Leave Table Data", socketIdArr);
         } catch (error) {
           console.error("Error leaving table:", error);
         }
