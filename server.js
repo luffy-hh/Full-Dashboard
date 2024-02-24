@@ -564,6 +564,7 @@ function setupServer() {
             message: "Successfully Leave Player From Table",
             status: true,
           });
+          console.error("leaving table:", socketIdArr);
         } catch (error) {
           console.error("Error leaving table:", error);
         }
