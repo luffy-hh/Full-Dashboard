@@ -243,7 +243,8 @@ function setupServer() {
           // Emit initialCard event to each user
           let firstCard = randomShanArr[0];
           let secondCard = randomShanArr[1];
-          let result = firstCard.cardValue + secondCard.cardValue;
+          let result = firstCard.value + secondCard.value;
+          console.log("Type Of Result", typeof result);
 
           if (!Number.isNaN(result)) {
             if (result.toString().length > 1) {
@@ -307,7 +308,7 @@ function setupServer() {
             ? tableObj?.players[playerIndex]?.result
             : "Player not found or result not available";
 
-        result += thirdCard.cardValue;
+        result += thirdCard.value;
         if (result.toString().length > 1) {
           let modifiedResult = result.toString().slice(1);
           result = Number(modifiedResult);
