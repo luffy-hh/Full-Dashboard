@@ -244,36 +244,46 @@ function setupServer() {
           let firstCard = randomShanArr[0];
           let secondCard = randomShanArr[1];
           let result = firstCard.cardValue + secondCard.cardValue;
-          if (result.toString().length > 1) {
-            let modifiedResult = result.toString().slice(1);
-            result = Number(modifiedResult);
-          }
-          // Update player_card in the database
-          await Table.findOneAndUpdate(
-            {
-              "players.userId": userArr.userId,
-            },
-            {
-              $push: {
-                "players.$.player_card": {
-                  firstCard: randomShanArr[0],
-                  secondCard: randomShanArr[1],
+
+          if (!Number.isNaN(result)) {
+            if (result.toString().length > 1) {
+              let modifiedResult = result.toString().slice(1);
+              result = Number(modifiedResult);
+            }
+
+            // Update player_card in the database
+            await Table.findOneAndUpdate(
+              {
+                "players.userId": userArr.userId,
+              },
+              {
+                $push: {
+                  "players.$.player_card": {
+                    firstCard: randomShanArr[0],
+                    secondCard: randomShanArr[1],
+                  },
+                },
+                $set: {
+                  "players.$.result": result,
                 },
               },
-              $set: {
-                "players.$.result": result,
-              },
-            },
-            { new: true }
-          );
-          // Remove the first two elements from randomShanArr
-          randomShanArr.splice(0, 2);
-          deliverCards = [
-            ...deliverCards,
-            { userId: userArr.userId, firstCard, secondCard, result },
-          ];
-          console.log("Deliver Card In Loop :", deliverCards);
+              { new: true }
+            );
+
+            // Remove the first two elements from randomShanArr
+            randomShanArr.splice(0, 2);
+            deliverCards = [
+              ...deliverCards,
+              { userId: userArr.userId, firstCard, secondCard, result },
+            ];
+            console.log("Deliver Card In Loop :", deliverCards);
+          } else {
+            console.error("Invalid result:", result);
+            // Handle the error or skip the current iteration
+            continue;
+          }
         }
+
         console.log("Deliver Card Final :", deliverCards);
         console.log("Socket Id Array Final :", socketIdArr);
         socket.emit("initialCard", {
