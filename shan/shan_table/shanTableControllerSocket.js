@@ -27,12 +27,11 @@ exports.createTableData = async (socket, data) => {
 exports.readTableData = async (socket, data) => {
   try {
     if (data.idValue === "all") {
-      console.log("Hello World");
-      // const tablesValue = await tableGetter.responseTableAll();
-      // socket.emit("responseTableDataAll", {
-      //   length: tablesValue.length,
-      //   tableDataAll: tablesValue,
-      // });
+      const tablesValue = await tableGetter.responseTableAll();
+      socket.emit("responseTableDataAll", {
+        length: tablesValue.length,
+        tableDataAll: tablesValue,
+      });
     } else if (data.idValue !== "all" && data.idValue) {
       const tablesValue = await tableGetter.responseTableByRole(data.idValue);
       socket.emit("responseTableDataAll", {
