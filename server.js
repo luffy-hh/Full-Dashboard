@@ -364,6 +364,7 @@ function setupServer() {
               tableArr: tableObj.players,
             },
           });
+        console.log("Socket Id Join User Data After Web", socketIdArr);
       });
       // Client Bet Amount
       socket.on("betAmt", async ({ betAmt, userId }) => {
@@ -527,6 +528,7 @@ function setupServer() {
             tableObj,
             currentUserData,
           });
+          console.log("Socket Id Join User Data After Mobile", socketIdArr);
         } catch (error) {
           console.error("Error processing joinTableData:", error);
           if (error.code === 11000) {
