@@ -7,17 +7,17 @@
   position: relative;
 }
 
-.show_card_0 {
+.show_card_1 {
   top: 10vh;
   left: -5vw;
 }
 
-.show_card_1 {
+.show_card_2 {
   top: 0vh;
   right: 5vw;
 }
 
-.show_card_2 {
+.show_card_0 {
   bottom: 10vh;
   left: 5vw;
 }
@@ -41,6 +41,10 @@
   width: 5rem;
 }
 
+.cards_box_other img {
+  width: 3rem;
+}
+
 .show_card_one {
   rotate: -10deg;
 }
@@ -49,6 +53,11 @@
   margin-left: -3rem;
   rotate: 5deg;
   z-index: 2;
+}
+.show_card_three {
+  rotate: 8deg;
+  margin-left: 3rem;
+  z-index: 5;
 }
 
 .win_lose {

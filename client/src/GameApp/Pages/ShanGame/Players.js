@@ -7,8 +7,9 @@ import { useSelector } from "react-redux";
 import ShowCard from "./ShowCard/ShowCard";
 import DragCard from "./Dragable/DragCard";
 import { selectResult, selectDragCard } from "../../../Feactures/shan";
+import ShowCardOther from "./ShowCard/ShowCardOther";
 
-function Players({ data, index }) {
+function Players({ data, index, allShowResult }) {
   const result = useSelector(selectResult);
   const dragCardState = useSelector(selectDragCard);
 
@@ -20,9 +21,9 @@ function Players({ data, index }) {
             {/* Check Banker */}
 
             {data?.player_role === "banker" ? (
-              <Banker index={index} />
+              <Banker index={index} bank_amt={data.bank_amt} />
             ) : (
-              <UserBetIcon index={index} />
+              <UserBetIcon index={index} betAmt={data.play_amt} />
             )}
 
             <div className={styles.user_img_box}>
@@ -33,13 +34,14 @@ function Players({ data, index }) {
               />
             </div>
             <div className={styles.userInfo}>
-              <p className={styles.player_data_name}>{data.userId}</p>
-              <p className={styles.player_data_price}>{data.bank_amt}</p>
+              <p className={styles.player_data_name}>{data.userName}</p>
+              <p className={styles.player_data_price}>{data.gameUnit}</p>
             </div>
           </div>
         </div>
-        {/* {result && <ShowCard index={index} data={data} />}
-        {index === 2 && dragCardState && <DragCard data={data} />} */}
+        {index === 0 && result && <ShowCard index={0} data={data} />}
+
+        {index === 0 && dragCardState && <DragCard data={data} />}
       </div>
     </>
   );
