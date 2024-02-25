@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import styles from "./ShanGame.module.css";
+import { io } from "socket.io-client";
 
 import {
   setBettingTime,
@@ -92,7 +93,15 @@ const cardPosition = new Map([
   ],
 ]);
 
-function DumyCard({ cardHandling, counts, setCardHandling, number }) {
+function DumyCard({
+  mainObj,
+  setMainObj,
+  cardHandling,
+  counts,
+  setCardHandling,
+  number,
+  tableId,
+}) {
   const dispatch = useDispatch();
 
   const cards = myArray.map((d, index) => (
@@ -146,6 +155,23 @@ function DumyCard({ cardHandling, counts, setCardHandling, number }) {
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
+      const socketJoin = io(tableId);
+      socketJoin.emit("startPlay", { text: "Shan Card Request" });
+      socketJoin.on("initialCard", (data) => {
+        console.log(data, "initialCard");
+        const combined = mainObj.map((item1) => {
+          const foundItem = data.allCard.find(
+            (item2) => item2.userId === item1.userId
+          );
+          return { ...item1, ...foundItem };
+        });
+
+        setMainObj(combined);
+        console.log(mainObj);
+      });
+      console.log(
+        "socket work initialCArd====================================================================="
+      );
       setCardHandling(true);
       dispatch(setBettingTime(false));
     }, 10000);

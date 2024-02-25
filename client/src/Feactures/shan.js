@@ -87,6 +87,8 @@ const initialState = {
   shanGameRing: null,
   shanGameRingStatus: false,
   shanGameRingError: null,
+
+  nextCard: [],
 };
 
 const shan = createSlice({
@@ -155,6 +157,10 @@ const shan = createSlice({
 
     setShanRoll: (state) => {
       state.postShanRoll = {};
+    },
+
+    setNextCard: (state, action) => {
+      state.nextCard = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -247,12 +253,15 @@ export const {
   setPullCardShow,
   setResult,
   setShanRoll,
+  setNextCard,
 } = shan.actions;
 
 // GAME STATE AND DATA========================================================
 export const selectBetRangeShow = (state) => state.shan.shanGame.betRangeShow;
 export const selectBetRangeAmount = (state) =>
   state.shan.shanGame.betRangeAmount;
+
+export const selectNextCard = (state) => state.shan.nextCard;
 
 export const selectWaitPlayer = (state) => state.shan.shanGame.waitPlayer;
 export const selectBettingTime = (state) => state.shan.shanGame.bettingTime;
