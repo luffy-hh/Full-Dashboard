@@ -123,7 +123,7 @@ function setupServer() {
         sendFinalResultBoolean = true;
 
         if (sendFinalResultBoolean) {
-          socket.emit("winloseResult", { winlose: socketIdArr });
+          socket.emit("winlose", { winlose: socketIdArr });
         }
 
         // အလျော် / အစား
