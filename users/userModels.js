@@ -12,7 +12,6 @@ const userSchema = new mongoose.Schema({
   },
   userId: {
     type: String,
-    required: [true, "Please Provide Unique Id"],
     unique: true,
   },
   email: {
@@ -37,9 +36,9 @@ const userSchema = new mongoose.Schema({
       message: "Password and Confirm Password are not same and Try Again.",
     },
   },
-  securityCode:{
+  securityCode: {
     type: String,
-    match:[/^\d{6}$/, 'Security code must be a 6-digit number']
+    match: [/^\d{6}$/, "Security code must be a 6-digit number"],
   },
   role: {
     type: String,

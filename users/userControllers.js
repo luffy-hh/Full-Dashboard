@@ -36,9 +36,9 @@ const signToken = (user) => {
   });
 };
 
-const generateRandomUserId = () => {
-  const min = 100000;
-  const max = 999999;
+const generateRandomUserId = (min, max) => {
+  // const min = 100000;
+  // const max = 999999;
   return String(Math.floor(Math.random() * (max - min + 1)) + min);
 };
 
@@ -67,19 +67,47 @@ const createSendToken = (user, statusCode, res) => {
 
 exports.signup = catchAsync(async (req, res, next) => {
   try {
-    const reqBody = req.body;
+    let reqBody = req.body;
+    console.log(req.body);
 
     let userId;
     let isUnique = false;
-    while (!isUnique) {
-      userId = generateRandomUserId();
-      const existingUser = await User.findOne({ userId });
-      if (!existingUser) {
-        isUnique = true;
+    const generateUserIdWithRole = async (min, max) => {
+      while (!isUnique) {
+        userId = generateRandomUserId(min, max);
+        while (userId.length !== 7) {
+          userId = 0 + userId;
+        }
+        console.log(userId.length, userId);
+        const existingUser = await User.findOne({ userId });
+        if (!existingUser) {
+          isUnique = true;
+        }
       }
+    };
+    let min;
+    let max;
+    if (
+      req.body.role === "Admin" ||
+      req.body.role === "Sub Admin" ||
+      req.body.role === "Stuff" ||
+      req.body.role === "Master"
+    ) {
+      min = 1;
+      max = 99;
+      generateUserIdWithRole(min, max);
+    } else if (
+      (req.body.role === "Agent", req.body.role === "Affilate Agent")
+    ) {
+      min = 100;
+      max = 999;
+      generateUserIdWithRole(min, max);
+    } else {
+      min = 1000;
+      max = 9999999;
+      generateUserIdWithRole(min, max);
     }
     reqBody.userId = userId;
-
     const newUser = await User.create({ ...reqBody });
 
     if (newUser.role === "Master") {
@@ -153,7 +181,6 @@ exports.signup = catchAsync(async (req, res, next) => {
       });
     }
 
-
     // Generate a JWT token
     const token = signToken(newUser);
 
@@ -168,19 +195,11 @@ exports.signup = catchAsync(async (req, res, next) => {
       { new: true }
     ).select("-password");
 
-    createSendToken(sessionAddedUser, 201, res, sessionIdentifier);
-
-    res.status(201).json({
-      status: "success",
-      token,
-      data: {
-        user: sessionAddedUser,
-      },
-    });
+    createSendToken(sessionAddedUser, 201, res);
   } catch (err) {
     res.status(404).json({
       status: "fail",
-      message: err,
+      message: err.message,
     });
   }
 });
@@ -282,17 +301,17 @@ exports.protect = catchAsync(async (req, res, next) => {
   next();
 });
 
-exports.checkSecurityCode=catchAsync(async (req,res,next)=>{
+exports.checkSecurityCode = catchAsync(async (req, res, next) => {
   try {
-    if(req.user.securityCode === req.body.securityCode){
+    if (req.user.securityCode === req.body.securityCode) {
       next();
-    }else{
-      next(new AppError('Incorrect Security Code.',403))
+    } else {
+      next(new AppError("Incorrect Security Code.", 403));
     }
-  }catch (e) {
-    next(new AppError(e.message,e.status))
+  } catch (e) {
+    next(new AppError(e.message, e.status));
   }
-})
+});
 exports.logout = catchAsync(async (req, res, next) => {
   try {
     // Get the user ID from the decoded token
