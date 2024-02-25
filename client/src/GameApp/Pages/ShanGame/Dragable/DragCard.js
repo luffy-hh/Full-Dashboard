@@ -363,13 +363,13 @@ function DragCard({ data }) {
         <img
           id="front_card_one"
           className={styles.front_card_one}
-          src={`/shangame/Cards/${shan[data?.shan[0]].type}.png`}
+          src={`/shangame/Cards/${data?.firstCard.type}${data?.firstCard.name}.png`}
           alt="cards"
         />
         <img
           id="front_card_two"
           className={styles.front_card_two}
-          src={`/shangame/Cards/${shan[data?.shan[1]].type}.png`}
+          src={`/shangame/Cards/${data?.secondCard.type}${data?.secondCard.name}.png`}
           alt="card"
         />
 
@@ -377,7 +377,7 @@ function DragCard({ data }) {
           <div id="dragzone" className={styles.dragzone}>
             <img
               className={styles.back_card_one}
-              src={`/shangame/Cards/${shan[data?.shan[1]].type}.png`}
+              src={`/shangame/Cards/${data?.secondCard.type}${data?.secondCard.name}.png`}
               alt="cards"
             />
           </div>
