@@ -2,6 +2,7 @@ const TransferMainUnit = require("../models/transferMainUnitModel");
 const User = require("../../users/userModels");
 const MainUnit = require("../../mainUnit/models/mainUnitModel");
 const moment = require("moment-timezone");
+const { queryModification } = require("../../services/api");
 moment.tz.setDefault("Asia/Yangon");
 
 // Transfer Main Unit Admin And Other
@@ -125,14 +126,16 @@ exports.transferMainUnitfun = async (req, res) => {
 exports.readMainUnitTransferHistory = async (req, res) => {
   try {
     const queryObj = { ...req.query };
-    const excludeFields = ["page", "sort", "limit", "fields"];
-    excludeFields.forEach((el) => delete queryObj[el]);
+    let query = await queryModification(queryObj, TransferMainUnit, req);
 
-    let queryStr = JSON.stringify(queryObj);
-    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-    console.log(JSON.parse(queryStr));
+    // const excludeFields = ["page", "sort", "limit", "fields"];
+    // excludeFields.forEach((el) => delete queryObj[el]);
 
-    const query = TransferMainUnit.find(JSON.parse(queryStr));
+    // let queryStr = JSON.stringify(queryObj);
+    // queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+    // console.log(JSON.parse(queryStr));
+
+    // const query = TransferMainUnit.find(JSON.parse(queryStr));
     const mainUnitTransferHistory = await query;
 
     res.status(200).json({
@@ -145,7 +148,7 @@ exports.readMainUnitTransferHistory = async (req, res) => {
   } catch (err) {
     res.status(400).json({
       status: "failed",
-      message: err,
+      message: err.message,
     });
   }
 };

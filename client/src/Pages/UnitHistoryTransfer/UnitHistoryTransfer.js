@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   selectGetUnitTransfer,
   fetchGetAllUnitTransfer,
@@ -12,15 +12,28 @@ import UnitHistoryTransferCom from "./UnitHistoryTransferCom";
 function UnitHistoryTransfer() {
   const getUnitTransfer = useSelector(selectGetUnitTransfer);
   const dispatch = useDispatch();
+  const [selectedDate, setSelectedDate] = useState("");
 
   const logInData = useSelector(selectlogInData);
   const accessToken = logInData.token;
+  const currentDate =
+    new Date().getTime() -
+    new Date().getHours() * 60 * 60 * 1000 -
+    new Date().getMinutes() * 60 * 1000 -
+    new Date().getSeconds() * 1000;
 
   useEffect(() => {
     dispatch(
-      fetchGetAllUnitTransfer({ api: "mainunitstransfer", accessToken })
+      fetchGetAllUnitTransfer({
+        api: `mainunitstransfer${
+          selectedDate === "" || isNaN(selectedDate)
+            ? "?transferDate[gte]=" + currentDate
+            : "?transferDate[gte]=" + selectedDate
+        }`,
+        accessToken,
+      })
     );
-  }, []);
+  }, [selectedDate]);
 
   const unitTransferArr = getUnitTransfer?.data.mainUnitTransferHistory;
 
@@ -48,7 +61,7 @@ function UnitHistoryTransfer() {
   ));
   return (
     <>
-      <UnitHistoryTransferCom list={list} />
+      <UnitHistoryTransferCom list={list} setSelectedDate={setSelectedDate} />
     </>
   );
 }

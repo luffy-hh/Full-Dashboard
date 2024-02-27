@@ -5,7 +5,7 @@ import { io } from "socket.io-client";
 import { setPullCard, setResult } from "../../../Feactures/shan";
 import { useDispatch } from "react-redux";
 function BankerCatch({
-  tableId,
+  socket,
   userId,
   setMainObj,
   mainObj,
@@ -14,7 +14,6 @@ function BankerCatch({
 }) {
   const dispatch = useDispatch();
   const nextCardFun = () => {
-    const socket = io(tableId);
     socket.emit("nextCard", { userId: userId });
     socket.on("nextCard", (data) => {
       const combined = mainObj.map((item1) => {
@@ -33,7 +32,6 @@ function BankerCatch({
   };
 
   const winLose = () => {
-    const socket = io(tableId);
     socket.emit("winlose", { tableId: tableIdForMatch });
     socket.on("winlose", (data) => {
       const combined = mainObj.map((item1) => {

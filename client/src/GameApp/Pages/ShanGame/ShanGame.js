@@ -14,8 +14,13 @@ function ShanGame() {
 
   return (
     <>
-      {userIdArr.map((id) => {
-        return <ShanPlay tableId={tableId} activeUser={id} />;
+      {userIdArr.map((userId, i) => {
+        return (
+          <ShanPlay
+            tableId={tableId.slice(0, tableId.length - 6)}
+            activeUser={userId}
+          />
+        );
       })}
     </>
   );

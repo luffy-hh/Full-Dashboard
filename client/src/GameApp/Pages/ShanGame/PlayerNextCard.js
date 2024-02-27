@@ -4,11 +4,10 @@ import styles from "./ShanGame.module.css";
 import { io } from "socket.io-client";
 import { useDispatch } from "react-redux";
 import { setPullCard } from "../../../Feactures/shan";
-function PlayerNextCard({ tableId, userId, setMainObj, mainObj }) {
+function PlayerNextCard({ socket, userId, setMainObj, mainObj }) {
   const dispatch = useDispatch();
 
   const nextCard = () => {
-    const socket = io(tableId);
     socket.emit("nextCard", { userId: userId });
     socket.on("nextCard", (data) => {
       const combined = mainObj.map((item1) => {

@@ -277,7 +277,7 @@ const shan = [
 function DragCard({ data }) {
   const dispatch = useDispatch();
   const dragCardState = useSelector(selectDragCard);
-
+  console.log(data);
   useEffect(() => {
     const frontCardOne = document.getElementById("front_card_one");
 
