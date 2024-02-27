@@ -539,18 +539,22 @@ function setupServer() {
           });
 
           // Table ရဲ့ min and max amout, user name,  user amount, user role, shan process (win or lose) current user ID
-
+          const player = tableObj.players.find(
+            (player) => player.userId === currentUser.userId
+          );
+          console.log("Filter Player", player);
           const currentUserData = {
             objId: currentUser._id.toString(),
             name: currentUser.name,
             userId: currentUser.userId,
             gameUnit: currentUser.gameUnit,
+            player_role: player.player_role,
           };
 
-          io.of(tableNs).emit("joinUserSuccess", {
+          io.of(tableNs).emit("updateTable", {
             tableObj,
-            currentUserData,
           });
+          socket.emit("currentUser", { currentUserData });
         } catch (error) {
           console.error("Error processing joinTableData:", error);
           if (error.code === 11000) {
