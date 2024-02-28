@@ -122,11 +122,11 @@ app.use(bodyParser.json());
 app.use(requestIp.mw());
 
 // Game Soft Integration gameSoftGameList
-app.use("/Seamless/GetGameList", gameSoftGameList);
-app.use("/Seamless/LaunchGame", gameSoftLunchGame);
-app.use("/Seamless/GetBalance", gameSoftGetBalance);
-app.use("/Seamless/PlaceBet", gameSoftPlaceBet);
-app.use("/Seamless/MobileLogin", gameSoftMobileLogin);
+app.use("/api/v1/gameSoft", gameSoftGameList);
+app.use("/api/v1/gameSoft", gameSoftLunchGame);
+app.use("/api/v1/gameSoft", gameSoftGetBalance);
+app.use("/api/v1/gameSoft", gameSoftPlaceBet);
+app.use("/api/v1/gameSoft", gameSoftMobileLogin);
 app.use("/api/v1/gameSoft", gameSoftCreateProvider);
 
 //Lottery - For Admin and User
