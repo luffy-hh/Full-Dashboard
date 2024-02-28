@@ -122,12 +122,12 @@ exports.getAllTransactionRecord = catchAsync(async (req, res, next) => {
   }
 });
 
+
 exports.getRelatedRecordForUser = catchAsync(async (req, res, next) => {
   try {
     req.query.user_id = req.user.id;
     const queryObj = { ...req.query };
     console.log("queryObj :", queryObj);
-
     // Exclude fields
     const excludeFields = ["page", "sort", "limit", "fields"];
     excludeFields.forEach((el) => delete queryObj[el]);
