@@ -9,14 +9,15 @@ const generateMD5HashFun = require("../../utils/generateMD5Hash");
 exports.getBalance = async (req, res) => {
   try {
     console.log(req.body);
-    const validUser = await User.find({ userId: req.body.MemberName });
+    const validUser = await User.findOne({ userId: req.body.MemberName });
     if (validUser) {
-      res.json({
+      const resData = {
         ErrorCode: 0,
         ErrorMessage: "Success",
         Balance: validUser.unit,
         BeforeBalance: 0,
-      });
+      };
+      res.json(resData);
     }
 
     //     const requestTime = timeStamp.getCurrentTimestamp();
