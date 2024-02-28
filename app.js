@@ -90,7 +90,7 @@ if (process.env.NODE_ENV === "development") {
 app.use((req, res, next) => {
   res.setHeader(
     "Content-Security-Policy",
-    "connect-src 'self' https://ar7mm.org"
+    "connect-src 'self' https://gamevegas.online"
   );
   next();
 });
