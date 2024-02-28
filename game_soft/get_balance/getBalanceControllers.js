@@ -1,67 +1,108 @@
-const axios = require("axios");
-const crypto = require("crypto");
+const bodyParser = require("body-parser");
+
 const User = require("../../users/userModels");
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
+const timeStamp = require("../../utils/timestamp");
+const generateMD5HashFun = require("../../utils/generateMD5Hash");
 
-function generateMD5Hash(input) {
-  return crypto.createHash("md5").update(input).digest("hex");
-}
-
-// Get Balance
 exports.getBalance = async (req, res) => {
   try {
+    const requestTime = timeStamp.getCurrentTimestamp();
     const token = req.headers.authorization.split(" ")[1];
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
     const currentUserId = decoded.id;
     const userObj = await User.findById(currentUserId);
-
-    const playerId = userObj.userId;
-    const methodName = "getbalance";
-
-    const apiUrl = "https://swmd.6633663.com/";
     const operatorCode = "E616";
+    const messageId = currentUserId.toString() + "_" + requestTime.toString();
+    // Extract request parameters from the body
+    const { productId } = req.body;
+    // Create Sing
     const secretKey = "P8uzXq";
-    const date = new Date();
-    const requestTime =
-      date.getFullYear().toString() +
-      ("0" + (date.getMonth() + 1)).slice(-2) +
-      ("0" + date.getDate()).slice(-2) +
-      ("0" + date.getHours()).slice(-2) +
-      ("0" + date.getMinutes()).slice(-2) +
-      ("0" + date.getSeconds()).slice(-2);
-    const timeStamp = new Date().getTime();
-    const messageId = currentUserId.toString() + "_" + timeStamp.toString();
+    const methodName = "getbalance";
     const stringToHash = operatorCode + requestTime + methodName + secretKey;
-    const signature = generateMD5Hash(stringToHash);
-    console.log(messageId, requestTime);
-    const requestData = {
+    const signature = generateMD5HashFun.generateMD5Hash(stringToHash);
+
+    // Construct your request body
+    const requestBody = {
+      MemberName: userObj.userId,
       OperatorCode: operatorCode,
-      RequestTime: requestTime,
-      Sign: signature,
-      MemberName: playerId,
+      ProductID: productId,
       MessageID: messageId,
+      Sign: signature,
+      RequestTime: requestTime,
     };
 
-    const headers = {
-      "Content-Type": "application/json",
-    };
+    console.log(requestBody);
 
-    // const response = await axios.post(apiUrl, requestData, { headers });
-    const response = await fetch(apiUrl, {
+    // Make the API request to the operator
+    // const callbackUrl = "https://gamevegas.online";
+    const callbackUrl = "https://swmd.6633663.com/Seamless/GetBalance";
+    // const response = await axios.post("/Seamless/GetBalance", requestBody, {
+    //   baseURL: callbackUrl,
+    // });
+    const response = await fetch(callbackUrl, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestData),
+      body: JSON.stringify(requestBody),
+      headers: { "Content-Type": "application/json" },
     });
-    const data = await response.json();
-
-    res.json({
-      success: true,
-      data,
-    });
+    if (response.headers.get("content-type")?.includes("application/json")) {
+      const responseData = await response.json();
+      console.log(responseData);
+      res.json(responseData);
+    } else {
+      // Handle non-JSON response (e.g., HTML error page)
+      const responseText = await response.text();
+      console.error("Non-JSON response:", responseText);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
   } catch (error) {
-    res.status(500).json({ success: false, error: error.stack });
+    console.error("Error:", error.stack);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+exports.getBalanceWithProductId = async (req, res) => {
+  try {
+    const requestTime = timeStamp.getCurrentTimestamp();
+    const token = req.headers.authorization.split(" ")[1];
+    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+    const currentUserId = decoded.id;
+    const userObj = await User.findById(currentUserId);
+    const operatorCode = "E616";
+    const messageId = currentUserId.toString() + "_" + requestTime.toString();
+    // Extract request parameters from the body
+    const { productId } = req.body;
+    // Create Sing
+    const secretKey = "P8uzXq";
+    const methodName = "getbalance";
+    const stringToHash = operatorCode + requestTime + methodName + secretKey;
+    const signature = generateMD5HashFun.generateMD5Hash(stringToHash);
+
+    // Construct your request body
+    const requestBody = {
+      MemberName: userObj.userId,
+      OperatorCode: operatorCode,
+      ProductID: productId,
+      MessageID: messageId,
+      Sign: signature,
+      RequestTime: requestTime,
+    };
+
+    // Make the API request to the operator
+    const response = await axios.post(
+      "https://swmd.6633663.com/Seamless/GetBalance",
+      requestBody
+    );
+
+    // Handle the API response
+    const responseData = response.data;
+    console.log(responseData);
+
+    // Send the response to the Seamless server
+    res.json(responseData);
+  } catch (error) {
+    console.error("Error:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };

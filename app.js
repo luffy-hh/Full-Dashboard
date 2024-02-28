@@ -7,6 +7,8 @@ const path = require("path");
 const cors = require("cors");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
+const requestIp = require("request-ip");
+const bodyParser = require("body-parser");
 
 const app = express();
 app.use(
@@ -60,7 +62,6 @@ const thai3DLuckyWinnerRouter = require("./3dLucky&Winner/routes/3DLuckyWinnerRo
 // Shan
 const shanRole = require("./shan/shan_role/shanRoleRoutes");
 const shanTable = require("./shan/shan_table/shanTableRoutes");
-// const shanPlay = require("./shan/shan_play/routes");
 
 //transaction record
 const transactionRecordRouter = require("./transaction-record/transactionRecordRoute");
@@ -75,18 +76,12 @@ const lottery2dEveningRoutes = require("./lottery_nuumbers/routes/lottery2dEveni
 // App Things
 const appThingsRouter = require("./app_things/appThingsRoute");
 //GameSoft
+const gameSoftGameList = require("./game_soft/game_list/getGameRoutes");
+const gameSoftLunchGame = require("./game_soft/game_lunch/gameLunchRoutes");
+const gameSoftPlaceBet = require("./game_soft/place_bet/placeBetRoutes");
 const gameSoftGetBalance = require("./game_soft/get_balance/getBalanceRoutes");
-//Infinity Game
-// const infinityGameCreatePlayer = require("./infinity_games/create_player/createPlayerRoutes");
-// const infinityGetGameList = require("./infinity_games/game_list/gamelistRoutes");
-// const infinityGameLogin = require("./infinity_games/game_login/gameLoginRoutes");
-// const infinityGameDeposit = require("./infinity_games/game_deposit/gameDepositRoutes");
-// const infinityGameCheckBalance = require("./infinity_games/check_balance/checkBalanceRoutes");
-// const infinityGameWithdraw = require("./infinity_games/game_withdraw/gameWithdrawRoutes");
-// const infinityGamePullLog = require("./infinity_games/pull_log/pull_logRoutes");
-// const infinityGameCheckPlayer = require("./infinity_games/infinity_check_user/infinityCheckUserRoutes");
-// Middleware
-// app.use(helmet());
+const gameSoftMobileLogin = require("./game_soft/mobile_login/mobileLoginRoutes");
+const gameSoftCreateProvider = require("./game_soft/providers/providerRouest");
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
@@ -99,6 +94,7 @@ app.use((req, res, next) => {
   );
   next();
 });
+
 //const limiter = rateLimit({
 //max: 100,
 //windowMs: 60 * 60 * 1000,
@@ -115,16 +111,23 @@ app.use(express.json());
 
 app.use(express.static("public"));
 app.use(express.static("static"));
-//app.use((req, res, next) => {
-//console.log("This is Test Middleware");
-//next();
-//});
 
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
 
   next();
 });
+
+app.use(bodyParser.json());
+app.use(requestIp.mw());
+
+// Game Soft Integration gameSoftGameList
+app.use("/Seamless/GetGameList", gameSoftGameList);
+app.use("/Seamless/LaunchGame", gameSoftLunchGame);
+app.use("/Seamless/GetBalance", gameSoftGetBalance);
+app.use("/Seamless/PlaceBet", gameSoftPlaceBet);
+app.use("/Seamless/MobileLogin", gameSoftMobileLogin);
+app.use("/api/v1/gameSoft", gameSoftCreateProvider);
 
 //Lottery - For Admin and User
 app.use("/api/v1/lottery2dthai12", lottery2dRoutes);
@@ -212,23 +215,13 @@ app.use("/api/v1/transaction-record", transactionRecordRouter);
 
 // App Things
 app.use("/api/v1/things", appThingsRouter);
-// // Infinity game
-// app.use("/api/v1/infinity", infinityGameCreatePlayer);
-// app.use("/api/v1/infinity", infinityGetGameList);
-// app.use("/api/v1/infinity", infinityGameLogin);
-// app.use("/api/v1/infinity", infinityGameDeposit);
-// app.use("/api/v1/infinity", infinityGameWithdraw);
-// app.use("/api/v1/infinity", infinityGameCheckBalance);
-// app.use("/api/v1/infinity", infinityGamePullLog);
-// app.use("/api/v1/infinity", infinityGameCheckPlayer);
+
 // 3D APIS
 app.use("/api/v1/thai3DNumAll", thai3DNumRouter);
 app.use("/api/v1/thai3D", thai3DRouter);
 app.use("/api/v1/thai3DLuckyNum", thai3DLuckyNumRouter);
 app.use("/api/v1/thai3DLuckyWinner", thai3DLuckyWinnerRouter);
 
-// GameSoft API
-app.use("/api/v1/gamesoft", gameSoftGetBalance);
 // slot testing
 // app.use("/api/v1/slotTest", slotTestRouter);
 // app.get("*", (req, res) => {

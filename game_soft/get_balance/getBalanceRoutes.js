@@ -4,7 +4,7 @@ const userController = require("../../users/userControllers");
 
 const router = express.Router();
 router
-  .route("/getbalance")
+  .route("/Seamless/GetBalance")
   .post(userController.protect, getBalanceControllers.getBalance);
 
 module.exports = router;
