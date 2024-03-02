@@ -181,7 +181,6 @@ exports.signup = catchAsync(async (req, res, next) => {
       });
     }
 
-
     if (newUser.role === "User" && newUser.uplineId === "Hello") {
       const defaultAgent = await User.findOne({
         email: "ar7mm.agent@gmail.com",
@@ -190,7 +189,6 @@ exports.signup = catchAsync(async (req, res, next) => {
         uplineId: defaultAgent.userId,
       });
     }
-
 
     // Generate a JWT token
     const token = signToken(newUser);
@@ -282,34 +280,34 @@ exports.protect = catchAsync(async (req, res, next) => {
     req.headers.authorization.startsWith("Bearer")
   ) {
     token = req.headers.authorization.split(" ")[1];
-  }
+    try {
+      // 2. ရှိတယ်ဆိုတဲ့ Token ကရော တစ်ကယ် မှန်/မမှန် စစ်ပါတယ်။
+      const decoded = await jwt.verify(token, process.env.JWT_SECRET);
 
-  if (!token) {
+      // 3. Token မှန်တယ်ဆိုရင်တောင် Token ပိုင်ရှင် User က ရှိနေသေးတာ ဟုတ်/မဟုတ် ကိုစစ်ပါတယ်။
+      const currentUser = await User.findById(decoded.id);
+      if (!currentUser) {
+        return next(new AppError("Invalid session. Please log in again.", 401));
+      }
+
+      // 4. Token ယူပြီးမှ User က Password ချိန်းလိုက်တဲ့အခြေအနေကိုလဲ စစ်ထားဖို့လိုပါတယ်။
+      if (currentUser.changedPasswordAfter(decoded.iat)) {
+        return next(
+          new AppError(
+            "User recently changed the password. Please log in again",
+            401
+          )
+        );
+      }
+
+      req.user = currentUser;
+      next();
+    } catch (error) {
+      return next(new AppError("Token expired. Please Login again.", 200));
+    }
+  } else {
     return next(new AppError("You are not logged in. Please log in!", 401));
   }
-
-  // 2. ရှိတယ်ဆိုတဲ့ Token ကရော တစ်ကယ် မှန်/မမှန် စစ်ပါတယ်။
-  const decoded = await jwt.verify(token, process.env.JWT_SECRET);
-
-  // 3. Token မှန်တယ်ဆိုရင်တောင် Token ပိုင်ရှင် User က ရှိနေသေးတာ ဟုတ်/မဟုတ် ကိုစစ်ပါတယ်။
-  const currentUser = await User.findById(decoded.id);
-
-  if (!currentUser) {
-    return next(new AppError("Invalid session. Please log in again.", 401));
-  }
-
-  // 4. Token ယူပြီးမှ User က Password ချိန်းလိုက်တဲ့အခြေအနေကိုလဲ စစ်ထားဖို့လိုပါတယ်။
-  if (currentUser.changedPasswordAfter(decoded.iat)) {
-    return next(
-      new AppError(
-        "User recently changed the password. Please log in again",
-        401
-      )
-    );
-  }
-
-  req.user = currentUser;
-  next();
 });
 
 exports.checkSecurityCode = catchAsync(async (req, res, next) => {
