@@ -11,7 +11,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { io } from "socket.io-client";
 
-function BettingAmount({ mainAmount, tableId, userId, setMainObj }) {
+function BettingAmount({ mainAmount, socket, userId, setMainObj }) {
   const min = mainAmount[1];
   const max = mainAmount[0];
   const [betAmount, setBetAmount] = useState(min);
@@ -25,7 +25,6 @@ function BettingAmount({ mainAmount, tableId, userId, setMainObj }) {
   const betRangeAmount = useSelector(selectBetRangeAmount);
 
   const handleBtn = () => {
-    const socket = io(tableId);
     socket.emit("betAmt", { betAmt: betAmount, userId: userId });
     socket.on("tableData", (data) => {
       console.log(data);

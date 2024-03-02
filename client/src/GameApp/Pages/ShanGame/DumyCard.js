@@ -100,7 +100,7 @@ function DumyCard({
   counts,
   setCardHandling,
   number,
-  tableId,
+  socketJoin,
 }) {
   const dispatch = useDispatch();
 
@@ -155,7 +155,6 @@ function DumyCard({
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      const socketJoin = io(tableId);
       socketJoin.emit("startPlay", { text: "Shan Card Request" });
       socketJoin.on("initialCard", (data) => {
         console.log(data, "initialCard");

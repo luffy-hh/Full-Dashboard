@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema({
   userId: {
     type: String,
     unique: true,
+    required: true,
   },
   email: {
     type: String,
@@ -39,6 +40,7 @@ const userSchema = new mongoose.Schema({
   securityCode: {
     type: String,
     match: [/^\d{6}$/, "Security code must be a 6-digit number"],
+    required: true,
   },
   role: {
     type: String,
