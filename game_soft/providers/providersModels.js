@@ -16,6 +16,10 @@ const ProviderSchema = mongoose.Schema({
     type: String,
     required: [true, "Please insert Game Type Name"],
   },
+  conversionRate: {
+    type: Number,
+    required: [true, "Please insert Game Conversion Rate"],
+  },
 });
 
 const GameSoftProvider = mongoose.model("GameSoftProvider", ProviderSchema);

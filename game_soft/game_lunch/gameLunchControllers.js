@@ -15,7 +15,7 @@ exports.lunchGame = async (req, res) => {
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
     const currentUserId = decoded.id;
     const userObj = await User.findById(currentUserId);
-    const { gameType, platform, productId } = req.body;
+    let { gameType, platform, productId } = req.body;
     const secretKey = "P8uzXq";
     const methodName = "launchgame";
     const operatorCode = "E616";
@@ -34,7 +34,6 @@ exports.lunchGame = async (req, res) => {
       Sign: signature,
       RequestTime: requestTime,
     };
-    console.log(req.body, requestBody);
 
     // Make the API request
     const response = await axios.post(

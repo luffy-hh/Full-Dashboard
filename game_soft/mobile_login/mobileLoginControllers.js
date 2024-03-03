@@ -31,17 +31,16 @@ exports.mobileLogin = async (req, res) => {
       RequestTime: requestTime,
     };
 
-    // Construct the URL for the MobileLogin API
-    const callbackUrl = "https://gamevegas.online";
-    const response = await axios.post("/Seamless/MobileLogin", requestBody, {
-      baseURL: callbackUrl,
-    });
+    const response = await axios.post(
+      "https://swmd.6633663.com/Seamless/MobileLogin",
+      requestBody
+    );
 
     // Handle the API response
     const responseData = response.data;
     console.log(responseData);
 
-    // Send the response to the Seamless server
+    // Send the response to the client
     res.json(responseData);
   } catch (error) {
     console.error("Error:", error.message);
