@@ -13,6 +13,6 @@ router
 
 router
   .route("/Provider/read")
-  .get(userController.protect, providerController.readProvuders);
+  .post(userController.protect, providerController.readProvuders);
 
 module.exports = router;
