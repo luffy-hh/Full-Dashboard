@@ -13,6 +13,6 @@ router
 
 router
   .route("/GameType/read")
-  .post(userController.protect, gameTypeController.readGameTypes);
+  .get(userController.protect, gameTypeController.readGameTypes);
 
 module.exports = router;

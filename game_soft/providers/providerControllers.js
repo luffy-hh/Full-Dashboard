@@ -32,7 +32,6 @@ exports.readProvuders = catchAsync(async (req, res) => {
     const providersObj = await Provider.find({
       gameTypeCode: req.body.gameTypeCode,
     });
-
     res.status(201).json({
       status: "success",
       count: providersObj.length,
