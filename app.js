@@ -81,7 +81,8 @@ const gameSoftLunchGame = require("./game_soft/game_lunch/gameLunchRoutes");
 const gameSoftPlaceBet = require("./game_soft/place_bet/placeBetRoutes");
 const gameSoftGetBalance = require("./game_soft/get_balance/getBalanceRoutes");
 const gameSoftMobileLogin = require("./game_soft/mobile_login/mobileLoginRoutes");
-const gameSoftCreateProvider = require("./game_soft/providers/providerRouest");
+const gameSoftProvider = require("./game_soft/providers/providerRouest");
+const gameSoftGameType = require("./game_soft/game_type/gameTypeRoute");
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
@@ -127,7 +128,8 @@ app.use("/api/v1/gameSoft", gameSoftLunchGame);
 app.use("/api/v1/gameSoft", gameSoftGetBalance);
 app.use("/api/v1/gameSoft", gameSoftPlaceBet);
 app.use("/api/v1/gameSoft", gameSoftMobileLogin);
-app.use("/api/v1/gameSoft", gameSoftCreateProvider);
+app.use("/api/v1/gameSoft", gameSoftProvider);
+app.use("/api/v1/gameSoft", gameSoftGameType);
 
 //Lottery - For Admin and User
 app.use("/api/v1/lottery2dthai12", lottery2dRoutes);
