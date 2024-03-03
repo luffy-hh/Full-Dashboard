@@ -7,7 +7,7 @@ exports.gameResult = async (req, res) => {
     const providerObj = await GameSoftProvider.findOne({
       providerCode: data.ProductID,
     });
-    const currentUserObj = User.findOne({ userId: data.MemberName });
+    const currentUserObj = await User.findOne({ userId: data.MemberName });
     const convertUnit = currentUserObj.unit / providerObj.conversionRate;
     const winLoseResult =
       data.Transactions[0].PayoutAmount == 0 ? "lose" : "win";
