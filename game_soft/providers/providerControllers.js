@@ -29,7 +29,9 @@ exports.createProvider = catchAsync(async (req, res) => {
 
 exports.readProvuders = catchAsync(async (req, res) => {
   try {
-    const providersObj = await Provider.find({});
+    const providersObj = await Provider.find({
+      gameTypeCode: req.body.gameTypeCode,
+    });
 
     res.status(201).json({
       status: "success",
