@@ -135,7 +135,7 @@ exports.transferUnitWithUserId = catchAsync(async (req, res, next) => {
 
         const transactionSenderObj = {
           user_id: sentUser._id,
-          action_id:receiveUser._id,
+          action_id: receiveUser._id,
           before_amt: sendUser.unit,
           after_amt: sentUser.unit,
           action_amt: req.body.amount,
@@ -169,12 +169,10 @@ exports.transferUnitWithUserId = catchAsync(async (req, res, next) => {
           receivedUser,
         });
       } else {
-        next(
-          new AppError(
-            "You balance is insufficient for this action.Please Top Up!",
-            400
-          )
-        );
+        res.json({
+          status: "failed",
+          message: "Insufficient balance",
+        });
       }
     } else {
       res.status(400).json({
@@ -183,6 +181,9 @@ exports.transferUnitWithUserId = catchAsync(async (req, res, next) => {
       });
     }
   } catch (e) {
-    next(new AppError(e.message, 500));
+    res.json({
+      status: "failed",
+      message: e.message,
+    });
   }
 });
