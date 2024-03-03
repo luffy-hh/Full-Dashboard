@@ -83,6 +83,7 @@ const gameSoftGetBalance = require("./game_soft/get_balance/getBalanceRoutes");
 const gameSoftMobileLogin = require("./game_soft/mobile_login/mobileLoginRoutes");
 const gameSoftProvider = require("./game_soft/providers/providerRouest");
 const gameSoftGameType = require("./game_soft/game_type/gameTypeRoute");
+const gameSoftGameResult = require("./game_soft/game_result/gameResultRoute");
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
@@ -130,6 +131,7 @@ app.use("/api/v1/gameSoft", gameSoftPlaceBet);
 app.use("/api/v1/gameSoft", gameSoftMobileLogin);
 app.use("/api/v1/gameSoft", gameSoftProvider);
 app.use("/api/v1/gameSoft", gameSoftGameType);
+app.use("/api/v1/gameSoft", gameSoftGameResult);
 
 //Lottery - For Admin and User
 app.use("/api/v1/lottery2dthai12", lottery2dRoutes);
